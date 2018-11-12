@@ -1,2 +1,2 @@
 # disease-services
-Service related to disease centric data
+Services related to disease
