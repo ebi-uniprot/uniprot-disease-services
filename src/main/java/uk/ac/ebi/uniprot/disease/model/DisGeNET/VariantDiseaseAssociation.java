@@ -1,9 +1,6 @@
 package uk.ac.ebi.uniprot.disease.model.DisGeNET;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @author sahmad
@@ -12,6 +9,7 @@ import lombok.ToString;
 @Setter
 @EqualsAndHashCode
 @ToString
+@Builder
 public class VariantDiseaseAssociation {
     private String snpId;
     private String diseaseId;

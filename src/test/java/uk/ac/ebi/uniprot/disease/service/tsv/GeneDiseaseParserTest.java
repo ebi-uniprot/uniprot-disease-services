@@ -38,5 +38,17 @@ public class GeneDiseaseParserTest {
         List<GeneDiseaseAssociation> records = parser.parseRecords();
         Assert.assertTrue("records empty", !records.isEmpty());
         Assert.assertEquals("Records count invalid", 20, records.size());
+        records.parallelStream().forEach(GeneDiseaseParserTest::verifyRecord);
+    }
+
+    private static void verifyRecord(GeneDiseaseAssociation gda) {
+        Assert.assertNotNull("Disease Id is null", gda.getDiseaseId());
+        Assert.assertNotNull("Disease name is null", gda.getDiseaseName());
+        Assert.assertNotNull("Gene Id is null", gda.getGeneId());
+        Assert.assertNotNull("Gener symbol is null", gda.getGeneSymbol());
+        Assert.assertNotNull("PMID count is null", gda.getPmidCount());
+        Assert.assertNotNull("Score is null", gda.getScore());
+        Assert.assertNotNull("SNP Count is null", gda.getSnpCount());
+        Assert.assertNotNull("Source is null", gda.getSource());
     }
 }
