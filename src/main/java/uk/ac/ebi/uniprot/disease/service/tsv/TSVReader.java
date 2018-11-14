@@ -49,7 +49,7 @@ public class TSVReader implements Closeable {
             this.peekRecord = null;
             return tokens;
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
 
