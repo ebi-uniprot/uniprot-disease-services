@@ -20,10 +20,13 @@ public class GDADataLoaderArgs {
     private String path;
 
     @Parameter(names = {"--store", "-s"}, arity = 1, description = "Whether to store the data in the DB or ignore after parsing. By default it is set to true")
-    private Boolean store = true;
+    private boolean store = true;
 
     @Parameter(names = {"--downloadPath", "-dp"}, description = "Absolute path of the file to be downloaded from the DisGeNET")
     private String downloadedFilePath = "/tmp/gda.tsv.tgz";
+
+    @Parameter(names = {"--uncompressedPath", "-up"}, description = "Absolute path of the uncompressed file")
+    private String uncompressedFilePath = "/tmp/gda.tsv";
 
     @Parameter(names = "--help", arity = 1, help = true, description = "To get all the options and their details")
     private boolean help = false;
