@@ -27,17 +27,25 @@ public class FileParser extends BaseProcessor {
     @Override
     public void processRequest(DiseaseRequest request)  throws IOException {
         LOGGER.debug("Going to parse the input file {}", request.getUncompressedFilePath());
-
+        // don't move to the next step until
         TSVReader reader = new TSVReader(request.getUncompressedFilePath());
         GeneDiseaseParser parser = new GeneDiseaseParser(reader);
-        List<GeneDiseaseAssociation> gdas = parser.parseRecords();
-        // enrich the request and pass on
-        request.setParsedRecords(gdas);
-        //LOGGER.debug("The file is parsed and request is enriched with parsed records {}", request);
-        if(nextProcessor != null){
-            LOGGER.debug("Invoking the next processor {}", nextProcessor.getProcessorName());
-            nextProcessor.processRequest(request);
-        }
+        List<GeneDiseaseAssociation> gdas;
+        int count = 0;
+        do {
+            gdas = parser.parseRecords(request.getBatchSize());
+            // enrich the request and pass on
+            request.setParsedRecords(gdas);
+            count += gdas.size();
+
+            LOGGER.debug("The file is parsed and request is enriched with parsed records {}", request);
+            if (nextProcessor != null) {
+                LOGGER.debug("Invoking the next processor {}", nextProcessor.getProcessorName());
+                nextProcessor.processRequest(request);
+            }
+        }while(!gdas.isEmpty());
+
+        LOGGER.debug("Total records parsed and saved {}", count);
 
     }
 }

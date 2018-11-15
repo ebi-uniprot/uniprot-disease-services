@@ -34,4 +34,6 @@ public class FileDownloader {
 
         FileUtils.copyURLToFile(source, destination);
     }
+
+    private FileDownloader(){}
 }

@@ -20,12 +20,19 @@ public class GeneDiseaseParser {
         this.reader = reader;
     }
 
-    public List<GeneDiseaseAssociation> parseRecords(){
+    /**
+     * Parsed n records
+     * @param total number of records to be parsed
+     * @return
+     */
+    public List<GeneDiseaseAssociation> parseRecords(int total){
         LOGGER.debug("Starting the parsing of data");
+        int count = 0;
         List<GeneDiseaseAssociation> parsedRecords = new ArrayList<>();
-        while(this.reader.hasMoreRecord()){
+        while(this.reader.hasMoreRecord() && total > count){
             GeneDiseaseAssociation gdAssociation = parseRecord(this.reader.getRecord());
             parsedRecords.add(gdAssociation);
+            count++;
         }
 
         LOGGER.debug("Total records parsed {}", parsedRecords.size());

@@ -25,9 +25,10 @@ public class DataSaver extends BaseProcessor{
     @Override
     public void processRequest(DiseaseRequest request) throws IOException {
         LOGGER.debug("Going to persist parsed data");
-        persistRecords(request.getParsedRecords());
-        // enrich data in request TODO with time and other info
-        if(nextProcessor != null){
+        if(!request.getParsedRecords().isEmpty()) {
+            persistRecords(request.getParsedRecords());
+            // enrich data in request TODO with time and other info
+        } else if(nextProcessor != null){ // move to the next processor
             LOGGER.debug("Invoking the next processor {}", nextProcessor.getProcessorName());
             nextProcessor.processRequest(request);
         }

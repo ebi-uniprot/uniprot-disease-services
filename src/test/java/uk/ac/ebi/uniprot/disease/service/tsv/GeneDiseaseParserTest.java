@@ -35,7 +35,7 @@ public class GeneDiseaseParserTest {
     public void testParseRecords() throws FileNotFoundException {
         TSVReader tsvReader = new TSVReader("src/test/resources/sample_gene_disease_association.tsv");
         GeneDiseaseParser parser = new GeneDiseaseParser(tsvReader);
-        List<GeneDiseaseAssociation> records = parser.parseRecords();
+        List<GeneDiseaseAssociation> records = parser.parseRecords(20);
         Assert.assertTrue("records empty", !records.isEmpty());
         Assert.assertEquals("Records count invalid", 20, records.size());
         records.parallelStream().forEach(GeneDiseaseParserTest::verifyRecord);

@@ -21,4 +21,5 @@ public class DiseaseRequest {
     private String downloadedFilePath;
     private String uncompressedFilePath;
     private List<GeneDiseaseAssociation> parsedRecords;
+    private int batchSize;
 }

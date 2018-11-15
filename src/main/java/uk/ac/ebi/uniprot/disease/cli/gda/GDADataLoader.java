@@ -63,7 +63,7 @@ public class GDADataLoader {
     private static DiseaseRequest getDiseaseRequest(GDADataLoaderArgs options) {
         LOGGER.debug("Creating the initial request for the workflow");
         DiseaseRequest.DiseaseRequestBuilder builder = DiseaseRequest.builder();
-        builder.url(options.getUrl()).download(options.isDownload());
+        builder.url(options.getUrl()).download(options.isDownload()).batchSize(options.getBatchSize());
         builder.downloadedFilePath(options.getDownloadedFilePath());
         builder.store(options.isStore()).uncompressedFilePath(options.getUncompressedFilePath());
         DiseaseRequest request = builder.build();

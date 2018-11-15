@@ -66,4 +66,6 @@ public class FileHandler {
         LOGGER.debug("Compressed {} into {}", inputFile, outputFile);
     }
 
+    private FileHandler(){}
+
 }
