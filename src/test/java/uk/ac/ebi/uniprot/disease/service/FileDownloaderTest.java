@@ -1,8 +1,7 @@
-package uk.ac.ebi.uniprot.disease.service.tsv;
+package uk.ac.ebi.uniprot.disease.service;
 
 import org.junit.Assert;
 import org.junit.Test;
-import uk.ac.ebi.uniprot.disease.service.FileDownloader;
 
 import java.io.File;
 import java.io.IOException;

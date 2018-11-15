@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.disease.service.tsv;
+package uk.ac.ebi.uniprot.disease.service;
 
 import org.junit.Assert;
 import org.junit.Test;

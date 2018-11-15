@@ -38,11 +38,11 @@ public class DownloadProcessor extends BaseProcessor {
         }
     }
 
-    private void uncompressFile(String downloadedFilePath, String uncompressedFilePath) throws IOException {
+    public void uncompressFile(String downloadedFilePath, String uncompressedFilePath) throws IOException {
         FileHandler.uncompressGZFile(downloadedFilePath, uncompressedFilePath);
     }
 
-    private void downloadFile(String url, String fileName) throws IOException {
+    public void downloadFile(String url, String fileName) throws IOException {
         FileDownloader.download(url, fileName);
     }
 }
