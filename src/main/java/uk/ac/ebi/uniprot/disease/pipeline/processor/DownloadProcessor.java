@@ -1,18 +1,39 @@
 package uk.ac.ebi.uniprot.disease.pipeline.processor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 import uk.ac.ebi.uniprot.disease.service.FileDownloader;
 import uk.ac.ebi.uniprot.disease.service.FileHandler;
 
 import java.io.IOException;
 
+/**
+ * Handler to download data from DisGeNET website
+ * @author sahmad
+ */
+
 public class DownloadProcessor extends BaseProcessor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DownloadProcessor.class);
+    private static final String PROCESSOR_NAME = "DownloadProcessor";
+
+    public String getProcessorName(){
+        return PROCESSOR_NAME;
+    }
 
     @Override
     public void processRequest(DiseaseRequest request) throws IOException {
+
+        LOGGER.debug("Starting to downdload from {}", request.getUrl());
         downloadFile(request.getUrl(), request.getDownloadedFilePath());
+        LOGGER.debug("File is downloaded to {}", request.getDownloadedFilePath());
+
+        // uncompress the downloaded gz file
         uncompressFile(request.getDownloadedFilePath(), request.getUncompressedFilePath());
+        LOGGER.debug("Downloaded file uncompressed into {}", request.getUncompressedFilePath());
+
         if(nextProcessor != null){
+            LOGGER.debug("Invoking the next processor {}", nextProcessor.getProcessorName());
             nextProcessor.processRequest(request);
         }
     }

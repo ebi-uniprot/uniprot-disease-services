@@ -1,7 +1,8 @@
 package uk.ac.ebi.uniprot.disease.service.tsv;
 
-import uk.ac.ebi.uniprot.disease.model.DisGeNET.GeneDiseaseAssociation;
-import uk.ac.ebi.uniprot.disease.model.DisGeNET.VariantDiseaseAssociation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import uk.ac.ebi.uniprot.disease.model.disgenet.VariantDiseaseAssociation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,17 +11,20 @@ import java.util.List;
  * @author sahmad
  */
 public class VariantDiseaseParser {
+    private static final Logger LOGGER = LoggerFactory.getLogger(VariantDiseaseParser.class);
     private TSVReader reader;
     public VariantDiseaseParser(TSVReader reader){
         this.reader = reader;
     }
 
     public List<VariantDiseaseAssociation> parseRecords(){
+        LOGGER.debug("Starting the parsing of data");
         List<VariantDiseaseAssociation> parsedRecords = new ArrayList<>();
         while(this.reader.hasMoreRecord()){
             VariantDiseaseAssociation vda = parseRecord(this.reader.getRecord());
             parsedRecords.add(vda);
         }
+        LOGGER.debug("Total records parsed {}", parsedRecords.size());
 
         return parsedRecords;
     }

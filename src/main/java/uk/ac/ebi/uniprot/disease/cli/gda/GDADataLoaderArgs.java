@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.disease.CLI.GDA;
+package uk.ac.ebi.uniprot.disease.cli.gda;
 
 import com.beust.jcommander.Parameter;
 import lombok.Getter;
@@ -10,13 +10,13 @@ import lombok.ToString;
 @Getter
 @ToString
 public class GDADataLoaderArgs {
-    @Parameter(names = {"--url", "-u"}, description = "URL for the DisGeNET GDA data")
+    @Parameter(names = {"--url", "-u"}, description = "URL for the DisGeNET gda data")
     private String url = "http://www.disgenet.org/ds/DisGeNET/results/curated_gene_disease_associations.tsv.gz";
 
     @Parameter(names = {"--download", "-d"}, arity = 1, description = "Whether to download the data from DisGeNET or use the local one. By default it is set to true")
     private boolean download = true;
 
-    @Parameter(names = {"--path", "-p"}, description = "Path of the existing GDA data file if download is set to false")
+    @Parameter(names = {"--path", "-p"}, description = "Path of the existing gda data file if download is set to false")
     private String path;
 
     @Parameter(names = {"--store", "-s"}, arity = 1, description = "Whether to store the data in the DB or ignore after parsing. By default it is set to true")

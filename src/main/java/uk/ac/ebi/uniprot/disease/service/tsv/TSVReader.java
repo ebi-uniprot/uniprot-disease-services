@@ -1,5 +1,7 @@
 package uk.ac.ebi.uniprot.disease.service.tsv;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.ac.ebi.uniprot.disease.utils.Constants;
 
 import java.io.*;
@@ -13,9 +15,11 @@ import java.util.StringTokenizer;
  * @author sahmad
  */
 public class TSVReader implements Closeable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TSVReader.class);
+
     private Scanner tsvReader;
     private String peekRecord;
-    private boolean isHeader = true;
+    private boolean isHeader = true; // flag to skip the first line/header in tsv file
 
 
     public TSVReader(String fileName) throws FileNotFoundException {
@@ -58,6 +62,7 @@ public class TSVReader implements Closeable {
     }
 
     private List<String> getTokens(StringTokenizer tokenizer) {
+
         List<String> tokens = new ArrayList<>();
         while(tokenizer.hasMoreElements()){
             tokens.add(tokenizer.nextElement().toString());

@@ -1,25 +1,34 @@
 package uk.ac.ebi.uniprot.disease.service.tsv;
 
-import uk.ac.ebi.uniprot.disease.model.DisGeNET.GeneDiseaseAssociation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import uk.ac.ebi.uniprot.disease.model.disgenet.GeneDiseaseAssociation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Class responsible for parsing the GDA data
  * @author sahmad
  */
+
 public class GeneDiseaseParser {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GeneDiseaseParser.class);
+
     private TSVReader reader;
     public GeneDiseaseParser(TSVReader reader){
         this.reader = reader;
     }
 
     public List<GeneDiseaseAssociation> parseRecords(){
+        LOGGER.debug("Starting the parsing of data");
         List<GeneDiseaseAssociation> parsedRecords = new ArrayList<>();
         while(this.reader.hasMoreRecord()){
             GeneDiseaseAssociation gdAssociation = parseRecord(this.reader.getRecord());
             parsedRecords.add(gdAssociation);
         }
+
+        LOGGER.debug("Total records parsed {}", parsedRecords.size());
 
         return parsedRecords;
     }
@@ -28,7 +37,7 @@ public class GeneDiseaseParser {
         GeneDiseaseAssociation.GeneDiseaseAssociationBuilder builder = GeneDiseaseAssociation.builder();
         builder.geneId(record.get(0)).geneSymbol(record.get(1)).diseaseId(record.get(2)).diseaseName(record.get(3));
         builder.score(Double.valueOf(record.get(4))).pmidCount(Integer.valueOf(record.get(5)));
-        GeneDiseaseAssociation gdAssociation = builder.snpCount(Integer.valueOf(record.get(6))).source(record.get(7)).build();
-        return gdAssociation;
+        GeneDiseaseAssociation gda = builder.snpCount(Integer.valueOf(record.get(6))).source(record.get(7)).build();
+        return gda;
     }
 }

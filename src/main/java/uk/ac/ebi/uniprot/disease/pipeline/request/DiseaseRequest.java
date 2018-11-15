@@ -1,10 +1,14 @@
 package uk.ac.ebi.uniprot.disease.pipeline.request;
 
 import lombok.*;
-import uk.ac.ebi.uniprot.disease.model.DisGeNET.GeneDiseaseAssociation;
+import uk.ac.ebi.uniprot.disease.model.disgenet.GeneDiseaseAssociation;
 
 import java.util.List;
 
+/**
+ * Request for data collection pipeline from DisGeNET
+ * @author sahmad
+ */
 @Getter
 @Setter
 @EqualsAndHashCode

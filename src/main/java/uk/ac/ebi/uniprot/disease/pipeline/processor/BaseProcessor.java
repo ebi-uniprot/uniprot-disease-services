@@ -13,5 +13,6 @@ public abstract class BaseProcessor {
     }
 
     public abstract void processRequest(DiseaseRequest request) throws IOException;
+    public abstract String getProcessorName();
 
 }
