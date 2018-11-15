@@ -1,7 +1,9 @@
-package uk.ac.ebi.uniprot.disease.pipeline.processor;
+package uk.ac.ebi.uniprot.disease.pipeline.processor.common;
 
 import org.junit.Assert;
 import org.junit.Test;
+import uk.ac.ebi.uniprot.disease.pipeline.processor.common.Cleaner;
+import uk.ac.ebi.uniprot.disease.pipeline.processor.common.DownloadProcessor;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 
 import java.io.File;

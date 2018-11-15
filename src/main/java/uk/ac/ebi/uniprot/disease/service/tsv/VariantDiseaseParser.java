@@ -17,12 +17,14 @@ public class VariantDiseaseParser {
         this.reader = reader;
     }
 
-    public List<VariantDiseaseAssociation> parseRecords(){
+    public List<VariantDiseaseAssociation> parseRecords(int total){
         LOGGER.debug("Starting the parsing of data");
         List<VariantDiseaseAssociation> parsedRecords = new ArrayList<>();
-        while(this.reader.hasMoreRecord()){
+        int count = 0;
+        while(this.reader.hasMoreRecord() && total > count){
             VariantDiseaseAssociation vda = parseRecord(this.reader.getRecord());
             parsedRecords.add(vda);
+            count++;
         }
         LOGGER.debug("Total records parsed {}", parsedRecords.size());
 

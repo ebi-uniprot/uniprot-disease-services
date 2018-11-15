@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.disease.pipeline.processor;
+package uk.ac.ebi.uniprot.disease.pipeline.processor.common;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,7 +34,6 @@ public class CleanerTest {
 
     private void setUpData(DiseaseRequest request) throws IOException {
         DownloadProcessor processor = new DownloadProcessor();
-        long startTime = System.currentTimeMillis();
         processor.processRequest(request);
     }
 }

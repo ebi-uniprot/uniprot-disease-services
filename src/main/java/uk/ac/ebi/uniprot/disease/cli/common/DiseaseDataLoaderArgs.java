@@ -1,15 +1,16 @@
-package uk.ac.ebi.uniprot.disease.cli.gda;
+package uk.ac.ebi.uniprot.disease.cli.common;
 
 import com.beust.jcommander.Parameter;
 import lombok.Getter;
 import lombok.ToString;
 
 /**
+ * Params for VDA and GDA data download, change the url to download
  * @author sahmad
  */
 @Getter
 @ToString
-public class GDADataLoaderArgs {
+public class DiseaseDataLoaderArgs {
     @Parameter(names = {"--url", "-u"}, description = "URL for the DisGeNET gda data")
     private String url = "http://www.disgenet.org/ds/DisGeNET/results/curated_gene_disease_associations.tsv.gz";
 

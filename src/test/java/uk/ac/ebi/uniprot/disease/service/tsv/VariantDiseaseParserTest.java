@@ -32,7 +32,7 @@ public class VariantDiseaseParserTest {
     public void testParseRecords() throws FileNotFoundException {
         TSVReader tsvReader = new TSVReader("src/test/resources/sample_variant_disease_association.tsv");
         VariantDiseaseParser parser = new VariantDiseaseParser(tsvReader);
-        List<VariantDiseaseAssociation> records = parser.parseRecords();
+        List<VariantDiseaseAssociation> records = parser.parseRecords(30);
         Assert.assertTrue("records empty", !records.isEmpty());
         Assert.assertEquals("Records count invalid", 30, records.size());
         records.parallelStream().forEach(VariantDiseaseParserTest::verifyRecord);

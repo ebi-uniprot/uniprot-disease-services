@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.disease.pipeline.processor;
+package uk.ac.ebi.uniprot.disease.pipeline.processor.common;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

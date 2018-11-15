@@ -1,8 +1,9 @@
-package uk.ac.ebi.uniprot.disease.pipeline.processor;
+package uk.ac.ebi.uniprot.disease.pipeline.processor.gda;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.uniprot.disease.model.disgenet.GeneDiseaseAssociation;
+import uk.ac.ebi.uniprot.disease.pipeline.processor.common.BaseProcessor;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 import uk.ac.ebi.uniprot.disease.service.tsv.GeneDiseaseParser;
 import uk.ac.ebi.uniprot.disease.service.tsv.TSVReader;
@@ -11,13 +12,13 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Processor to handle file parsing and creating models
+ * Processor to handle GDA file parsing and creating models
  * @author sahmad
  */
 
-public class FileParser extends BaseProcessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileParser.class);
-    private static final String PROCESSOR_NAME = "FileParser";
+public class GDAFileParser extends BaseProcessor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GDAFileParser.class);
+    private static final String PROCESSOR_NAME = "GDAFileParser";
 
     @Override
     public String getProcessorName(){
@@ -26,7 +27,7 @@ public class FileParser extends BaseProcessor {
 
     @Override
     public void processRequest(DiseaseRequest request)  throws IOException {
-        LOGGER.debug("Going to parse the input file {}", request.getUncompressedFilePath());
+        LOGGER.debug("Going to parse the GDA input file {}", request.getUncompressedFilePath());
         // don't move to the next step until
         TSVReader reader = new TSVReader(request.getUncompressedFilePath());
         GeneDiseaseParser parser = new GeneDiseaseParser(reader);
@@ -35,17 +36,17 @@ public class FileParser extends BaseProcessor {
         do {
             gdas = parser.parseRecords(request.getBatchSize());
             // enrich the request and pass on
-            request.setParsedRecords(gdas);
+            request.setParsedGDARecords(gdas);
             count += gdas.size();
 
-            LOGGER.debug("The file is parsed and request is enriched with parsed records {}", request);
+            LOGGER.debug("The GDA file is parsed and request is enriched with parsed records {}", request);
             if (nextProcessor != null) {
                 LOGGER.debug("Invoking the next processor {}", nextProcessor.getProcessorName());
                 nextProcessor.processRequest(request);
             }
         }while(!gdas.isEmpty());
 
-        LOGGER.debug("Total records parsed and saved {}", count);
+        LOGGER.debug("Total GDA records parsed and saved {}", count);
 
     }
 }

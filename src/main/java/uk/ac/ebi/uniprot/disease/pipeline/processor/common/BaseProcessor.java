@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.disease.pipeline.processor;
+package uk.ac.ebi.uniprot.disease.pipeline.processor.common;
 
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 
