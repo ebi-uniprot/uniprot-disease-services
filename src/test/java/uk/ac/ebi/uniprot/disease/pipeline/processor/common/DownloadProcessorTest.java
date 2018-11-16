@@ -5,6 +5,7 @@ import org.junit.Test;
 import uk.ac.ebi.uniprot.disease.pipeline.processor.common.Cleaner;
 import uk.ac.ebi.uniprot.disease.pipeline.processor.common.DownloadProcessor;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
+import uk.ac.ebi.uniprot.disease.pipeline.request.WorkflowMetrics;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,11 +17,12 @@ public class DownloadProcessorTest {
     @Test
     public void testProcessRequest() throws IOException {
         DownloadProcessor processor = new DownloadProcessor();
+        WorkflowMetrics metrics = new WorkflowMetrics(System.currentTimeMillis());
         DiseaseRequest.DiseaseRequestBuilder builder = DiseaseRequest.builder();
         builder.url(url);
         builder.downloadedFilePath(downloadedFile);
         builder.uncompressedFilePath(unzippedFile);
-        DiseaseRequest request = builder.build();
+        DiseaseRequest request = builder.workflowMetrics(metrics).build();
         long startTime = System.currentTimeMillis();
         processor.processRequest(request);
 

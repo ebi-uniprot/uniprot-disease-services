@@ -3,6 +3,7 @@ package uk.ac.ebi.uniprot.disease.pipeline.processor.common;
 import org.junit.Assert;
 import org.junit.Test;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
+import uk.ac.ebi.uniprot.disease.pipeline.request.WorkflowMetrics;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,11 +15,12 @@ public class CleanerTest {
 
     @Test
     public void testProcessNext() throws IOException {
+        WorkflowMetrics metrics = new WorkflowMetrics(System.currentTimeMillis());
         DiseaseRequest.DiseaseRequestBuilder builder = DiseaseRequest.builder();
         builder.url(url);
         builder.downloadedFilePath(downloadedFile);
         builder.uncompressedFilePath(unzippedFile);
-        DiseaseRequest request = builder.build();
+        DiseaseRequest request = builder.workflowMetrics(metrics).build();
 
         // create data for cleaner
         setUpData(request);

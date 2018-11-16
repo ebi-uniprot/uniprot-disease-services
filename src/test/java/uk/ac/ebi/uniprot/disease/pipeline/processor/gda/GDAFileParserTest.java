@@ -3,6 +3,7 @@ package uk.ac.ebi.uniprot.disease.pipeline.processor.gda;
 import org.junit.Assert;
 import org.junit.Test;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
+import uk.ac.ebi.uniprot.disease.pipeline.request.WorkflowMetrics;
 
 import java.io.IOException;
 
@@ -11,7 +12,8 @@ public class GDAFileParserTest {
 
     @Test
     public void testProcessNext() throws IOException {
-        DiseaseRequest request = DiseaseRequest.builder().uncompressedFilePath(dataFile).batchSize(200).build();
+        WorkflowMetrics metrics = new WorkflowMetrics(System.currentTimeMillis());
+        DiseaseRequest request = DiseaseRequest.builder().uncompressedFilePath(dataFile).batchSize(200).workflowMetrics(metrics).build();
         GDAFileParser fileParser = new GDAFileParser();
         Assert.assertNull("The parsed records not null", request.getParsedGDARecords());
         fileParser.processRequest(request);
