@@ -17,6 +17,7 @@ import java.util.Arrays;
 
 public class VDADataLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(VDADataLoader.class);
+    private static final String DEFAULT_VDA_CONFIG_LOCATION = "vda.properties";
 
     public static void main(String[] args) throws IOException {
         LOGGER.debug("Starting VDA pipeline with the arguments {}", Arrays.toString(args));
@@ -26,6 +27,8 @@ public class VDADataLoader {
         if (options.isHelp()) {
             jCommander.usage();// if help is set, show the usage and then do nothing
         } else {
+            // fill the default params vals for the missing ones
+            MainHelper.fillDefaultParams(options, DEFAULT_VDA_CONFIG_LOCATION);
             beginProcessing(options);// start the actual processing
         }
 

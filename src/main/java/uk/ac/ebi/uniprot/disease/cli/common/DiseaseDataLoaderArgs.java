@@ -2,6 +2,7 @@ package uk.ac.ebi.uniprot.disease.cli.common;
 
 import com.beust.jcommander.Parameter;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -9,10 +10,11 @@ import lombok.ToString;
  * @author sahmad
  */
 @Getter
+@Setter
 @ToString
 public class DiseaseDataLoaderArgs {
     @Parameter(names = {"--url", "-u"}, description = "URL for the DisGeNET gda data")
-    private String url = "http://www.disgenet.org/ds/DisGeNET/results/curated_gene_disease_associations.tsv.gz";
+    private String url;
 
     @Parameter(names = {"--download", "-d"}, arity = 1, description = "Whether to download the data from DisGeNET or use the local one. By default it is set to true")
     private boolean download = true;
@@ -24,10 +26,10 @@ public class DiseaseDataLoaderArgs {
     private boolean store = true;
 
     @Parameter(names = {"--downloadPath", "-dp"}, description = "Absolute path of the file to be downloaded from the DisGeNET")
-    private String downloadedFilePath = "/tmp/gda.tsv.tgz";
+    private String downloadedFilePath;
 
     @Parameter(names = {"--uncompressedPath", "-up"}, description = "Absolute path of the uncompressed file")
-    private String uncompressedFilePath = "/tmp/gda.tsv";
+    private String uncompressedFilePath;
 
     @Parameter(names = {"--batch", "-b"}, description = "The size of the batch to be parsed and updated in DB. Defaults to 200")
     private Integer batchSize = 200;

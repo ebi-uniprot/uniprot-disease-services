@@ -23,6 +23,7 @@ import java.util.Arrays;
 public class GDADataLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GDADataLoader.class);
+    private static final String DEFAULT_GDA_CONFIG_LOCATION = "gda.properties";
 
     public static void main(String[] args) throws IOException {
         LOGGER.debug("Starting GDA pipeline with the arguments {}", Arrays.toString(args));
@@ -34,11 +35,14 @@ public class GDADataLoader {
         if (options.isHelp()) {
             jCommander.usage();// if help is set, show the usage and then do nothing
         } else {
+            MainHelper.fillDefaultParams(options, DEFAULT_GDA_CONFIG_LOCATION);
             beginProcessing(options);// start the actual processing
         }
 
         LOGGER.debug("GDA pipeline completed");
     }
+
+
 
     private static void beginProcessing(DiseaseDataLoaderArgs options) throws IOException {
         LOGGER.debug("The parsed params are {}", options);
