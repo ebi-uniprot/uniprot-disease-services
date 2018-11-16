@@ -26,9 +26,13 @@ public class GDADataLoader {
     private static final String DEFAULT_GDA_CONFIG_LOCATION = "gda.properties";
 
     public static void main(String[] args) throws IOException {
+
+        long startTime = System.currentTimeMillis();
+
         LOGGER.debug("Starting GDA pipeline with the arguments {}", Arrays.toString(args));
 
         DiseaseDataLoaderArgs options = new DiseaseDataLoaderArgs();
+
 
         JCommander jCommander = MainHelper.parseCommandLineArgs(options, args);
 
@@ -36,18 +40,16 @@ public class GDADataLoader {
             jCommander.usage();// if help is set, show the usage and then do nothing
         } else {
             MainHelper.fillDefaultParams(options, DEFAULT_GDA_CONFIG_LOCATION);
-            beginProcessing(options);// start the actual processing
+            beginProcessing(options, startTime);// start the actual processing
         }
 
         LOGGER.debug("GDA pipeline completed");
     }
 
-
-
-    private static void beginProcessing(DiseaseDataLoaderArgs options) throws IOException {
+    private static void beginProcessing(DiseaseDataLoaderArgs options, long startTime) throws IOException {
         LOGGER.debug("The parsed params are {}", options);
         // Create the workflow step1 --> step2 --> step3 --> step4...
-        DiseaseRequest request = MainHelper.getDiseaseRequest(options);
+        DiseaseRequest request = MainHelper.getDiseaseRequest(options, startTime);
         DownloadProcessor downloadProcessor = new DownloadProcessor();
         GDAFileParser fileParser = new GDAFileParser();
         GDADataSaver dataSaver = new GDADataSaver();

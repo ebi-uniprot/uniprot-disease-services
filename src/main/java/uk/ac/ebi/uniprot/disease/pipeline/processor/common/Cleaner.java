@@ -28,11 +28,26 @@ public class Cleaner extends BaseProcessor {
 
         // delete the downloaded and uncompressed files
         File downloadedFile = new File(request.getDownloadedFilePath());
-        Files.deleteIfExists(downloadedFile.toPath());
-        // delete the uncompressed file
         File uncompressedFile = new File(request.getUncompressedFilePath());
-        Files.deleteIfExists(uncompressedFile.toPath());
 
+        updateMetrics(request, downloadedFile, uncompressedFile);
+
+        // delete the files
+        Files.deleteIfExists(downloadedFile.toPath());
+        Files.deleteIfExists(uncompressedFile.toPath());
         LOGGER.debug("Deleted the files");
+
+        long endTime = System.currentTimeMillis();
+        setTotalTime(request, endTime);
+    }
+
+    private void setTotalTime(DiseaseRequest request, long endTime) {
+        long startTime = request.getWorkflowMetrics().getStartTime();
+        request.getWorkflowMetrics().setTotalTimeTaken(endTime - startTime);
+    }
+
+    private void updateMetrics(DiseaseRequest request, File downloadedFile, File uncompressedFile) {
+        request.getWorkflowMetrics().setSizeOfDownloadedFile(downloadedFile.length());
+        request.getWorkflowMetrics().setSizeOfUncompressedFile(uncompressedFile.length());
     }
 }

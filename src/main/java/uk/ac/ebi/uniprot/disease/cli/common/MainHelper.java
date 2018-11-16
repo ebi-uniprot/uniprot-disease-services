@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
+import uk.ac.ebi.uniprot.disease.pipeline.request.WorkflowMetrics;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,13 +28,14 @@ public class MainHelper {
         return jCommander;
     }
 
-    public static DiseaseRequest getDiseaseRequest(DiseaseDataLoaderArgs options) {
+    public static DiseaseRequest getDiseaseRequest(DiseaseDataLoaderArgs options, long startTime) {
         LOGGER.debug("Creating the initial request for the workflow");
+        WorkflowMetrics workflowMetrics = new WorkflowMetrics(startTime);
         DiseaseRequest.DiseaseRequestBuilder builder = DiseaseRequest.builder();
         builder.url(options.getUrl()).download(options.isDownload()).batchSize(options.getBatchSize());
         builder.downloadedFilePath(options.getDownloadedFilePath());
         builder.store(options.isStore()).uncompressedFilePath(options.getUncompressedFilePath());
-        DiseaseRequest request = builder.build();
+        DiseaseRequest request = builder.workflowMetrics(workflowMetrics).build();
         LOGGER.debug("The initial request for the workflow {}", request);
         return request;
     }

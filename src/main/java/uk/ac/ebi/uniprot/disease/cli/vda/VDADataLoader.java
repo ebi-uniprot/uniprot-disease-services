@@ -20,6 +20,7 @@ public class VDADataLoader {
     private static final String DEFAULT_VDA_CONFIG_LOCATION = "vda.properties";
 
     public static void main(String[] args) throws IOException {
+        long startTime = System.currentTimeMillis();
         LOGGER.debug("Starting VDA pipeline with the arguments {}", Arrays.toString(args));
 
         DiseaseDataLoaderArgs options = new DiseaseDataLoaderArgs();
@@ -29,17 +30,17 @@ public class VDADataLoader {
         } else {
             // fill the default params vals for the missing ones
             MainHelper.fillDefaultParams(options, DEFAULT_VDA_CONFIG_LOCATION);
-            beginProcessing(options);// start the actual processing
+            beginProcessing(options, startTime);// start the actual processing
         }
 
-        LOGGER.debug("GDA pipeline completed");
+        LOGGER.debug("VDA pipeline completed");
 
     }
 
-    private static void beginProcessing(DiseaseDataLoaderArgs options) throws IOException {
+    private static void beginProcessing(DiseaseDataLoaderArgs options, long startTime) throws IOException {
         LOGGER.debug("The parsed params are {}", options);
         // Create the workflow step1 --> step2 --> step3 --> step4...
-        DiseaseRequest request = MainHelper.getDiseaseRequest(options);
+        DiseaseRequest request = MainHelper.getDiseaseRequest(options, startTime);
         DownloadProcessor downloadProcessor = new DownloadProcessor();
         VDAFileParser fileParser = new VDAFileParser();
         VDADataSaver dataSaver = new VDADataSaver();

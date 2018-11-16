@@ -3,6 +3,7 @@ package uk.ac.ebi.uniprot.disease.pipeline.processor.vda;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.uniprot.disease.model.disgenet.VariantDiseaseAssociation;
+import uk.ac.ebi.uniprot.disease.pipeline.processor.common.BaseFileParser;
 import uk.ac.ebi.uniprot.disease.pipeline.processor.common.BaseProcessor;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 import uk.ac.ebi.uniprot.disease.service.tsv.TSVReader;
@@ -16,7 +17,7 @@ import java.util.List;
  * @author sahmad
  */
 
-public class VDAFileParser extends BaseProcessor {
+public class VDAFileParser extends BaseFileParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(VDAFileParser.class);
     private static final String PROCESSOR_NAME = "VDAFileParser";
 
@@ -32,12 +33,17 @@ public class VDAFileParser extends BaseProcessor {
         TSVReader reader = new TSVReader(request.getUncompressedFilePath());
         VariantDiseaseParser parser = new VariantDiseaseParser(reader);
         List<VariantDiseaseAssociation> vdas;
-        int count = 0;
+        long count = 0L;
         do {
+            long startTime = System.currentTimeMillis();
             vdas = parser.parseRecords(request.getBatchSize());
             // enrich the request and pass on
             request.setParsedVDARecords(vdas);
             count += vdas.size();
+
+            long endTime = System.currentTimeMillis();
+
+            updateMetrics(request, vdas.size(), startTime, endTime);
 
             LOGGER.debug("The file is parsed and request is enriched with parsed records {}", request);
             if (nextProcessor != null) {

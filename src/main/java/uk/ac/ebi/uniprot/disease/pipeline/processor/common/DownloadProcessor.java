@@ -25,8 +25,15 @@ public class DownloadProcessor extends BaseProcessor {
     public void processRequest(DiseaseRequest request) throws IOException {
 
         LOGGER.debug("Starting to downdload from {}", request.getUrl());
+        long startTime = System.currentTimeMillis();
+
         downloadFile(request.getUrl(), request.getDownloadedFilePath());
+
+        long endTime = System.currentTimeMillis();
+        long downloadTime = endTime - startTime;
+        request.getWorkflowMetrics().setDownloadTime(downloadTime);
         LOGGER.debug("File is downloaded to {}", request.getDownloadedFilePath());
+
 
         // uncompress the downloaded gz file
         uncompressFile(request.getDownloadedFilePath(), request.getUncompressedFilePath());

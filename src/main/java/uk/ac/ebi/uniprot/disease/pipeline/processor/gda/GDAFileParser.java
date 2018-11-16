@@ -3,6 +3,7 @@ package uk.ac.ebi.uniprot.disease.pipeline.processor.gda;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.uniprot.disease.model.disgenet.GeneDiseaseAssociation;
+import uk.ac.ebi.uniprot.disease.pipeline.processor.common.BaseFileParser;
 import uk.ac.ebi.uniprot.disease.pipeline.processor.common.BaseProcessor;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 import uk.ac.ebi.uniprot.disease.service.tsv.GeneDiseaseParser;
@@ -16,7 +17,7 @@ import java.util.List;
  * @author sahmad
  */
 
-public class GDAFileParser extends BaseProcessor {
+public class GDAFileParser extends BaseFileParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(GDAFileParser.class);
     private static final String PROCESSOR_NAME = "GDAFileParser";
 
@@ -32,12 +33,16 @@ public class GDAFileParser extends BaseProcessor {
         TSVReader reader = new TSVReader(request.getUncompressedFilePath());
         GeneDiseaseParser parser = new GeneDiseaseParser(reader);
         List<GeneDiseaseAssociation> gdas;
-        int count = 0;
+        long count = 0L;
         do {
+            long startTime = System.currentTimeMillis();
             gdas = parser.parseRecords(request.getBatchSize());
             // enrich the request and pass on
             request.setParsedGDARecords(gdas);
             count += gdas.size();
+            long endTime = System.currentTimeMillis();
+
+            updateMetrics(request, gdas.size(), startTime, endTime);
 
             LOGGER.debug("The GDA file is parsed and request is enriched with parsed records {}", request);
             if (nextProcessor != null) {
@@ -46,7 +51,10 @@ public class GDAFileParser extends BaseProcessor {
             }
         }while(!gdas.isEmpty());
 
+
         LOGGER.debug("Total GDA records parsed and saved {}", count);
 
     }
+
+
 }
