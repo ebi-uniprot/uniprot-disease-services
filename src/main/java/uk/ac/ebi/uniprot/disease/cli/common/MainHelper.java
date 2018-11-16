@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class MainHelper {
-    private final static Logger LOGGER = LoggerFactory.getLogger(MainHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainHelper.class);
 
     public static JCommander parseCommandLineArgs(Object options, String[] args) {
         JCommander jCommander = JCommander.newBuilder().addObject(options).build();
@@ -67,4 +67,6 @@ public class MainHelper {
 
         return props;
     }
+
+    private MainHelper(){}
 }

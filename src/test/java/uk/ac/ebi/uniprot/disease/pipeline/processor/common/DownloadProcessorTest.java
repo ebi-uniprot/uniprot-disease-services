@@ -28,7 +28,7 @@ public class DownloadProcessorTest {
         File file = new File(downloadedFile);
         Assert.assertTrue("The file is not downloaded", file.exists());
         long fileModifiedTime = file.lastModified();
-        long tenMinutesInMillis = 10*60*1000; // Assumption the file should have downloaded in 10 minutes
+        long tenMinutesInMillis = 10*60*1000L; // Assumption the file should have downloaded in 10 minutes
         Assert.assertTrue("The file timestamp is older than 10 minutes, was the file downloaded?",
                 (fileModifiedTime-startTime) < tenMinutesInMillis);
         // check if the file was uncompressed

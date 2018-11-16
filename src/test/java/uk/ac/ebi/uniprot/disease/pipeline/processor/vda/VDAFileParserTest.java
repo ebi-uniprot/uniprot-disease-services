@@ -2,7 +2,6 @@ package uk.ac.ebi.uniprot.disease.pipeline.processor.vda;
 
 import org.junit.Assert;
 import org.junit.Test;
-import uk.ac.ebi.uniprot.disease.pipeline.processor.gda.GDAFileParser;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 
 import java.io.IOException;
