@@ -1,8 +1,10 @@
 package uk.ac.ebi.uniprot.disease.cli.common;
 
 import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import uk.ac.ebi.uniprot.disease.cli.gda.GDADataLoader;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 
@@ -52,5 +54,13 @@ public class MainHelperTest {
         Assert.assertEquals("url is not equal", "http://www.google.com", options.getUrl());
         Assert.assertTrue("Help is not set", options.isHelp());
         Assert.assertEquals("Batch size is not updated", Integer.valueOf(300), options.getBatchSize());
+    }
+
+    @Test(expected = ParameterException.class)
+    public void testParseCommandLineArgsWithWrongParam() {
+        String[] args = {"--urlrandom", "http://www.google.com", "-h", "true", "-b", "300"};
+        DiseaseDataLoaderArgs options = new DiseaseDataLoaderArgs();
+        JCommander commander = MainHelper.parseCommandLineArgs(options, args);
+        Assert.assertTrue("This should not execute", false);
     }
 }
