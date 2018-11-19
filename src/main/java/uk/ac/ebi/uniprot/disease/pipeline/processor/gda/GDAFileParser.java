@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.uniprot.disease.model.disgenet.GeneDiseaseAssociation;
 import uk.ac.ebi.uniprot.disease.pipeline.processor.common.BaseFileParser;
-import uk.ac.ebi.uniprot.disease.pipeline.processor.common.BaseProcessor;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 import uk.ac.ebi.uniprot.disease.service.tsv.GeneDiseaseParser;
 import uk.ac.ebi.uniprot.disease.service.tsv.TSVReader;

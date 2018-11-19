@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 import uk.ac.ebi.uniprot.disease.pipeline.request.WorkflowMetrics;
 
-import java.io.File;
 import java.io.IOException;
 
 /**

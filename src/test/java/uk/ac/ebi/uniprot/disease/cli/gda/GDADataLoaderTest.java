@@ -2,10 +2,13 @@ package uk.ac.ebi.uniprot.disease.cli.gda;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class GDADataLoaderTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GDADataLoaderTest.class);
 
     @Test
     public void testGDADataLoader(){
@@ -18,7 +21,7 @@ public class GDADataLoaderTest {
             GDADataLoader.main(new String[0]);
         } catch (IOException e) {
             Assert.assertTrue("The GDADataloader call has failed. See the stacktrace below", false);
-            e.printStackTrace();
+            LOGGER.debug("Error while calling the GDADataLoader workflow", e);
         }
     }
 
