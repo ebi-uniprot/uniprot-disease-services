@@ -19,4 +19,15 @@ public class VDADataLoaderTest {
             LOGGER.debug("Error while calling the GDADataLoader workflow", e);
         }
     }
+
+    @Test
+    public void testVDADataLoaderHelp(){
+        String[] args = {"-h", "true"};
+        try {
+            VDADataLoader.main(args);
+        } catch (IOException ie){
+            Assert.assertTrue("The VDADataloader call has failed. See the stacktrace below", false);
+            LOGGER.debug("Error while calling the VDADataLoader help", ie);
+        }
+    }
 }

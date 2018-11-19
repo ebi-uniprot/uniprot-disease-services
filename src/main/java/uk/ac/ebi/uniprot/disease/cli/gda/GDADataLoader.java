@@ -39,7 +39,7 @@ public class GDADataLoader {
         if (options.isHelp()) {
             jCommander.usage();// if help is set, show the usage and then do nothing
         } else {
-            MainHelper.fillDefaultParams(options, DEFAULT_GDA_CONFIG_LOCATION);
+            MainHelper.fillDefaultParams(options, DEFAULT_GDA_CONFIG_LOCATION);// fill the default params
             beginProcessing(options, startTime);// start the actual processing
         }
 

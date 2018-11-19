@@ -34,7 +34,7 @@ public class DiseaseDataLoaderArgs {
     @Parameter(names = {"--batch", "-b"}, description = "The size of the batch to be parsed and updated in DB. Defaults to 200")
     private Integer batchSize = 200;
 
-    @Parameter(names = "--help", arity = 1, help = true, description = "To get all the options and their details")
+    @Parameter(names = {"--help", "-h"}, arity = 1, help = true, description = "To get all the options and their details")
     private boolean help = false;
 }
 

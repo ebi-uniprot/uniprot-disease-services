@@ -20,10 +20,9 @@ public class MainHelper {
         try {
             jCommander.parse(args);
         } catch (ParameterException pe) {
-            LOGGER.error(pe.getMessage());
             LOGGER.debug("Please see the correct usage below.");
             jCommander.usage();
-            System.exit(1); // halt the processing
+            throw pe;
         }
         return jCommander;
     }

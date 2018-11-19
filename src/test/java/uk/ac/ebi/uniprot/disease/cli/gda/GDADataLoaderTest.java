@@ -25,4 +25,15 @@ public class GDADataLoaderTest {
         }
     }
 
+    @Test
+    public void testGDADataLoaderHelp(){
+        String[] args = {"-h", "true"};
+        try {
+            GDADataLoader.main(args);
+        } catch (IOException ie){
+            Assert.assertTrue("The GDADataloader call has failed. See the stacktrace below", false);
+            LOGGER.debug("Error while calling the GDADataLoader help", ie);
+        }
+    }
+
 }

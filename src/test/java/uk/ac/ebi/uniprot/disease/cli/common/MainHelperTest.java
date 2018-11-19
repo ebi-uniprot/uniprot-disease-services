@@ -1,5 +1,6 @@
 package uk.ac.ebi.uniprot.disease.cli.common;
 
+import com.beust.jcommander.JCommander;
 import org.junit.Assert;
 import org.junit.Test;
 import uk.ac.ebi.uniprot.disease.cli.gda.GDADataLoader;
@@ -39,5 +40,17 @@ public class MainHelperTest {
         Assert.assertNotNull("batchsize is null", request.getBatchSize());
         Assert.assertEquals("batchsize is not as expected", 200, request.getBatchSize());
         Assert.assertNotNull("workflow metrics is null", request.getWorkflowMetrics());
+    }
+
+    @Test
+    public void testParseCommandLineArgs(){
+        String[] args = {"--url", "http://www.google.com", "-h", "true", "-b", "300"};
+        DiseaseDataLoaderArgs options = new DiseaseDataLoaderArgs();
+        JCommander commander = MainHelper.parseCommandLineArgs(options, args);
+        Assert.assertNotNull("Unable to parse the args", commander);
+        Assert.assertNotNull("url is null", options.getUrl());
+        Assert.assertEquals("url is not equal", "http://www.google.com", options.getUrl());
+        Assert.assertTrue("Help is not set", options.isHelp());
+        Assert.assertEquals("Batch size is not updated", Integer.valueOf(300), options.getBatchSize());
     }
 }
