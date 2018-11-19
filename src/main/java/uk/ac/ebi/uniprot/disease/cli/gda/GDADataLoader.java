@@ -23,7 +23,7 @@ import java.util.Arrays;
 public class GDADataLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GDADataLoader.class);
-    private static final String DEFAULT_GDA_CONFIG_LOCATION = "gda.properties";
+    public static final String DEFAULT_GDA_CONFIG_LOCATION = "gda.properties";
 
     public static void main(String[] args) throws IOException {
 

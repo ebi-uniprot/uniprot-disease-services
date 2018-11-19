@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 public class VDADataLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(VDADataLoader.class);
-    private static final String DEFAULT_VDA_CONFIG_LOCATION = "vda.properties";
+    public static final String DEFAULT_VDA_CONFIG_LOCATION = "vda.properties";
 
     public static void main(String[] args) throws IOException {
         long startTime = System.currentTimeMillis();

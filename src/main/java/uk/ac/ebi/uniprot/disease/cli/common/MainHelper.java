@@ -59,7 +59,7 @@ public class MainHelper {
 
     }
 
-    public static Properties loadProperties(String file) throws IOException {
+    private static Properties loadProperties(String file) throws IOException {
 
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         Properties props = new Properties();
