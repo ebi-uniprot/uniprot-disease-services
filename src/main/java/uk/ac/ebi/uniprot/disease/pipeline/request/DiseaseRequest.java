@@ -12,7 +12,6 @@ import java.util.List;
  */
 @Getter
 @Setter
-@EqualsAndHashCode
 @ToString
 @Builder
 public class DiseaseRequest {

@@ -11,7 +11,6 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@EqualsAndHashCode
 @ToString
 public class WorkflowMetrics {
     private long startTime;
