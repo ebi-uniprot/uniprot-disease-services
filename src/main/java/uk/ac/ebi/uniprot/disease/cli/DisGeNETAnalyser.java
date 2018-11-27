@@ -11,21 +11,28 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class DisGeNETAnalyser {
-    private static Set<String> sources = new HashSet<>();
     public static void main(String[] args) throws FileNotFoundException {
         Map<String, List<String>> geneUniProtMap = getMapping("src/main/resources/mapa_geneid_4_uniprot_crossref.tsv");
         // find and print the mapping for gene Id to the uniprot if any
-        printGeneIdToUniProtMapping("/Users/sahmad/Downloads/DisGeNET/befree.tsv", geneUniProtMap, "bda.csv");
+       // printGeneIdToUniProtMapping("/Users/sahmad/Downloads/DisGeNET/befree.tsv", geneUniProtMap, "bda.csv");
         //printGeneIdToUniProtMapping("/Users/sahmad/Downloads/DisGeNET/curated_gene_disease_associations.tsv",
           //     geneUniProtMap, "gda.csv");
         //printGeneIdToUniProtMapping("/Users/sahmad/Downloads/DisGeNET/all_gene_disease_associations.tsv",
                 //geneUniProtMap, "all.csv");
 
-        System.out.println(sources);
 
         // get curated/automated uniprotId and disease count map
-        //Map<String, Integer> curatedUPIdCount = getUPIdCountMap("/Users/sahmad/Downloads/DisGeNET/curated_gene_disease_associations.tsv", geneUniProtMap);
-        //Map<String, Integer> autoUPIdCount = getUPIdCountMap("/Users/sahmad/Downloads/DisGeNET/befree.tsv", geneUniProtMap);
+        Map<String, Integer> curatedUPIdCount = getUPIdCountMap("/Users/sahmad/Downloads/DisGeNET/curated_gene_disease_associations.tsv", geneUniProtMap);
+        Map<String, Integer> autoUPIdCount = getUPIdCountMap("/Users/sahmad/Downloads/DisGeNET/befree.tsv", geneUniProtMap);
+        List<Integer> curatedVals = new ArrayList<>(curatedUPIdCount.values());
+        Collections.sort(curatedVals);
+        System.out.println("Curated Max : " + curatedVals.get(curatedVals.size()-1));
+        System.out.println("Curated Median:" + getMedian(curatedVals));
+
+        List<Integer> autoVals = new ArrayList<>(autoUPIdCount.values());
+        Collections.sort(autoVals);
+        System.out.println("Auto Max : " + autoVals.get(autoVals.size()-1));
+        System.out.println("Auto Median:" + getMedian(autoVals));
         //Set<String> onlyCuratedIds = getOnlyCuratedIds(curatedUPIdCount, autoUPIdCount);
         //Set<String> onlyAutoIds = getOnlyCuratedIds(autoUPIdCount, curatedUPIdCount);
         //Set<String> commonUPIds = getCommonUPIds(autoUPIdCount, curatedUPIdCount);
@@ -34,6 +41,15 @@ public class DisGeNETAnalyser {
         //uniqueUPIds.addAll(autoUPIdCount.keySet());
         System.out.println();
 
+    }
+
+    private static Float getMedian(List<Integer> curatedVals) {
+        int size = curatedVals.size();
+        if(size % 2 == 0){
+            return (curatedVals.get(size/2) + curatedVals.get(size/2-1))/2.0F;
+        } else {
+            return Float.valueOf(curatedVals.get(size/2));
+        }
     }
 
     private static Set<String> getCommonUPIds(Map<String, Integer> autoUPIdCount, Map<String, Integer> curatedUPIdCount) {
@@ -123,7 +139,6 @@ public class DisGeNETAnalyser {
             sb.append(',');
             sb.append(convertToString(map.getOrDefault(gda.getGeneId(), Arrays.asList("NA"))));
             sb.append('\n');
-            sources.addAll(Arrays.asList(gda.getSource().split(";")));
         }
         return sb.toString();
     }
