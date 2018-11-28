@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.disease.cli;
+package uk.ac.ebi.uniprot.disease.cli.tools;
 
 import uk.ac.ebi.uniprot.disease.model.disgenet.GeneDiseaseAssociation;
 import uk.ac.ebi.uniprot.disease.service.tsv.GeneDiseaseParser;
@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class DisGeNETAnalyser {
+    /*
     // get unique disease ids from all gda and all gd pmid association file
     // get unique disease ids from all vda and all vd pmid association file
     public static void main(String[] args) throws FileNotFoundException {
@@ -193,5 +194,5 @@ public class DisGeNETAnalyser {
         }
         reader.close();
         return geneUniProtMap;
-    }
+    }*/
 }

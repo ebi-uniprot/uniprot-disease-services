@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.disease;
+package uk.ac.ebi.uniprot.disease.cli.tools;
 
 import uk.ac.ebi.uniprot.disease.service.tsv.TSVReader;
 
@@ -12,7 +12,7 @@ import java.util.*;
 public class DisGeNETVariantsAnalyser {
     private static final Integer BATCH_SIZE = 100;
 
-    public static void main1(String[] args) throws SQLException, FileNotFoundException {
+/*    public static void main1(String[] args) throws SQLException, FileNotFoundException {
 
         String url = "jdbc:postgresql://pgsql-hxvm7-002.ebi.ac.uk:5432/unpvarpro";
         String user = "variant";
@@ -155,5 +155,5 @@ public class DisGeNETVariantsAnalyser {
         }
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
-    }
+    }*/
 }
