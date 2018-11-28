@@ -11,7 +11,31 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class DisGeNETAnalyser {
+    // get unique disease ids from all gda and all gd pmid association file
+    // get unique disease ids from all vda and all vd pmid association file
     public static void main(String[] args) throws FileNotFoundException {
+        Set<String> dIds = new HashSet<>();
+        Set<String> pmidDIds = new HashSet<>();
+        TSVReader r1 = new TSVReader("/Users/sahmad/Downloads/DisGeNET/all_variant_disease_association.tsv");
+        // parse disease association WITHOUT pmid
+        while(r1.hasMoreRecord()){
+            List<String> record = r1.getRecord();
+            dIds.add(record.get(2));
+        }
+        TSVReader r2 = new TSVReader("/Users/sahmad/Downloads/DisGeNET/all_variant_disease_pmid_associations.tsv");
+        //// parse disease association with pmid
+        int count = 0;
+        while(r2.hasMoreRecord()){
+            List<String> record = r2.getRecord();
+            pmidDIds.add(record.get(1));
+            System.out.println("Record id" + count);
+            count++;
+        }
+        System.out.println("Total unique disease ids in disease association file:" + dIds.size());
+        System.out.println("Total unique disease ids in disease association with pmid file:" + pmidDIds.size());
+
+    }
+    public static void main2(String[] args) throws FileNotFoundException {
         Map<String, List<String>> geneUniProtMap = getMapping("src/main/resources/mapa_geneid_4_uniprot_crossref.tsv");
         // find and print the mapping for gene Id to the uniprot if any
        // printGeneIdToUniProtMapping("/Users/sahmad/Downloads/DisGeNET/befree.tsv", geneUniProtMap, "bda.csv");

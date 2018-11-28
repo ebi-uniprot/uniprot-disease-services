@@ -1,10 +1,12 @@
 package uk.ac.ebi.uniprot.disease.service;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.uniprot.disease.utils.Constants;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -37,6 +39,10 @@ public class FileHandler {
                 }
             }
         }
+
+        File file = new File(outputFile);
+        String content = FileUtils.readFileToString(file, StandardCharsets.ISO_8859_1.name());
+        FileUtils.write(file, content, StandardCharsets.UTF_8.name());
 
         LOGGER.debug("Uncompressed {} into {}", inputFile, outputFile);
     }
