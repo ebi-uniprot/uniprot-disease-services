@@ -11,6 +11,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 public class UniProtGeneTest {
+    //TODO enable and write test when the JPA is enabled
+    /*
     private static EntityManager em;
     private int random = (int) (Math.random()*100000);
     private String uniProtId = "P" + random;
@@ -58,5 +60,5 @@ public class UniProtGeneTest {
         em.persist(ug);
         et.commit();
         return ug;
-    }
+    }*/
 }

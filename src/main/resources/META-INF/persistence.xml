@@ -13,7 +13,7 @@
         <property name="eclipselink.logging.parameters" value="true"/>
         <property name="eclipselink.logging.level" value="FINEST"/>
         <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-        <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://pgsql-hxvm7-011.ebi.ac.uk:5432/unpvardev?currentSchema=disgenet" />
+        <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://pgsql-hxvm7-011.ebi.ac.uk:5432/unpvardev?currentSchema=disease" />
         <property name="javax.persistence.jdbc.user" value="variant" />
         <property name="javax.persistence.jdbc.password" value="uniDvar" />
     </properties>
