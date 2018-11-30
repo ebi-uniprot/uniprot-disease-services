@@ -20,6 +20,7 @@ public class TSVReader implements Closeable {
     private Scanner tsvReader;
     private String peekRecord;
     private boolean isHeader = true; // flag to skip the first line/header in tsv file
+    private long recordCount = 0;
 
 
     public TSVReader(String fileName) throws FileNotFoundException {
@@ -48,8 +49,9 @@ public class TSVReader implements Closeable {
 
     public List<String> getRecord(){
         if(hasMoreRecord()){
-            StringTokenizer tokenizer = new StringTokenizer(this.peekRecord, Constants.TAB);
-            List<String> tokens = getTokens(tokenizer);
+            recordCount++;
+            String[] tokensArray = this.peekRecord.split(Constants.TAB);
+            List<String> tokens = getTokens(tokensArray);
             this.peekRecord = null;
             return tokens;
         } else {
@@ -57,15 +59,19 @@ public class TSVReader implements Closeable {
         }
     }
 
+    public long getRecordCount(){
+        return this.recordCount;
+    }
+
     public void close() {
         this.tsvReader.close() ;
     }
 
-    private List<String> getTokens(StringTokenizer tokenizer) {
+    private List<String> getTokens(String[] tokensArray) {
 
         List<String> tokens = new ArrayList<>();
-        while(tokenizer.hasMoreElements()){
-            tokens.add(tokenizer.nextElement().toString());
+        for(String token: tokensArray){
+            tokens.add(token);
         }
 
         return tokens;

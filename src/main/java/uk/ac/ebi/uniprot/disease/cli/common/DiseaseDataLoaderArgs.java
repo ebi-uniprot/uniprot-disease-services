@@ -13,13 +13,13 @@ import lombok.ToString;
 @Setter
 @ToString
 public class DiseaseDataLoaderArgs {
-    @Parameter(names = {"--url", "-u"}, description = "URL for the DisGeNET gda data")
+    @Parameter(names = {"--url", "-u"}, description = "URL for the DisGeNET data")
     private String url;
 
     @Parameter(hidden = true, names = {"--download", "-d"}, arity = 1, description = "Whether to download the data from DisGeNET or use the local one. By default it is set to true")
     private boolean download = true;
 
-    @Parameter(names = {"--path", "-p"}, description = "Path of the existing gda data file if download is set to false")
+    @Parameter(names = {"--path", "-p"}, description = "Path of the existing data file if download is set to false")
     private String path;
 
     @Parameter(hidden = true, names = {"--store", "-s"}, arity = 1, description = "Whether to store the data in the DB or ignore after parsing. By default it is set to true")
@@ -45,5 +45,10 @@ public class DiseaseDataLoaderArgs {
 
     @Parameter(names = {"--dbPassword", "-dpd"}, description = "Password of the db where data will be loaded")
     private String dbPassword;
+
+    @Parameter(names={"--type", "-t"}, description = "type of DisGeNET data to be processed " +
+            "e.g. gda = gene disease association or gdpa = gene disease pmid association and, " +
+            "     vda = variant disease association or vdpa = variant disease pmid association", required = true)
+    private String dataType;
 }
 

@@ -45,6 +45,7 @@ public class WorkflowReporter extends BaseProcessor {
         LOGGER.debug("Size of the uncompressed file: {} KB", wf.getSizeOfUncompressedFile()/1024);
         LOGGER.debug("Time taken to parse the file: {} ms", wf.getTotalParseTime());
         LOGGER.debug("Time taken to store the records: {} ms", wf.getTotalSaveTime());
+        LOGGER.debug("Total number of records in the file : {}", wf.getTotalRecords());
         LOGGER.debug("Total number of records parsed: {}", wf.getRecordsParsed());
         LOGGER.debug("Total number of records stored: {}", wf.getRecordsSaved());
         LOGGER.debug("Total time taken to complete the workflow: {} ms", wf.getTotalTimeTaken());

@@ -26,7 +26,6 @@ public class FileHandler {
      */
     public static void uncompressGZFile(String inputFile, String outputFile) throws IOException {
         LOGGER.debug("Start uncompressing {} into {}", inputFile, outputFile);
-
         File input = new File(inputFile);
         File output = new File(outputFile);
 
@@ -40,9 +39,24 @@ public class FileHandler {
             }
         }
 
-        File file = new File(outputFile);
-        String content = FileUtils.readFileToString(file, StandardCharsets.ISO_8859_1.name());
-        FileUtils.write(file, content, StandardCharsets.UTF_8.name());
+        // convert to utf-8
+        /*try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outputFile), StandardCharsets.UTF_8)) {
+            try(BufferedReader reader = new BufferedReader(new FileReader(tmpFile))){
+                String line = null;
+                while((line = reader.readLine()) != null){
+                    writer.append(line);
+                    writer.append('\n');
+                }
+            }
+
+        }*/
+
+        // another way to convert to utf-8
+        if(!(inputFile.contains("gdpa") || inputFile.contains("vdpa"))) { // do this for small files only
+            File file = new File(outputFile);
+            String content = FileUtils.readFileToString(file, StandardCharsets.ISO_8859_1.name());
+            FileUtils.write(file, content, StandardCharsets.UTF_8.name());
+        }
 
         LOGGER.debug("Uncompressed {} into {}", inputFile, outputFile);
     }

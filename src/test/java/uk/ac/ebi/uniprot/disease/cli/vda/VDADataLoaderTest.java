@@ -14,7 +14,7 @@ public class VDADataLoaderTest {
     @Test
     public void testVDADataLoader() throws SQLException {
         try {
-            String[] args = {"--store", "false"};
+            String[] args = {"--store", "false", "--type", "vda"};
             VDADataLoader.main(args);
         } catch (IOException e) {
             Assert.assertTrue("The VDADataloader call has failed. See the stacktrace below", false);

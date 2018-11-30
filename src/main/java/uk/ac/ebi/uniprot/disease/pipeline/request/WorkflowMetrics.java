@@ -20,6 +20,7 @@ public class WorkflowMetrics {
     private long totalParseTime; // total time take to parse all the records
     private long totalSaveTime; // total time taken to persist the records
     private long recordsParsed;
+    private long totalRecords;
     private long recordsSaved;
     private long totalTimeTaken;
 

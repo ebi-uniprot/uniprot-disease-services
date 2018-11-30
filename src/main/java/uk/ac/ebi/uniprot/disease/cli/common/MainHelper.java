@@ -5,6 +5,8 @@ import com.beust.jcommander.ParameterException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.ac.ebi.uniprot.disease.cli.gda.GDADataLoader;
+import uk.ac.ebi.uniprot.disease.model.disgenet.DataTypes;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 import uk.ac.ebi.uniprot.disease.pipeline.request.WorkflowMetrics;
 
@@ -36,6 +38,7 @@ public class MainHelper {
         builder.downloadedFilePath(options.getDownloadedFilePath());
         builder.store(options.isStore()).uncompressedFilePath(options.getUncompressedFilePath());
         builder.jdbcUrl(options.getJdbcUrl()).dbUserName(options.getDbUser()).dbPassword(options.getDbPassword());
+        builder.dataType(DataTypes.valueOf(options.getDataType()));
         DiseaseRequest request = builder.workflowMetrics(workflowMetrics).build();
         LOGGER.debug("The initial request for the workflow {}", request);
         return request;
@@ -93,4 +96,13 @@ public class MainHelper {
     private MainHelper(){}
 
 
+    public static String getDefaultGDConfig(DiseaseDataLoaderArgs options) {
+        if(options.getDataType().equals(DataTypes.gda.name())){
+            return GDADataLoader.DEFAULT_GDA_CONFIG_LOCATION;
+        } else if(options.getDataType().equals(DataTypes.gdpa.name())){
+            return GDADataLoader.DEFAULT_GDPA_CONFIG_LOCATION;
+        } else {
+            throw new IllegalArgumentException("Incorrect value " + options.getDataType() + " passed for parm --type. See help");
+        }
+    }
 }

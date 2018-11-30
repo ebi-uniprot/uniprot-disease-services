@@ -14,7 +14,7 @@ public class GDADataLoaderTest {
     @Test
     public void testGDADataLoader() throws SQLException {
         try {
-            String[] args = {"--store", "false"};
+            String[] args = {"--store", "false", "-t", "gda"};
             GDADataLoader.main(args);
         } catch (IOException e) {
             Assert.assertTrue("The GDADataloader call has failed. See the stacktrace below", false);

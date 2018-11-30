@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import uk.ac.ebi.uniprot.disease.cli.gda.GDADataLoader;
+import uk.ac.ebi.uniprot.disease.model.disgenet.DataTypes;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class MainHelperTest {
     @Test
     public void testGetDiseaseRequest(){
         DiseaseDataLoaderArgs args = new DiseaseDataLoaderArgs();
+        args.setDataType("vdpa");
         DiseaseRequest request = MainHelper.getDiseaseRequest(args, System.currentTimeMillis());
         Assert.assertNotNull("The request object is null", request);
         Assert.assertNotNull("isDownload is null", request.isDownload());
@@ -45,6 +47,7 @@ public class MainHelperTest {
         Assert.assertNotNull("batchsize is null", request.getBatchSize());
         Assert.assertEquals("batchsize is not as expected", 200, request.getBatchSize());
         Assert.assertNotNull("workflow metrics is null", request.getWorkflowMetrics());
+        Assert.assertEquals("Data type is not set correctly", DataTypes.vdpa, request.getDataType());
     }
 
     @Test
@@ -72,7 +75,7 @@ public class MainHelperTest {
         String jdbcUrl = "http://www.google.com";
         String user = "university";
         String pass = "password";
-        String[] args = {"--jdbcUrl", jdbcUrl, "-du", user, "--dbPassword", pass};
+        String[] args = {"--type", "gdpa","--jdbcUrl", jdbcUrl, "-du", user, "--dbPassword", pass};
         DiseaseDataLoaderArgs options = new DiseaseDataLoaderArgs();
         JCommander commander = MainHelper.parseCommandLineArgs(options, args);
         Assert.assertNotNull("Unable to parse the args", commander);

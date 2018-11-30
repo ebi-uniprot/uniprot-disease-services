@@ -18,7 +18,7 @@ public class GeneDiseaseParserTest {
         // create a row to be parsed
         List<String> record = Arrays.asList("10", "NAT2", "C0005695", "Bladder Neoplasm", "0.245871429880008", "5", "0", "CTD_human");
         GeneDiseaseParser parser = new GeneDiseaseParser(null);
-        GeneDiseaseAssociation gdAssociation = parser.parseRecord(record);
+        GeneDiseaseAssociation gdAssociation = parser.parseGDARecord(record);
         Assert.assertNotNull("Unable to parse the string array", gdAssociation);
         // verify the other fields
         Assert.assertEquals("GeneId is not parsed correctly", record.get(0), String.valueOf(gdAssociation.getGeneId()));
@@ -35,7 +35,7 @@ public class GeneDiseaseParserTest {
     public void testParseRecords() throws FileNotFoundException {
         TSVReader tsvReader = new TSVReader("src/test/resources/sample_gene_disease_association.tsv");
         GeneDiseaseParser parser = new GeneDiseaseParser(tsvReader);
-        List<GeneDiseaseAssociation> records = parser.parseRecords(20);
+        List<GeneDiseaseAssociation> records = parser.parseGDARecords(20);
         Assert.assertTrue("records empty", !records.isEmpty());
         Assert.assertEquals("Records count invalid", 20, records.size());
         records.parallelStream().forEach(GeneDiseaseParserTest::verifyRecord);

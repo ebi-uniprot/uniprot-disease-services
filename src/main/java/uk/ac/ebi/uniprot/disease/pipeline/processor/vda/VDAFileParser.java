@@ -43,7 +43,7 @@ public class VDAFileParser extends BaseFileParser {
 
             long endTime = System.currentTimeMillis();
 
-            updateMetrics(request, vdas.size(), startTime, endTime);
+            updateMetrics(request, vdas.size(), startTime, endTime, reader.getRecordCount());
 
             LOGGER.debug("The file is parsed and request is enriched with parsed records {}", request);
             if (nextProcessor != null) {

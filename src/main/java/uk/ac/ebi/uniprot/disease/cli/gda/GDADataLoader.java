@@ -25,26 +25,28 @@ public class GDADataLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GDADataLoader.class);
     public static final String DEFAULT_GDA_CONFIG_LOCATION = "gda.properties";
+    public static final String DEFAULT_GDPA_CONFIG_LOCATION = "gdpa.properties";
 
     public static void main(String[] args) throws IOException, SQLException {
 
         long startTime = System.currentTimeMillis();
 
-        LOGGER.debug("Starting GDA pipeline with the arguments {}", Arrays.toString(args));
+        LOGGER.debug("Starting Gene Disease pipeline with the arguments {}", Arrays.toString(args));
 
         DiseaseDataLoaderArgs options = new DiseaseDataLoaderArgs();
 
-
         JCommander jCommander = MainHelper.parseCommandLineArgs(options, args);
+
+        LOGGER.debug("The type of data file is ", options.getDataType());
 
         if (options.isHelp()) {
             jCommander.usage();// if help is set, show the usage and then do nothing
         } else {
-            MainHelper.fillDefaultParams(options, DEFAULT_GDA_CONFIG_LOCATION, MainHelper.DEFAULT_DB_CONNECTION_PROP);// fill the default params
+            MainHelper.fillDefaultParams(options, MainHelper.getDefaultGDConfig(options), MainHelper.DEFAULT_DB_CONNECTION_PROP);// fill the default params
             beginProcessing(options, startTime);// start the actual processing
         }
 
-        LOGGER.debug("GDA pipeline completed");
+        LOGGER.debug("{} pipeline completed", options.getDataType());
     }
 
     private static void beginProcessing(DiseaseDataLoaderArgs options, long startTime) throws IOException, SQLException {
