@@ -21,14 +21,14 @@ public class GeneDiseaseParserTest {
         GeneDiseaseAssociation gdAssociation = parser.parseRecord(record);
         Assert.assertNotNull("Unable to parse the string array", gdAssociation);
         // verify the other fields
-        Assert.assertEquals("GeneId is not parsed corrected", record.get(0), gdAssociation.getGeneId());
-        Assert.assertEquals("Gene Symbol is not parsed corrected", record.get(1), gdAssociation.getGeneSymbol());
-        Assert.assertEquals("Disease Id is not parsed corrected", record.get(2), gdAssociation.getDiseaseId());
-        Assert.assertEquals("Disease Name is not parsed corrected", record.get(3), gdAssociation.getDiseaseName());
-        Assert.assertEquals("Score is not parsed corrected", Double.valueOf(record.get(4)), gdAssociation.getScore());
-        Assert.assertEquals("PMIDs count is not parsed corrected", Integer.valueOf(record.get(5)), gdAssociation.getPmidCount());
-        Assert.assertEquals("SNPs count is not parsed corrected", Integer.valueOf(record.get(6)), gdAssociation.getSnpCount());
-        Assert.assertEquals("Source is not parsed corrected", record.get(7), gdAssociation.getSource());
+        Assert.assertEquals("GeneId is not parsed correctly", record.get(0), String.valueOf(gdAssociation.getGeneId()));
+        Assert.assertEquals("Gene Symbol is not parsed correctly", record.get(1), gdAssociation.getGeneSymbol());
+        Assert.assertEquals("Disease Id is not parsed correctly", record.get(2), gdAssociation.getDiseaseId());
+        Assert.assertEquals("Disease Name is not parsed correctly", record.get(3), gdAssociation.getDiseaseName());
+        Assert.assertEquals("Score is not parsed correctly", Double.valueOf(record.get(4)), gdAssociation.getScore());
+        Assert.assertEquals("PMIDs count is not parsed correctly", Integer.valueOf(record.get(5)), gdAssociation.getPmidCount());
+        Assert.assertEquals("SNPs count is not parsed correctly", Integer.valueOf(record.get(6)), gdAssociation.getSnpCount());
+        Assert.assertEquals("Source is not parsed correctly", record.get(7), gdAssociation.getSource());
     }
 
     @Test

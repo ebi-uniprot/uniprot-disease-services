@@ -13,6 +13,7 @@ import uk.ac.ebi.uniprot.disease.pipeline.processor.gda.GDAFileParser;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 /**
@@ -25,7 +26,7 @@ public class GDADataLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(GDADataLoader.class);
     public static final String DEFAULT_GDA_CONFIG_LOCATION = "gda.properties";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
 
         long startTime = System.currentTimeMillis();
 
@@ -39,14 +40,14 @@ public class GDADataLoader {
         if (options.isHelp()) {
             jCommander.usage();// if help is set, show the usage and then do nothing
         } else {
-            MainHelper.fillDefaultParams(options, DEFAULT_GDA_CONFIG_LOCATION);// fill the default params
+            MainHelper.fillDefaultParams(options, DEFAULT_GDA_CONFIG_LOCATION, MainHelper.DEFAULT_DB_CONNECTION_PROP);// fill the default params
             beginProcessing(options, startTime);// start the actual processing
         }
 
         LOGGER.debug("GDA pipeline completed");
     }
 
-    private static void beginProcessing(DiseaseDataLoaderArgs options, long startTime) throws IOException {
+    private static void beginProcessing(DiseaseDataLoaderArgs options, long startTime) throws IOException, SQLException {
         LOGGER.debug("The parsed params are {}", options);
         // Create the workflow step1 --> step2 --> step3 --> step4...
         DiseaseRequest request = MainHelper.getDiseaseRequest(options, startTime);

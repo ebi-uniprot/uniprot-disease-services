@@ -6,12 +6,13 @@ import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 import uk.ac.ebi.uniprot.disease.pipeline.request.WorkflowMetrics;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class GDAFileParserTest {
     private String dataFile = "src/test/resources/sample_gene_disease_association.tsv";
 
     @Test
-    public void testProcessNext() throws IOException {
+    public void testProcessNext() throws IOException, SQLException {
         WorkflowMetrics metrics = new WorkflowMetrics(System.currentTimeMillis());
         DiseaseRequest request = DiseaseRequest.builder().uncompressedFilePath(dataFile).batchSize(200).workflowMetrics(metrics).build();
         GDAFileParser fileParser = new GDAFileParser();

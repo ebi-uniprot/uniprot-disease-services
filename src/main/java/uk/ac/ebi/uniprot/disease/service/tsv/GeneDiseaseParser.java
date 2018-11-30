@@ -42,7 +42,7 @@ public class GeneDiseaseParser {
 
     public GeneDiseaseAssociation parseRecord(List<String> record){
         GeneDiseaseAssociation.GeneDiseaseAssociationBuilder builder = GeneDiseaseAssociation.builder();
-        builder.geneId(record.get(0)).geneSymbol(record.get(1)).diseaseId(record.get(2)).diseaseName(record.get(3));
+        builder.geneId(Integer.parseInt(record.get(0))).geneSymbol(record.get(1)).diseaseId(record.get(2)).diseaseName(record.get(3));
         builder.score(Double.valueOf(record.get(4))).pmidCount(Integer.valueOf(record.get(5)));
         GeneDiseaseAssociation gda = builder.snpCount(Integer.valueOf(record.get(6))).source(record.get(7)).build();
         return gda;

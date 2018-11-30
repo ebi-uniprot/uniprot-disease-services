@@ -13,13 +13,14 @@ import uk.ac.ebi.uniprot.disease.pipeline.processor.vda.VDAFileParser;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 public class VDADataLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(VDADataLoader.class);
     public static final String DEFAULT_VDA_CONFIG_LOCATION = "vda.properties";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         long startTime = System.currentTimeMillis();
         LOGGER.debug("Starting VDA pipeline with the arguments {}", Arrays.toString(args));
 
@@ -29,7 +30,7 @@ public class VDADataLoader {
             jCommander.usage();// if help is set, show the usage and then do nothing
         } else {
             // fill the default params vals for the missing ones
-            MainHelper.fillDefaultParams(options, DEFAULT_VDA_CONFIG_LOCATION);
+            MainHelper.fillDefaultParams(options, DEFAULT_VDA_CONFIG_LOCATION, MainHelper.DEFAULT_DB_CONNECTION_PROP);
             beginProcessing(options, startTime);// start the actual processing
         }
 
@@ -37,7 +38,7 @@ public class VDADataLoader {
 
     }
 
-    private static void beginProcessing(DiseaseDataLoaderArgs options, long startTime) throws IOException {
+    private static void beginProcessing(DiseaseDataLoaderArgs options, long startTime) throws IOException, SQLException {
         LOGGER.debug("The parsed params are {}", options);
         // Create the workflow step1 --> step2 --> step3 --> step4...
         DiseaseRequest request = MainHelper.getDiseaseRequest(options, startTime);

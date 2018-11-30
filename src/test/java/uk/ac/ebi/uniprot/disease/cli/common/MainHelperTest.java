@@ -20,12 +20,15 @@ public class MainHelperTest {
             Assert.assertNull("The downloaded file path is not null", args.getDownloadedFilePath());
             Assert.assertNull("The uncompressed file path is not null", args.getUncompressedFilePath());
 
-            MainHelper.fillDefaultParams(args, GDADataLoader.DEFAULT_GDA_CONFIG_LOCATION);
+            MainHelper.fillDefaultParams(args, GDADataLoader.DEFAULT_GDA_CONFIG_LOCATION, MainHelper.DEFAULT_DB_CONNECTION_PROP);
 
             // the value of params after calling fillDefaultParams
             Assert.assertNotNull("The url is null", args.getUrl());
             Assert.assertNotNull("The downloaded file path is null", args.getDownloadedFilePath());
             Assert.assertNotNull("The uncompressed file path is null", args.getUncompressedFilePath());
+            Assert.assertNotNull("jdbc url is null", args.getJdbcUrl());
+            Assert.assertNotNull("db user is null", args.getDbUser());
+            Assert.assertNotNull("db password is null", args.getDbPassword());
 
         } catch (IOException e) {
             Assert.assertTrue("Unable to fill the default params from properties file", false);
@@ -62,5 +65,19 @@ public class MainHelperTest {
         DiseaseDataLoaderArgs options = new DiseaseDataLoaderArgs();
         JCommander commander = MainHelper.parseCommandLineArgs(options, args);
         Assert.assertTrue("This should not execute", false);
+    }
+
+    @Test
+    public void testDBParamsOverride() {
+        String jdbcUrl = "http://www.google.com";
+        String user = "university";
+        String pass = "password";
+        String[] args = {"--jdbcUrl", jdbcUrl, "-du", user, "--dbPassword", pass};
+        DiseaseDataLoaderArgs options = new DiseaseDataLoaderArgs();
+        JCommander commander = MainHelper.parseCommandLineArgs(options, args);
+        Assert.assertNotNull("Unable to parse the args", commander);
+        Assert.assertEquals("jdbcurl could not be overridden", jdbcUrl, options.getJdbcUrl());
+        Assert.assertEquals("db user could not be overridden", user, options.getDbUser());
+        Assert.assertEquals("db user password could not be overridden", pass, options.getDbPassword());
     }
 }

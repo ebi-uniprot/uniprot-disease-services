@@ -6,6 +6,7 @@ import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 import uk.ac.ebi.uniprot.disease.pipeline.request.WorkflowMetrics;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Class responsible for reporting the metrics related to the workflow
@@ -23,7 +24,7 @@ public class WorkflowReporter extends BaseProcessor {
 
 
     @Override
-    public void processRequest(DiseaseRequest request) throws IOException {
+    public void processRequest(DiseaseRequest request) throws IOException, SQLException {
         LOGGER.debug("Starting the reporting processor");
 
         if(nextProcessor != null){

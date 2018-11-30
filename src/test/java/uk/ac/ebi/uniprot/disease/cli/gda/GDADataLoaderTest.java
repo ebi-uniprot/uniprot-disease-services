@@ -6,19 +6,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class GDADataLoaderTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(GDADataLoaderTest.class);
 
     @Test
-    public void testGDADataLoader(){
-        // TODO we can improve this test once we have added the DB
-        // the test should behave like this -->
-        // download a sample file and insert into db, fetch data and verify if the workflow has inserted the data or not
-        // then delete the test data from db
-        // Do the same for VDADataLoaderTest
+    public void testGDADataLoader() throws SQLException {
         try {
-            GDADataLoader.main(new String[0]);
+            String[] args = {"--store", "false"};
+            GDADataLoader.main(args);
         } catch (IOException e) {
             Assert.assertTrue("The GDADataloader call has failed. See the stacktrace below", false);
             LOGGER.debug("Error while calling the GDADataLoader workflow", e);
@@ -26,7 +23,7 @@ public class GDADataLoaderTest {
     }
 
     @Test
-    public void testGDADataLoaderHelp(){
+    public void testGDADataLoaderHelp() throws SQLException {
         String[] args = {"-h", "true"};
         try {
             GDADataLoader.main(args);

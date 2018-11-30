@@ -9,6 +9,7 @@ import uk.ac.ebi.uniprot.disease.service.tsv.TSVReader;
 import uk.ac.ebi.uniprot.disease.service.tsv.VariantDiseaseParser;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public class VDAFileParser extends BaseFileParser {
     }
 
     @Override
-    public void processRequest(DiseaseRequest request)  throws IOException {
+    public void processRequest(DiseaseRequest request) throws IOException, SQLException {
         LOGGER.debug("Going to parse the VDA input file {}", request.getUncompressedFilePath());
         // don't move to the next step until
         TSVReader reader = new TSVReader(request.getUncompressedFilePath());

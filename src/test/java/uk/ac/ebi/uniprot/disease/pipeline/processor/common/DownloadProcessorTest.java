@@ -9,13 +9,14 @@ import uk.ac.ebi.uniprot.disease.pipeline.request.WorkflowMetrics;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class DownloadProcessorTest {
     private String url = "http://www.disgenet.org/ds/DisGeNET/results/curated_gene_disease_associations.tsv.gz";
     private String downloadedFile = "/tmp/cgda.tsv.gz";
     private String unzippedFile = "/tmp/cgda.tsv";
     @Test
-    public void testProcessRequest() throws IOException {
+    public void testProcessRequest() throws IOException, SQLException {
         DownloadProcessor processor = new DownloadProcessor();
         WorkflowMetrics metrics = new WorkflowMetrics(System.currentTimeMillis());
         DiseaseRequest.DiseaseRequestBuilder builder = DiseaseRequest.builder();

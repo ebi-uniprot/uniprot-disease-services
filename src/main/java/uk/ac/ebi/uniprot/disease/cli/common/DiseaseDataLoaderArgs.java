@@ -36,5 +36,14 @@ public class DiseaseDataLoaderArgs {
 
     @Parameter(names = {"--help", "-h"}, arity = 1, help = true, description = "To get all the options and their details")
     private boolean help = false;
+
+    @Parameter(names = {"--jdbcUrl", "-ju"}, description = "JDBC Url of the db where data will be loaded")
+    private String jdbcUrl;
+
+    @Parameter(names = {"--dbUser", "-du"}, description = "User of the db where data will be loaded")
+    private String dbUser;
+
+    @Parameter(names = {"--dbPassword", "-dpd"}, description = "Password of the db where data will be loaded")
+    private String dbPassword;
 }
 

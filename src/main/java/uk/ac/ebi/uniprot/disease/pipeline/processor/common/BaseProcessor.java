@@ -3,6 +3,7 @@ package uk.ac.ebi.uniprot.disease.pipeline.processor.common;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * The workflow for GDA is like
@@ -18,7 +19,7 @@ public abstract class BaseProcessor {
         this.nextProcessor = nextProcessor;
     }
 
-    public abstract void processRequest(DiseaseRequest request) throws IOException;
+    public abstract void processRequest(DiseaseRequest request) throws IOException, SQLException;
     public abstract String getProcessorName();
 
 }

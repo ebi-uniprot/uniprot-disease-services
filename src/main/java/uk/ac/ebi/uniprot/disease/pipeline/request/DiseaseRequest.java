@@ -4,6 +4,7 @@ import lombok.*;
 import uk.ac.ebi.uniprot.disease.model.disgenet.GeneDiseaseAssociation;
 import uk.ac.ebi.uniprot.disease.model.disgenet.VariantDiseaseAssociation;
 
+import java.sql.Connection;
 import java.util.List;
 
 /**
@@ -24,4 +25,9 @@ public class DiseaseRequest {
     private List<VariantDiseaseAssociation> parsedVDARecords;
     private int batchSize;
     private WorkflowMetrics workflowMetrics;
+    // db related attribs
+    private String jdbcUrl;
+    private String dbUserName;
+    private String dbPassword;
+    private Connection connxn;
 }

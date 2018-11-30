@@ -7,6 +7,7 @@ import uk.ac.ebi.uniprot.disease.pipeline.request.WorkflowMetrics;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class CleanerTest {
     private String url = "http://www.disgenet.org/ds/DisGeNET/results/curated_gene_disease_associations.tsv.gz";
@@ -14,7 +15,7 @@ public class CleanerTest {
     private String unzippedFile = "/tmp/cgda.tsv";
 
     @Test
-    public void testProcessNext() throws IOException {
+    public void testProcessNext() throws IOException, SQLException {
         WorkflowMetrics metrics = new WorkflowMetrics(System.currentTimeMillis());
         DiseaseRequest.DiseaseRequestBuilder builder = DiseaseRequest.builder();
         builder.url(url);
@@ -34,7 +35,7 @@ public class CleanerTest {
         Assert.assertFalse("The unzipped file is not deleted", file1.exists());
     }
 
-    private void setUpData(DiseaseRequest request) throws IOException {
+    private void setUpData(DiseaseRequest request) throws IOException, SQLException {
         DownloadProcessor processor = new DownloadProcessor();
         processor.processRequest(request);
     }

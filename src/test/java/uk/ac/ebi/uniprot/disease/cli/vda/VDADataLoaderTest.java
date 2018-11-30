@@ -6,14 +6,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class VDADataLoaderTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(VDADataLoaderTest.class);
 
     @Test
-    public void testVDADataLoader(){
+    public void testVDADataLoader() throws SQLException {
         try {
-            VDADataLoader.main(new String[0]);
+            String[] args = {"--store", "false"};
+            VDADataLoader.main(args);
         } catch (IOException e) {
             Assert.assertTrue("The VDADataloader call has failed. See the stacktrace below", false);
             LOGGER.debug("Error while calling the GDADataLoader workflow", e);
@@ -21,7 +23,7 @@ public class VDADataLoaderTest {
     }
 
     @Test
-    public void testVDADataLoaderHelp(){
+    public void testVDADataLoaderHelp() throws SQLException {
         String[] args = {"-h", "true"};
         try {
             VDADataLoader.main(args);

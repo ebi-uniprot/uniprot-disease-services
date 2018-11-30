@@ -7,6 +7,7 @@ import uk.ac.ebi.uniprot.disease.service.FileDownloader;
 import uk.ac.ebi.uniprot.disease.service.FileHandler;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Handler to download data from DisGeNET website
@@ -22,7 +23,7 @@ public class DownloadProcessor extends BaseProcessor {
     }
 
     @Override
-    public void processRequest(DiseaseRequest request) throws IOException {
+    public void processRequest(DiseaseRequest request) throws IOException, SQLException {
 
         LOGGER.debug("Starting to downdload from {}", request.getUrl());
         long startTime = System.currentTimeMillis();

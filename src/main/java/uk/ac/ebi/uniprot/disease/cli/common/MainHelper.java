@@ -14,6 +14,7 @@ import java.util.Properties;
 
 public class MainHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(MainHelper.class);
+    public static final String DEFAULT_DB_CONNECTION_PROP = "dbconnection.properties";
 
     public static JCommander parseCommandLineArgs(Object options, String[] args) {
         JCommander jCommander = JCommander.newBuilder().addObject(options).build();
@@ -34,14 +35,19 @@ public class MainHelper {
         builder.url(options.getUrl()).download(options.isDownload()).batchSize(options.getBatchSize());
         builder.downloadedFilePath(options.getDownloadedFilePath());
         builder.store(options.isStore()).uncompressedFilePath(options.getUncompressedFilePath());
+        builder.jdbcUrl(options.getJdbcUrl()).dbUserName(options.getDbUser()).dbPassword(options.getDbPassword());
         DiseaseRequest request = builder.workflowMetrics(workflowMetrics).build();
         LOGGER.debug("The initial request for the workflow {}", request);
         return request;
     }
 
     // fill the default values from propeties file if missing
-    public static void fillDefaultParams(DiseaseDataLoaderArgs options, String propFile) throws IOException {
+    public static void fillDefaultParams(DiseaseDataLoaderArgs options, String propFile, String dbConnxProp) throws IOException {
+        fillCoreParams(options, propFile);
+        fillDBParams(options, dbConnxProp);
+    }
 
+    private static void fillCoreParams(DiseaseDataLoaderArgs options, String propFile) throws IOException {
         Properties props = loadProperties(propFile);
 
         if(StringUtils.isEmpty(options.getUrl())){
@@ -54,6 +60,21 @@ public class MainHelper {
 
         if(StringUtils.isEmpty(options.getUncompressedFilePath())){
             options.setUncompressedFilePath(props.getProperty("uncompressedFilePath"));
+        }
+    }
+
+    public static void fillDBParams(DiseaseDataLoaderArgs options, String dbConnectionProp) throws IOException {
+        Properties props = loadProperties(dbConnectionProp);
+        if(StringUtils.isEmpty(options.getJdbcUrl())){
+            options.setJdbcUrl(props.getProperty("jdbcUrl"));
+        }
+
+        if(StringUtils.isEmpty(options.getDbUser())){
+            options.setDbUser(props.getProperty("user"));
+        }
+
+        if(StringUtils.isEmpty(options.getDbPassword())){
+            options.setDbPassword(props.getProperty("password"));
         }
 
     }
@@ -70,4 +91,6 @@ public class MainHelper {
     }
 
     private MainHelper(){}
+
+
 }

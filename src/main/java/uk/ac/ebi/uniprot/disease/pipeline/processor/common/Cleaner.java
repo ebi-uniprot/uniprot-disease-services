@@ -3,6 +3,7 @@ package uk.ac.ebi.uniprot.disease.pipeline.processor.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
+import uk.ac.ebi.uniprot.disease.utils.JDBCConnectionUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +27,8 @@ public class Cleaner extends BaseProcessor {
     public void processRequest(DiseaseRequest request) throws IOException {
         LOGGER.debug("Deleting the files {}, {}", request.getDownloadedFilePath(), request.getUncompressedFilePath());
 
+        // close the db connection
+        JDBCConnectionUtils.closeConnection(request.getConnxn());
         // delete the downloaded and uncompressed files
         File downloadedFile = new File(request.getDownloadedFilePath());
         File uncompressedFile = new File(request.getUncompressedFilePath());
