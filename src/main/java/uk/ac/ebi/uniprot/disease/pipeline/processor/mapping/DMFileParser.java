@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.uniprot.disease.model.disgenet.DataTypes;
 import uk.ac.ebi.uniprot.disease.model.disgenet.DiseaseMapping;
+import uk.ac.ebi.uniprot.disease.model.disgenet.UniProtGene;
 import uk.ac.ebi.uniprot.disease.pipeline.processor.common.BaseFileParser;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 import uk.ac.ebi.uniprot.disease.service.tsv.TSVReader;
@@ -25,8 +26,8 @@ public class DMFileParser extends BaseFileParser {
     public void processRequest(DiseaseRequest request) throws IOException, SQLException {
         long count = 0L;
         TSVReader reader = new TSVReader(request.getUncompressedFilePath());
-        List<DiseaseMapping> dms;
         if(request.getDataType() == DataTypes.dm){
+            List<DiseaseMapping> dms;
             do {
                 long startTime = System.currentTimeMillis();
                 dms = getDiseaseMappings(request, reader);
@@ -46,10 +47,55 @@ public class DMFileParser extends BaseFileParser {
             } while(!dms.isEmpty());
 
 
+        } else if(request.getDataType() == DataTypes.ug){
+            List<UniProtGene> upgs;
+            do {
+                long startTime = System.currentTimeMillis();
+                upgs = getUniProtGeneMappings(request, reader);
+                // enrich the request and pass on
+                request.setParsedUniProtGeneMappings(upgs);
+                count += upgs.size();
+                long endTime = System.currentTimeMillis();
+
+                updateMetrics(request, upgs.size(), startTime, endTime, reader.getRecordCount());
+
+                //LOGGER.debug("The disease mapping file is parsed and request is enriched with parsed records");
+                if (nextProcessor != null) {
+                  //  LOGGER.debug("Invoking the next processor {}", nextProcessor.getProcessorName());
+                    nextProcessor.processRequest(request);
+                }
+
+            } while(!upgs.isEmpty());
+
         } else {
             throw new IllegalArgumentException("The data file of type " + request.getDataType() + " not supported");
         }
 
+    }
+
+    private List<UniProtGene> getUniProtGeneMappings(DiseaseRequest request, TSVReader reader) {
+        int batchSize = request.getBatchSize();
+        int count = 0;
+        List<UniProtGene> upgs = new ArrayList<>();
+
+        while(reader.hasMoreRecord() && batchSize > count){
+            List<String> record = reader.getRecord();
+            try {
+                UniProtGene upg = convertToUniProtGene(record);
+                upgs.add(upg);
+                count++;
+            } catch (Exception ex){
+                LOGGER.error("Error is {}", ex.getLocalizedMessage());
+                LOGGER.error("Failed record {}", record);
+            }
+        }
+
+        return upgs;
+    }
+
+    private UniProtGene convertToUniProtGene(List<String> record) {
+        UniProtGene.UniProtGeneBuilder builder = UniProtGene.builder();
+        return builder.uniProtId(record.get(0)).geneId(Long.parseLong(record.get(1))).build();
     }
 
     private List<DiseaseMapping> getDiseaseMappings(DiseaseRequest request, TSVReader reader) {

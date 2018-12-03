@@ -21,16 +21,19 @@ import java.util.Arrays;
  * @author sahmad
  * Class responsible for downloading, parsing and storing disease mapping
  * http://www.disgenet.org/ds/DisGeNET/results/disease_mappings.tsv.gz
+ * or (uni prot to gene mapping)
+ * http://www.disgenet.org/ds/DisGeNET/results/mapa_geneid_4_uniprot_crossref.tsv.gz
  */
 public class DiseaseMappingsLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DiseaseMappingsLoader.class);
     public static final String DEFAULT_DM_CONFIG_LOCATION = "dm.properties";
+    public static final String DEFAULT_UG_CONFIG_LOCATION = "ug.properties";
 
     public static void main(String[] args) throws IOException, SQLException {
         long startTime = System.currentTimeMillis();
 
-        LOGGER.debug("Starting Disease mapping pipeline with the arguments {}", Arrays.toString(args));
+        LOGGER.debug("Starting Disease mapping/uniprot gene mapping  pipeline with the arguments {}", Arrays.toString(args));
 
         DiseaseDataLoaderArgs options = new DiseaseDataLoaderArgs();
 
@@ -41,11 +44,11 @@ public class DiseaseMappingsLoader {
         if (options.isHelp()) {
             jCommander.usage();// if help is set, show the usage and then do nothing
         } else {
-            MainHelper.fillDefaultParams(options, DEFAULT_DM_CONFIG_LOCATION, MainHelper.DEFAULT_DB_CONNECTION_PROP);// fill the default params
+            MainHelper.fillDefaultParams(options, MainHelper.getDefaultMappingConfig(options), MainHelper.DEFAULT_DB_CONNECTION_PROP);// fill the default params
             beginProcessing(options, startTime);// start the actual processing
         }
 
-        LOGGER.debug("Disease Mapping pipeline completed", options.getDataType());
+        LOGGER.debug("Disease Mapping/ Uniprot gene mapping pipeline completed", options.getDataType());
 
     }
 

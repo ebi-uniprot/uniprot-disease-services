@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.uniprot.disease.cli.gda.GDADataLoader;
+import uk.ac.ebi.uniprot.disease.cli.mapping.DiseaseMappingsLoader;
 import uk.ac.ebi.uniprot.disease.cli.vda.VDADataLoader;
 import uk.ac.ebi.uniprot.disease.model.disgenet.DataTypes;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
@@ -112,6 +113,16 @@ public class MainHelper {
             return VDADataLoader.DEFAULT_VDA_CONFIG_LOCATION;
         } else if(options.getDataType().equals(DataTypes.vdpa.name())){
             return VDADataLoader.DEFAULT_VDPA_CONFIG_LOCATION;
+        } else {
+            throw new IllegalArgumentException("Incorrect value " + options.getDataType() + " passed for parm --type. See help");
+        }
+    }
+
+    public static String getDefaultMappingConfig(DiseaseDataLoaderArgs options) {
+        if(options.getDataType().equals(DataTypes.dm.name())){
+            return DiseaseMappingsLoader.DEFAULT_DM_CONFIG_LOCATION;
+        } else if(options.getDataType().equals(DataTypes.ug.name())){
+            return DiseaseMappingsLoader.DEFAULT_UG_CONFIG_LOCATION;
         } else {
             throw new IllegalArgumentException("Incorrect value " + options.getDataType() + " passed for parm --type. See help");
         }

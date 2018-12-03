@@ -25,6 +25,7 @@ public class DiseaseRequest {
     private List<GeneDiseasePMIDAssociation> parsedGDPARecords;
     private List<VariantDiseasePMIDAssociation> parsedVDPARecords;
     private List<DiseaseMapping> parsedDiseaseMappings;
+    private List<UniProtGene> parsedUniProtGeneMappings;
     private int batchSize;
     private WorkflowMetrics workflowMetrics;
     // db related attribs
@@ -33,4 +34,5 @@ public class DiseaseRequest {
     private String dbPassword;
     private Connection connxn;
     private DataTypes dataType;
+
 }

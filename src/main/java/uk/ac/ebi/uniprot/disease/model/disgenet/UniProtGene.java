@@ -1,11 +1,13 @@
 package uk.ac.ebi.uniprot.disease.model.disgenet;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
+@ToString
+@EqualsAndHashCode
 public class UniProtGene {
     private String uniProtId;
-    private int geneId;
+    private long geneId;
 }
