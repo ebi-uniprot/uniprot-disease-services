@@ -49,7 +49,7 @@ public class VDAFileParser extends BaseFileParser {
 
                 updateMetrics(request, vdas.size(), startTime, endTime, reader.getRecordCount());
 
-                LOGGER.debug("The file is parsed and request is enriched with parsed records {}", request);
+                //LOGGER.debug("The file is parsed and request is enriched with parsed records");
                 if (nextProcessor != null) {
                     LOGGER.debug("Invoking the next processor {}", nextProcessor.getProcessorName());
                     nextProcessor.processRequest(request);
@@ -68,9 +68,9 @@ public class VDAFileParser extends BaseFileParser {
 
                 updateMetrics(request, vdpas.size(), startTime, endTime, reader.getRecordCount());
 
-                LOGGER.debug("The file is parsed and request is enriched with parsed records {}", request);
+                //LOGGER.debug("The file is parsed and request is enriched with parsed records");
                 if (nextProcessor != null) {
-                    LOGGER.debug("Invoking the next processor {}", nextProcessor.getProcessorName());
+                    //LOGGER.debug("Invoking the next processor {}", nextProcessor.getProcessorName());
                     nextProcessor.processRequest(request);
                 }
             } while (!vdpas.isEmpty());

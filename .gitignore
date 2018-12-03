@@ -1,3 +1,4 @@
 .idea/ 
 *.iml
 target/
+src/main/java/uk/ac/ebi/uniprot/disease/cli/.DS_Store

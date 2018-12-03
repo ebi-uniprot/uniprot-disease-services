@@ -47,9 +47,9 @@ public class GDAFileParser extends BaseFileParser {
 
                 updateMetrics(request, gdas.size(), startTime, endTime, reader.getRecordCount());
 
-                LOGGER.debug("The GDA file is parsed and request is enriched with parsed records {}", request);
+                //LOGGER.debug("The GDA file is parsed and request is enriched with parsed records");
                 if (nextProcessor != null) {
-                    LOGGER.debug("Invoking the next processor {}", nextProcessor.getProcessorName());
+                  //  LOGGER.debug("Invoking the next processor {}", nextProcessor.getProcessorName());
                     nextProcessor.processRequest(request);
                 }
             } while (!gdas.isEmpty());
@@ -65,9 +65,9 @@ public class GDAFileParser extends BaseFileParser {
 
                 updateMetrics(request, gdpas.size(), startTime, endTime, reader.getRecordCount());
 
-                LOGGER.debug("The GDPA file is parsed and request is enriched with parsed records {}", request);
+                //LOGGER.debug("The GDPA file is parsed and request is enriched with parsed records");
                 if (nextProcessor != null) {
-                    LOGGER.debug("Invoking the next processor {}", nextProcessor.getProcessorName());
+                  //  LOGGER.debug("Invoking the next processor {}", nextProcessor.getProcessorName());
                     nextProcessor.processRequest(request);
                 }
             } while (!gdpas.isEmpty());

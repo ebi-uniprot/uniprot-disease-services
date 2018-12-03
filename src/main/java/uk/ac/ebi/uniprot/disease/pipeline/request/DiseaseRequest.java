@@ -24,6 +24,7 @@ public class DiseaseRequest {
     private List<VariantDiseaseAssociation> parsedVDARecords;
     private List<GeneDiseasePMIDAssociation> parsedGDPARecords;
     private List<VariantDiseasePMIDAssociation> parsedVDPARecords;
+    private List<DiseaseMapping> parsedDiseaseMappings;
     private int batchSize;
     private WorkflowMetrics workflowMetrics;
     // db related attribs

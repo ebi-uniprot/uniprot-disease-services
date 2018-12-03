@@ -41,7 +41,7 @@ public class MainHelper {
         builder.jdbcUrl(options.getJdbcUrl()).dbUserName(options.getDbUser()).dbPassword(options.getDbPassword());
         builder.dataType(DataTypes.valueOf(options.getDataType()));
         DiseaseRequest request = builder.workflowMetrics(workflowMetrics).build();
-        LOGGER.debug("The initial request for the workflow {}", request);
+        LOGGER.debug("The initial request for the workflow");
         return request;
     }
 

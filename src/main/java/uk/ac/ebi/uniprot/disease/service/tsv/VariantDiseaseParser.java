@@ -19,7 +19,7 @@ public class VariantDiseaseParser {
     }
 
     public List<VariantDiseaseAssociation> parseVDARecords(int total){
-        LOGGER.debug("Starting the parsing of data");
+        //LOGGER.debug("Starting the parsing of data");
         List<VariantDiseaseAssociation> parsedRecords = new ArrayList<>();
         int count = 0;
         while(this.reader.hasMoreRecord() && total > count){
@@ -33,7 +33,7 @@ public class VariantDiseaseParser {
                 LOGGER.error("Failed record {}", record);
             }
         }
-        LOGGER.debug("Total records parsed {}", parsedRecords.size());
+        //LOGGER.debug("Total records parsed {}", parsedRecords.size());
 
         return parsedRecords;
     }
@@ -47,7 +47,7 @@ public class VariantDiseaseParser {
     }
 
     public List<VariantDiseasePMIDAssociation> parseVDPARecords(int total){
-        LOGGER.debug("Starting the parsing of data");
+        //LOGGER.debug("Starting the parsing of data");
         List<VariantDiseasePMIDAssociation> parsedRecords = new ArrayList<>();
         int count = 0;
         while(this.reader.hasMoreRecord() && total > count){
@@ -61,7 +61,7 @@ public class VariantDiseaseParser {
                 LOGGER.error("Failed record {}", record);
             }
         }
-        LOGGER.debug("Total records parsed {}", parsedRecords.size());
+        //LOGGER.debug("Total records parsed {}", parsedRecords.size());
 
         return parsedRecords;
     }

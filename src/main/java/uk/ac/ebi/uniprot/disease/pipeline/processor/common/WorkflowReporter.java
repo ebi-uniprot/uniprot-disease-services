@@ -34,7 +34,6 @@ public class WorkflowReporter extends BaseProcessor {
 
         printReport(request.getWorkflowMetrics());
 
-        LOGGER.debug("The metrics of workflow {}", request.getWorkflowMetrics());
     }
 
     private void printReport(WorkflowMetrics wf) {

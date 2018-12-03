@@ -27,7 +27,7 @@ public class GeneDiseaseParser {
      * @return
      */
     public List<GeneDiseaseAssociation> parseGDARecords(int total){
-        LOGGER.debug("Starting the parsing of data");
+        //LOGGER.debug("Starting the parsing of data");
         int count = 0;
         List<GeneDiseaseAssociation> parsedRecords = new ArrayList<>();
         while(this.reader.hasMoreRecord() && total > count){
@@ -42,7 +42,7 @@ public class GeneDiseaseParser {
             }
         }
 
-        LOGGER.debug("Total records parsed {}", parsedRecords.size());
+        //LOGGER.debug("Total records parsed {}", parsedRecords.size());
 
         return parsedRecords;
     }
@@ -61,7 +61,7 @@ public class GeneDiseaseParser {
      * @return
      */
     public List<GeneDiseasePMIDAssociation> parseGDPARecords(int total){
-        LOGGER.debug("Starting the parsing of data");
+        //LOGGER.debug("Starting the parsing of data");
         int count = 0;
         List<GeneDiseasePMIDAssociation> parsedRecords = new ArrayList<>();
         while(this.reader.hasMoreRecord() && total > count){
@@ -76,7 +76,7 @@ public class GeneDiseaseParser {
             }
         }
 
-        LOGGER.debug("Total records parsed {}", parsedRecords.size());
+        //LOGGER.debug("Total records parsed {}", parsedRecords.size());
 
         return parsedRecords;
     }
