@@ -19,6 +19,7 @@ import java.util.Arrays;
 public class VDADataLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(VDADataLoader.class);
     public static final String DEFAULT_VDA_CONFIG_LOCATION = "vda.properties";
+    public static final String DEFAULT_VDPA_CONFIG_LOCATION = "vdpa.properties";
 
     public static void main(String[] args) throws IOException, SQLException {
         long startTime = System.currentTimeMillis();
@@ -30,7 +31,7 @@ public class VDADataLoader {
             jCommander.usage();// if help is set, show the usage and then do nothing
         } else {
             // fill the default params vals for the missing ones
-            MainHelper.fillDefaultParams(options, DEFAULT_VDA_CONFIG_LOCATION, MainHelper.DEFAULT_DB_CONNECTION_PROP);
+            MainHelper.fillDefaultParams(options, MainHelper.getDefaultVDConfig(options), MainHelper.DEFAULT_DB_CONNECTION_PROP);
             beginProcessing(options, startTime);// start the actual processing
         }
 

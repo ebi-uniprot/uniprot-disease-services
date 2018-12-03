@@ -2,6 +2,7 @@ package uk.ac.ebi.uniprot.disease.pipeline.processor.vda;
 
 import org.junit.Assert;
 import org.junit.Test;
+import uk.ac.ebi.uniprot.disease.model.disgenet.DataTypes;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 import uk.ac.ebi.uniprot.disease.pipeline.request.WorkflowMetrics;
 
@@ -14,7 +15,8 @@ public class VDAFileParserTest {
     @Test
     public void testProcessNext() throws IOException, SQLException {
         WorkflowMetrics metrics = new WorkflowMetrics(System.currentTimeMillis());
-        DiseaseRequest request = DiseaseRequest.builder().uncompressedFilePath(dataFile).batchSize(200).workflowMetrics(metrics).build();
+        DiseaseRequest request = DiseaseRequest.builder().uncompressedFilePath(dataFile).batchSize(200)
+                .workflowMetrics(metrics).dataType(DataTypes.vda).build();
         VDAFileParser fileParser = new VDAFileParser();
         Assert.assertNull("The parsed records not null", request.getParsedVDARecords());
         fileParser.processRequest(request);

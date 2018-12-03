@@ -38,7 +38,7 @@ public class GDADataSaver extends BaseDataSaver {
 
     @Override
     public void processRequest(DiseaseRequest request) throws IOException, SQLException {
-        LOGGER.debug("Going to persist parsed GDA data");
+        LOGGER.debug("Going to persist parsed GDA/GDPA data");
         if(hasMoreData(request)) {
             long startTime = System.currentTimeMillis();
             int size = 0;

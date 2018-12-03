@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 /**
- * Command Line Interface to download, parse and store gda data
+ * Command Line Interface to download, parse and store gda/gdpa data
  *
  * @author sahmad
  */

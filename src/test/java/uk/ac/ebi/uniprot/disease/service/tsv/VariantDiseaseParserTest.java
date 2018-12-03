@@ -17,7 +17,7 @@ public class VariantDiseaseParserTest {
         // create a row to be parsed
         List<String> record = Arrays.asList("rs1000113", "C0010346", "Crohn Disease", "0.512513295376337", "1", "GWASCAT");
         VariantDiseaseParser parser = new VariantDiseaseParser(null);
-        VariantDiseaseAssociation vda = parser.parseRecord(record);
+        VariantDiseaseAssociation vda = parser.parseVDARecord(record);
         Assert.assertNotNull("Unable to parse the string array", vda);
         // verify the other fields
         Assert.assertEquals("SNP is not parsed corrected", record.get(0), vda.getSnpId());
@@ -32,7 +32,7 @@ public class VariantDiseaseParserTest {
     public void testParseRecords() throws FileNotFoundException {
         TSVReader tsvReader = new TSVReader("src/test/resources/sample_variant_disease_association.tsv");
         VariantDiseaseParser parser = new VariantDiseaseParser(tsvReader);
-        List<VariantDiseaseAssociation> records = parser.parseRecords(30);
+        List<VariantDiseaseAssociation> records = parser.parseVDARecords(30);
         Assert.assertTrue("records empty", !records.isEmpty());
         Assert.assertEquals("Records count invalid", 30, records.size());
         records.parallelStream().forEach(VariantDiseaseParserTest::verifyRecord);

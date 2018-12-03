@@ -1,10 +1,7 @@
 package uk.ac.ebi.uniprot.disease.pipeline.request;
 
 import lombok.*;
-import uk.ac.ebi.uniprot.disease.model.disgenet.DataTypes;
-import uk.ac.ebi.uniprot.disease.model.disgenet.GeneDiseaseAssociation;
-import uk.ac.ebi.uniprot.disease.model.disgenet.GeneDiseasePMIDAssociation;
-import uk.ac.ebi.uniprot.disease.model.disgenet.VariantDiseaseAssociation;
+import uk.ac.ebi.uniprot.disease.model.disgenet.*;
 
 import java.sql.Connection;
 import java.util.List;
@@ -26,6 +23,7 @@ public class DiseaseRequest {
     private List<GeneDiseaseAssociation> parsedGDARecords;
     private List<VariantDiseaseAssociation> parsedVDARecords;
     private List<GeneDiseasePMIDAssociation> parsedGDPARecords;
+    private List<VariantDiseasePMIDAssociation> parsedVDPARecords;
     private int batchSize;
     private WorkflowMetrics workflowMetrics;
     // db related attribs
