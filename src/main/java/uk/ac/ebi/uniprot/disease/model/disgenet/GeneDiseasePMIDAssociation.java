@@ -11,7 +11,7 @@ import lombok.*;
 @EqualsAndHashCode
 @Builder
 public class GeneDiseasePMIDAssociation {
-    private Integer geneId;
+    private Long geneId;
     private String geneSymbol;
     private String associationType;
     private String sentence;

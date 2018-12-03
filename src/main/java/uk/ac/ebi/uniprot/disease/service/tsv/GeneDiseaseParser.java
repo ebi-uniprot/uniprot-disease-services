@@ -49,7 +49,7 @@ public class GeneDiseaseParser {
 
     public GeneDiseaseAssociation parseGDARecord(List<String> record){
         GeneDiseaseAssociation.GeneDiseaseAssociationBuilder builder = GeneDiseaseAssociation.builder();
-        builder.geneId(Integer.parseInt(record.get(0))).geneSymbol(record.get(1)).diseaseId(record.get(2)).diseaseName(record.get(3));
+        builder.geneId(Long.parseLong(record.get(0))).geneSymbol(record.get(1)).diseaseId(record.get(2)).diseaseName(record.get(3));
         builder.score(Double.valueOf(record.get(4))).pmidCount(Integer.valueOf(record.get(5)));
         GeneDiseaseAssociation gda = builder.snpCount(Integer.valueOf(record.get(6))).source(record.get(7)).build();
         return gda;
@@ -88,7 +88,7 @@ public class GeneDiseaseParser {
      */
     public GeneDiseasePMIDAssociation parseGDPARecord(List<String> record){
         GeneDiseasePMIDAssociation.GeneDiseasePMIDAssociationBuilder builder = GeneDiseasePMIDAssociation.builder();
-        builder.geneId(Integer.parseInt(record.get(0))).diseaseId(record.get(1)).associationType(record.get(2));
+        builder.geneId(Long.parseLong(record.get(0))).diseaseId(record.get(1)).associationType(record.get(2));
         builder.sentence(record.get(3));
         try {
             builder.pmid(Long.parseLong(record.get(4)));

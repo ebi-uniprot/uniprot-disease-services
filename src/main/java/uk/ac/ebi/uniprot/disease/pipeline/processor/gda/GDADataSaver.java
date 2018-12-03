@@ -83,7 +83,7 @@ public class GDADataSaver extends BaseDataSaver {
         PreparedStatement ps = conn.prepareStatement(INSERT_QUERY_GDA);
         //(gene_id, gene_symbol, disease_id, disease_name, score, no_of_pmids, no_of_snps, data_source)
         for(GeneDiseaseAssociation gda : parsedRecords){
-            ps.setInt(1, gda.getGeneId());
+            ps.setLong(1, gda.getGeneId());
             ps.setString(2, gda.getGeneSymbol());
             ps.setString(3, gda.getDiseaseId());
             ps.setString(4, gda.getDiseaseName());
@@ -105,7 +105,7 @@ public class GDADataSaver extends BaseDataSaver {
         //(gene_id, disease_id, pmid, gene_symbol, disease_name, disease_type, association_type,
         // sentence, score, data_source
         for(GeneDiseasePMIDAssociation gdpa : parsedRecords){
-            ps.setInt(1, gdpa.getGeneId());
+            ps.setLong(1, gdpa.getGeneId());
             ps.setString(2, gdpa.getDiseaseId());
             if(gdpa.getPmid() != null) {
                 ps.setLong(3, gdpa.getPmid());
