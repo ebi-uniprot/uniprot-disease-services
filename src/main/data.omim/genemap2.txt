@@ -1,7 +1,4 @@
-# Copyright (c) 1966-2018 Johns Hopkins University. Use of this file adheres to the terms specified at https://omim.org/help/agreement.
-# Generated: 2018-11-30
-# See end of file for additional documentation on specific fields
-# Chromosome	Genomic Position Start	Genomic Position End	Cyto Location	Computed Cyto Location	Mim Number	Gene Symbols	Gene Name	Approved Symbol	Entrez Gene ID	Ensembl Gene ID	Comments	Phenotypes	Mouse Gene Symbol/ID
+Chromosome	Genomic Position Start	Genomic Position End	Cyto Location	Computed Cyto Location	Mim Number	Gene Symbols	Gene Name	Approved Symbol	Entrez Gene ID	Ensembl Gene ID	Comments	Phenotypes	Mouse Gene Symbol/ID
 chr1	0	27600000	1p36		607413	AD7CNTP	Alzheimer disease neuronal thread protein						
 chr1	0	27600000	1p36		612367	ALPQTL2	Alkaline phosphatase, plasma level of, QTL 2		100196914		linkage with rs1780324	{Alkaline phosphatase, plasma level of, QTL 2}, 612367 (2)	
 chr1	0	123400000	1p		606788	ANON1	Anorexia nervosa, susceptibility to, 1		171514			{Anorexia nervosa, susceptibility to, 1}, 606788 (2)	
@@ -16802,65 +16799,4 @@ chrY	25622094	25625510	Yq11.23	Yq11.23	400016	CDY1, CDY	Chromodomain protein, Y 
 chrY	25728489	25733387	Yq11.23	Yq11.23	400036	TTTY3	Testis-specific transcript, Y-linked, 3	TTTY3	114760	ENSG00000231141			
 chrY	26600000	57227415	Yq12		475000	GCY, TSY, STA	Growth control, Y-chromosome influenced	GCY	2656				
 chrY	0	57227415	Chr.Y		400043	DFNY1	Deafness, Y-linked 1	DFNY1	724074			Deafness, Y-linked 1 (1)	
-chrY	0	57227415	Chr.Y		400004	RPY	Retinitis pigmentosa, Y-linked		79051			Retinitis pigmentosa, Y-linked, 400004 (2), Y-linked	
-#
-#
-#
-#
-# Source of data in fields are as follows:
-# -------------------------------
-#
-# Chromosome (NCBI)
-# Genomic position start * (NCBI)
-# Genomic position end (NCBI)
-# Cyto location (OMIM)
-# Computed cyto location (UCSC)
-# MIM Number for Gene/Locus (OMIM)
-# Gene symbols (OMIM)
-# Gene name (OMIM)
-# Approved gene symbol (HGNC)
-# Entrez gene ID (NCBI)
-# Ensembl gene ID (Ensembl)
-# Comments (OMIM)
-# Phenotype(s) (OMIM)
-# Mouse gene symbol & ID (MGI)
-#
-# * for phenotypes with mapping key of (2) or genes not found in NCBI
-# data, genomic coordinates are derived from OMIM's cyto location mapped
-# to genomic using UCSC table.
-#
-#
-# OMIM Phenotype field is nested:
-# -------------------------------
-#
-# Each Phenotype is followed by its MIM number, if different from
-# that of the locus, preceded by a comma
-# Phenotype mapping key in parentheses follows the phenotype MIM
-# number (explanation below).
-# Allelic disorders are separated by a semi-colon following the
-# phenotype mapping key.
-# Inheritance for the phenotype follows the phenotype mapping key
-# preceded by a ,<space>
-#
-#
-# Phenotype Mapping Method - Appears in parentheses after a disorder :
-# --------------------------------------------------------------------
-# 1 - the disorder is placed on the map based on its association with
-# a gene, but the underlying defect is not known.
-# 2 - the disorder has been placed on the map by linkage; no mutation has
-# been found.
-# 3 - the molecular basis for the disorder is known; a mutation has been
-# found in the gene.
-# 4 - a contiguous gene deletion or duplication syndrome, multiple genes
-# are deleted or duplicated causing the phenotype.
-#
-#
-# Genomic Coordinates - GRCh38 :
-# ------------------------------
-#
-# The genomic coordinates for the genes are for GRCh38, if you need
-# coordinates for for GRCh37, you can get them from this file and use
-# the MIM number or the Entrez gene ID to map them:
-#
-#   ftp://ftp.ncbi.nlm.nih.gov//genomes/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/GFF/ref_GRCh37.p13_top_level.gff3.gz
-#
+chrY	0	57227415	Chr.Y		400004	RPY	Retinitis pigmentosa, Y-linked		79051			Retinitis pigmentosa, Y-linked, 400004 (2), Y-linked

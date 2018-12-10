@@ -1,8 +1,4 @@
-# Copyright (c) 1966-2018 Johns Hopkins University. Use of this file adheres to the terms specified at https://omim.org/help/agreement.
-# Generated: 2018-11-30
-# This file provides links between the genes in OMIM and other gene identifiers.
-# THIS IS NOT A TABLE OF GENE-PHENOTYPE RELATIONSHIPS.
-# MIM Number	MIM Entry Type (see FAQ 1.3 at https://omim.org/help/faq)	Entrez Gene ID (NCBI)	Approved Gene Symbol (HGNC)	Ensembl Gene ID (Ensembl)
+MIM Number	MIM Entry Type (see FAQ 1.3 at https://omim.org/help/faq)	Entrez Gene ID (NCBI)	Approved Gene Symbol (HGNC)	Ensembl Gene ID (Ensembl)
 100050	predominantly phenotypes			
 100070	phenotype	100329167		
 100100	phenotype			
@@ -26029,4 +26025,4 @@
 618207	gene			
 618208	gene			
 618209	gene			
-618210	gene			
+618210	gene

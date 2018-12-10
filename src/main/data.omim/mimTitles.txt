@@ -1,6 +1,4 @@
-# Copyright (c) 1966-2018 Johns Hopkins University. Use of this file adheres to the terms specified at https://omim.org/help/agreement.
-# Generated: 2018-11-30
-# Prefix	Mim Number	Preferred Title; symbol	Alternative Title(s); symbol(s)	Included Title(s); symbols
+Prefix	Mim Number	Preferred Title; symbol	Alternative Title(s); symbol(s)	Included Title(s); symbols
 NULL	100050	AARSKOG SYNDROME, AUTOSOMAL DOMINANT		
 Percent	100070	AORTIC ANEURYSM, FAMILIAL ABDOMINAL, 1; AAA1	ANEURYSM, ABDOMINAL AORTIC; AAA;; ABDOMINAL AORTIC ANEURYSM	
 Number Sign	100100	PRUNE BELLY SYNDROME; PBS	ABDOMINAL MUSCLES, ABSENCE OF, WITH URINARY TRACT ABNORMALITY AND CRYPTORCHIDISM;; EAGLE-BARRETT SYNDROME; EGBRS	
@@ -26027,17 +26025,4 @@ Asterisk	618206	ZINC FINGER CCCH DOMAIN-CONTAINING PROTEIN 7B; ZC3H7B	ROTAVIRUS 
 Asterisk	618207	SEC1 FAMILY DOMAIN-CONTAINING PROTEIN 1; SCFD1	SLY1, S. CEREVISIAE, HOMOLOG OF; SLY1;; RA410	
 Asterisk	618208	LONG INTERGENIC NONCODING RNA 1159; LINC01159	lincRNA 1159;; LINC-BRN1B	
 Asterisk	618209	HOXD ANTISENSE GROWTH-ASSOCIATED LONG NONCODING RNA; HAGLR	LONG INTERGENIC NONCODING RNA HAGLR;; lincRNA HAGLR;; MDGT	
-Asterisk	618210	LIPID RAFT LINKING PROTEIN 1; RFTN1	RAFTLIN;; KIAA0084	
-#
-#
-#
-#
-# MIM number prefix:
-# ------------------
-# Asterisk (*)  Gene
-# Plus (+)  Gene and phenotype, combined
-# Number Sign (#)  Phenotype, molecular basis known
-# Percent (%)  Phenotype or locus, molecular basis unknown
-# NULL (<null>)  Other, mainly phenotypes with suspected mendelian basis
-# Caret (^)  Entry has been removed from the database or moved to another entry
-#
+Asterisk	618210	LIPID RAFT LINKING PROTEIN 1; RFTN1	RAFTLIN;; KIAA0084
