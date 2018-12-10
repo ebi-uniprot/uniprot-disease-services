@@ -68,59 +68,59 @@ public class VDADataSaver extends BaseDataSaver {
 
     private void persistVDARecords(DiseaseRequest request, List<VariantDiseaseAssociation> parsedRecords) throws SQLException {
         Connection conn = getConnection(request);
-        PreparedStatement ps = conn.prepareStatement(INSERT_QUERY_VDA);
-        // (snp_id, disease_id, disease_name, score, no_of_pmids, data_source)
-        for (VariantDiseaseAssociation vda : parsedRecords) {
-            ps.setString(1, vda.getSnpId());
-            ps.setString(2, vda.getDiseaseId());
-            ps.setString(3, vda.getDiseaseName());
-            ps.setDouble(4, vda.getScore());
-            ps.setInt(5, vda.getPmidCount());
-            ps.setString(6, vda.getSource());
-            ps.addBatch();
-        }
+        try(PreparedStatement ps = conn.prepareStatement(INSERT_QUERY_VDA)) {
+            // (snp_id, disease_id, disease_name, score, no_of_pmids, data_source)
+            for (VariantDiseaseAssociation vda : parsedRecords) {
+                ps.setString(1, vda.getSnpId());
+                ps.setString(2, vda.getDiseaseId());
+                ps.setString(3, vda.getDiseaseName());
+                ps.setDouble(4, vda.getScore());
+                ps.setInt(5, vda.getPmidCount());
+                ps.setString(6, vda.getSource());
+                ps.addBatch();
+            }
 
-        int[] updatedCounts = ps.executeBatch();
-        ps.close();
-        LOGGER.debug("No. of records inserted in this batch {}", updatedCounts.length);
+            int[] updatedCounts = ps.executeBatch();
+            LOGGER.debug("No. of records inserted in this batch {}", updatedCounts.length);
+        }
     }
 
     private void persistVDPARecords(DiseaseRequest request, List<VariantDiseasePMIDAssociation> parsedRecords) throws SQLException {
         Connection conn = getConnection(request);
-        PreparedStatement ps = conn.prepareStatement(INSERT_QUERY_VDPA);
-        // snpId	diseaseId	sentence	pmid	score	originalSource	diseaseName	diseaseType	chromosome	position
-        for (VariantDiseasePMIDAssociation vdpa : parsedRecords) {
-            ps.setString(1, vdpa.getSnpId());
-            ps.setString(2, vdpa.getDiseaseId());
-            ps.setString(3, vdpa.getSentence());
-            if (vdpa.getPmid() == null) {
-                ps.setNull(4, Types.BIGINT);
-            } else {
-                ps.setLong(4, vdpa.getPmid());
+        try(PreparedStatement ps = conn.prepareStatement(INSERT_QUERY_VDPA)) {
+            // snpId	diseaseId	sentence	pmid	score	originalSource	diseaseName	diseaseType	chromosome	position
+            for (VariantDiseasePMIDAssociation vdpa : parsedRecords) {
+                ps.setString(1, vdpa.getSnpId());
+                ps.setString(2, vdpa.getDiseaseId());
+                ps.setString(3, vdpa.getSentence());
+                if (vdpa.getPmid() == null) {
+                    ps.setNull(4, Types.BIGINT);
+                } else {
+                    ps.setLong(4, vdpa.getPmid());
+                }
+
+                ps.setDouble(5, vdpa.getScore());
+                ps.setString(6, vdpa.getOriginalSource());
+                ps.setString(7, vdpa.getDiseaseName());
+                ps.setString(8, vdpa.getDiseaseType());
+
+                if (vdpa.getChromosome() != null) {
+                    ps.setInt(9, vdpa.getChromosome());
+                } else {
+                    ps.setNull(9, Types.INTEGER);
+                }
+
+                if (vdpa.getChromosomePosition() != null) {
+                    ps.setLong(10, vdpa.getChromosomePosition());
+                } else {
+                    ps.setNull(10, Types.BIGINT);
+                }
+                ps.addBatch();
             }
 
-            ps.setDouble(5, vdpa.getScore());
-            ps.setString(6, vdpa.getOriginalSource());
-            ps.setString(7, vdpa.getDiseaseName());
-            ps.setString(8, vdpa.getDiseaseType());
-
-            if (vdpa.getChromosome() != null) {
-                ps.setInt(9, vdpa.getChromosome());
-            } else {
-                ps.setNull(9, Types.INTEGER);
-            }
-
-            if (vdpa.getChromosomePosition() != null) {
-                ps.setLong(10, vdpa.getChromosomePosition());
-            } else {
-                ps.setNull(10, Types.BIGINT);
-            }
-            ps.addBatch();
+            int[] updatedCounts = ps.executeBatch();
+            LOGGER.debug("No. of records inserted in this batch {}", updatedCounts.length);
         }
-
-        int[] updatedCounts = ps.executeBatch();
-        ps.close();
-        LOGGER.debug("No. of records inserted in this batch {}", updatedCounts.length);
     }
 
     private boolean hasMoreData(DiseaseRequest request) {

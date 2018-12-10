@@ -80,50 +80,50 @@ public class GDADataSaver extends BaseDataSaver {
 
     private void persistGDARecords(DiseaseRequest request, List<GeneDiseaseAssociation> parsedRecords) throws SQLException {
         Connection conn = getConnection(request);
-        PreparedStatement ps = conn.prepareStatement(INSERT_QUERY_GDA);
-        //(gene_id, gene_symbol, disease_id, disease_name, score, no_of_pmids, no_of_snps, data_source)
-        for(GeneDiseaseAssociation gda : parsedRecords){
-            ps.setLong(1, gda.getGeneId());
-            ps.setString(2, gda.getGeneSymbol());
-            ps.setString(3, gda.getDiseaseId());
-            ps.setString(4, gda.getDiseaseName());
-            ps.setDouble(5, gda.getScore());
-            ps.setInt(6, gda.getPmidCount());
-            ps.setInt(7, gda.getSnpCount());
-            ps.setString(8, gda.getSource());
-            ps.addBatch();
-        }
+        try(PreparedStatement ps = conn.prepareStatement(INSERT_QUERY_GDA)) {
+            //(gene_id, gene_symbol, disease_id, disease_name, score, no_of_pmids, no_of_snps, data_source)
+            for (GeneDiseaseAssociation gda : parsedRecords) {
+                ps.setLong(1, gda.getGeneId());
+                ps.setString(2, gda.getGeneSymbol());
+                ps.setString(3, gda.getDiseaseId());
+                ps.setString(4, gda.getDiseaseName());
+                ps.setDouble(5, gda.getScore());
+                ps.setInt(6, gda.getPmidCount());
+                ps.setInt(7, gda.getSnpCount());
+                ps.setString(8, gda.getSource());
+                ps.addBatch();
+            }
 
-        int[] updatedCounts = ps.executeBatch();
-        ps.close();
-        LOGGER.debug("No. of records inserted in this batch {}", updatedCounts.length);
+            int[] updatedCounts = ps.executeBatch();
+            LOGGER.debug("No. of records inserted in this batch {}", updatedCounts.length);
+        }
     }
 
     private void persistGDPARecords(DiseaseRequest request, List<GeneDiseasePMIDAssociation> parsedRecords) throws SQLException {
         Connection conn = getConnection(request);
-        PreparedStatement ps = conn.prepareStatement(INSERT_QUERY_GDPA);
-        //(gene_id, disease_id, pmid, gene_symbol, disease_name, disease_type, association_type,
-        // sentence, score, data_source
-        for(GeneDiseasePMIDAssociation gdpa : parsedRecords){
-            ps.setLong(1, gdpa.getGeneId());
-            ps.setString(2, gdpa.getDiseaseId());
-            if(gdpa.getPmid() != null) {
-                ps.setLong(3, gdpa.getPmid());
-            } else {
-                ps.setNull(3, Types.BIGINT);
+        try(PreparedStatement ps = conn.prepareStatement(INSERT_QUERY_GDPA)) {
+            //(gene_id, disease_id, pmid, gene_symbol, disease_name, disease_type, association_type,
+            // sentence, score, data_source
+            for (GeneDiseasePMIDAssociation gdpa : parsedRecords) {
+                ps.setLong(1, gdpa.getGeneId());
+                ps.setString(2, gdpa.getDiseaseId());
+                if (gdpa.getPmid() != null) {
+                    ps.setLong(3, gdpa.getPmid());
+                } else {
+                    ps.setNull(3, Types.BIGINT);
+                }
+                ps.setString(4, gdpa.getGeneSymbol());
+                ps.setString(5, gdpa.getDiseaseName());
+                ps.setString(6, gdpa.getDiseaseType());
+                ps.setString(7, gdpa.getAssociationType());
+                ps.setString(8, gdpa.getSentence());
+                ps.setDouble(9, gdpa.getScore());
+                ps.setString(10, gdpa.getSource());
+                ps.addBatch();
             }
-            ps.setString(4, gdpa.getGeneSymbol());
-            ps.setString(5, gdpa.getDiseaseName());
-            ps.setString(6, gdpa.getDiseaseType());
-            ps.setString(7, gdpa.getAssociationType());
-            ps.setString(8, gdpa.getSentence());
-            ps.setDouble(9, gdpa.getScore());
-            ps.setString(10, gdpa.getSource());
-            ps.addBatch();
-        }
 
-        int[] updatedCounts = ps.executeBatch();
-        ps.close();
-        LOGGER.debug("No. of records inserted in this batch {}", updatedCounts.length);
+            int[] updatedCounts = ps.executeBatch();
+            LOGGER.debug("No. of records inserted in this batch {}", updatedCounts.length);
+        }
     }
 }

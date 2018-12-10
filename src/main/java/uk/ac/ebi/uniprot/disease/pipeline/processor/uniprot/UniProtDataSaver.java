@@ -28,75 +28,79 @@ public class UniProtDataSaver {
     }
 
     public Integer createDisease(String identifier, String acronym, String accession, String def) throws SQLException {
-        PreparedStatement ps = connxn.prepareStatement(INSERT_DISEASE_QUERY, Statement.RETURN_GENERATED_KEYS);
+        try(PreparedStatement ps = connxn.prepareStatement(INSERT_DISEASE_QUERY, Statement.RETURN_GENERATED_KEYS)) {
 
-        ps.setString(1, identifier);
+            ps.setString(1, identifier);
 
-        if(StringUtils.isEmpty(acronym)){
-            ps.setNull(2, Types.VARCHAR);
-        } else {
-            ps.setString(2, acronym);
+            if (StringUtils.isEmpty(acronym)) {
+                ps.setNull(2, Types.VARCHAR);
+            } else {
+                ps.setString(2, acronym);
+            }
+
+            if (StringUtils.isEmpty(def)) {
+                ps.setNull(3, Types.VARCHAR);
+            } else {
+                ps.setString(3, def);
+            }
+            ps.setString(4, accession);
+
+            int affectedRows = ps.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Could not create disease " + identifier);
+            }
+
+            Integer generatedKey = getGeneratedKey(ps, identifier);
+
+            return generatedKey;
         }
-
-        if(StringUtils.isEmpty(def)){
-            ps.setNull(3, Types.VARCHAR);
-        } else {
-            ps.setString(3, def);
-        }
-        ps.setString(4, accession);
-
-        int affectedRows = ps.executeUpdate();
-
-        if(affectedRows == 0){
-            throw new SQLException("Could not create disease " + identifier);
-        }
-
-        Integer generatedKey = getGeneratedKey(ps, identifier);
-
-        return generatedKey;
     }
 
     public void createCrossRef(String refType, String refId, String refMeta, Integer diseaseId) throws SQLException {
-        PreparedStatement ps = connxn.prepareStatement(INSERT_CROSS_REF_QUERY);
-        ps.setString(1, refType);
-        ps.setString(2, refId);
-        ps.setInt(3, diseaseId);
-        if(StringUtils.isEmpty(refMeta)){
-            ps.setNull(4, Types.VARCHAR);
-        } else {
-            ps.setString(4, refMeta);
-        }
+        try(PreparedStatement ps = connxn.prepareStatement(INSERT_CROSS_REF_QUERY)) {
+            ps.setString(1, refType);
+            ps.setString(2, refId);
+            ps.setInt(3, diseaseId);
+            if (StringUtils.isEmpty(refMeta)) {
+                ps.setNull(4, Types.VARCHAR);
+            } else {
+                ps.setString(4, refMeta);
+            }
 
 
-        int affectedRows = ps.executeUpdate();
+            int affectedRows = ps.executeUpdate();
 
-        if(affectedRows == 0){
-            throw new SQLException("Could not create cross ref for " + refId);
+            if (affectedRows == 0) {
+                throw new SQLException("Could not create cross ref for " + refId);
+            }
         }
     }
 
     public void createSynonym(String name, Integer diseaseId) throws SQLException {
-        PreparedStatement ps = connxn.prepareStatement(INSERT_SYNONYM_QUERY);
-        ps.setString(1, name);
-        ps.setInt(2, diseaseId);
+        try(PreparedStatement ps = connxn.prepareStatement(INSERT_SYNONYM_QUERY)) {
+            ps.setString(1, name);
+            ps.setInt(2, diseaseId);
 
-        int affectedRows = ps.executeUpdate();
+            int affectedRows = ps.executeUpdate();
 
-        if(affectedRows == 0){
-            throw new SQLException("Could not create synonym for " + name);
+            if (affectedRows == 0) {
+                throw new SQLException("Could not create synonym for " + name);
+            }
         }
     }
 
     public void createKeyword(String keyId, String keyValue, Integer diseaseId) throws SQLException {
-        PreparedStatement ps = connxn.prepareStatement(INSERT_KEYWORD_QUERY);
-        ps.setString(1, keyId);
-        ps.setString(2, keyValue);
-        ps.setInt(3, diseaseId);
+        try(PreparedStatement ps = connxn.prepareStatement(INSERT_KEYWORD_QUERY)) {
+            ps.setString(1, keyId);
+            ps.setString(2, keyValue);
+            ps.setInt(3, diseaseId);
 
-        int affectedRows = ps.executeUpdate();
+            int affectedRows = ps.executeUpdate();
 
-        if(affectedRows == 0){
-            throw new SQLException("Could not create keyword for  " + keyId);
+            if (affectedRows == 0) {
+                throw new SQLException("Could not create keyword for  " + keyId);
+            }
         }
     }
 

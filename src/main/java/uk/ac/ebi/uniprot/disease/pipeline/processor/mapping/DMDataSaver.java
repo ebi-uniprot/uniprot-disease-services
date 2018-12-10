@@ -54,33 +54,33 @@ public class DMDataSaver extends BaseDataSaver {
 
     private void persistRecords(DiseaseRequest request, List<DiseaseMapping> dms) throws SQLException {
         Connection conn = getConnection(request);
-        PreparedStatement ps = conn.prepareStatement(INSERT_QUERY_DM);
-        for (DiseaseMapping dm : dms) {
-            ps.setString(1, dm.getDiseaseId());
-            ps.setString(2, dm.getName());
-            ps.setString(3, dm.getVocab());
-            ps.setString(4, dm.getCode());
-            ps.setString(5, dm.getVocabName());
-            ps.addBatch();
-        }
+        try(PreparedStatement ps = conn.prepareStatement(INSERT_QUERY_DM)) {
+            for (DiseaseMapping dm : dms) {
+                ps.setString(1, dm.getDiseaseId());
+                ps.setString(2, dm.getName());
+                ps.setString(3, dm.getVocab());
+                ps.setString(4, dm.getCode());
+                ps.setString(5, dm.getVocabName());
+                ps.addBatch();
+            }
 
-        int[] updatedCounts = ps.executeBatch();
-        ps.close();
-        LOGGER.debug("No. of records inserted in this batch {}", updatedCounts.length);
+            int[] updatedCounts = ps.executeBatch();
+            LOGGER.debug("No. of records inserted in this batch {}", updatedCounts.length);
+        }
     }
 
     private void persistUniProtGeneRecords(DiseaseRequest request, List<UniProtGene> upgs) throws SQLException {
         Connection conn = getConnection(request);
-        PreparedStatement ps = conn.prepareStatement(INSERT_QUERY_UG);
-        for (UniProtGene upg : upgs) {
-            ps.setString(1, upg.getUniProtId());
-            ps.setLong(2, upg.getGeneId());
-            ps.addBatch();
-        }
+        try(PreparedStatement ps = conn.prepareStatement(INSERT_QUERY_UG)) {
+            for (UniProtGene upg : upgs) {
+                ps.setString(1, upg.getUniProtId());
+                ps.setLong(2, upg.getGeneId());
+                ps.addBatch();
+            }
 
-        int[] updatedCounts = ps.executeBatch();
-        ps.close();
-        LOGGER.debug("No. of records inserted in this batch {}", updatedCounts.length);
+            int[] updatedCounts = ps.executeBatch();
+            LOGGER.debug("No. of records inserted in this batch {}", updatedCounts.length);
+        }
     }
 
 
