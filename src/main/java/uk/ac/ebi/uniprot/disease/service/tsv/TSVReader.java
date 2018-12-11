@@ -76,4 +76,16 @@ public class TSVReader implements Closeable {
 
         return tokens;
     }
+
+    public List<List<String>> getRecords(int recordCount) {
+        int count = 0;
+        List<List<String>> records = new ArrayList<>();
+        while (this.hasMoreRecord() && count < recordCount) {
+            List<String> record = this.getRecord();
+            records.add(record);
+            count++;
+        }
+
+        return records;
+    }
 }
