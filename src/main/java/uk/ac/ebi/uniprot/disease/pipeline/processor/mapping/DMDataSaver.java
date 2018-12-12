@@ -2,9 +2,9 @@ package uk.ac.ebi.uniprot.disease.pipeline.processor.mapping;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.ac.ebi.uniprot.disease.model.disgenet.DataTypes;
-import uk.ac.ebi.uniprot.disease.model.disgenet.DiseaseMapping;
-import uk.ac.ebi.uniprot.disease.model.disgenet.UniProtGene;
+import uk.ac.ebi.uniprot.disease.model.sources.disgenet.DataTypes;
+import uk.ac.ebi.uniprot.disease.model.sources.disgenet.DiseaseMapping;
+import uk.ac.ebi.uniprot.disease.model.sources.disgenet.UniProtGene;
 import uk.ac.ebi.uniprot.disease.pipeline.processor.common.BaseDataSaver;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 

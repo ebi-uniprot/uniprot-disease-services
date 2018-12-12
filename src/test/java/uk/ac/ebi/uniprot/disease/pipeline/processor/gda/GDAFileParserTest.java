@@ -2,7 +2,7 @@ package uk.ac.ebi.uniprot.disease.pipeline.processor.gda;
 
 import org.junit.Assert;
 import org.junit.Test;
-import uk.ac.ebi.uniprot.disease.model.disgenet.DataTypes;
+import uk.ac.ebi.uniprot.disease.model.sources.disgenet.DataTypes;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 import uk.ac.ebi.uniprot.disease.pipeline.request.WorkflowMetrics;
 

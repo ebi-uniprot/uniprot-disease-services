@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.disease.model.disgenet;
+package uk.ac.ebi.uniprot.disease.model.sources.disgenet;
 
 import lombok.*;
 
@@ -7,14 +7,16 @@ import lombok.*;
  */
 @Getter
 @Setter
-@EqualsAndHashCode
 @ToString
+@EqualsAndHashCode
 @Builder
-public class VariantDiseaseAssociation {
-    private String snpId;
+public class GeneDiseaseAssociation {
+    private Long geneId;
+    private String geneSymbol;
     private String diseaseId;
     private String diseaseName;
     private Double score; // Gene-Disease score
     private Integer pmidCount; // total number of PMIDs count supporting the association
+    private Integer snpCount; // total number of associated SNPs
     private String source;
 }

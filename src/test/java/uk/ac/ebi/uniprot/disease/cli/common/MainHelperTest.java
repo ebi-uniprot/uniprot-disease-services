@@ -4,9 +4,8 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import uk.ac.ebi.uniprot.disease.cli.gda.GDADataLoader;
-import uk.ac.ebi.uniprot.disease.model.disgenet.DataTypes;
+import uk.ac.ebi.uniprot.disease.model.sources.disgenet.DataTypes;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 
 import java.io.IOException;

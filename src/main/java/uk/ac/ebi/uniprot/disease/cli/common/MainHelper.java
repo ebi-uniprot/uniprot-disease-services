@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import uk.ac.ebi.uniprot.disease.cli.gda.GDADataLoader;
 import uk.ac.ebi.uniprot.disease.cli.mapping.DiseaseMappingsLoader;
 import uk.ac.ebi.uniprot.disease.cli.vda.VDADataLoader;
-import uk.ac.ebi.uniprot.disease.model.disgenet.DataTypes;
+import uk.ac.ebi.uniprot.disease.model.sources.disgenet.DataTypes;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 import uk.ac.ebi.uniprot.disease.pipeline.request.WorkflowMetrics;
 

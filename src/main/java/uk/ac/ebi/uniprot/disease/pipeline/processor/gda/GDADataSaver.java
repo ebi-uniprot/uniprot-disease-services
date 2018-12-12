@@ -2,9 +2,9 @@ package uk.ac.ebi.uniprot.disease.pipeline.processor.gda;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.ac.ebi.uniprot.disease.model.disgenet.DataTypes;
-import uk.ac.ebi.uniprot.disease.model.disgenet.GeneDiseaseAssociation;
-import uk.ac.ebi.uniprot.disease.model.disgenet.GeneDiseasePMIDAssociation;
+import uk.ac.ebi.uniprot.disease.model.sources.disgenet.DataTypes;
+import uk.ac.ebi.uniprot.disease.model.sources.disgenet.GeneDiseaseAssociation;
+import uk.ac.ebi.uniprot.disease.model.sources.disgenet.GeneDiseasePMIDAssociation;
 import uk.ac.ebi.uniprot.disease.pipeline.processor.common.BaseDataSaver;
 import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 

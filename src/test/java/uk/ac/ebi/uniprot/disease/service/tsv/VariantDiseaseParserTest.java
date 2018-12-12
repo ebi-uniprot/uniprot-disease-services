@@ -2,7 +2,7 @@ package uk.ac.ebi.uniprot.disease.service.tsv;
 
 import org.junit.Assert;
 import org.junit.Test;
-import uk.ac.ebi.uniprot.disease.model.disgenet.VariantDiseaseAssociation;
+import uk.ac.ebi.uniprot.disease.model.sources.disgenet.VariantDiseaseAssociation;
 
 import java.io.FileNotFoundException;
 import java.util.Arrays;

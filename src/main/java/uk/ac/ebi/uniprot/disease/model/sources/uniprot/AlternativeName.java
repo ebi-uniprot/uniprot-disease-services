@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.disease.model.uniprot;
+package uk.ac.ebi.uniprot.disease.model.sources.uniprot;
 
 import lombok.Getter;
 import lombok.Setter;

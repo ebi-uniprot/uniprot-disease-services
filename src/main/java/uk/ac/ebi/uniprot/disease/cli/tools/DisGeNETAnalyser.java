@@ -1,15 +1,5 @@
 package uk.ac.ebi.uniprot.disease.cli.tools;
 
-import uk.ac.ebi.uniprot.disease.model.disgenet.GeneDiseaseAssociation;
-import uk.ac.ebi.uniprot.disease.service.tsv.GeneDiseaseParser;
-import uk.ac.ebi.uniprot.disease.service.tsv.TSVReader;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.*;
-import java.util.stream.Collectors;
-
 public class DisGeNETAnalyser {
     /*
     // get unique disease ids from all gda and all gd pmid association file

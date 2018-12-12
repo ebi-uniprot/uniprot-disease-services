@@ -1,10 +1,10 @@
 package uk.ac.ebi.uniprot.disease.pipeline.processor.uniprot;
 
 import org.apache.commons.lang3.StringUtils;
-import uk.ac.ebi.uniprot.disease.model.uniprot.AlternativeName;
-import uk.ac.ebi.uniprot.disease.model.uniprot.CrossRef;
-import uk.ac.ebi.uniprot.disease.model.uniprot.Keyword;
-import uk.ac.ebi.uniprot.disease.model.uniprot.UniProtDisease;
+import uk.ac.ebi.uniprot.disease.model.sources.uniprot.AlternativeName;
+import uk.ac.ebi.uniprot.disease.model.sources.uniprot.CrossRef;
+import uk.ac.ebi.uniprot.disease.model.sources.uniprot.Keyword;
+import uk.ac.ebi.uniprot.disease.model.sources.uniprot.UniProtDisease;
 
 import java.io.File;
 import java.io.FileNotFoundException;

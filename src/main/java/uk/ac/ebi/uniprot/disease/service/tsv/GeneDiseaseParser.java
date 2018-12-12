@@ -2,8 +2,8 @@ package uk.ac.ebi.uniprot.disease.service.tsv;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.ac.ebi.uniprot.disease.model.disgenet.GeneDiseaseAssociation;
-import uk.ac.ebi.uniprot.disease.model.disgenet.GeneDiseasePMIDAssociation;
+import uk.ac.ebi.uniprot.disease.model.sources.disgenet.GeneDiseaseAssociation;
+import uk.ac.ebi.uniprot.disease.model.sources.disgenet.GeneDiseasePMIDAssociation;
 
 import java.util.ArrayList;
 import java.util.List;

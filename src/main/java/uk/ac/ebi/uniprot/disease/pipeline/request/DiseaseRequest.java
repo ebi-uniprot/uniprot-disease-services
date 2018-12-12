@@ -1,7 +1,7 @@
 package uk.ac.ebi.uniprot.disease.pipeline.request;
 
 import lombok.*;
-import uk.ac.ebi.uniprot.disease.model.disgenet.*;
+import uk.ac.ebi.uniprot.disease.model.sources.disgenet.*;
 
 import java.sql.Connection;
 import java.util.List;

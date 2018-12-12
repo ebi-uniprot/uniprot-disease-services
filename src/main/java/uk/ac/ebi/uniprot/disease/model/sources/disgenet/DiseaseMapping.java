@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.disease.model.disgenet;
+package uk.ac.ebi.uniprot.disease.model.sources.disgenet;
 
 
 import lombok.*;
