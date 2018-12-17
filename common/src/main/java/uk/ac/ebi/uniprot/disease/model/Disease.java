@@ -1,8 +1,8 @@
 package uk.ac.ebi.uniprot.disease.model;
 
 
-import lombok.Data;
 import lombok.Builder;
+import lombok.Data;
 
 import java.io.Serializable;
 
