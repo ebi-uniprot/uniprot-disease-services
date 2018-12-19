@@ -1,9 +1,10 @@
-package uk.ac.ebi.uniprot.disease.service.disease;
+package uk.ac.ebi.uniprot.disease.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.ac.ebi.kraken.interfaces.uniprot.Gene;
 import uk.ac.ebi.kraken.interfaces.uniprot.ProteinDescription;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
-import uk.ac.ebi.kraken.interfaces.uniprot.comments.Comment;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.CommentType;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.FunctionComment;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.InteractionComment;
@@ -11,18 +12,16 @@ import uk.ac.ebi.kraken.interfaces.uniprot.description.FieldType;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.Name;
 import uk.ac.ebi.uniprot.disease.model.Protein;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProteinService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProteinService.class);
 
     public void createProtein(UniProtEntry uniProtEntry) {
-        if (!uniProtEntry.getComments(CommentType.DISEASE).isEmpty()) {
-            Protein protein = convertToProtein(uniProtEntry);
-            //TODO ignore non-disease protein
-            // DAO layer code goes here to persist the protein object
-            System.out.println(protein);
-        }
+        Protein protein = convertToProtein(uniProtEntry);
+        // DAO layer code goes here to persist the protein object
+        LOGGER.debug("The protein saved: {}", protein);
     }
 
     private Protein convertToProtein(UniProtEntry entry) {
@@ -38,19 +37,16 @@ public class ProteinService {
     }
 
     private Integer getInteractionCount(List<InteractionComment> comments) {
-        Integer count = 0;
-        for(InteractionComment comment : comments){
-            count += comment.getInteractions().size();
-        }
 
-        return count;
+        Integer iCount = comments.parallelStream().map(InteractionComment::getInteractions).mapToInt(List::size).sum();
+
+        return iCount;
     }
 
     private List<String> getFunctions(List<FunctionComment> comments) {
-        List<String> functions = new ArrayList<>();
-        for (FunctionComment comment : comments) {
-            functions.add(comment.getValue());
-        }
+
+        List<String> functions = comments.stream().map(FunctionComment::getValue).collect(Collectors.toList());
+
         return functions;
     }
 
@@ -69,7 +65,7 @@ public class ProteinService {
     private static String getGene(List<Gene> genes) {
         String geneName = null;
         String orfName = null;
-        String olnName = null;
+        String olnName  = null;
 
         for (Gene gene : genes) {
             if (gene.hasGeneName()) {

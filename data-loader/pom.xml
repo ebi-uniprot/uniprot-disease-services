@@ -12,11 +12,6 @@
     <artifactId>disease-data-loader</artifactId>
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>parser</artifactId>
-            <version>LATEST</version>
-        </dependency>
-        <dependency>
             <groupId>uk.ac.ebi.uniprot</groupId>
             <artifactId>disease-common</artifactId>
             <version>1.0.0-SNAPSHOT</version>

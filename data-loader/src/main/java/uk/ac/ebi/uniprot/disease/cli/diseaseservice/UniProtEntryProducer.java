@@ -8,6 +8,7 @@ import uk.ac.ebi.kraken.parser.UniProtParser;
 
 import java.io.File;
 import java.util.concurrent.BlockingQueue;
+import java.util.stream.IntStream;
 
 public class UniProtEntryProducer implements Runnable {
     private final BlockingQueue<UniProtEntry> uniProtEntryQueue;
@@ -24,21 +25,22 @@ public class UniProtEntryProducer implements Runnable {
     public void run() {
         File file = new File(this.fileName);
         EntryIterator iterator = UniProtParser.parseEntriesAll(file, DefaultUniProtFactory.getInstance());
-        for(UniProtEntry uniProtEntry : iterator){
+
+        iterator.forEach(uniProtEntry -> {
             try {
                 this.uniProtEntryQueue.put(uniProtEntry);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-        }
+        });
 
         // add the poison pills
-        for(int i = 0; i < this.consumerCount; i++){
+        IntStream.range(0, this.consumerCount).forEach(i -> {
             try {
                 this.uniProtEntryQueue.put(new UniProtEntryImpl());
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-        }
+        });
     }
 }
