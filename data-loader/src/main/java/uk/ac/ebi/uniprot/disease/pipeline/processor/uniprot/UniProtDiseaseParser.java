@@ -5,6 +5,7 @@ import uk.ac.ebi.uniprot.disease.model.sources.uniprot.AlternativeName;
 import uk.ac.ebi.uniprot.disease.model.sources.uniprot.CrossRef;
 import uk.ac.ebi.uniprot.disease.model.sources.uniprot.Keyword;
 import uk.ac.ebi.uniprot.disease.model.sources.uniprot.UniProtDisease;
+import uk.ac.ebi.uniprot.disease.utils.Constants;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,7 +49,7 @@ public class UniProtDiseaseParser {
                 if(lines.contains(COPYRIGHT_SEP)){
                     this.dataRegionStarted = false;
                 } else {
-                    diseases.add(convertToUniProtDiseas(lines));
+                    diseases.add(convertToUniProtDisease(lines));
                     count++;
                 }
 
@@ -61,7 +62,7 @@ public class UniProtDiseaseParser {
         return diseases;
     }
 
-    private UniProtDisease convertToUniProtDiseas(String line) {
+    private UniProtDisease convertToUniProtDisease(String line) {
         UniProtDisease upd = new UniProtDisease();
         // split by new line
         String[] tokens = line.split(LINE_SEP);
@@ -75,7 +76,7 @@ public class UniProtDiseaseParser {
             if(!StringUtils.isEmpty(token.trim())){
                 // split by 3 spaces
                 String[] keyVal = token.split(KEY_VAL_SEP);
-                switch(keyVal[0]){
+                switch(keyVal[Constants.ZERO]){
                     case ID_STR:
                         upd.setIdentifier(keyVal[1].replace(FULL_STOP, EMPTY_STR));
                         break;
@@ -97,6 +98,7 @@ public class UniProtDiseaseParser {
                     case KW_STR:
                         keyWords.add(getKeyword(keyVal[1]));
                         break;
+                    default://do nothing
                 }
 
             }

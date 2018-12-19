@@ -13,6 +13,8 @@ import uk.ac.ebi.uniprot.disease.pipeline.request.DiseaseRequest;
 import java.io.IOException;
 
 public class MainHelperTest {
+    private static final String GOOGLE_URL = "http://www.google.com";
+
     @Test
     public void testFillDefaultParams() {
         DiseaseDataLoaderArgs args = new DiseaseDataLoaderArgs();
@@ -53,27 +55,27 @@ public class MainHelperTest {
 
     @Test
     public void testParseCommandLineArgs(){
-        String[] args = {"--url", "http://www.google.com", "-h", "true", "-b", "300"};
+        String[] args = {"--url", GOOGLE_URL, "-h", "true", "-b", "300"};
         DiseaseDataLoaderArgs options = new DiseaseDataLoaderArgs();
         JCommander commander = MainHelper.parseCommandLineArgs(options, args);
         Assert.assertNotNull("Unable to parse the args", commander);
         Assert.assertNotNull("url is null", options.getUrl());
-        Assert.assertEquals("url is not equal", "http://www.google.com", options.getUrl());
+        Assert.assertEquals("url is not equal", GOOGLE_URL, options.getUrl());
         Assert.assertTrue("Help is not set", options.isHelp());
         Assert.assertEquals("Batch size is not updated", Integer.valueOf(300), options.getBatchSize());
     }
 
     @Test(expected = ParameterException.class)
     public void testParseCommandLineArgsWithWrongParam() {
-        String[] args = {"--urlrandom", "http://www.google.com", "-h", "true", "-b", "300"};
+        String[] args = {"--urlrandom", GOOGLE_URL, "-h", "true", "-b", "300"};
         DiseaseDataLoaderArgs options = new DiseaseDataLoaderArgs();
-        JCommander commander = MainHelper.parseCommandLineArgs(options, args);
+        MainHelper.parseCommandLineArgs(options, args);
         Assert.assertTrue("This should not execute", false);
     }
 
     @Test
     public void testDBParamsOverride() {
-        String jdbcUrl = "http://www.google.com";
+        String jdbcUrl = GOOGLE_URL;
         String user = "university";
         String pass = "password";
         String[] args = {"--type", "gdpa","--jdbcUrl", jdbcUrl, "-du", user, "--dbPassword", pass};

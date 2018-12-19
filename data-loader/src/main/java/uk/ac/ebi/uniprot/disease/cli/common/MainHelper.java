@@ -19,6 +19,7 @@ import java.util.Properties;
 public class MainHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(MainHelper.class);
     public static final String DEFAULT_DB_CONNECTION_PROP = "dbconnection.properties";
+    private static final String ERROR_MSG = "Incorrect value %s passed for param --type. See help";
 
     public static JCommander parseCommandLineArgs(Object options, String[] args) {
         JCommander jCommander = JCommander.newBuilder().addObject(options).build();
@@ -104,7 +105,7 @@ public class MainHelper {
         } else if(options.getDataType().equals(DataTypes.gdpa.name())){
             return GDADataLoader.DEFAULT_GDPA_CONFIG_LOCATION;
         } else {
-            throw new IllegalArgumentException("Incorrect value " + options.getDataType() + " passed for parm --type. See help");
+            throw new IllegalArgumentException(String.format(ERROR_MSG, options.getDataType()));
         }
     }
 
@@ -114,7 +115,7 @@ public class MainHelper {
         } else if(options.getDataType().equals(DataTypes.vdpa.name())){
             return VDADataLoader.DEFAULT_VDPA_CONFIG_LOCATION;
         } else {
-            throw new IllegalArgumentException("Incorrect value " + options.getDataType() + " passed for parm --type. See help");
+            throw new IllegalArgumentException(String.format(ERROR_MSG, options.getDataType()));
         }
     }
 
@@ -124,7 +125,7 @@ public class MainHelper {
         } else if(options.getDataType().equals(DataTypes.ug.name())){
             return DiseaseMappingsLoader.DEFAULT_UG_CONFIG_LOCATION;
         } else {
-            throw new IllegalArgumentException("Incorrect value " + options.getDataType() + " passed for parm --type. See help");
+            throw new IllegalArgumentException(String.format(ERROR_MSG, options.getDataType()));
         }
     }
 }
