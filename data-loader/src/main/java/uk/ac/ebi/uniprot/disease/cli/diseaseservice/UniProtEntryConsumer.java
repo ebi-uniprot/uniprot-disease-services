@@ -18,7 +18,6 @@ public class UniProtEntryConsumer implements Runnable {
     public void run() {
         while (true) {
             try {
-
                 UniProtEntry uniProtEntry = uniProtEntryQueue.take();
                 if (uniProtEntry.getType() == UniProtEntryType.UNKNOWN) {
                     break;

@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author sahmad
@@ -23,4 +24,5 @@ public class Disease implements Serializable {
     private Integer drugCount;
     private Integer pathwayCount;
     private Integer variantCount;
+    private Set<Protein> proteins;
 }

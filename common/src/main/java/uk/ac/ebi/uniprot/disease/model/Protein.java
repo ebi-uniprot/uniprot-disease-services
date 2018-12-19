@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author sahmad
@@ -13,15 +14,16 @@ import java.util.List;
 @Builder
 public class Protein implements Serializable {
     private static final long serialVersionUID = 2210840006115833880L;
-    private String id;// e.g. AATM_RABIT
-    private String name;// description of the entry
-    private String accession;//Accession id e.g. P12345
-    private String gene; // TODO should we create first class object for Gene??
+    private String id;
+    private String name;
+    private String accession;
+    private String gene;
     private List<String> functions;
     private Integer interactionCount;
     private Integer pathwayCount;
-    private Integer variantCount;// TODO to be decided
+    private Integer variantCount;
     private Integer diseaseCount;
     private Integer drugCount;// TODO to be decided
-    private Integer publicationCount;// TODO to be decided
+    private Integer publicationCount;
+    private Set<Disease> diseases;
 }

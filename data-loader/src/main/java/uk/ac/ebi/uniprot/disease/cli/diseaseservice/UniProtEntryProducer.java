@@ -5,6 +5,7 @@ import uk.ac.ebi.kraken.model.factories.DefaultUniProtFactory;
 import uk.ac.ebi.kraken.model.uniprot.UniProtEntryImpl;
 import uk.ac.ebi.kraken.parser.EntryIterator;
 import uk.ac.ebi.kraken.parser.UniProtParser;
+import uk.ac.ebi.uniprot.disease.utils.Constants;
 
 import java.io.File;
 import java.util.concurrent.BlockingQueue;
@@ -35,7 +36,7 @@ public class UniProtEntryProducer implements Runnable {
         });
 
         // add the poison pills
-        IntStream.range(0, this.consumerCount).forEach(i -> {
+        IntStream.range(Constants.ZERO, this.consumerCount).forEach(i -> {
             try {
                 this.uniProtEntryQueue.put(new UniProtEntryImpl());
             } catch (InterruptedException e) {
