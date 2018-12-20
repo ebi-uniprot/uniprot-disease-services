@@ -9,10 +9,12 @@ import java.util.concurrent.BlockingQueue;
 
 public class UniProtEntryConsumer implements Runnable {
     private final BlockingQueue<UniProtEntry> uniProtEntryQueue;
+    private final ProteinService proteinService;
 
 
-    public UniProtEntryConsumer(BlockingQueue<UniProtEntry> uniProtEntryQueue) {
+    public UniProtEntryConsumer(BlockingQueue<UniProtEntry> uniProtEntryQueue, ProteinService proteinService) {
         this.uniProtEntryQueue = uniProtEntryQueue;
+        this.proteinService = proteinService;
     }
 
     public void run() {
@@ -22,7 +24,7 @@ public class UniProtEntryConsumer implements Runnable {
                 if (uniProtEntry.getType() == UniProtEntryType.UNKNOWN) {
                     break;
                 } else if (!uniProtEntry.getComments(CommentType.DISEASE).isEmpty()) {
-                    new ProteinService().createProtein(uniProtEntry);
+                    this.proteinService.createProtein(uniProtEntry);
                 }
                 //System.out.println(Thread.currentThread().getName() + " UniProt ID: " + uniProtEntry.getUniProtId());
             } catch (InterruptedException e) {

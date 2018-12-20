@@ -1,6 +1,7 @@
 package uk.ac.ebi.uniprot.disease.cli.diseaseservice;
 
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
+import uk.ac.ebi.uniprot.disease.service.ProteinService;
 import uk.ac.ebi.uniprot.disease.utils.Constants;
 
 import java.util.concurrent.*;
@@ -18,8 +19,9 @@ public class DiseaseServiceDataLoader {
         // create just one producer
         threadPool.execute(new UniProtEntryProducer(blockingQueue, fileName, consumerCount));
         // create and start n consumers
+        ProteinService proteinService = new ProteinService();
         IntStream.range(Constants.ZERO, consumerCount).parallel().
-                forEach(i -> threadPool.execute(new UniProtEntryConsumer(blockingQueue)));
+                forEach(i -> threadPool.execute(new UniProtEntryConsumer(blockingQueue, proteinService)));
 
         threadPool.shutdown();
     }

@@ -3,9 +3,7 @@ package uk.ac.ebi.uniprot.disease.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.kraken.interfaces.uniprot.*;
-import uk.ac.ebi.kraken.interfaces.uniprot.comments.CommentType;
-import uk.ac.ebi.kraken.interfaces.uniprot.comments.FunctionComment;
-import uk.ac.ebi.kraken.interfaces.uniprot.comments.InteractionComment;
+import uk.ac.ebi.kraken.interfaces.uniprot.comments.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.FieldType;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.Name;
 import uk.ac.ebi.kraken.interfaces.uniprot.features.FeatureType;
@@ -19,7 +17,6 @@ import java.util.stream.Collectors;
 
 public class ProteinService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProteinService.class);
-    // TODO make it spring autowired
     private DiseaseService diseaseService = new DiseaseService();
 
     public void createProtein(UniProtEntry uniProtEntry) {
@@ -38,11 +35,15 @@ public class ProteinService {
         builder.gene(getGene(entry.getGenes()));
         builder.functions(getFunctions(entry.getComments(CommentType.FUNCTION)));
         builder.interactionCount(getInteractionCount(entry.getComments(CommentType.INTERACTION)));
-        builder.diseaseCount(entry.getComments(CommentType.DISEASE).size());
+        builder.diseaseCount(getDiseaseCount(entry.getComments(CommentType.DISEASE)));
         builder.variantCount(entry.getFeatures(FeatureType.VARIANT).size());
         builder.pathwayCount(getPathwayCount(entry));
         builder.publicationCount(entry.getCitationsNew().size());
         return builder.build();
+    }
+
+    private Integer getDiseaseCount(List<DiseaseCommentStructured> comments) {
+        return Math.toIntExact(comments.parallelStream().filter(dc -> dc.hasDefinedDisease()).count());
     }
 
     private Integer getPathwayCount(UniProtEntry entry) {

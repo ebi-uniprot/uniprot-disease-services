@@ -15,13 +15,13 @@
     </modules>
 
     <parent>
-        <groupId>uk.ac.ebi.uniprot</groupId>
-        <artifactId>ujdk-parent</artifactId>
-        <version>1.0</version>
-        <relativePath>../uniprot-ujdk-parent</relativePath>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.5.RELEASE</version>
     </parent>
     <properties>
         <jcommander.version>1.72</jcommander.version>
+        <http-uniprot-private-url>http://wwwdev.ebi.ac.uk/uniprot/artifactory</http-uniprot-private-url>
     </properties>
     
     <dependencies>
@@ -86,6 +86,7 @@
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
+            <version>2.7.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.eclipse.persistence</groupId>
@@ -101,6 +102,46 @@
         </dependency>
         <!-- Postgres DB and EcliseINK -->
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>spring-releases</id>
+            <url>https://repo.spring.io/libs-release</url>
+        </repository>
+        <repository>
+            <id>spring-libs-milestone</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/libs-milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>uniprot-artifactory-release</id>
+            <name>UniProt Artifactory for Releases</name>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <url>${http-uniprot-private-url}/release</url>
+        </repository>
+        <repository>
+            <id>uniprot-artifactory-snapshots</id>
+            <name>UniProt Artifactory for Snapshots</name>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+            <url>${http-uniprot-private-url}/snapshot</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
