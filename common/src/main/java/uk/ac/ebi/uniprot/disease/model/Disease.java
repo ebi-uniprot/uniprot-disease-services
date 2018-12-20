@@ -2,6 +2,9 @@ package uk.ac.ebi.uniprot.disease.model;
 
 
 import lombok.*;
+import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseCrossReference;
+import uk.ac.ebi.kraken.interfaces.uniprot.comments.Interaction;
+import uk.ac.ebi.kraken.interfaces.uniprot.features.VariantFeature;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +27,11 @@ public class Disease implements Serializable {
     private Integer drugCount;
     private Integer pathwayCount;
     private Integer variantCount;
+    private Integer interactionCount;
     private Set<Protein> proteins;
+    private List<DatabaseCrossReference> pathways;
+    private List<VariantFeature> variants;
+    private List<Interaction> interactions;
 
     @Override
     public String toString() {

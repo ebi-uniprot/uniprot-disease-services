@@ -6,11 +6,14 @@ import uk.ac.ebi.kraken.interfaces.uniprot.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.FieldType;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.Name;
+import uk.ac.ebi.kraken.interfaces.uniprot.features.Feature;
 import uk.ac.ebi.kraken.interfaces.uniprot.features.FeatureType;
 import uk.ac.ebi.uniprot.disease.model.Disease;
 import uk.ac.ebi.uniprot.disease.model.Protein;
 import uk.ac.ebi.uniprot.disease.utils.Constants;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,17 +31,32 @@ public class ProteinService {
     }
 
     public Protein convertToProtein(UniProtEntry entry) {
+
         Protein.ProteinBuilder builder = Protein.builder();
         builder.id(entry.getUniProtId().getValue());
         builder.name(getDescription(entry.getProteinDescription()));
         builder.accession(entry.getPrimaryUniProtAccession().getValue());
         builder.gene(getGene(entry.getGenes()));
         builder.functions(getFunctions(entry.getComments(CommentType.FUNCTION)));
-        builder.interactionCount(getInteractionCount(entry.getComments(CommentType.INTERACTION)));
+
+        // set interactions
+        List<Interaction> interactions = getInteractions(entry.getComments(CommentType.INTERACTION));
+        builder.interactions(interactions);
+        builder.interactionCount(interactions.size());
         builder.diseaseCount(getDiseaseCount(entry.getComments(CommentType.DISEASE)));
-        builder.variantCount(entry.getFeatures(FeatureType.VARIANT).size());
-        builder.pathwayCount(getPathwayCount(entry));
+
+        // set variants
+        Collection<Feature> variants = entry.getFeatures(FeatureType.VARIANT);
+        builder.variants(new ArrayList(variants));
+        builder.variantCount(variants.size());
+
+        // set pathways
+        List<DatabaseCrossReference> pathways = getPathways(entry);
+        builder.pathways(pathways);
+        builder.pathwayCount(pathways.size());
+
         builder.publicationCount(entry.getCitationsNew().size());
+
         return builder.build();
     }
 
@@ -46,16 +64,17 @@ public class ProteinService {
         return Math.toIntExact(comments.parallelStream().filter(dc -> dc.hasDefinedDisease()).count());
     }
 
-    private Integer getPathwayCount(UniProtEntry entry) {
+    private List<DatabaseCrossReference> getPathways(UniProtEntry entry) {
         List<DatabaseCrossReference> dbXRefs = entry.getDatabaseCrossReferences(DatabaseType.REACTOME);
-        return dbXRefs.size();
+        return dbXRefs;
     }
 
-    private Integer getInteractionCount(List<InteractionComment> comments) {
+    private List<Interaction> getInteractions(List<InteractionComment> comments) {
 
-        Integer iCount = comments.parallelStream().map(InteractionComment::getInteractions).mapToInt(List::size).sum();
+        List<Interaction> interactions = comments.parallelStream().map(InteractionComment::getInteractions)
+                                                                  .flatMap(List::stream).collect(Collectors.toList());
 
-        return iCount;
+        return interactions;
     }
 
     private List<String> getFunctions(List<FunctionComment> comments) {
