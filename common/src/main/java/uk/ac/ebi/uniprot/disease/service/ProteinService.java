@@ -1,3 +1,10 @@
+/*
+ * Created by sahmad on 12/21/18 9:07 AM
+ * UniProt Consortium.
+ * Copyright (c) 2002-2018.
+ *
+ */
+
 package uk.ac.ebi.uniprot.disease.service;
 
 import org.slf4j.Logger;
@@ -24,8 +31,6 @@ public class ProteinService {
 
     public void createProtein(UniProtEntry uniProtEntry) {
         Protein protein = convertToProtein(uniProtEntry);
-        Set<Disease> diseases = diseaseService.getDiseases(uniProtEntry.getComments(CommentType.DISEASE), protein);
-        protein.setDiseases(diseases);
         // DAO layer code goes here to persist the protein object
         LOGGER.debug("The protein saved: {}", protein);
     }
@@ -57,7 +62,12 @@ public class ProteinService {
 
         builder.publicationCount(entry.getCitationsNew().size());
 
-        return builder.build();
+        Protein protein = builder.build();
+        // get and set the diseases caused by the protein
+        Set<Disease> diseases = diseaseService.getDiseases(entry.getComments(CommentType.DISEASE), protein);
+        protein.setDiseases(diseases);
+
+        return protein;
     }
 
     private Integer getDiseaseCount(List<DiseaseCommentStructured> comments) {

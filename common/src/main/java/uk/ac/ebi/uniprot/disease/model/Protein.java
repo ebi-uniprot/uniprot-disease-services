@@ -1,3 +1,10 @@
+/*
+ * Created by sahmad on 12/21/18 9:10 AM
+ * UniProt Consortium.
+ * Copyright (c) 2002-2018.
+ *
+ */
+
 package uk.ac.ebi.uniprot.disease.model;
 
 import lombok.*;
@@ -10,9 +17,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @author sahmad
- */
 @Getter
 @Setter
 @Builder
@@ -49,6 +53,9 @@ public class Protein implements Serializable {
                 ", drugCount=" + drugCount +
                 ", publicationCount=" + publicationCount +
                 ", diseases=" + diseases +
+                ", pathways=" + pathways +
+                ", variants=" + variants +
+                ", interactions=" + interactions +
                 '}';
     }
 }

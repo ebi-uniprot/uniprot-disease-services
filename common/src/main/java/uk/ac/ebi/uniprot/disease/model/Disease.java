@@ -1,3 +1,10 @@
+/*
+ * Created by sahmad on 12/21/18 9:09 AM
+ * UniProt Consortium.
+ * Copyright (c) 2002-2018.
+ *
+ */
+
 package uk.ac.ebi.uniprot.disease.model;
 
 
@@ -45,6 +52,10 @@ public class Disease implements Serializable {
                 ", drugCount=" + drugCount +
                 ", pathwayCount=" + pathwayCount +
                 ", variantCount=" + variantCount +
+                ", interactionCount=" + interactionCount +
+                ", pathways=" + pathways +
+                ", variants=" + variants +
+                ", interactions=" + interactions +
                 '}';
     }
 }

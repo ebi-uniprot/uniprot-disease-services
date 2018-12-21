@@ -1,3 +1,10 @@
+/*
+ * Created by sahmad on 12/21/18 9:01 AM
+ * UniProt Consortium.
+ * Copyright (c) 2002-2018.
+ *
+ */
+
 package uk.ac.ebi.uniprot.disease.service;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,16 +20,30 @@ import uk.ac.ebi.uniprot.disease.utils.Constants;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 public class DiseaseService {
-    private Map<String, Boolean> diseaseExist = new HashMap<>();
     private Map<String, Disease> nameDisease = new HashMap<>();
 
+    /**
+     * Get a list of diseases from the protein
+     * @param diseaseComments
+     * @param protein
+     * @return diseases
+     */
     public Set<Disease> getDiseases(List<DiseaseCommentStructured> diseaseComments, Protein protein) {
+
         Set<Disease> diseases = diseaseComments.stream().filter(dc -> dc.hasDefinedDisease()).
                 map(dc -> convertToDisease(dc, protein)).collect(Collectors.toSet());
+
         return diseases;
     }
 
+    /**
+     * Converts the DiseaseComment to Disease object using protein to fill other details
+     * @param diseaseComment
+     * @param protein
+     * @return
+     */
     public Disease convertToDisease(DiseaseCommentStructured diseaseComment, Protein protein) {
         uk.ac.ebi.kraken.interfaces.uniprot.comments.Disease disease = diseaseComment.getDisease();
         // get common fields
@@ -32,7 +53,8 @@ public class DiseaseService {
         List<VariantFeature> dVariants = getDiseaseVariants(acronym, protein.getVariants());
 
         Disease pDisease;
-        if (diseaseExist.containsKey(name)) {
+
+        if (nameDisease.containsKey(name)) {
 
             pDisease = nameDisease.get(name);
             pDisease.getProteins().add(protein);
@@ -74,7 +96,7 @@ public class DiseaseService {
             Set<Protein> proteins = new HashSet<>();
             proteins.add(protein);
             pDisease.setProteins(proteins);
-            diseaseExist.put(name, Boolean.TRUE);
+
             nameDisease.put(name, pDisease);
         }
         return pDisease;
@@ -141,13 +163,13 @@ public class DiseaseService {
 
     }
 
-    private List<DatabaseCrossReference> mergePathways(List<DatabaseCrossReference> dPathways,
-                                                       List<DatabaseCrossReference> pPathways) {
+    private List<DatabaseCrossReference> mergePathways(List<DatabaseCrossReference> diseasePathways,
+                                                       List<DatabaseCrossReference> proteinPathways) {
 
-        List<DatabaseCrossReference> mergedPathways = new ArrayList(dPathways);
+        List<DatabaseCrossReference> mergedPathways = new ArrayList(diseasePathways);
 
-        for (DatabaseCrossReference pp : pPathways) {
-            if (!doesPathwayExist(pp, dPathways)) {
+        for (DatabaseCrossReference pp : proteinPathways) {
+            if (!doesPathwayExist(pp, diseasePathways)) {
                 mergedPathways.add(pp);
 
             }
