@@ -8,6 +8,7 @@
 package uk.ac.ebi.uniprot.disease.service;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseCrossReference;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.DiseaseCommentStructured;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.Interaction;
@@ -20,7 +21,7 @@ import uk.ac.ebi.uniprot.disease.utils.Constants;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+@Service
 public class DiseaseService {
     private Map<String, Disease> nameDisease = new HashMap<>();
 

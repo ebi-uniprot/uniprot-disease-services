@@ -9,6 +9,8 @@ package uk.ac.ebi.uniprot.disease.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import uk.ac.ebi.kraken.interfaces.uniprot.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.FieldType;
@@ -25,9 +27,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Service
 public class ProteinService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProteinService.class);
-    private DiseaseService diseaseService = new DiseaseService();
+    @Autowired
+    private DiseaseService diseaseService;
 
     public void createProtein(UniProtEntry uniProtEntry) {
         Protein protein = convertToProtein(uniProtEntry);

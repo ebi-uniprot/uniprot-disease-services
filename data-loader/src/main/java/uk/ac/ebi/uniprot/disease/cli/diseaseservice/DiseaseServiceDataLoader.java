@@ -7,6 +7,11 @@
 
 package uk.ac.ebi.uniprot.disease.cli.diseaseservice;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.uniprot.disease.service.ProteinService;
 import uk.ac.ebi.uniprot.disease.utils.Constants;
@@ -14,9 +19,18 @@ import uk.ac.ebi.uniprot.disease.utils.Constants;
 import java.util.concurrent.*;
 import java.util.stream.IntStream;
 
-public class DiseaseServiceDataLoader {
-    public static void main(String[] args) {
+@SpringBootApplication
+@ComponentScan({"uk.ac.ebi.uniprot"})
+public class DiseaseServiceDataLoader implements CommandLineRunner {
+    @Autowired
+    private ProteinService proteinService;
 
+    public static void main(String[] args) {
+        SpringApplication.run(DiseaseServiceDataLoader.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
         if(args.length != Constants.ONE){
             System.err.println("ERROR: Pass the absolute path of the swissprot data file.");
             System.exit(Constants.ONE);
@@ -34,10 +48,10 @@ public class DiseaseServiceDataLoader {
         // create just one producer
         threadPool.execute(new UniProtEntryProducer(blockingQueue, fileName, consumerCount));
         // create and start n consumers
-        ProteinService proteinService = new ProteinService();
         IntStream.range(Constants.ZERO, consumerCount).parallel().
                 forEach(i -> threadPool.execute(new UniProtEntryConsumer(blockingQueue, proteinService)));
 
         threadPool.shutdown();
+
     }
 }
