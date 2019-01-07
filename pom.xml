@@ -23,16 +23,12 @@
         <jcommander.version>1.72</jcommander.version>
         <http-uniprot-private-url>http://wwwdev.ebi.ac.uk/uniprot/artifactory</http-uniprot-private-url>
         <jacoco.version>0.7.8</jacoco.version>
-        <!-- Test coverage -->
         <jacoco.outputDir>${project.build.directory}</jacoco.outputDir>
-
-        <!-- Unit test report path -->
         <jacoco.out.ut.file>jacoco-ut.exec</jacoco.out.ut.file>
         <jacoco.reportPath>${jacoco.outputDir}/${jacoco.out.ut.file}</jacoco.reportPath>
-
-        <!-- Integration test report path -->
         <jacoco.out.it.file>jacoco-it.exec</jacoco.out.it.file>
         <jacoco.itReportPath>${jacoco.outputDir}/${jacoco.out.it.file}</jacoco.itReportPath>
+        <jacoco.maven.version>0.8.1</jacoco.maven.version>
     </properties>
     
     <dependencies>
@@ -167,7 +163,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
+                <version>${jacoco.maven.version}</version>
                 <executions>
                     <!-- Sets up jacaco for unit test coverage analysis (jacoco.agent.ut.arg) -->
                     <execution>
@@ -179,7 +175,6 @@
                         <configuration>
                             <destFile>${jacoco.reportPath}</destFile>
                             <propertyName>jacoco.agent.ut.arg</propertyName>
-                            <append>true</append>
                         </configuration>
                     </execution>
                     <!-- Sets up jacaco for integration test coverage analysis (jacoco.agent.it.arg) -->
@@ -192,7 +187,6 @@
                         <configuration>
                             <destFile>${jacoco.itReportPath}</destFile>
                             <propertyName>jacoco.agent.it.arg</propertyName>
-                            <append>true</append>
                         </configuration>
                     </execution>
                 </executions>
