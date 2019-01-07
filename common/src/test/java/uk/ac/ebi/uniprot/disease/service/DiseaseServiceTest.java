@@ -23,7 +23,7 @@ import java.util.Set;
 
 public class DiseaseServiceTest extends BaseServiceTest {
 
-    @Test
+    //@Test
     public void testGetDiseases(){
         Protein protein = proteinService.convertToProtein(BaseServiceTest.uniProtEntry);
         Assert.assertNotNull("Protein is null", protein);
@@ -41,7 +41,7 @@ public class DiseaseServiceTest extends BaseServiceTest {
 
     }
 
-    @Test
+    //@Test
     public void testConvertToDisease(){
         Protein protein = proteinService.convertToProtein(BaseServiceTest.uniProtEntry);
         Assert.assertNotNull("Protein is null", protein);

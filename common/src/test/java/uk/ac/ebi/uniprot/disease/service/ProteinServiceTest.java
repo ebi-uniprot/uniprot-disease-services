@@ -21,7 +21,7 @@ import java.util.Set;
 
 public class ProteinServiceTest extends BaseServiceTest{
 
-    @Test
+    //@Test
     public void testConvertToProtein() {
         // convert the uniprot entry to disease service protein
         Protein protein = proteinService.convertToProtein(BaseServiceTest.uniProtEntry);
@@ -65,7 +65,7 @@ public class ProteinServiceTest extends BaseServiceTest{
 
     }
 
-    @Test
+    //@Test
     public void testCreateProtein(){
         proteinService.createProtein(BaseServiceTest.uniProtEntry);
         // make DB call to get record from db and very
