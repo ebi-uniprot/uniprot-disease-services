@@ -30,8 +30,13 @@ import java.util.stream.Collectors;
 @Service
 public class ProteinService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProteinService.class);
-    @Autowired
+
     private DiseaseService diseaseService;
+
+    @Autowired
+    public ProteinService(DiseaseService diseaseService){
+        this.diseaseService = diseaseService;
+    }
 
     public void createProtein(UniProtEntry uniProtEntry) {
         Protein protein = convertToProtein(uniProtEntry);

@@ -18,7 +18,7 @@ import java.io.File;
 
 public class BaseServiceTest {
     protected final static DiseaseService diseaseService = new DiseaseService();
-    protected static final ProteinService proteinService = new ProteinService();
+    protected static final ProteinService proteinService = new ProteinService(new DiseaseService());
 
     private static final String DATA_FILE_PATH = "src/test/resources/sample_uniprot_sprot.dat";
     protected static EntryIterator iterator;
