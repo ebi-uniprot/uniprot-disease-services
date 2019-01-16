@@ -16,4 +16,5 @@ public class UniProtDisease {
     private List<AlternativeName> synonyms;
     private List<CrossRef> crossRefs;
     private List<Keyword> keywords;
+    private List<String> alternativeNames;
 }

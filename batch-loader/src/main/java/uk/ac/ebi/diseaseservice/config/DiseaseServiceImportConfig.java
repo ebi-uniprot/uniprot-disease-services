@@ -16,6 +16,7 @@ import org.springframework.batch.core.configuration.annotation.DefaultBatchConfi
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.MongoItemWriter;
@@ -25,11 +26,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import uk.ac.ebi.diseaseservice.processor.UniProtDiseaseConverter;
 import uk.ac.ebi.diseaseservice.writer.NoOpItemWriter;
 import uk.ac.ebi.diseaseservice.listener.LogJobListener;
 import uk.ac.ebi.diseaseservice.listener.LogStepListener;
 import uk.ac.ebi.diseaseservice.reader.HumDiseaseReader;
 import uk.ac.ebi.diseaseservice.util.Constants;
+import uk.ac.ebi.uniprot.disease.model.Disease;
 import uk.ac.ebi.uniprot.disease.model.sources.uniprot.UniProtDisease;
 
 import javax.sql.DataSource;
@@ -37,7 +40,7 @@ import java.io.FileNotFoundException;
 
 @Configuration
 @EnableBatchProcessing
-@PropertySource(value = "application.properties")
+@PropertySource("classpath:application.properties")
 public class DiseaseServiceImportConfig extends DefaultBatchConfigurer {
     @Override
     public void setDataSource(DataSource dataSource) {
@@ -74,11 +77,17 @@ public class DiseaseServiceImportConfig extends DefaultBatchConfigurer {
     @Bean
     public Step importHumDiseaseData() throws FileNotFoundException {
         return this.stepBuilderFactory.get(Constants.DS_HUM_DISEASE_DATA_LOADER_STEP)
-                .<UniProtDisease, UniProtDisease>chunk(chunkSize)
+                .<UniProtDisease, Disease>chunk(chunkSize)
                 .reader(getHumDiseaseReader())
+                .processor(getConverter())
                 .writer(getMongoItemWriter())
                 .listener(getLogStepListener())
                 .build();
+    }
+
+    @Bean
+    public UniProtDiseaseConverter getConverter() {
+        return new UniProtDiseaseConverter();
     }
 
     @Bean
@@ -105,9 +114,9 @@ public class DiseaseServiceImportConfig extends DefaultBatchConfigurer {
 
 
     @Bean
-    public MongoItemWriter<UniProtDisease> getMongoItemWriter() {
+    public MongoItemWriter<Disease> getMongoItemWriter() {
         mongoTemplate.dropCollection(this.diseaseCollectionName);// TODO make it another conditional step e.g tasklet
-        MongoItemWriter<UniProtDisease> mongoItemWriter = new MongoItemWriter<>();
+        MongoItemWriter<Disease> mongoItemWriter = new MongoItemWriter<>();
         mongoItemWriter.setCollection(this.diseaseCollectionName);
         mongoItemWriter.setTemplate(mongoTemplate);
         return mongoItemWriter;

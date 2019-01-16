@@ -12,7 +12,6 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
-import uk.ac.ebi.uniprot.disease.model.sources.uniprot.AlternativeName;
 import uk.ac.ebi.uniprot.disease.model.sources.uniprot.CrossRef;
 import uk.ac.ebi.uniprot.disease.model.sources.uniprot.Keyword;
 import uk.ac.ebi.uniprot.disease.model.sources.uniprot.UniProtDisease;
@@ -27,8 +26,6 @@ import java.util.Scanner;
 
 
 public class HumDiseaseReader implements ItemReader<UniProtDisease> {
-    private static int count = 0;
-
     private Scanner reader;
     private boolean dataRegionStarted;
     private final static String DATA_REGION_SEP = "___________________________________________________________________________";
@@ -82,10 +79,7 @@ public class HumDiseaseReader implements ItemReader<UniProtDisease> {
         String[] tokens = line.split(LINE_SEP);
 
         StringBuilder stringBuilder = new StringBuilder();
-        List<AlternativeName> synonyms = new ArrayList<>();
-        List<CrossRef> crossRefs = new ArrayList<>();
-        List<Keyword> keyWords = new ArrayList<>();
-
+        List<String> synonyms = new ArrayList<>();
         for (String token : tokens) {
             if (!StringUtils.isEmpty(token.trim())) {
                 // split by 3 spaces
@@ -107,10 +101,8 @@ public class HumDiseaseReader implements ItemReader<UniProtDisease> {
                         synonyms.add(getSynonym(keyVal[1]));
                         break;
                     case DR_STR:
-                        crossRefs.add(getCrossRef(keyVal[1]));
                         break;
                     case KW_STR:
-                        keyWords.add(getKeyword(keyVal[1]));
                         break;
                     default://do nothing
                 }
@@ -119,16 +111,11 @@ public class HumDiseaseReader implements ItemReader<UniProtDisease> {
         }
 
         upd.setDefinition(stringBuilder.toString());
+
         if (!synonyms.isEmpty()) {
-            upd.setSynonyms(synonyms);
-        }
-        if (!crossRefs.isEmpty()) {
-            upd.setCrossRefs(crossRefs);
+            upd.setAlternativeNames(synonyms);
         }
 
-        if (!keyWords.isEmpty()) {
-            upd.setKeywords(keyWords);
-        }
         return upd;
     }
 
@@ -151,9 +138,7 @@ public class HumDiseaseReader implements ItemReader<UniProtDisease> {
         return cr;
     }
 
-    private AlternativeName getSynonym(String name) {
-        AlternativeName synonym = new AlternativeName();
-        synonym.setName(name.replace(FULL_STOP, EMPTY_STR));
-        return synonym;
+    private String getSynonym(String name) {
+        return name.replace(FULL_STOP, EMPTY_STR);
     }
 }

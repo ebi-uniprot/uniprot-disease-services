@@ -26,10 +26,10 @@ import java.util.Set;
 public class Disease implements Serializable {
     private static final long serialVersionUID = 680211621946161865L;
     private String id;
-    private String name;
-    private String description;
-    private String acronym;
-    private List<String> synonyms;
+    private String name;// identifier
+    private String description;// definition
+    private String acronym;// acronym
+    private List<String> synonyms;// alternative name
     private Integer proteinCount;
     private Integer drugCount;
     private Integer pathwayCount;
