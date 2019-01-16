@@ -12,6 +12,7 @@
         <module>data-loader</module>
         <module>rest</module>
         <module>common</module>
+        <module>batch-loader</module>
     </modules>
 
     <parent>
