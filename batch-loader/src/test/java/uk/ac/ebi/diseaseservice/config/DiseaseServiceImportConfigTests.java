@@ -23,8 +23,6 @@ import uk.ac.ebi.diseaseservice.util.Constants;
 @RunWith(SpringRunner.class)
 public class DiseaseServiceImportConfigTests {
 
-
-
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 
