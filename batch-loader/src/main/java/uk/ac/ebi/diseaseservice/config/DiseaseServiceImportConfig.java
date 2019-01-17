@@ -16,9 +16,11 @@ import org.springframework.batch.core.configuration.annotation.DefaultBatchConfi
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.MongoItemWriter;
+import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -65,13 +67,36 @@ public class DiseaseServiceImportConfig extends DefaultBatchConfigurer {
     @Value("${ds.input.humdisease.chunk.size}")
     private Integer chunkSize;
 
+    @Value("${ds.mongodb.reset}")
+    private boolean resetDB;
+
     @Bean
     public Job getDiseaseServiceDataLoadJob() throws FileNotFoundException {
         return this.jobBuilderFactory.get(Constants.DISEASE_SERVICE_DATA_LOADER)
-                .flow(importHumDiseaseData())
+                .flow(cleanDB())
+                .next(importHumDiseaseData())
                 .end()
                 .listener(getLogJobListener())
                 .build();
+    }
+
+    @Bean
+    public Step cleanDB() {
+        return this.stepBuilderFactory.get(Constants.DB_CLEAN_STEP)
+                .tasklet(dbCleanTasklet())
+                .build();
+    }
+
+    private Tasklet dbCleanTasklet() {
+        Tasklet tasklet = (contribution, chunkContext) -> {
+            if(resetDB){
+                logger.info("Deleting the collection {}", diseaseCollectionName);
+                mongoTemplate.dropCollection(diseaseCollectionName);
+            }
+            return RepeatStatus.FINISHED;
+        };
+
+        return tasklet;
     }
 
     @Bean
@@ -115,12 +140,9 @@ public class DiseaseServiceImportConfig extends DefaultBatchConfigurer {
 
     @Bean
     public MongoItemWriter<Disease> getMongoItemWriter() {
-        mongoTemplate.dropCollection(this.diseaseCollectionName);// TODO make it another conditional step e.g tasklet
         MongoItemWriter<Disease> mongoItemWriter = new MongoItemWriter<>();
         mongoItemWriter.setCollection(this.diseaseCollectionName);
         mongoItemWriter.setTemplate(mongoTemplate);
         return mongoItemWriter;
     }
-
-
 }
