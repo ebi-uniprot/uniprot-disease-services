@@ -69,7 +69,6 @@ public class HumDiseaseReader implements ItemReader<UniProtDisease> {
         if(!lines.contains(COPYRIGHT_SEP)) {
             disease = convertToUniProtDisease(lines);
         }
-
         return disease;
     }
 

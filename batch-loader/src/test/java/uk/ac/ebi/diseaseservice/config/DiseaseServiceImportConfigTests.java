@@ -7,63 +7,40 @@
 
 package uk.ac.ebi.diseaseservice.config;
 
-import com.mongodb.MongoClient;
-import cz.jirutka.spring.embedmongo.EmbeddedMongoFactoryBean;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.test.JobLauncherTestUtils;
-import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.batch.BatchAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.mongodb.MongoDbFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.ac.ebi.diseaseservice.util.Constants;
 
-import java.io.IOException;
-
-
-@SpringBootTest(classes = DiseaseServiceImportConfigTests.TestConfiguration.class)
-@SpringBatchTest
+@SpringBootTest(classes = TestConfiguration.class)
 @RunWith(SpringRunner.class)
 public class DiseaseServiceImportConfigTests {
+
+
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 
-    @Configuration
-    @Import(DiseaseServiceImportConfig.class)
-    @ComponentScan(basePackages = {"uk.ac.ebi.diseaseservice"})
-    @EnableBatchProcessing
-    @EnableAutoConfiguration(exclude = {EmbeddedMongoAutoConfiguration.class, BatchAutoConfiguration.class})
-    static class TestConfiguration {
-
-        @Autowired
-        private MongoDbFactory mongoDbFactory;
-
-        @Bean
-        MongoTemplate mongoTemplate() throws IOException {
-            EmbeddedMongoFactoryBean mongo = new EmbeddedMongoFactoryBean();
-            mongo.setBindIp("localhost");
-            MongoClient mongoClient = mongo.getObject();
-            return new MongoTemplate(mongoClient, "disease-service");
-        }
-
-    }
-
     @Test
     public void testJob() throws Exception {
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
-        Assert.assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
+        Assert.assertEquals(BatchStatus.COMPLETED.toString(), jobExecution.getExitStatus().getExitCode());
+
+        // get the step
+        StepExecution stepExecution = jobExecution.getStepExecutions().stream()
+                .filter(step -> Constants.DS_HUM_DISEASE_DATA_LOADER_STEP.equals(step.getStepName())).findFirst().get();
+
+        Assert.assertNotNull("Step is null", stepExecution);
+        Assert.assertEquals("Status is not as expected", BatchStatus.COMPLETED, stepExecution.getStatus());
+        Assert.assertEquals("Read count does not mathc", TestConfiguration.READ_WRITE_COUNT, stepExecution.getReadCount());
+        Assert.assertEquals("Write count does not mathc", TestConfiguration.READ_WRITE_COUNT, stepExecution.getWriteCount());
     }
+
 }

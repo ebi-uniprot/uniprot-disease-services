@@ -16,7 +16,6 @@ import org.springframework.batch.core.configuration.annotation.DefaultBatchConfi
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.MongoItemWriter;
@@ -69,7 +68,8 @@ public class DiseaseServiceImportConfig extends DefaultBatchConfigurer {
     @Bean
     public Job getDiseaseServiceDataLoadJob() throws FileNotFoundException {
         return this.jobBuilderFactory.get(Constants.DISEASE_SERVICE_DATA_LOADER)
-                .start(importHumDiseaseData())
+                .flow(importHumDiseaseData())
+                .end()
                 .listener(getLogJobListener())
                 .build();
     }
