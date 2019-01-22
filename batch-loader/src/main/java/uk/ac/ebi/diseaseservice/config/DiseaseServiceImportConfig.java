@@ -156,7 +156,7 @@ public class DiseaseServiceImportConfig extends DefaultBatchConfigurer {
 
     @Bean
     ItemReader<UniProtEntry> getSwissProtReader() throws FileNotFoundException {
-        ItemReader<UniProtEntry> reader = new SwissProtReader("/Users/sahmad/Documents/uniprot_sprot.dat");
+        ItemReader<UniProtEntry> reader = new SwissProtReader("uniprot/sample_uniprot_sprot.dat");
         return reader;
     }
 

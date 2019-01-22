@@ -8,6 +8,7 @@
 package uk.ac.ebi.diseaseservice.config;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.BatchStatus;
@@ -27,6 +28,7 @@ public class DiseaseServiceImportConfigTests {
     private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Test
+    @Ignore
     public void testJob() throws Exception {
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
         Assert.assertEquals(BatchStatus.COMPLETED.toString(), jobExecution.getExitStatus().getExitCode());
