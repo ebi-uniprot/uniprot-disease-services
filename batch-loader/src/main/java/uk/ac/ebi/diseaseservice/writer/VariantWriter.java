@@ -31,6 +31,7 @@ public class VariantWriter extends BaseSwissProtWriter {
                 builder.alternativeSequences(vf.getAlternativeSequences());
                 builder.featureId(vf.getFeatureId()).variantReports(vf.getVariantReports());
                 builder.featureLocation(vf.getFeatureLocation()).evidenceIds(vf.getEvidenceIds());
+                builder.featureStatus(vf.getFeatureStatus());
                 builder.proteinIds(Arrays.asList(protein.get_id()));
                 Variant variant = builder.build();
                 mongoOperations.save(variant);

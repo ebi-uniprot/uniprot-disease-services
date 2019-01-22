@@ -17,7 +17,6 @@ import uk.ac.ebi.kraken.interfaces.uniprot.comments.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class InteractionWriter extends BaseSwissProtWriter {
     @Override
@@ -41,6 +40,7 @@ public class InteractionWriter extends BaseSwissProtWriter {
                 } else { // create a new interaction
                     Interaction.InteractionBuilder builder = Interaction.builder();
                     builder.interactionType(commentInteraction.getInteractionType());
+                    builder.interactorUniProtAccession(commentInteraction.getInteractorUniProtAccession());
                     builder.interactionGeneName(commentInteraction.getInteractionGeneName());
                     builder.numberOfExperiments(commentInteraction.getNumberOfExperiments());
                     builder.firstInteractor(commentInteraction.getFirstInteractor());

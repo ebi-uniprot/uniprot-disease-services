@@ -8,14 +8,15 @@
 package uk.ac.ebi.diseaseservice.writer;
 
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import uk.ac.ebi.diseaseservice.model.Disease;
+import uk.ac.ebi.diseaseservice.model.Pathway;
 import uk.ac.ebi.diseaseservice.model.Protein;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class DiseasePathwayWriter extends BaseSwissProtWriter {
     @Override
@@ -30,7 +31,25 @@ public class DiseasePathwayWriter extends BaseSwissProtWriter {
                 List<String> uniqueIds = mergeTwoLists(storedDisease.getPathwayIds(), protein.getPathwayIds());
                 storedDisease.setPathwayIds(uniqueIds);
                 mongoOperations.save(storedDisease);
+                updatePathwaysWithDiseaseId(uniqueIds, storedDisease.get_id());
             }
+        }
+    }
+
+    private void updatePathwaysWithDiseaseId(List<String> iIds, String diseaseId) {
+        MongoOperations op = getTemplate();
+        // get the pathway and update its diseaseids
+        for(String id : iIds){
+            Query query = new Query();
+            query.addCriteria(Criteria.where("_id").is(id));
+            Pathway pathway = op.findOne(query, Pathway.class);
+            List<String> diseaseIds = pathway.getDiseaseIds();
+            if(diseaseIds == null){
+                diseaseIds = new ArrayList<>();
+            }
+            diseaseIds.add(diseaseId);
+            pathway.setDiseaseIds(diseaseIds);
+            op.save(pathway);
         }
     }
 }

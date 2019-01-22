@@ -15,15 +15,9 @@ import uk.ac.ebi.diseaseservice.model.Disease;
 import uk.ac.ebi.diseaseservice.model.Protein;
 import uk.ac.ebi.diseaseservice.model.Variant;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
-import uk.ac.ebi.kraken.interfaces.uniprot.features.FeatureType;
-import uk.ac.ebi.kraken.interfaces.uniprot.features.VariantFeature;
-import uk.ac.ebi.kraken.interfaces.uniprot.features.VariantReport;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DiseaseVariantWriter extends BaseSwissProtWriter {
     @Override
@@ -43,6 +37,7 @@ public class DiseaseVariantWriter extends BaseSwissProtWriter {
                     }
                     storedDisease.setVariantIds(vIds);
                     mongoOperations.save(storedDisease);
+                    updateVariantsWithDiseaseId(vIds, storedDisease.get_id());
                 }
             }
 
@@ -69,6 +64,23 @@ public class DiseaseVariantWriter extends BaseSwissProtWriter {
             }
         }
         return dVids;
+    }
+
+    private void updateVariantsWithDiseaseId(List<String> vIds, String diseaseId) {
+        MongoOperations op = getTemplate();
+        // get the variant and update its diseaseids
+        for(String id : vIds){
+            Query query = new Query();
+            query.addCriteria(Criteria.where("_id").is(id));
+            Variant variant = op.findOne(query, Variant.class);
+            List<String> diseaseIds = variant.getDiseaseIds();
+            if(diseaseIds == null){
+                diseaseIds = new ArrayList<>();
+            }
+            diseaseIds.add(diseaseId);
+            variant.setDiseaseIds(diseaseIds);
+            op.save(variant);
+        }
     }
 }
 

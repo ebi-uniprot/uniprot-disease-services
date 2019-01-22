@@ -81,7 +81,7 @@ public class DiseaseServiceImportConfig extends DefaultBatchConfigurer {
     public Job getDiseaseServiceDataLoadJob() throws FileNotFoundException {
         return this.jobBuilderFactory.get(Constants.DISEASE_SERVICE_DATA_LOADER)
                 .flow(cleanDB())
-                //.next(importHumDiseaseData())
+                .next(importHumDiseaseData())
                 .next(importSwissProtData())
                 .end()
                 .listener(getLogJobListener())
@@ -184,6 +184,7 @@ public class DiseaseServiceImportConfig extends DefaultBatchConfigurer {
         PathwayWriter writer5 = getPathwayWriter();
         DiseaseVariantWriter writer6 = getDiseaseVariantWriter();
         DiseaseInteractionWriter writer7 = getDiseaseInteractionWriter();
+        DiseasePathwayWriter writer8 = getDiseasePathwayWriter();
         List<ItemWriter> writers = new ArrayList<>();
         writers.add(writer1);
         writers.add(writer2);
@@ -247,4 +248,13 @@ public class DiseaseServiceImportConfig extends DefaultBatchConfigurer {
         writer.setTemplate(mongoTemplate);
         return writer;
     }
+
+    @Bean
+    public DiseasePathwayWriter getDiseasePathwayWriter(){
+        DiseasePathwayWriter writer = new DiseasePathwayWriter();
+        writer.setTemplate(mongoTemplate);
+        return writer;
+    }
+
+
 }
