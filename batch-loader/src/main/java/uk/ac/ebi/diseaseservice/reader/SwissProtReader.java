@@ -25,7 +25,8 @@ public class SwissProtReader implements ItemReader<UniProtEntry> {
     private EntryIterator iterator;
 
     public SwissProtReader(String filePath){
-        File file = new File(filePath);
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource(filePath).getFile());
         iterator = UniProtParser.parseEntriesAll(file, DefaultUniProtFactory.getInstance());
     }
 

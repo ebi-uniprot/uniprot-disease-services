@@ -1,0 +1,597 @@
+ID   1433G_HUMAN             Reviewed;         247 AA.
+AC   P61981; O70457; P35214; Q6FH52; Q9UDP2; Q9UN99;
+DT   07-JUN-2004, integrated into UniProtKB/Swiss-Prot.
+DT   23-JAN-2007, sequence version 2.
+DT   05-DEC-2018, entry version 163.
+DE   RecName: Full=14-3-3 protein gamma;
+DE   AltName: Full=Protein kinase C inhibitor protein 1;
+DE            Short=KCIP-1;
+DE   Contains:
+DE     RecName: Full=14-3-3 protein gamma, N-terminally processed;
+GN   Name=YWHAG;
+OS   Homo sapiens (Human).
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+OC   Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
+OC   Catarrhini; Hominidae; Homo.
+OX   NCBI_TaxID=9606;
+RN   [1]
+RP   NUCLEOTIDE SEQUENCE [MRNA], PHOSPHORYLATION, AND INTERACTION WITH
+RP   RAF1.
+RC   TISSUE=Vascular smooth muscle;
+RX   PubMed=10433554; DOI=10.1089/104454999315105;
+RA   Autieri M.V., Carbone C.J.;
+RT   "14-3-3gamma interacts with and is phosphorylated by multiple protein
+RT   kinase C isoforms in PDGF-stimulated human vascular smooth muscle
+RT   cells.";
+RL   DNA Cell Biol. 18:555-564(1999).
+RN   [2]
+RP   NUCLEOTIDE SEQUENCE [MRNA], AND TISSUE SPECIFICITY.
+RC   TISSUE=Fetal brain;
+RX   PubMed=10486217; DOI=10.1006/geno.1999.5887;
+RA   Horie M., Suzuki M., Takahashi E., Tanigami A.;
+RT   "Cloning, expression, and chromosomal mapping of the human 14-3-3gamma
+RT   gene (YWHAG) to 7q11.23.";
+RL   Genomics 60:241-243(1999).
+RN   [3]
+RP   NUCLEOTIDE SEQUENCE [LARGE SCALE MRNA].
+RA   Ebert L., Schick M., Neubert P., Schatten R., Henze S., Korn B.;
+RT   "Cloning of human full open reading frames in Gateway(TM) system entry
+RT   vector (pDONR201).";
+RL   Submitted (JUN-2004) to the EMBL/GenBank/DDBJ databases.
+RN   [4]
+RP   NUCLEOTIDE SEQUENCE [LARGE SCALE GENOMIC DNA].
+RX   PubMed=12853948; DOI=10.1038/nature01782;
+RA   Hillier L.W., Fulton R.S., Fulton L.A., Graves T.A., Pepin K.H.,
+RA   Wagner-McPherson C., Layman D., Maas J., Jaeger S., Walker R.,
+RA   Wylie K., Sekhon M., Becker M.C., O'Laughlin M.D., Schaller M.E.,
+RA   Fewell G.A., Delehaunty K.D., Miner T.L., Nash W.E., Cordes M., Du H.,
+RA   Sun H., Edwards J., Bradshaw-Cordum H., Ali J., Andrews S., Isak A.,
+RA   Vanbrunt A., Nguyen C., Du F., Lamar B., Courtney L., Kalicki J.,
+RA   Ozersky P., Bielicki L., Scott K., Holmes A., Harkins R., Harris A.,
+RA   Strong C.M., Hou S., Tomlinson C., Dauphin-Kohlberg S.,
+RA   Kozlowicz-Reilly A., Leonard S., Rohlfing T., Rock S.M.,
+RA   Tin-Wollam A.-M., Abbott A., Minx P., Maupin R., Strowmatt C.,
+RA   Latreille P., Miller N., Johnson D., Murray J., Woessner J.P.,
+RA   Wendl M.C., Yang S.-P., Schultz B.R., Wallis J.W., Spieth J.,
+RA   Bieri T.A., Nelson J.O., Berkowicz N., Wohldmann P.E., Cook L.L.,
+RA   Hickenbotham M.T., Eldred J., Williams D., Bedell J.A., Mardis E.R.,
+RA   Clifton S.W., Chissoe S.L., Marra M.A., Raymond C., Haugen E.,
+RA   Gillett W., Zhou Y., James R., Phelps K., Iadanoto S., Bubb K.,
+RA   Simms E., Levy R., Clendenning J., Kaul R., Kent W.J., Furey T.S.,
+RA   Baertsch R.A., Brent M.R., Keibler E., Flicek P., Bork P., Suyama M.,
+RA   Bailey J.A., Portnoy M.E., Torrents D., Chinwalla A.T., Gish W.R.,
+RA   Eddy S.R., McPherson J.D., Olson M.V., Eichler E.E., Green E.D.,
+RA   Waterston R.H., Wilson R.K.;
+RT   "The DNA sequence of human chromosome 7.";
+RL   Nature 424:157-164(2003).
+RN   [5]
+RP   NUCLEOTIDE SEQUENCE [LARGE SCALE MRNA].
+RC   TISSUE=Endometrial tumor;
+RX   PubMed=15489334; DOI=10.1101/gr.2596504;
+RG   The MGC Project Team;
+RT   "The status, quality, and expansion of the NIH full-length cDNA
+RT   project: the Mammalian Gene Collection (MGC).";
+RL   Genome Res. 14:2121-2127(2004).
+RN   [6]
+RP   PROTEIN SEQUENCE OF 1-10; 29-50; 62-77; 133-198 AND 228-247,
+RP   INTERACTION WITH PI4KB; TBC1D22A AND TBC1D22B, AND IDENTIFICATION BY
+RP   MASS SPECTROMETRY.
+RX   PubMed=23572552; DOI=10.1128/mBio.00098-13;
+RA   Greninger A.L., Knudsen G.M., Betegon M., Burlingame A.L.,
+RA   DeRisi J.L.;
+RT   "ACBD3 interaction with TBC1 domain 22 protein is differentially
+RT   affected by enteroviral and kobuviral 3A protein binding.";
+RL   MBio 4:E00098-E00098(2013).
+RN   [7]
+RP   PROTEIN SEQUENCE OF 1-10; 13-56; 62-69; 133-172 AND 199-227, CLEAVAGE
+RP   OF INITIATOR METHIONINE, ACETYLATION AT MET-1 AND VAL-2,
+RP   PHOSPHORYLATION AT THR-145, AND IDENTIFICATION BY MASS SPECTROMETRY.
+RC   TISSUE=Colon carcinoma, and Hepatoma;
+RA   Bienvenut W.V., Boldt K., von Kriegsheim A.F., Zebisch A., Kolch W.;
+RL   Submitted (DEC-2008) to UniProtKB.
+RN   [8]
+RP   PROTEIN SEQUENCE OF 2-12.
+RC   TISSUE=Platelet;
+RX   PubMed=12665801; DOI=10.1038/nbt810;
+RA   Gevaert K., Goethals M., Martens L., Van Damme J., Staes A.,
+RA   Thomas G.R., Vandekerckhove J.;
+RT   "Exploring proteomes and analyzing protein processing by mass
+RT   spectrometric identification of sorted N-terminal peptides.";
+RL   Nat. Biotechnol. 21:566-569(2003).
+RN   [9]
+RP   PROTEIN SEQUENCE OF 2-10; 13-19; 29-42; 62-69; 133-143 AND 218-227,
+RP   CLEAVAGE OF INITIATOR METHIONINE, ACETYLATION AT VAL-2, AND
+RP   IDENTIFICATION BY MASS SPECTROMETRY.
+RC   TISSUE=Platelet;
+RA   Bienvenut W.V., Claeys D.;
+RL   Submitted (NOV-2005) to UniProtKB.
+RN   [10]
+RP   PROTEIN SEQUENCE OF 92-110; 199-217 AND 228-247, AND IDENTIFICATION BY
+RP   MASS SPECTROMETRY.
+RC   TISSUE=Brain, Cajal-Retzius cell, and Fetal brain cortex;
+RA   Lubec G., Vishwanath V., Chen W.-Q., Sun Y.;
+RL   Submitted (DEC-2008) to UniProtKB.
+RN   [11]
+RP   INTERACTION WITH AANAT.
+RX   PubMed=11427721; DOI=10.1073/pnas.141118798;
+RA   Ganguly S., Gastel J.A., Weller J.L., Schwartz C., Jaffe H.,
+RA   Namboodiri M.A., Coon S.L., Hickman A.B., Rollag M., Obsil T.,
+RA   Beauverger P., Ferry G., Boutin J.A., Klein D.C.;
+RT   "Role of a pineal cAMP-operated arylalkylamine N-acetyltransferase/14-
+RT   3-3-binding switch in melatonin synthesis.";
+RL   Proc. Natl. Acad. Sci. U.S.A. 98:8083-8088(2001).
+RN   [12]
+RP   CLEAVAGE OF INITIATOR METHIONINE, ACETYLATION AT VAL-2, AND
+RP   IDENTIFICATION BY MASS SPECTROMETRY.
+RX   PubMed=14534293; DOI=10.1074/jbc.M309039200;
+RA   Towbin H., Bair K.W., DeCaprio J.A., Eck M.J., Kim S., Kinder F.R.,
+RA   Morollo A., Mueller D.R., Schindler P., Song H.K., van Oostrum J.,
+RA   Versace R.W., Voshol H., Wood J., Zabludoff S., Phillips P.E.;
+RT   "Proteomics-based target identification: bengamides as a new class of
+RT   methionine aminopeptidase inhibitors.";
+RL   J. Biol. Chem. 278:52964-52971(2003).
+RN   [13]
+RP   IDENTIFICATION BY MASS SPECTROMETRY.
+RC   TISSUE=Lymphoblast;
+RX   PubMed=14654843; DOI=10.1038/nature02166;
+RA   Andersen J.S., Wilkinson C.J., Mayor T., Mortensen P., Nigg E.A.,
+RA   Mann M.;
+RT   "Proteomic characterization of the human centrosome by protein
+RT   correlation profiling.";
+RL   Nature 426:570-574(2003).
+RN   [14]
+RP   INTERACTION WITH CRTC2.
+RX   PubMed=15454081; DOI=10.1016/j.cell.2004.09.015;
+RA   Screaton R.A., Conkright M.D., Katoh Y., Best J.L., Canettieri G.,
+RA   Jeffries S., Guzman E., Niessen S., Yates J.R. III, Takemori H.,
+RA   Okamoto M., Montminy M.;
+RT   "The CREB coactivator TORC2 functions as a calcium- and cAMP-sensitive
+RT   coincidence detector.";
+RL   Cell 119:61-74(2004).
+RN   [15]
+RP   INTERACTION WITH SSH1.
+RX   PubMed=15159416; DOI=10.1083/jcb.200401136;
+RA   Nagata-Ohashi K., Ohta Y., Goto K., Chiba S., Mori R., Nishita M.,
+RA   Ohashi K., Kousaka K., Iwamatsu A., Niwa R., Uemura T., Mizuno K.;
+RT   "A pathway of neuregulin-induced activation of cofilin-phosphatase
+RT   Slingshot and cofilin in lamellipodia.";
+RL   J. Cell Biol. 165:465-471(2004).
+RN   [16]
+RP   INTERACTION WITH ABL1, AND IDENTIFICATION BY MASS SPECTROMETRY.
+RX   PubMed=15696159; DOI=10.1038/ncb1228;
+RA   Yoshida K., Yamaguchi T., Natsume T., Kufe D., Miki Y.;
+RT   "JNK phosphorylation of 14-3-3 proteins regulates nuclear targeting of
+RT   c-Abl in the apoptotic response to DNA damage.";
+RL   Nat. Cell Biol. 7:278-285(2005).
+RN   [17]
+RP   FUNCTION IN TP53 ACTIVATION, AND INTERACTION WITH MDM4.
+RX   PubMed=16511572; DOI=10.1038/sj.emboj.7601010;
+RA   Jin Y., Dai M.S., Lu S.Z., Xu Y., Luo Z., Zhao Y., Lu H.;
+RT   "14-3-3gamma binds to MDMX that is phosphorylated by UV-activated
+RT   Chk1, resulting in p53 activation.";
+RL   EMBO J. 25:1207-1218(2006).
+RN   [18]
+RP   INTERACTION WITH SIRT2.
+RX   PubMed=18249187; DOI=10.1016/j.bbrc.2008.01.114;
+RA   Jin Y.H., Kim Y.J., Kim D.W., Baek K.H., Kang B.Y., Yeo C.Y.,
+RA   Lee K.Y.;
+RT   "Sirt2 interacts with 14-3-3 beta/gamma and down-regulates the
+RT   activity of p53.";
+RL   Biochem. Biophys. Res. Commun. 368:690-695(2008).
+RN   [19]
+RP   INTERACTION WITH GAB2.
+RX   PubMed=19172738; DOI=10.1038/emboj.2008.159;
+RA   Brummer T., Larance M., Herrera Abreu M.T., Lyons R.J., Timpson P.,
+RA   Emmerich C.H., Fleuren E.D.G., Lehrbach G.M., Schramek D.,
+RA   Guilhaus M., James D.E., Daly R.J.;
+RT   "Phosphorylation-dependent binding of 14-3-3 terminates signalling by
+RT   the Gab2 docking protein.";
+RL   EMBO J. 27:2305-2316(2008).
+RN   [20]
+RP   ACETYLATION [LARGE SCALE ANALYSIS] AT VAL-2, CLEAVAGE OF INITIATOR
+RP   METHIONINE [LARGE SCALE ANALYSIS], AND IDENTIFICATION BY MASS
+RP   SPECTROMETRY [LARGE SCALE ANALYSIS].
+RX   PubMed=19413330; DOI=10.1021/ac9004309;
+RA   Gauci S., Helbig A.O., Slijper M., Krijgsveld J., Heck A.J.,
+RA   Mohammed S.;
+RT   "Lys-N and trypsin cover complementary parts of the phosphoproteome in
+RT   a refined SCX-based approach.";
+RL   Anal. Chem. 81:4493-4501(2009).
+RN   [21]
+RP   INTERACTION WITH SLITRK1.
+RX   PubMed=19640509; DOI=10.1016/j.biopsych.2009.05.033;
+RA   Kajiwara Y., Buxbaum J.D., Grice D.E.;
+RT   "SLITRK1 binds 14-3-3 and regulates neurite outgrowth in a
+RT   phosphorylation-dependent manner.";
+RL   Biol. Psychiatry 66:918-925(2009).
+RN   [22]
+RP   IDENTIFICATION BY MASS SPECTROMETRY [LARGE SCALE ANALYSIS].
+RC   TISSUE=Leukemic T-cell;
+RX   PubMed=19690332; DOI=10.1126/scisignal.2000007;
+RA   Mayya V., Lundgren D.H., Hwang S.-I., Rezaul K., Wu L., Eng J.K.,
+RA   Rodionov V., Han D.K.;
+RT   "Quantitative phosphoproteomic analysis of T cell receptor signaling
+RT   reveals system-wide modulation of protein-protein interactions.";
+RL   Sci. Signal. 2:RA46-RA46(2009).
+RN   [23]
+RP   IDENTIFICATION BY MASS SPECTROMETRY [LARGE SCALE ANALYSIS].
+RC   TISSUE=Cervix carcinoma;
+RX   PubMed=20068231; DOI=10.1126/scisignal.2000475;
+RA   Olsen J.V., Vermeulen M., Santamaria A., Kumar C., Miller M.L.,
+RA   Jensen L.J., Gnad F., Cox J., Jensen T.S., Nigg E.A., Brunak S.,
+RA   Mann M.;
+RT   "Quantitative phosphoproteomics reveals widespread full
+RT   phosphorylation site occupancy during mitosis.";
+RL   Sci. Signal. 3:RA3-RA3(2010).
+RN   [24]
+RP   IDENTIFICATION BY MASS SPECTROMETRY [LARGE SCALE ANALYSIS].
+RX   PubMed=21269460; DOI=10.1186/1752-0509-5-17;
+RA   Burkard T.R., Planyavsky M., Kaupe I., Breitwieser F.P.,
+RA   Buerckstuemmer T., Bennett K.L., Superti-Furga G., Colinge J.;
+RT   "Initial characterization of the human central proteome.";
+RL   BMC Syst. Biol. 5:17-17(2011).
+RN   [25]
+RP   PHOSPHORYLATION [LARGE SCALE ANALYSIS] AT SER-71, AND IDENTIFICATION
+RP   BY MASS SPECTROMETRY [LARGE SCALE ANALYSIS].
+RC   TISSUE=Erythroleukemia;
+RX   PubMed=23186163; DOI=10.1021/pr300630k;
+RA   Zhou H., Di Palma S., Preisinger C., Peng M., Polat A.N., Heck A.J.,
+RA   Mohammed S.;
+RT   "Toward a comprehensive characterization of a human cancer cell
+RT   phosphoproteome.";
+RL   J. Proteome Res. 12:260-271(2013).
+RN   [26]
+RP   PHOSPHORYLATION [LARGE SCALE ANALYSIS] AT THR-234 AND SER-235, AND
+RP   IDENTIFICATION BY MASS SPECTROMETRY [LARGE SCALE ANALYSIS].
+RC   TISSUE=Liver;
+RX   PubMed=24275569; DOI=10.1016/j.jprot.2013.11.014;
+RA   Bian Y., Song C., Cheng K., Dong M., Wang F., Huang J., Sun D.,
+RA   Wang L., Ye M., Zou H.;
+RT   "An enzyme assisted RP-RPLC approach for in-depth analysis of human
+RT   liver phosphoproteome.";
+RL   J. Proteomics 96:253-262(2014).
+RN   [27]
+RP   INTERACTION WITH DAPK2.
+RX   PubMed=26047703; DOI=10.1016/j.bbrc.2015.05.105;
+RA   Yuasa K., Ota R., Matsuda S., Isshiki K., Inoue M., Tsuji A.;
+RT   "Suppression of death-associated protein kinase 2 by interaction with
+RT   14-3-3 proteins.";
+RL   Biochem. Biophys. Res. Commun. 464:70-75(2015).
+RN   [28]
+RP   IDENTIFICATION BY MASS SPECTROMETRY [LARGE SCALE ANALYSIS].
+RX   PubMed=25944712; DOI=10.1002/pmic.201400617;
+RA   Vaca Jacome A.S., Rabilloud T., Schaeffer-Reiss C., Rompais M.,
+RA   Ayoub D., Lane L., Bairoch A., Van Dorsselaer A., Carapito C.;
+RT   "N-terminome analysis of the human mitochondrial proteome.";
+RL   Proteomics 15:2519-2524(2015).
+RN   [29]
+RP   INVOLVEMENT IN EIEE56, VARIANTS EIEE56 ALA-15; GLU-129 AND CYS-132,
+RP   AND VARIANTS GLN-50 AND SER-133.
+RX   PubMed=28777935; DOI=10.1016/j.ajhg.2017.07.004;
+RG   Epilepsy Genomics Study;
+RG   Deciphering Developmental Disorders Study;
+RA   Guella I., McKenzie M.B., Evans D.M., Buerki S.E., Toyota E.B.,
+RA   Van Allen M.I., Suri M., Elmslie F., Simon M.E.H., van Gassen K.L.I.,
+RA   Heron D., Keren B., Nava C., Connolly M.B., Demos M., Farrer M.J.;
+RT   "De novo mutations in YWHAG cause early-onset epilepsy.";
+RL   Am. J. Hum. Genet. 101:300-310(2017).
+RN   [30]
+RP   X-RAY CRYSTALLOGRAPHY (2.55 ANGSTROMS), IDENTIFICATION BY MASS
+RP   SPECTROMETRY, INTERACTION WITH PHOSPHOSERINE MOTIFS, AND SUBUNIT.
+RX   PubMed=17085597; DOI=10.1073/pnas.0605779103;
+RA   Yang X., Lee W.H., Sobott F., Papagrigoriou E., Robinson C.V.,
+RA   Grossmann J.G., Sundstroem M., Doyle D.A., Elkins J.M.;
+RT   "Structural basis for protein-protein interactions in the 14-3-3
+RT   protein family.";
+RL   Proc. Natl. Acad. Sci. U.S.A. 103:17237-17242(2006).
+CC   -!- FUNCTION: Adapter protein implicated in the regulation of a large
+CC       spectrum of both general and specialized signaling pathways. Binds
+CC       to a large number of partners, usually by recognition of a
+CC       phosphoserine or phosphothreonine motif. Binding generally results
+CC       in the modulation of the activity of the binding partner.
+CC       {ECO:0000269|PubMed:16511572}.
+CC   -!- SUBUNIT: Homodimer. Interacts with SAMSN1 (By similarity).
+CC       Interacts with RAF1, SSH1 and CRTC2/TORC2. Interacts with ABL1
+CC       (phosphorylated form); the interaction retains it in the
+CC       cytoplasm. Interacts with GAB2. Interacts with MDM4
+CC       (phosphorylated); negatively regulates MDM4 activity toward TP53.
+CC       Interacts with PKA-phosphorylated AANAT and SIRT2.Interacts with
+CC       the 'Thr-369' phosphorylated form of DAPK2 (PubMed:26047703).
+CC       Interacts with PI4KB, TBC1D22A and TBC1D22B (PubMed:23572552).
+CC       Interacts with SLITRK1 (PubMed:19640509). {ECO:0000250,
+CC       ECO:0000250|UniProtKB:P61982, ECO:0000269|PubMed:10433554,
+CC       ECO:0000269|PubMed:11427721, ECO:0000269|PubMed:15159416,
+CC       ECO:0000269|PubMed:15454081, ECO:0000269|PubMed:15696159,
+CC       ECO:0000269|PubMed:16511572, ECO:0000269|PubMed:17085597,
+CC       ECO:0000269|PubMed:18249187, ECO:0000269|PubMed:19172738,
+CC       ECO:0000269|PubMed:19640509, ECO:0000269|PubMed:23572552,
+CC       ECO:0000269|PubMed:26047703}.
+CC   -!- INTERACTION:
+CC       Self; NbExp=3; IntAct=EBI-359832, EBI-359832;
+CC       Q9HC77:CENPJ; NbExp=3; IntAct=EBI-359832, EBI-946194;
+CC       O14757:CHEK1; NbExp=7; IntAct=EBI-359832, EBI-974488;
+CC       P67828:CSNK1A1 (xeno); NbExp=3; IntAct=EBI-359832, EBI-7540603;
+CC       Q9NYF3:FAM53C; NbExp=4; IntAct=EBI-359832, EBI-1644252;
+CC       P56524:HDAC4; NbExp=7; IntAct=EBI-359832, EBI-308629;
+CC       Q14678-2:KANK1; NbExp=3; IntAct=EBI-359832, EBI-6173812;
+CC       Q5S007:LRRK2; NbExp=4; IntAct=EBI-359832, EBI-5323863;
+CC       Q7KZI7:MARK2; NbExp=2; IntAct=EBI-359832, EBI-516560;
+CC       P27448:MARK3; NbExp=2; IntAct=EBI-359832, EBI-707595;
+CC       O15151:MDM4; NbExp=7; IntAct=EBI-359832, EBI-398437;
+CC       P26045:PTPN3; NbExp=3; IntAct=EBI-359832, EBI-1047946;
+CC       P61588:Rnd3 (xeno); NbExp=2; IntAct=EBI-359832, EBI-6930266;
+CC       Q9BSI4:TINF2; NbExp=2; IntAct=EBI-359832, EBI-717399;
+CC       P04637:TP53; NbExp=5; IntAct=EBI-359832, EBI-366083;
+CC       P31946:YWHAB; NbExp=2; IntAct=EBI-359832, EBI-359815;
+CC       P62258:YWHAE; NbExp=5; IntAct=EBI-359832, EBI-356498;
+CC   -!- SUBCELLULAR LOCATION: Cytoplasm {ECO:0000250}.
+CC   -!- TISSUE SPECIFICITY: Highly expressed in brain, skeletal muscle,
+CC       and heart. {ECO:0000269|PubMed:10486217}.
+CC   -!- PTM: Phosphorylated by various PKC isozymes.
+CC       {ECO:0000269|PubMed:10433554, ECO:0000269|Ref.7}.
+CC   -!- DISEASE: Epileptic encephalopathy, early infantile, 56 (EIEE56)
+CC       [MIM:617665]: A form of epileptic encephalopathy, a heterogeneous
+CC       group of severe childhood onset epilepsies characterized by
+CC       refractory seizures, neurodevelopmental impairment, and poor
+CC       prognosis. Development is normal prior to seizure onset, after
+CC       which cognitive and motor delays become apparent. EIEE56 is an
+CC       autosomal dominant condition. {ECO:0000269|PubMed:28777935}.
+CC       Note=The disease is caused by mutations affecting the gene
+CC       represented in this entry.
+CC   -!- SIMILARITY: Belongs to the 14-3-3 family. {ECO:0000305}.
+DR   EMBL; AF142498; AAD48408.1; -; mRNA.
+DR   EMBL; AB024334; BAA85184.1; -; mRNA.
+DR   EMBL; CR541904; CAG46702.1; -; mRNA.
+DR   EMBL; CR541925; CAG46723.1; -; mRNA.
+DR   EMBL; AC006388; -; NOT_ANNOTATED_CDS; Genomic_DNA.
+DR   EMBL; BC020963; AAH20963.1; -; mRNA.
+DR   CCDS; CCDS5584.1; -.
+DR   RefSeq; NP_036611.2; NM_012479.3.
+DR   UniGene; Hs.744840; -.
+DR   PDB; 2B05; X-ray; 2.55 A; A/B/C/D/E/F=2-247.
+DR   PDB; 3UZD; X-ray; 1.86 A; A=1-247.
+DR   PDB; 4E2E; X-ray; 2.25 A; A=1-247.
+DR   PDB; 4J6S; X-ray; 3.08 A; A/B/C/D=1-247.
+DR   PDB; 4O46; X-ray; 2.90 A; A/B/C/D/E/F=1-247.
+DR   PDB; 5D3E; X-ray; 2.75 A; A/B/E/F/I/J=1-238.
+DR   PDB; 6BYJ; X-ray; 2.90 A; A/B/C/D/E/F=2-241.
+DR   PDB; 6BYL; X-ray; 3.35 A; A/B/C/D/E/F=2-241.
+DR   PDB; 6BZD; X-ray; 2.67 A; A/B/C/D=2-247.
+DR   PDB; 6FEL; X-ray; 2.84 A; A/B/C/D=1-234.
+DR   PDB; 6GKF; X-ray; 2.60 A; A/B/C/D/E/F/G/H=1-234.
+DR   PDB; 6GKG; X-ray; 2.85 A; A/B/C/D/E/F/G/H=1-234.
+DR   PDBsum; 2B05; -.
+DR   PDBsum; 3UZD; -.
+DR   PDBsum; 4E2E; -.
+DR   PDBsum; 4J6S; -.
+DR   PDBsum; 4O46; -.
+DR   PDBsum; 5D3E; -.
+DR   PDBsum; 6BYJ; -.
+DR   PDBsum; 6BYL; -.
+DR   PDBsum; 6BZD; -.
+DR   PDBsum; 6FEL; -.
+DR   PDBsum; 6GKF; -.
+DR   PDBsum; 6GKG; -.
+DR   ProteinModelPortal; P61981; -.
+DR   SMR; P61981; -.
+DR   BioGrid; 113364; 331.
+DR   CORUM; P61981; -.
+DR   DIP; DIP-33406N; -.
+DR   ELM; P61981; -.
+DR   IntAct; P61981; 135.
+DR   MINT; P61981; -.
+DR   STRING; 9606.ENSP00000306330; -.
+DR   BindingDB; P61981; -.
+DR   ChEMBL; CHEMBL1293296; -.
+DR   iPTMnet; P61981; -.
+DR   PhosphoSitePlus; P61981; -.
+DR   SwissPalm; P61981; -.
+DR   BioMuta; YWHAG; -.
+DR   DMDM; 48428721; -.
+DR   REPRODUCTION-2DPAGE; IPI00220642; -.
+DR   EPD; P61981; -.
+DR   MaxQB; P61981; -.
+DR   PaxDb; P61981; -.
+DR   PeptideAtlas; P61981; -.
+DR   PRIDE; P61981; -.
+DR   TopDownProteomics; P61981; -.
+DR   DNASU; 7532; -.
+DR   Ensembl; ENST00000307630; ENSP00000306330; ENSG00000170027.
+DR   GeneID; 7532; -.
+DR   KEGG; hsa:7532; -.
+DR   UCSC; uc011kgj.2; human.
+DR   CTD; 7532; -.
+DR   DisGeNET; 7532; -.
+DR   EuPathDB; HostDB:ENSG00000170027.6; -.
+DR   GeneCards; YWHAG; -.
+DR   HGNC; HGNC:12852; YWHAG.
+DR   HPA; CAB013274; -.
+DR   HPA; CAB018389; -.
+DR   HPA; HPA026918; -.
+DR   MalaCards; YWHAG; -.
+DR   MIM; 605356; gene.
+DR   MIM; 617665; phenotype.
+DR   neXtProt; NX_P61981; -.
+DR   OpenTargets; ENSG00000170027; -.
+DR   Orphanet; 442835; Undetermined early-onset epileptic encephalopathy.
+DR   PharmGKB; PA37441; -.
+DR   eggNOG; KOG0841; Eukaryota.
+DR   eggNOG; COG5040; LUCA.
+DR   GeneTree; ENSGT00940000153764; -.
+DR   HOGENOM; HOG000240379; -.
+DR   HOVERGEN; HBG050423; -.
+DR   InParanoid; P61981; -.
+DR   KO; K16198; -.
+DR   OMA; NELSKIC; -.
+DR   OrthoDB; EOG091G0VKY; -.
+DR   PhylomeDB; P61981; -.
+DR   TreeFam; TF102003; -.
+DR   Reactome; R-HSA-111447; Activation of BAD and translocation to mitochondria.
+DR   Reactome; R-HSA-1445148; Translocation of SLC2A4 (GLUT4) to the plasma membrane.
+DR   Reactome; R-HSA-2565942; Regulation of PLK1 Activity at G2/M Transition.
+DR   Reactome; R-HSA-380259; Loss of Nlp from mitotic centrosomes.
+DR   Reactome; R-HSA-380270; Recruitment of mitotic centrosome proteins and complexes.
+DR   Reactome; R-HSA-380284; Loss of proteins required for interphase microtubule organization from the centrosome.
+DR   Reactome; R-HSA-380320; Recruitment of NuMA to mitotic centrosomes.
+DR   Reactome; R-HSA-5620912; Anchoring of the basal body to the plasma membrane.
+DR   Reactome; R-HSA-5625740; RHO GTPases activate PKNs.
+DR   Reactome; R-HSA-5628897; TP53 Regulates Metabolic Genes.
+DR   Reactome; R-HSA-75035; Chk1/Chk2(Cds1) mediated inactivation of Cyclin B:Cdk1 complex.
+DR   Reactome; R-HSA-8854518; AURKA Activation by TPX2.
+DR   SignaLink; P61981; -.
+DR   SIGNOR; P61981; -.
+DR   ChiTaRS; YWHAG; human.
+DR   EvolutionaryTrace; P61981; -.
+DR   GeneWiki; YWHAG; -.
+DR   GenomeRNAi; 7532; -.
+DR   PRO; PR:P61981; -.
+DR   Proteomes; UP000005640; Chromosome 7.
+DR   Bgee; ENSG00000170027; Expressed in 210 organ(s), highest expression level in lateral nuclear group of thalamus.
+DR   CleanEx; HS_YWHAG; -.
+DR   Genevisible; P61981; HS.
+DR   GO; GO:0005829; C:cytosol; TAS:Reactome.
+DR   GO; GO:0070062; C:extracellular exosome; HDA:UniProtKB.
+DR   GO; GO:0005925; C:focal adhesion; HDA:UniProtKB.
+DR   GO; GO:0016020; C:membrane; HDA:UniProtKB.
+DR   GO; GO:0005739; C:mitochondrion; IEA:GOC.
+DR   GO; GO:0043209; C:myelin sheath; IEA:Ensembl.
+DR   GO; GO:0098793; C:presynapse; IEA:Ensembl.
+DR   GO; GO:0042802; F:identical protein binding; IPI:IntAct.
+DR   GO; GO:0005159; F:insulin-like growth factor receptor binding; IPI:UniProtKB.
+DR   GO; GO:0019904; F:protein domain specific binding; IEA:Ensembl.
+DR   GO; GO:0005080; F:protein kinase C binding; IPI:UniProtKB.
+DR   GO; GO:0008426; F:protein kinase C inhibitor activity; NAS:UniProtKB.
+DR   GO; GO:0030971; F:receptor tyrosine kinase binding; IEA:Ensembl.
+DR   GO; GO:0003723; F:RNA binding; HDA:UniProtKB.
+DR   GO; GO:0032869; P:cellular response to insulin stimulus; IEA:Ensembl.
+DR   GO; GO:0097711; P:ciliary basal body-plasma membrane docking; TAS:Reactome.
+DR   GO; GO:0000086; P:G2/M transition of mitotic cell cycle; TAS:Reactome.
+DR   GO; GO:0061024; P:membrane organization; TAS:Reactome.
+DR   GO; GO:0006469; P:negative regulation of protein kinase activity; NAS:UniProtKB.
+DR   GO; GO:1900740; P:positive regulation of protein insertion into mitochondrial membrane involved in apoptotic signaling pathway; TAS:Reactome.
+DR   GO; GO:0006605; P:protein targeting; IEA:Ensembl.
+DR   GO; GO:0010389; P:regulation of G2/M transition of mitotic cell cycle; TAS:Reactome.
+DR   GO; GO:0045664; P:regulation of neuron differentiation; IMP:UniProtKB.
+DR   GO; GO:0009966; P:regulation of signal transduction; NAS:UniProtKB.
+DR   GO; GO:0048167; P:regulation of synaptic plasticity; IMP:UniProtKB.
+DR   Gene3D; 1.20.190.20; -; 1.
+DR   InterPro; IPR000308; 14-3-3.
+DR   InterPro; IPR023409; 14-3-3_CS.
+DR   InterPro; IPR036815; 14-3-3_dom_sf.
+DR   InterPro; IPR023410; 14-3-3_domain.
+DR   PANTHER; PTHR18860; PTHR18860; 1.
+DR   Pfam; PF00244; 14-3-3; 1.
+DR   PIRSF; PIRSF000868; 14-3-3; 1.
+DR   PRINTS; PR00305; 1433ZETA.
+DR   SMART; SM00101; 14_3_3; 1.
+DR   SUPFAM; SSF48445; SSF48445; 1.
+DR   PROSITE; PS00796; 1433_1; 1.
+DR   PROSITE; PS00797; 1433_2; 1.
+PE   1: Evidence at protein level;
+KW   3D-structure; Acetylation; Complete proteome; Cytoplasm;
+KW   Direct protein sequencing; Disease mutation; Epilepsy; Phosphoprotein;
+KW   Reference proteome.
+FT   CHAIN         1    247       14-3-3 protein gamma.
+FT                                /FTId=PRO_0000367907.
+FT   INIT_MET      1      1       Removed; alternate.
+FT                                {ECO:0000244|PubMed:19413330,
+FT                                ECO:0000269|PubMed:12665801,
+FT                                ECO:0000269|PubMed:14534293,
+FT                                ECO:0000269|Ref.7, ECO:0000269|Ref.9}.
+FT   CHAIN         2    247       14-3-3 protein gamma, N-terminally
+FT                                processed.
+FT                                /FTId=PRO_0000058606.
+FT   SITE         57     57       Interaction with phosphoserine on
+FT                                interacting protein.
+FT   SITE        132    132       Interaction with phosphoserine on
+FT                                interacting protein.
+FT   MOD_RES       1      1       N-acetylmethionine; in 14-3-3 protein
+FT                                gamma; alternate; partial.
+FT                                {ECO:0000269|Ref.7}.
+FT   MOD_RES       2      2       N-acetylvaline; in 14-3-3 protein gamma,
+FT                                N-terminally processed; partial.
+FT                                {ECO:0000244|PubMed:19413330,
+FT                                ECO:0000269|PubMed:14534293,
+FT                                ECO:0000269|Ref.7, ECO:0000269|Ref.9}.
+FT   MOD_RES       2      2       N-acetylvaline; partial.
+FT                                {ECO:0000244|PubMed:19413330,
+FT                                ECO:0000269|PubMed:14534293,
+FT                                ECO:0000269|Ref.7, ECO:0000269|Ref.9}.
+FT   MOD_RES      71     71       Phosphoserine.
+FT                                {ECO:0000244|PubMed:23186163}.
+FT   MOD_RES     133    133       Phosphotyrosine.
+FT                                {ECO:0000250|UniProtKB:P61983}.
+FT   MOD_RES     145    145       Phosphothreonine. {ECO:0000269|Ref.7}.
+FT   MOD_RES     215    215       Phosphoserine.
+FT                                {ECO:0000250|UniProtKB:P61983}.
+FT   MOD_RES     234    234       Phosphothreonine.
+FT                                {ECO:0000244|PubMed:24275569}.
+FT   MOD_RES     235    235       Phosphoserine.
+FT                                {ECO:0000244|PubMed:24275569}.
+FT   VARIANT      15     15       E -> A (in EIEE56; unknown pathological
+FT                                significance).
+FT                                {ECO:0000269|PubMed:28777935}.
+FT                                /FTId=VAR_080224.
+FT   VARIANT      50     50       K -> Q (found in an individual with
+FT                                autism; unknown pathological
+FT                                significance).
+FT                                {ECO:0000269|PubMed:28777935}.
+FT                                /FTId=VAR_080225.
+FT   VARIANT     129    129       D -> E (in EIEE56).
+FT                                {ECO:0000269|PubMed:28777935}.
+FT                                /FTId=VAR_080226.
+FT   VARIANT     132    132       R -> C (in EIEE56).
+FT                                {ECO:0000269|PubMed:28777935}.
+FT                                /FTId=VAR_080227.
+FT   VARIANT     133    133       Y -> S (probable disease-associated
+FT                                mutation found in an individual with
+FT                                neurodevelopmental disorder).
+FT                                {ECO:0000269|PubMed:28777935}.
+FT                                /FTId=VAR_080228.
+FT   CONFLICT      4      4       R -> P (in Ref. 1; AAD48408).
+FT                                {ECO:0000305}.
+FT   CONFLICT     19     19       R -> G (in Ref. 1; AAD48408).
+FT                                {ECO:0000305}.
+FT   CONFLICT     78     78       Missing (in Ref. 1; AAD48408).
+FT                                {ECO:0000305}.
+FT   CONFLICT     89     89       I -> V (in Ref. 1; AAD48408).
+FT                                {ECO:0000305}.
+FT   CONFLICT    104    104       L -> V (in Ref. 1; AAD48408).
+FT                                {ECO:0000305}.
+FT   CONFLICT    109    109       I -> Y (in Ref. 1; AAD48408).
+FT                                {ECO:0000305}.
+FT   CONFLICT    119    122       SKVF -> RKDL (in Ref. 1; AAD48408).
+FT                                {ECO:0000305}.
+FT   CONFLICT    144    145       AT -> GD (in Ref. 1; AAD48408).
+FT                                {ECO:0000305}.
+FT   CONFLICT    157    158       AH -> R (in Ref. 1; AAD48408).
+FT                                {ECO:0000305}.
+FT   CONFLICT    200    202       AFD -> EFE (in Ref. 1; AAD48408).
+FT                                {ECO:0000305}.
+FT   CONFLICT    214    214       D -> E (in Ref. 1; AAD48408).
+FT                                {ECO:0000305}.
+FT   CONFLICT    240    240       D -> DH (in Ref. 1; AAD48408).
+FT                                {ECO:0000305}.
+FT   HELIX         4     16       {ECO:0000244|PDB:3UZD}.
+FT   HELIX        20     31       {ECO:0000244|PDB:3UZD}.
+FT   TURN         32     34       {ECO:0000244|PDB:6FEL}.
+FT   HELIX        39     70       {ECO:0000244|PDB:3UZD}.
+FT   TURN         71     73       {ECO:0000244|PDB:6BYJ}.
+FT   TURN         76     78       {ECO:0000244|PDB:6FEL}.
+FT   HELIX        79    106       {ECO:0000244|PDB:3UZD}.
+FT   HELIX       108    111       {ECO:0000244|PDB:3UZD}.
+FT   HELIX       117    137       {ECO:0000244|PDB:3UZD}.
+FT   HELIX       140    164       {ECO:0000244|PDB:3UZD}.
+FT   HELIX       170    185       {ECO:0000244|PDB:3UZD}.
+FT   HELIX       190    206       {ECO:0000244|PDB:3UZD}.
+FT   HELIX       207    210       {ECO:0000244|PDB:3UZD}.
+FT   TURN        213    215       {ECO:0000244|PDB:3UZD}.
+FT   HELIX       216    233       {ECO:0000244|PDB:3UZD}.
+FT   HELIX       237    240       {ECO:0000244|PDB:6BYL}.
+SQ   SEQUENCE   247 AA;  28303 MW;  B0D16C6DE1F4455D CRC64;
+     MVDREQLVQK ARLAEQAERY DDMAAAMKNV TELNEPLSNE ERNLLSVAYK NVVGARRSSW
+     RVISSIEQKT SADGNEKKIE MVRAYREKIE KELEAVCQDV LSLLDNYLIK NCSETQYESK
+     VFYLKMKGDY YRYLAEVATG EKRATVVESS EKAYSEAHEI SKEHMQPTHP IRLGLALNYS
+     VFYYEIQNAP EQACHLAKTA FDDAIAELDT LNEDSYKDST LIMQLLRDNL TLWTSDQQDD
+     DGGEGNN
+//
