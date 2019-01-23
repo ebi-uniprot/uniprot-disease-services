@@ -23,10 +23,10 @@ public class Disease extends BaseEntity {
 
     private static final long serialVersionUID = 924803633810006763L;
 
-    @Column(name = "disease_id")
+    @Column(name = "disease_id", unique = true, nullable = false)
     private String diseaseId;
 
-    @Column(name = "disease_name")
+    @Column(name = "disease_name", nullable = false)
     private String name;
 
     @Column(name = "description")

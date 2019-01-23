@@ -4,14 +4,16 @@
 
 CREATE TABLE disease_service.ds_disease (
 	id bigserial NOT NULL,
-	disease_id varchar NULL,
-	disease_name varchar NULL,
+	disease_id varchar NOT NULL,
+	disease_name varchar NOT NULL,
 	description varchar NULL,
 	acronym varchar NULL,
 	created_at timestamp NOT NULL,
 	updated_at timestamp NOT NULL,
-	CONSTRAINT ds_disease_pk PRIMARY KEY (id)
+	CONSTRAINT ds_disease_pk PRIMARY KEY (id),
+	CONSTRAINT ds_disease_un UNIQUE (disease_id)
 );
+
 
 -- Drop table
 
@@ -53,15 +55,18 @@ CREATE TABLE disease_service.ds_feature_location (
 
 CREATE TABLE disease_service.ds_protein (
 	id bigserial NOT NULL,
-	protein_id varchar NULL,
-	protein_name varchar NULL,
-	accession varchar NULL,
-	gene varchar NULL,
+	protein_id varchar NOT NULL,
+	protein_name varchar NOT NULL,
+	accession varchar NOT NULL,
+	gene varchar NOT NULL,
 	description varchar NULL,
 	created_at timestamp NOT NULL,
 	updated_at timestamp NOT NULL,
-	CONSTRAINT ds_protein_pk PRIMARY KEY (id)
+	CONSTRAINT ds_protein_pk PRIMARY KEY (id),
+	CONSTRAINT ds_protein_un1 UNIQUE (protein_id),
+	CONSTRAINT ds_protein_un2 UNIQUE (accession)
 );
+
 
 -- Drop table
 

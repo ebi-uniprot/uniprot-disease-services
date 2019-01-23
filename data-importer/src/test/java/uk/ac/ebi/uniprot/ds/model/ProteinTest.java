@@ -21,8 +21,6 @@ public class ProteinTest extends BaseTest{
     private Protein protein;
     private Disease disease;
 
-
-
     @AfterEach
     void cleanUp(){
         EntityTransaction txn = em.getTransaction();

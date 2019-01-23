@@ -19,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class EvidenceTest extends BaseTest {
     private Evidence ev;
 
-
-
     @AfterEach
     void cleanUp(){
         EntityTransaction txn = em.getTransaction();
@@ -31,7 +29,6 @@ public class EvidenceTest extends BaseTest {
 
     @Test
     void testCreateAndGetEvidence(){
-
         ev = createEvidenceObject();
         EntityTransaction txn = em.getTransaction();
         txn.begin();

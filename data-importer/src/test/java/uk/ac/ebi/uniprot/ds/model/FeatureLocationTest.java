@@ -19,8 +19,6 @@ public class FeatureLocationTest extends BaseTest{
 
     private FeatureLocation fl;
 
-
-
     @AfterEach
     void cleanUp(){
         EntityTransaction txn = em.getTransaction();

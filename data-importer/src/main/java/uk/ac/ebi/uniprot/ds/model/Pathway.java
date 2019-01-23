@@ -32,7 +32,7 @@ public class Pathway extends BaseEntity {
     private String isoformId;
 
     @Column
-    private String third; // TODO what is this, clarify with Andrew
+    private String third;
 
     @Column
     private String fourth;

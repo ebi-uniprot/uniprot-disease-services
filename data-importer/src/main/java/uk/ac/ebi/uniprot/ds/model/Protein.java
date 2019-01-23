@@ -21,16 +21,16 @@ import java.util.Set;
 public class Protein extends BaseEntity {
 
     private static final long serialVersionUID = -6896338892189706610L;
-    @Column(name = "protein_id")
+    @Column(name = "protein_id", nullable = false, unique = true)
     private String proteinId;
 
-    @Column(name = "protein_name")
+    @Column(name = "protein_name", nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String accession;
 
-    @Column
+    @Column(nullable = false)
     private String gene;
 
     @Column(name = "description")
