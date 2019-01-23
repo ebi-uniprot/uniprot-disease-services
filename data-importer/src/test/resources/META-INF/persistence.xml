@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Created by sahmad on 23/01/19 13:07
+  ~ UniProt Consortium.
+  ~ Copyright (c) 2002-2019.
+  ~
+  -->
+
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+    <persistence-unit name="disgenet_eclipselink">
+        <description>The eclipselink persistence unit name for a connecion to disgenet schema under unpvardev.</description>
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <mapping-file>META-INF/ds_orm.xml</mapping-file>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <property name="eclipselink.logging.level.sql" value="SEVERE"/>
+            <property name="eclipselink.logging.parameters" value="true"/>
+            <property name="eclipselink.logging.level" value="SEVERE"/>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://pgsql-hxvm7-011.ebi.ac.uk:5432/unpvardev?currentSchema=disease_service" />
+            <property name="javax.persistence.jdbc.user" value="variant" />
+            <property name="javax.persistence.jdbc.password" value="uniDvar" />
+            <!--<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres?currentSchema=disease_service" />
+            <property name="javax.persistence.jdbc.user" value="postgres" />
+            <property name="javax.persistence.jdbc.password" value="password" />-->
+        </properties>
+    </persistence-unit>
+</persistence>

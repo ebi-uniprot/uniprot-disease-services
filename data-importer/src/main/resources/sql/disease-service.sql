@@ -26,6 +26,8 @@ CREATE TABLE disease_service.ds_evidence (
 	use_eco_code bool NULL,
 	type_value varchar NULL,
 	has_type_value bool NULL,
+		created_at timestamp NOT NULL,
+	updated_at timestamp NOT NULL,
 	CONSTRAINT ds_evidence_pk PRIMARY KEY (id)
 );
 
@@ -37,9 +39,28 @@ CREATE TABLE disease_service.ds_feature_location (
 	id bigserial NOT NULL,
 	start_modifier varchar NULL,
 	end_modifier varchar NULL,
-	"start" int4 NULL,
-	"end" int4 NULL,
+	start_id int4 NULL,
+	end_id int4 NULL,
+	created_at timestamp NOT NULL,
+	updated_at timestamp NOT NULL,
 	CONSTRAINT ds_feature_location_pk PRIMARY KEY (id)
+);
+
+
+-- Drop table
+
+-- DROP TABLE disease_service.ds_protein
+
+CREATE TABLE disease_service.ds_protein (
+	id bigserial NOT NULL,
+	protein_id varchar NULL,
+	protein_name varchar NULL,
+	accession varchar NULL,
+	gene varchar NULL,
+	description varchar NULL,
+	created_at timestamp NOT NULL,
+	updated_at timestamp NOT NULL,
+	CONSTRAINT ds_protein_pk PRIMARY KEY (id)
 );
 
 -- Drop table
@@ -61,6 +82,7 @@ CREATE TABLE disease_service.ds_interaction (
 	CONSTRAINT interaction_protein_fk FOREIGN KEY (ds_protein_id) REFERENCES disease_service.ds_protein(id)
 );
 
+
 -- Drop table
 
 -- DROP TABLE disease_service.ds_pathway
@@ -80,30 +102,18 @@ CREATE TABLE disease_service.ds_pathway (
 	CONSTRAINT pathway_protein_fk FOREIGN KEY (ds_protein_id) REFERENCES disease_service.ds_protein(id)
 );
 
--- Drop table
 
--- DROP TABLE disease_service.ds_protein
-
-CREATE TABLE disease_service.ds_protein (
-	id bigserial NOT NULL,
-	protein_id varchar NULL,
-	protein_name varchar NULL,
-	accession varchar NULL,
-	gene varchar NULL,
-	description varchar NULL,
-	created_at timestamp NOT NULL,
-	updated_at timestamp NOT NULL,
-	CONSTRAINT ds_protein_pk PRIMARY KEY (id)
-);
 
 -- Drop table
 
--- DROP TABLE disease_service.ds_synonyms
+-- DROP TABLE disease_service.ds_synonym
 
-CREATE TABLE disease_service.ds_synonyms (
+CREATE TABLE disease_service.ds_synonym (
 	id bigserial NOT NULL,
 	disease_name varchar NULL,
 	ds_disease_id int8 NULL,
+	created_at timestamp NOT NULL,
+	updated_at timestamp NOT NULL,
 	CONSTRAINT ds_synonyms_pk PRIMARY KEY (id),
 	CONSTRAINT ds_synonyms_ds_disease_fk FOREIGN KEY (ds_disease_id) REFERENCES disease_service.ds_disease(id)
 );
