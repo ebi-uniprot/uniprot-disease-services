@@ -16,9 +16,9 @@ import javax.persistence.Persistence;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class BaseTest {
-    static EntityManager em;
+    protected static EntityManager em;
     private static final String PERSISTENCE_UNIT_NAME = "disgenet_eclipselink";
-    static int random = (int)(Math.random()*100000);
+    protected static int random = (int)(Math.random()*100000);
 
     @BeforeAll
     static void setUp(){

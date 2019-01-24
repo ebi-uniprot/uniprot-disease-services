@@ -7,7 +7,6 @@
 
 package uk.ac.ebi.uniprot.ds.model;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,7 +35,7 @@ public class Disease extends BaseEntity {
     private String acronym;
 
     @ManyToMany(mappedBy = "diseases")
-    Set<Protein> proteins;
+    private Set<Protein> proteins;
 
     @Override
     public boolean equals(Object obj) {
