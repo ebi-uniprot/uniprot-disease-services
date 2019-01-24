@@ -17,11 +17,9 @@ import uk.ac.ebi.uniprot.ds.model.BaseTest;
 import uk.ac.ebi.uniprot.ds.model.Disease;
 import uk.ac.ebi.uniprot.ds.model.DiseaseTest;
 
-import javax.persistence.EntityTransaction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 public class DiseaseDAOImplTest extends BaseTest {
@@ -34,12 +32,12 @@ public class DiseaseDAOImplTest extends BaseTest {
     @AfterEach
     void cleanUp(){
         if(this.disease != null){
-            executeInsideTransaction(dao -> dao.delete(this.disease));
+            executeInsideTransaction(dao -> dao.delete(this.disease), this.diseaseDAO);
             this.disease = null;
         }
 
         if(this.diseases != null && !this.diseases.isEmpty()){
-            this.diseases.forEach(disease -> executeInsideTransaction(dao -> dao.delete(disease)));
+            this.diseases.forEach(disease -> executeInsideTransaction(dao -> dao.delete(disease), this.diseaseDAO));
             this.diseases = null;
         }
     }
@@ -47,7 +45,7 @@ public class DiseaseDAOImplTest extends BaseTest {
     @Test
     void testCreateDisease(){
         this.disease = DiseaseTest.createDiseaseObject();
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.disease));
+        executeInsideTransaction(dao -> dao.createOrUpdate(this.disease), this.diseaseDAO);
         assertNotNull(this.disease.getId(), "Unable to save the disease");
     }
 
@@ -64,7 +62,7 @@ public class DiseaseDAOImplTest extends BaseTest {
         this.disease.setName(dn);
         this.disease.setDesc(desc);
         this.disease.setAcronym(acr);
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.disease));
+        executeInsideTransaction(dao -> dao.createOrUpdate(this.disease), this.diseaseDAO);
 
         // get the disease and verify
         Optional<Disease> optDis = this.diseaseDAO.get(id);
@@ -83,7 +81,7 @@ public class DiseaseDAOImplTest extends BaseTest {
         this.disease = createDisease();
 
         // delete the disease now
-        executeInsideTransaction(dao -> dao.delete(this.disease));
+        executeInsideTransaction(dao -> dao.delete(this.disease), this.diseaseDAO);
         // try to get the disease now
         Optional<Disease> optDisease = this.diseaseDAO.get(this.disease.getId());
         assertFalse(optDisease.isPresent(), "Unable to delete the disease");
@@ -116,7 +114,7 @@ public class DiseaseDAOImplTest extends BaseTest {
         // create the disease
        this.disease = createDisease();
 
-        executeInsideTransaction(dao -> dao.deleteById(this.disease.getId()));
+        executeInsideTransaction(dao -> dao.deleteById(this.disease.getId()), this.diseaseDAO);
         // try to get the disease now
         Optional<Disease> optDisease = this.diseaseDAO.get(this.disease.getId());
         assertFalse(optDisease.isPresent(), "Unable to delete the disease");
@@ -155,15 +153,8 @@ public class DiseaseDAOImplTest extends BaseTest {
     private Disease createDisease() {
         int rand = (int) (Math.random() * 100000);
         Disease dis = DiseaseTest.createDiseaseObject(rand);
-        executeInsideTransaction(dao -> dao.createOrUpdate(dis));
+        executeInsideTransaction(dao -> dao.createOrUpdate(dis), this.diseaseDAO);
         assertNotNull(dis.getId(), "Unable to save the disease");
         return dis;
-    }
-
-    private void executeInsideTransaction(Consumer<DiseaseDAO> action){
-        EntityTransaction txn = BaseTest.em.getTransaction();
-        txn.begin();
-        action.accept(this.diseaseDAO);
-        txn.commit();
     }
 }
