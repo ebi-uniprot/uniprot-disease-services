@@ -16,7 +16,9 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 public class SynonymDAOImpl extends AbstractDAO<Synonym> implements SynonymDAO {
+
     private EntityManager entityManager;
+
     public SynonymDAOImpl(EntityManager entityManager) {
         super(entityManager);
         this.entityManager = entityManager;

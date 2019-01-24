@@ -124,16 +124,16 @@ public class DiseaseDAOImplTest extends BaseTest {
     @Test
     void testGetAll(){
         this.diseases = new ArrayList<>();
-        // create 100 diseases
-        IntStream.range(1, 101).forEach(i -> this.diseases.add(createDisease()));
-        // get first fifty diseases
-        List<Disease> first50 = this.diseaseDAO.getAll(0, 50);
-        assertEquals(50, first50.size(), "Unable to get first 50 records");
-        // get last 50 diseases
-        List<Disease> last50 = this.diseaseDAO.getAll(50, 50);
-        assertEquals(50, last50.size(), "Unable to get last 50 records");
+        // create 50 diseases
+        IntStream.range(1, 51).forEach(i -> this.diseases.add(createDisease()));
+        // get first 25 diseases
+        List<Disease> first25 = this.diseaseDAO.getAll(0, 25);
+        assertEquals(25, first25.size(), "Unable to get first 25 records");
+        // get last 25 diseases
+        List<Disease> last25 = this.diseaseDAO.getAll(25, 25);
+        assertEquals(25, last25.size(), "Unable to get last 25 records");
         // try to get again, it should return empty result
-        List<Disease> nonExistent = this.diseaseDAO.getAll(100, 50);
+        List<Disease> nonExistent = this.diseaseDAO.getAll(50, 75);
         assertTrue(nonExistent.isEmpty(), "we should get empty list");
     }
 

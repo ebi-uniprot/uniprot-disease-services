@@ -35,7 +35,7 @@ public class Disease extends BaseEntity {
     @Column
     private String acronym;
 
-    @ManyToMany(mappedBy = "diseases")
+    @ManyToMany(mappedBy = "diseases", cascade = CascadeType.PERSIST)
     private Set<Protein> proteins;
 
 //    @OneToMany(mappedBy = "disease")
