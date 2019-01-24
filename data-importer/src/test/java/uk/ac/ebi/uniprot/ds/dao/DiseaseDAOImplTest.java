@@ -34,12 +34,12 @@ public class DiseaseDAOImplTest extends BaseTest {
     @AfterEach
     void cleanUp(){
         if(this.disease != null){
-            executeInsideTransaction(diseaseDAO -> diseaseDAO.delete(this.disease));
+            executeInsideTransaction(dao -> dao.delete(this.disease));
             this.disease = null;
         }
 
         if(this.diseases != null && !this.diseases.isEmpty()){
-            this.diseases.stream().forEach(disease -> executeInsideTransaction(diseaseDAO -> diseaseDAO.delete(disease)));
+            this.diseases.forEach(disease -> executeInsideTransaction(dao -> dao.delete(disease)));
             this.diseases = null;
         }
     }
@@ -47,8 +47,34 @@ public class DiseaseDAOImplTest extends BaseTest {
     @Test
     void testCreateDisease(){
         this.disease = DiseaseTest.createDiseaseObject();
-        executeInsideTransaction(diseaseDAO -> diseaseDAO.createOrUpdate(this.disease));
+        executeInsideTransaction(dao -> dao.createOrUpdate(this.disease));
         assertNotNull(this.disease.getId(), "Unable to save the disease");
+    }
+
+    @Test
+    void testCreateUpdateDisease(){
+        this.disease = createDisease();
+        Long id = disease.getId();
+        // update the disease
+        String dId = "UDID-" + random;
+        String dn = "UDN-" + random;
+        String desc = "UDESC-" + random;
+        String acr = "UACRONYM-" + random;
+        this.disease.setDiseaseId(dId);
+        this.disease.setName(dn);
+        this.disease.setDesc(desc);
+        this.disease.setAcronym(acr);
+        executeInsideTransaction(dao -> dao.createOrUpdate(this.disease));
+
+        // get the disease and verify
+        Optional<Disease> optDis = this.diseaseDAO.get(id);
+        assertTrue(optDis.isPresent(), "unable to find the disease with id " + id);
+        Disease sDis = optDis.get();
+        assertEquals(id, sDis.getId());
+        assertEquals(dId, sDis.getDiseaseId());
+        assertEquals(dn, sDis.getName());
+        assertEquals(desc, sDis.getDesc());
+        assertEquals(acr, sDis.getAcronym());
     }
 
     @Test
@@ -57,7 +83,7 @@ public class DiseaseDAOImplTest extends BaseTest {
         this.disease = createDisease();
 
         // delete the disease now
-        executeInsideTransaction(diseaseDAO -> diseaseDAO.delete(this.disease));
+        executeInsideTransaction(dao -> dao.delete(this.disease));
         // try to get the disease now
         Optional<Disease> optDisease = this.diseaseDAO.get(this.disease.getId());
         assertFalse(optDisease.isPresent(), "Unable to delete the disease");
@@ -90,7 +116,7 @@ public class DiseaseDAOImplTest extends BaseTest {
         // create the disease
        this.disease = createDisease();
 
-        executeInsideTransaction(diseaseDAO -> diseaseDAO.deleteById(this.disease.getId()));
+        executeInsideTransaction(dao -> dao.deleteById(this.disease.getId()));
         // try to get the disease now
         Optional<Disease> optDisease = this.diseaseDAO.get(this.disease.getId());
         assertFalse(optDisease.isPresent(), "Unable to delete the disease");
@@ -129,7 +155,7 @@ public class DiseaseDAOImplTest extends BaseTest {
     private Disease createDisease() {
         int rand = (int) (Math.random() * 100000);
         Disease dis = DiseaseTest.createDiseaseObject(rand);
-        executeInsideTransaction(diseaseDAO -> diseaseDAO.createOrUpdate(dis));
+        executeInsideTransaction(dao -> dao.createOrUpdate(dis));
         assertNotNull(dis.getId(), "Unable to save the disease");
         return dis;
     }

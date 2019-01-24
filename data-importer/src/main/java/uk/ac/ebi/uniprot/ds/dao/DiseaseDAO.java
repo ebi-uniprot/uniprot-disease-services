@@ -9,11 +9,6 @@ package uk.ac.ebi.uniprot.ds.dao;
 
 import uk.ac.ebi.uniprot.ds.model.Disease;
 
-import javax.persistence.EntityManager;
-
-public abstract class DiseaseDAO extends AbstractDAO<Disease>{
-    public DiseaseDAO(EntityManager entityManager) {
-        super(entityManager);
-    }
+public interface DiseaseDAO extends BaseDAO<Disease>{
     // custom methods related to Disease only if any
 }

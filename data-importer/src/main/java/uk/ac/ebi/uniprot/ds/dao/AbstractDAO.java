@@ -20,7 +20,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
-public class AbstractDAO<T> implements BaseDAO<T> {
+public abstract class AbstractDAO<T> implements BaseDAO<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDAO.class);
 
     private Class<T> classh;
