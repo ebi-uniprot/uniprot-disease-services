@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityTransaction;
 
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -53,24 +55,27 @@ public class EvidenceTest extends BaseTest {
     }
 
     public static Evidence createEvidenceObject() {
-        String eid = "EID-" + random;
-        String type = "TYPE-" + random;
-        String attr = "ATTR-" + random;
-        String code = "CODE-" + random;
-        Boolean useCode = getBoolean(random);
-        String tv = "TV-" + random;
-        Boolean hasTV = !getBoolean(random);
+        return createEvidenceObject(String.valueOf(random));
+    }
 
-        // create evidence
-        Evidence ev = new Evidence();
-        ev.setEvidenceId(eid);
-        ev.setType(type);
-        ev.setAttribute(attr);
-        ev.setCode(code);
-        ev.setUseECOCode(useCode);
-        ev.setTypeValue(tv);
-        ev.setHasTypeValue(hasTV);
+    public static Evidence createEvidenceObject(String uuid){
+        String eId = "EID-" + uuid;
+        String eType = "TYPE-" + uuid;
+        String eCode = "ECODE-" + uuid;
+        Boolean useCode = new Random().nextInt() % 2 == 0 ? true : false;
+        String tVal = "TVAL-" + uuid;
+        Boolean hasTVal = new Random().nextInt() % 2 == 0 ? true : false;
+        String attrib = "ATTRIB-" + uuid;
 
-        return ev;
+        Evidence eObj = new Evidence();
+        eObj.setEvidenceId(eId);
+        eObj.setType(eType);
+        eObj.setCode(eCode);
+        eObj.setUseECOCode(useCode);
+        eObj.setTypeValue(tVal);
+        eObj.setHasTypeValue(hasTVal);
+        eObj.setAttribute(attrib);
+
+        return eObj;
     }
 }

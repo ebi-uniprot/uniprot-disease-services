@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityTransaction;
 
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class FeatureLocationTest extends BaseTest{
@@ -41,10 +43,14 @@ public class FeatureLocationTest extends BaseTest{
     }
 
     public static FeatureLocation createFeatureLocationObject() {
-        String sm = "SM-" + random;
-        String em = "EM-" + random;
-        int si = random;
-        int ei = random + 5;
+       return createFeatureLocationObject(String.valueOf(random));
+    }
+
+    public static FeatureLocation createFeatureLocationObject(String uuid) {
+        String sm = "SM-" + uuid;
+        String em = "EM-" + uuid;
+        int si = new Random().nextInt();
+        int ei = si + 5;
         FeatureLocation fl = new FeatureLocation();
         fl.setStartModifier(sm);
         fl.setEndModifier(em);
