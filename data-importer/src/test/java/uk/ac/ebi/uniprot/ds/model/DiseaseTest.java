@@ -34,7 +34,7 @@ public class DiseaseTest extends BaseTest {
         Assertions.assertNotNull(disease.getId());
     }
 
-    public static Disease createDiseaseObject(int random) {
+    public static Disease createDiseaseObject(String random) {
         Disease disease = new Disease();
         String dId = "DID-" + random;
         String dn = "DN-" + random;
@@ -48,6 +48,6 @@ public class DiseaseTest extends BaseTest {
     }
 
     public static Disease createDiseaseObject() {
-        return createDiseaseObject(BaseTest.random);
+        return createDiseaseObject(String.valueOf(BaseTest.random));
     }
 }

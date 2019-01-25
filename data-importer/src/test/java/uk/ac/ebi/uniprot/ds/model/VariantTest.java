@@ -61,12 +61,12 @@ public class VariantTest extends BaseTest {
         Assertions.assertEquals(ds.getId(), variant.getDisease().getId());
     }
 
-    public static Variant createVariantObject(){
-        String os = "OS-" + random;
-        String as = "AS-" + random;
-        String fid = "FID-" + random;
-        String fs = "FS-" + random;
-        String vr = "VR-" + random;
+    public static Variant createVariantObject(String uuid){
+        String os = "OS-" + uuid;
+        String as = "AS-" + uuid;
+        String fid = "FID-" + uuid;
+        String fs = "FS-" + uuid;
+        String vr = "VR-" + uuid;
 
         Variant variant = new Variant();
         variant.setOrigSeq(os);
@@ -75,5 +75,8 @@ public class VariantTest extends BaseTest {
         variant.setFeatureStatus(fs);
         variant.setReport(vr);
         return variant;
+    }
+    public static Variant createVariantObject(){
+        return createVariantObject(String.valueOf(random));
     }
 }

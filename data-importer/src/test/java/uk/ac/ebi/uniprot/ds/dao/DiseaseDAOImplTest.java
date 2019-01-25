@@ -20,6 +20,7 @@ import uk.ac.ebi.uniprot.ds.model.DiseaseTest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 public class DiseaseDAOImplTest extends BaseTest {
@@ -151,8 +152,8 @@ public class DiseaseDAOImplTest extends BaseTest {
     }
 
     private Disease createDisease() {
-        int rand = (int) (Math.random() * 100000);
-        Disease dis = DiseaseTest.createDiseaseObject(rand);
+        String uuid = UUID.randomUUID().toString();
+        Disease dis = DiseaseTest.createDiseaseObject(uuid);
         executeInsideTransaction(dao -> dao.createOrUpdate(dis), this.diseaseDAO);
         assertNotNull(dis.getId(), "Unable to save the disease");
         return dis;

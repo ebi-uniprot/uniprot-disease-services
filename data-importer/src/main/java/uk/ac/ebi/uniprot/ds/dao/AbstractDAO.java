@@ -22,7 +22,6 @@ import java.util.Optional;
 
 public abstract class AbstractDAO<T> implements BaseDAO<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDAO.class);
-
     private Class<T> classh;
 
     private final EntityManager entityManager;

@@ -109,7 +109,7 @@ public class ProteinDAOImplTest extends BaseTest {
     }
 
     private Disease createDisease(int nextInt) {
-        Disease dis = DiseaseTest.createDiseaseObject(nextInt);
+        Disease dis = DiseaseTest.createDiseaseObject(String.valueOf(nextInt));
         return dis;
     }
 }
