@@ -11,4 +11,5 @@ import uk.ac.ebi.uniprot.ds.model.Disease;
 
 public interface DiseaseDAO extends BaseDAO<Disease>{
     // custom methods related to Disease only if any
+
 }

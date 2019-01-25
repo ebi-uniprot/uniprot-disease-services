@@ -12,70 +12,62 @@ import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityTransaction;
 
+import java.util.Random;
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class InteractionTest extends BaseTest {
 
-    private Interaction in;
+    private Interaction interaction;
     private Protein pr;
 
     @AfterEach
     void cleanUp(){
         EntityTransaction txn = em.getTransaction();
         txn.begin();
-        em.remove(in);
+        em.remove(interaction);
         em.remove(pr);
         txn.commit();
     }
 
     @Test
     void testCreateInteraction(){
-        pr = createProtein();
-        in = new Interaction();
-        String type = "TYPE-" + random;
-        String gene = "G-" + random;
-        int count = random;
-        String first = "F-" + random;
-        String second = "S-" + random;
-        in.setType(type);
-        in.setGene(gene);
-        in.setAccession("ACC-" + random);
-        in.setExperimentCount(count);
-        in.setFirstInteractor(first);
-        in.setSecondInteractor(second);
-        in.setProtein(pr);
+        String uuid = UUID.randomUUID().toString();
+        this.pr = ProteinTest.createProteinObject(String.valueOf(random));
+        EntityTransaction txn = em.getTransaction();
+        txn.begin();
+        em.persist(this.pr);
+        txn.commit();
+        assertNotNull(this.pr.getId(), "unable to create a protein");
+
+        this.interaction = createInteractionObject(uuid);
+        this.interaction.setProtein(pr);
 
         // persist
-        EntityTransaction txn = em.getTransaction();
+        txn = em.getTransaction();
         txn.begin();
-        em.persist(in);
+        em.persist(this.interaction);
         txn.commit();
 
-        assertNotNull(in.getId(), "unable to create the interaction record");
-        assertNotNull(in.getProtein());
+        assertNotNull(this.interaction.getId(), "unable to create the interaction record");
+        assertNotNull(this.interaction.getProtein());
     }
 
-    private Protein createProtein() {
-        // create protein
-        Protein protein = new Protein();
-        String pId = "PID-" + random;
-        String pn = "PN-" + random;
-        String acc = "ACC-" + random;
-        String gene = "GENE-" + random;
-        String pDesc = "PDESC-" + random;
 
-        protein.setProteinId(pId);
-        protein.setName(pn);
-        protein.setAccession(acc);
-        protein.setGene(gene);
-        protein.setDesc(pDesc);
-
-        EntityTransaction txn = em.getTransaction();
-        txn.begin();
-        em.persist(protein);
-        txn.commit();
-
-        assertNotNull(protein.getId(), "unable to create the protein record");
-        return protein;
+    public static Interaction createInteractionObject(String random) {
+        Interaction inter = new Interaction();
+        String type = "TYPE-" + random;
+        String gene = "G-" + random;
+        int count = new Random().nextInt();
+        String first = "F-" + random;
+        String second = "S-" + random;
+        inter.setType(type);
+        inter.setGene(gene);
+        inter.setAccession("ACC-" + random);
+        inter.setExperimentCount(count);
+        inter.setFirstInteractor(first);
+        inter.setSecondInteractor(second);
+        return inter;
     }
 }

@@ -1,6 +1,7 @@
 package uk.ac.ebi.uniprot.disease.pipeline.processor.common;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.ac.ebi.uniprot.disease.pipeline.processor.common.Cleaner;
 import uk.ac.ebi.uniprot.disease.pipeline.processor.common.DownloadProcessor;
@@ -16,7 +17,7 @@ public class CleanerTest {
     private String downloadedFile = "/tmp/cgda.tsv.gz";
     private String unzippedFile = "/tmp/cgda.tsv";
 
-    @Test
+    @Ignore
     public void testProcessNext() throws IOException, SQLException {
         WorkflowMetrics metrics = new WorkflowMetrics(System.currentTimeMillis());
         DiseaseRequest.DiseaseRequestBuilder builder = DiseaseRequest.builder();

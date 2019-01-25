@@ -1,6 +1,7 @@
 package uk.ac.ebi.uniprot.disease.pipeline.processor.common;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.ac.ebi.uniprot.disease.pipeline.processor.common.Cleaner;
 import uk.ac.ebi.uniprot.disease.pipeline.processor.common.DownloadProcessor;
@@ -15,7 +16,7 @@ public class DownloadProcessorTest {
     private String url = "http://www.disgenet.org/ds/DisGeNET/results/curated_gene_disease_associations.tsv.gz";
     private String downloadedFile = "/tmp/cgda.tsv.gz";
     private String unzippedFile = "/tmp/cgda.tsv";
-    @Test
+    @Ignore
     public void testProcessRequest() throws IOException, SQLException {
         DownloadProcessor processor = new DownloadProcessor();
         WorkflowMetrics metrics = new WorkflowMetrics(System.currentTimeMillis());

@@ -25,7 +25,7 @@ public abstract class AbstractDAO<T> implements BaseDAO<T> {
 
     private Class<T> classh;
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public AbstractDAO(EntityManager entityManager){
         this.entityManager = entityManager;

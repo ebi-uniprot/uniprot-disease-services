@@ -51,7 +51,7 @@ public class ProteinTest extends BaseTest{
         assertNotNull(disease.getId(), "unable to create the disease");
     }
 
-    public static Protein createProteinObject(int random) {
+    public static Protein createProteinObject(String random) {
 
         // create protein
         Protein protein = new Protein();
@@ -69,7 +69,7 @@ public class ProteinTest extends BaseTest{
         return protein;
     }
     public static Protein createProteinObject() {
-        return createProteinObject(random);
+        return createProteinObject(String.valueOf(random));
 
     }
 

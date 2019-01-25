@@ -39,7 +39,7 @@ public class ProteinDAOImplTest extends BaseTest {
 
     @Test
     void createProteinWithDiseases(){
-        this.protein = ProteinTest.createProteinObject(new Random().nextInt());
+        this.protein = ProteinTest.createProteinObject(UUID.randomUUID().toString());
         // create 5 diseases
         this.diseases = new HashSet<>();
         IntStream.range(1, 6).forEach(i -> this.diseases.add(createDisease(new Random().nextInt())));
@@ -57,7 +57,7 @@ public class ProteinDAOImplTest extends BaseTest {
 
     @Test
     void testGetProteinById(){
-        this.protein = ProteinTest.createProteinObject(new Random().nextInt());
+        this.protein = ProteinTest.createProteinObject(UUID.randomUUID().toString());
         executeInsideTransaction(dao -> dao.createOrUpdate(this.protein), this.proteinDAO);
         assertNotNull(this.protein.getId());
 
@@ -68,7 +68,7 @@ public class ProteinDAOImplTest extends BaseTest {
 
     @Test
     void testGetProteinByAccession(){
-        this.protein = ProteinTest.createProteinObject(new Random().nextInt());
+        this.protein = ProteinTest.createProteinObject(UUID.randomUUID().toString());
         executeInsideTransaction(dao -> dao.createOrUpdate(this.protein), this.proteinDAO);
         assertNotNull(this.protein.getId());
 

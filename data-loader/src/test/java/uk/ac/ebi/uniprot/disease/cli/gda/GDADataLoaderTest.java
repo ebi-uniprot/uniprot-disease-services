@@ -1,6 +1,7 @@
 package uk.ac.ebi.uniprot.disease.cli.gda;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 public class GDADataLoaderTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(GDADataLoaderTest.class);
 
-    @Test
+    @Ignore
     public void testGDADataLoader() throws SQLException {
         try {
             String[] args = {"--store", "false", "-t", "gda"};

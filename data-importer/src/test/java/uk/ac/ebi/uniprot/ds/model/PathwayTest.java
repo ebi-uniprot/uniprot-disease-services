@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityTransaction;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PathwayTest extends BaseTest {
@@ -29,21 +31,9 @@ public class PathwayTest extends BaseTest {
     }
 
     @Test
-    void testCreateInteraction(){
+    void testCreatePathway(){
         pr = createProtein();
-        pt = new Pathway();
-        String pId = "PID-" + random;
-        String desc = "DESC-" + random;
-        String type = "TYPE-" + random;
-        String iid = "IID-" + random;
-        String t = "T-" + random;
-        String f = "F-" + random;
-        pt.setPrimaryId(pId);
-        pt.setDesc(desc);
-        pt.setDbType(type);
-        pt.setIsoformId(iid);
-        pt.setThird(t);
-        pt.setFourth(f);
+        pt = createPathwayObject(UUID.randomUUID().toString());
         pt.setProtein(pr);
 
         // persist
@@ -79,5 +69,22 @@ public class PathwayTest extends BaseTest {
 
         assertNotNull(protein.getId(), "unable to create the protein record");
         return protein;
+    }
+
+    public  static Pathway createPathwayObject(String uuid) {
+        Pathway pathway = new Pathway();
+        String pId = "PID-" + uuid;
+        String desc = "DESC-" + uuid;
+        String type = "TYPE-" + uuid;
+        String iid = "IID-" + uuid;
+        String t = "T-" + uuid;
+        String f = "F-" + uuid;
+        pathway.setPrimaryId(pId);
+        pathway.setDesc(desc);
+        pathway.setDbType(type);
+        pathway.setIsoformId(iid);
+        pathway.setThird(t);
+        pathway.setFourth(f);
+        return pathway;
     }
 }
