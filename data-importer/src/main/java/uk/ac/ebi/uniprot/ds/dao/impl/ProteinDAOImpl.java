@@ -7,18 +7,25 @@
 
 package uk.ac.ebi.uniprot.ds.dao.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import uk.ac.ebi.uniprot.ds.dao.AbstractDAO;
 import uk.ac.ebi.uniprot.ds.dao.ProteinDAO;
 import uk.ac.ebi.uniprot.ds.model.Protein;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.Optional;
 
+@Repository
 public class ProteinDAOImpl extends AbstractDAO<Protein> implements ProteinDAO {
+    @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired
     public ProteinDAOImpl(EntityManager entityManager) {
         super(entityManager);
         this.entityManager = entityManager;

@@ -19,6 +19,11 @@
     <artifactId>data-importer</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>uk.ac.ebi.uniprot</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- Postgres DB and EcliseINK -->
         <dependency>
             <groupId>javax.persistence</groupId>
@@ -71,6 +76,12 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-migrationsupport</artifactId>
             <version>${junit.vintage.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 

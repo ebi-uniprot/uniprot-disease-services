@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import uk.ac.ebi.uniprot.ds.exception.AssetNotFoundException;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -24,6 +25,7 @@ public abstract class AbstractDAO<T> implements BaseDAO<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDAO.class);
     private Class<T> classh;
 
+    @PersistenceContext
     private final EntityManager entityManager;
 
     public AbstractDAO(EntityManager entityManager){

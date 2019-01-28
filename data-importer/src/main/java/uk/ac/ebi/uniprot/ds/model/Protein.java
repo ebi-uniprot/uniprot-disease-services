@@ -7,8 +7,7 @@
 
 package uk.ac.ebi.uniprot.ds.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -18,6 +17,9 @@ import java.util.Set;
 @Table(name = "ds_protein")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Protein extends BaseEntity {
 
     private static final long serialVersionUID = -6896338892189706610L;
