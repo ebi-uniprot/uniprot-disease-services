@@ -11,28 +11,38 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import uk.ac.ebi.uniprot.ds.dao.impl.DiseaseDAOImpl;
-import uk.ac.ebi.uniprot.ds.dao.impl.ProteinDAOImpl;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.ac.ebi.uniprot.ds.model.*;
 
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class ProteinDAOImplTest extends BaseTest {
-    private ProteinDAO proteinDAO = new ProteinDAOImpl(BaseTest.em);
-    private DiseaseDAO diseaseDAO = new DiseaseDAOImpl(BaseTest.em);
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+public class ProteinDAOImplTest{
+    @Autowired
+    private ProteinDAO proteinDAO;
+
+    @Autowired
+    private DiseaseDAO diseaseDAO;
+
     private Protein protein;
     private Set<Disease> diseases;
 
     @AfterEach
-    void cleanUp(){
+    public void cleanUp(){
         if(this.protein != null){
-            executeInsideTransaction(dao -> dao.delete(this.protein), this.proteinDAO);
+            this.proteinDAO.delete(this.protein);
             this.protein = null;
         }
 
         if(this.diseases != null && !this.diseases.isEmpty()){
-            this.diseases.forEach(disease -> executeInsideTransaction(dao -> dao.delete(disease), this.diseaseDAO));
+            this.diseases.forEach(disease -> this.diseaseDAO.delete(disease));
             this.diseases = null;
         }
     }
@@ -45,11 +55,11 @@ public class ProteinDAOImplTest extends BaseTest {
         IntStream.range(1, 6).forEach(i -> this.diseases.add(createDisease(new Random().nextInt())));
 
         this.protein.setDiseases(this.diseases);
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.protein), this.proteinDAO);
+        this.proteinDAO.save(this.protein);
         assertNotNull(this.protein.getId(), "unable to create protein");
 
         // get the disease
-        Optional<Protein> storedProtein = this.proteinDAO.get(this.protein.getId());
+        Optional<Protein> storedProtein = this.proteinDAO.findById(this.protein.getId());
         assertTrue(storedProtein.isPresent(), "unable to get the protein");
         verifyProtein(this.protein, storedProtein.get());
         verifyDiseases(storedProtein.get().getDiseases());
@@ -58,37 +68,37 @@ public class ProteinDAOImplTest extends BaseTest {
     @Test
     void testGetProteinById(){
         this.protein = ProteinTest.createProteinObject(UUID.randomUUID().toString());
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.protein), this.proteinDAO);
+        this.protein = this.proteinDAO.save(this.protein);
         assertNotNull(this.protein.getId());
 
-        Optional<Protein> optProtein = this.proteinDAO.getProteinById(this.protein.getProteinId());
-        assertTrue(optProtein.isPresent());
-        verifyProtein(this.protein, optProtein.get());
+        Protein savedProtein = this.proteinDAO.findByProteinId(this.protein.getProteinId());
+        assertNotNull(savedProtein);
+        verifyProtein(this.protein, savedProtein);
     }
 
     @Test
     void testGetProteinByAccession(){
         this.protein = ProteinTest.createProteinObject(UUID.randomUUID().toString());
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.protein), this.proteinDAO);
+        this.protein = this.proteinDAO.save(this.protein);
         assertNotNull(this.protein.getId());
 
-        Optional<Protein> optProtein = this.proteinDAO.getProteinByAccession(this.protein.getAccession());
-        assertTrue(optProtein.isPresent());
-        verifyProtein(this.protein, optProtein.get());
+        Protein savedProtein = this.proteinDAO.findByAccession(this.protein.getAccession());
+        assertNotNull(savedProtein);
+        verifyProtein(this.protein, savedProtein);
     }
 
     @Test
     void testGetNonExistentProteinById(){
         String randomPID = UUID.randomUUID().toString() + new Random().nextInt();
-        Optional<Protein> optProtein = this.proteinDAO.getProteinById(randomPID);
-        assertFalse(optProtein.isPresent());
+        Protein savedProtein = this.proteinDAO.findByProteinId(randomPID);
+        assertNull(savedProtein);
     }
 
     @Test
     void testGetNonExistentProteinByAccession(){
         String randomAcc = UUID.randomUUID().toString() + new Random().nextInt();
-        Optional<Protein> optProtein = this.proteinDAO.getProteinByAccession(randomAcc);
-        assertFalse(optProtein.isPresent());
+        Protein savedProtein = this.proteinDAO.findByAccession(randomAcc);
+        assertNull(savedProtein);
     }
 
 

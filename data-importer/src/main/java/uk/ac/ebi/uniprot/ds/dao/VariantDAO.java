@@ -7,17 +7,18 @@
 
 package uk.ac.ebi.uniprot.ds.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import uk.ac.ebi.uniprot.ds.model.*;
 
 import java.util.Optional;
 
-public interface VariantDAO extends BaseDAO<Variant> {
+public interface VariantDAO extends JpaRepository<Variant, Long> {
 
-    Optional<Variant> getVariantByFeatureLocation(FeatureLocation fl);
+    Optional<Variant> findByFeatureLocation(FeatureLocation fl);
 
-    Optional<Variant> getVariantByEvidence(Evidence evidence);
+    Optional<Variant> findByEvidence(Evidence evidence);
 
-    Optional<Variant> getVariantByProtein(Protein protein);
+    Optional<Variant> findByProtein(Protein protein);
 
-    Optional<Variant> getVariantByDisease(Disease disease);
+    Optional<Variant> findByDisease(Disease disease);
 }

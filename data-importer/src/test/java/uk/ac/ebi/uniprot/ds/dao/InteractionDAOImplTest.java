@@ -9,8 +9,11 @@ package uk.ac.ebi.uniprot.ds.dao;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import uk.ac.ebi.uniprot.ds.dao.impl.InteractionDAOImpl;
-import uk.ac.ebi.uniprot.ds.dao.impl.ProteinDAOImpl;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.ac.ebi.uniprot.ds.model.*;
 
 import java.util.ArrayList;
@@ -21,9 +24,16 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class InteractionDAOImplTest extends BaseTest {
-    private InteractionDAO interactionDAO = new InteractionDAOImpl(BaseTest.em);
-    private ProteinDAO proteinDAO = new ProteinDAOImpl(BaseTest.em);
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+public class InteractionDAOImplTest{
+
+    @Autowired
+    private InteractionDAO interactionDAO;
+    @Autowired
+    private ProteinDAO proteinDAO;
+
     private Interaction interaction;
     private List<Interaction> interactionList;
 
@@ -32,18 +42,18 @@ public class InteractionDAOImplTest extends BaseTest {
     @AfterEach
     void cleanUp(){
         if(this.interaction != null){
-            executeInsideTransaction(dao -> dao.delete(this.interaction), this.interactionDAO);
+            this.interactionDAO.delete(this.interaction);
             this.interaction = null;
         }
 
         if(this.interactionList != null && !this.interactionList.isEmpty()){
-            this.interactionList.forEach(i -> executeInsideTransaction(dao -> dao.delete(i), this.interactionDAO));
+            this.interactionList.forEach(i -> this.interactionDAO.delete(i));
             this.interactionList = null;
         }
 
 
         if(this.protein != null){
-            executeInsideTransaction(dao -> dao.delete(this.protein), this.proteinDAO);
+            this.proteinDAO.delete(this.protein);
             this.protein = null;
 
         }
@@ -53,11 +63,11 @@ public class InteractionDAOImplTest extends BaseTest {
     @Test
     void createInteractionWithoutProtein(){
         this.interaction = InteractionTest.createInteractionObject(UUID.randomUUID().toString());
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.interaction), this.interactionDAO);
+        this.interactionDAO.save(this.interaction);
         assertNotNull(this.interaction.getId(), "unable to create interaction");
 
         // get and verify the interaction
-        Optional<Interaction> optInter = this.interactionDAO.get(this.interaction.getId());
+        Optional<Interaction> optInter = this.interactionDAO.findById(this.interaction.getId());
         assertTrue(optInter.isPresent(), "unable to get the interaction");
         verifyInteraction(this.interaction, optInter.get());
     }
@@ -66,7 +76,7 @@ public class InteractionDAOImplTest extends BaseTest {
     void testCreateMultipleInteractionsWithAProtein(){
         // create a protein
         this.protein = ProteinTest.createProteinObject(UUID.randomUUID().toString());
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.protein), this.proteinDAO);
+        this.proteinDAO.save(this.protein);
         assertNotNull(this.protein.getId(), "unable to create the protein");
 
         // create 10 interactions
@@ -74,13 +84,13 @@ public class InteractionDAOImplTest extends BaseTest {
         IntStream.range(1, 11).forEach(i -> {
             Interaction storedInt = InteractionTest.createInteractionObject(UUID.randomUUID().toString());
             storedInt.setProtein(this.protein);
-            executeInsideTransaction(dao -> dao.createOrUpdate(storedInt), this.interactionDAO);
+            this.interactionDAO.save(storedInt);
             assertNotNull(storedInt.getId(), "unable to create interaction");
             this.interactionList.add(storedInt);
         });
 
         // get interactions by protein
-        List<Interaction> storedProteins = this.interactionDAO.getInteractionsByProtein(this.protein);
+        List<Interaction> storedProteins = this.interactionDAO.findAllByProtein(this.protein);
         assertFalse(storedProteins.isEmpty(), "unable to get list of interactions");
         assertEquals(10, storedProteins.size());
     }

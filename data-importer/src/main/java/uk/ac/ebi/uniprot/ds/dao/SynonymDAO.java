@@ -7,11 +7,12 @@
 
 package uk.ac.ebi.uniprot.ds.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import uk.ac.ebi.uniprot.ds.model.Disease;
 import uk.ac.ebi.uniprot.ds.model.Synonym;
 
 import java.util.List;
 
-public interface SynonymDAO extends BaseDAO<Synonym>{
-    List<Synonym> getSynonymsByDisease(Disease disease);
+public interface SynonymDAO extends JpaRepository<Synonym, Long> {
+    List<Synonym> findAllByDisease(Disease disease);
 }

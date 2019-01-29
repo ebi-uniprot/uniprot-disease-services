@@ -8,6 +8,7 @@
 package uk.ac.ebi.uniprot.ds.model;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityTransaction;
@@ -30,6 +31,7 @@ public class PathwayTest extends BaseTest {
         txn.commit();
     }
 
+    @Disabled
     @Test
     void testCreatePathway(){
         pr = createProtein();

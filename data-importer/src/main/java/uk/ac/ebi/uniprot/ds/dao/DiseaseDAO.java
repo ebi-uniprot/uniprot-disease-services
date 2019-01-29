@@ -7,9 +7,10 @@
 
 package uk.ac.ebi.uniprot.ds.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import uk.ac.ebi.uniprot.ds.model.Disease;
 
-public interface DiseaseDAO extends BaseDAO<Disease>{
+public interface DiseaseDAO extends JpaRepository<Disease, Long> {
     // custom methods related to Disease only if any
 
 }

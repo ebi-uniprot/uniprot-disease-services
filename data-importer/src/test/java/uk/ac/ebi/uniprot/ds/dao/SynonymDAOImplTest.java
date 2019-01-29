@@ -10,18 +10,27 @@ package uk.ac.ebi.uniprot.ds.dao;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import uk.ac.ebi.uniprot.ds.dao.impl.DiseaseDAOImpl;
-import uk.ac.ebi.uniprot.ds.dao.impl.SynonymDAOImpl;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.ac.ebi.uniprot.ds.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
-public class SynonymDAOImplTest extends BaseTest {
-    private SynonymDAO synonymDAO = new SynonymDAOImpl(BaseTest.em);
-    private DiseaseDAO diseaseDAO = new DiseaseDAOImpl(BaseTest.em);
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+public class SynonymDAOImplTest{
+    @Autowired
+    private SynonymDAO synonymDAO;
+    @Autowired
+    private DiseaseDAO diseaseDAO;
 
     private Synonym synonym;
     private Disease disease;
@@ -30,15 +39,15 @@ public class SynonymDAOImplTest extends BaseTest {
     @AfterEach
     void cleanUp(){
         if(this.synonym != null){
-            executeInsideTransaction(dao -> dao.delete(this.synonym), this.synonymDAO);
+            this.synonymDAO.delete(this.synonym);
             this.synonym = null;
         }
         if(this.synonyms != null && !this.synonyms.isEmpty()){
-            this.synonyms.forEach(syn -> executeInsideTransaction(dao -> dao.delete(syn), this.synonymDAO));
+            this.synonyms.forEach(syn -> this.synonymDAO.delete(syn));
             this.synonyms = null;
         }
         if(this.disease != null){
-            executeInsideTransaction(dao -> dao.delete(this.disease), this.diseaseDAO);
+            this.diseaseDAO.delete(this.disease);
             this.disease = null;
         }
     }
@@ -47,18 +56,18 @@ public class SynonymDAOImplTest extends BaseTest {
     void testCreateSynonym(){
         // create parent disease
         this.disease = DiseaseTest.createDiseaseObject();
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.disease), this.diseaseDAO);
+        this.diseaseDAO.save(this.disease);
         assertNotNull(this.disease.getId());
-
+        String GUID = UUID.randomUUID().toString();
         String name = "SYN-" + GUID;
         this.synonym = new Synonym();
         this.synonym.setName(name);
         this.synonym.setDisease(this.disease);
         // save in the db
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.synonym), this.synonymDAO);
+        this.synonymDAO.save(this.synonym);
         assertNotNull(this.synonym.getId(), "Synonym could not be created");
         // get the Synonym and verify
-        Optional<Synonym> optSD = this.synonymDAO.get(this.synonym.getId());
+        Optional<Synonym> optSD = this.synonymDAO.findById(this.synonym.getId());
         verifySynonym(optSD, name);
     }
 
@@ -66,26 +75,26 @@ public class SynonymDAOImplTest extends BaseTest {
     void testCreateUpdateDisease(){
         // create parent disease
         this.disease = DiseaseTest.createDiseaseObject();
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.disease), this.diseaseDAO);
+        this.diseaseDAO.save(this.disease);
         assertNotNull(this.disease.getId());
-
+        String GUID = UUID.randomUUID().toString();
         String name = "SYN-" + GUID;
         this.synonym = new Synonym();
         this.synonym.setName(name);
         this.synonym.setDisease(this.disease);
         // save in the db
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.synonym), this.synonymDAO);
+        this.synonymDAO.save(this.synonym);
         assertNotNull(this.synonym.getId(), "Synonym could not be created");
         // get the Synonym and verify
-        Optional<Synonym> optSD = this.synonymDAO.get(this.synonym.getId());
+        Optional<Synonym> optSD = this.synonymDAO.findById(this.synonym.getId());
         verifySynonym(optSD, name);
 
         // update the name
         String newName = "Updated-" + name;
         this.synonym.setName(newName);
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.synonym), this.synonymDAO);
+        this.synonymDAO.save(this.synonym);
         // get the Synonym and verify
-        Optional<Synonym> optSD1 = this.synonymDAO.get(this.synonym.getId());
+        Optional<Synonym> optSD1 = this.synonymDAO.findById(this.synonym.getId());
         verifySynonym(optSD1, newName);
     }
 
@@ -93,26 +102,26 @@ public class SynonymDAOImplTest extends BaseTest {
     void testDeleteSynonym(){
         // create parent disease
         this.disease = DiseaseTest.createDiseaseObject();
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.disease), this.diseaseDAO);
+        this.diseaseDAO.save(this.disease);
         assertNotNull(this.disease.getId());
-
+        String GUID = UUID.randomUUID().toString();
         String name = "SYN-" + GUID;
         this.synonym = new Synonym();
         this.synonym.setName(name);
         this.synonym.setDisease(this.disease);
         // save in the db
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.synonym), this.synonymDAO);
+        this.synonymDAO.save(this.synonym);
         assertNotNull(this.synonym.getId(), "Synonym could not be created");
 
         // delete the synonym
-        executeInsideTransaction(dao -> dao.delete(this.synonym), this.synonymDAO);
+        this.synonymDAO.delete(this.synonym);
 
         // try to get the synonym, it should fail
-        Optional<Synonym> optSyn = this.synonymDAO.get(this.synonym.getId());
+        Optional<Synonym> optSyn = this.synonymDAO.findById(this.synonym.getId());
         assertFalse(optSyn.isPresent());
         this.synonym = null;
         // get the disease, it should exist
-        Optional<Disease> optDis = this.diseaseDAO.get(this.disease.getId());
+        Optional<Disease> optDis = this.diseaseDAO.findById(this.disease.getId());
         assertTrue(optDis.isPresent());
 
     }
@@ -121,7 +130,7 @@ public class SynonymDAOImplTest extends BaseTest {
     void testGetSynonymsByDisease(){
         // create parent disease
         this.disease = DiseaseTest.createDiseaseObject();
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.disease), this.diseaseDAO);
+        this.diseaseDAO.save(this.disease);
         assertNotNull(this.disease.getId());
 
         // create 10 synonyms
@@ -129,17 +138,18 @@ public class SynonymDAOImplTest extends BaseTest {
         IntStream.range(1, 11).forEach(i -> this.synonyms.add(createSynonym(i)));
 
         // get synonyms by diseases
-        List<Synonym> disSyns = this.synonymDAO.getSynonymsByDisease(this.disease);
+        List<Synonym> disSyns = this.synonymDAO.findAllByDisease(this.disease);
         assertEquals(10, disSyns.size());
     }
 
     private Synonym createSynonym(int i) {
+        String GUID = UUID.randomUUID().toString();
         String name = "SYN-"+ i + "-" + GUID;
         Synonym syn = new Synonym();
         syn.setName(name);
         syn.setDisease(this.disease);
         // save in the db
-        executeInsideTransaction(dao -> dao.createOrUpdate(syn), this.synonymDAO);
+        this.synonymDAO.save(syn);
         assertNotNull(syn.getId(), "Synonym could not be created");
         return syn;
     }

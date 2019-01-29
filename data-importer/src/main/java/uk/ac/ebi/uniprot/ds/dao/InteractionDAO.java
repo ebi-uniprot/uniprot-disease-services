@@ -7,11 +7,12 @@
 
 package uk.ac.ebi.uniprot.ds.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import uk.ac.ebi.uniprot.ds.model.Interaction;
 import uk.ac.ebi.uniprot.ds.model.Protein;
 
 import java.util.List;
 
-public interface InteractionDAO extends BaseDAO<Interaction> {
-    List<Interaction> getInteractionsByProtein(Protein protein);
+public interface InteractionDAO extends JpaRepository<Interaction, Long> {
+    List<Interaction> findAllByProtein(Protein protein);
 }

@@ -9,7 +9,11 @@ package uk.ac.ebi.uniprot.ds.dao;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import uk.ac.ebi.uniprot.ds.dao.impl.FeatureLocationDAOImpl;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.ac.ebi.uniprot.ds.model.*;
 
 import java.util.Optional;
@@ -17,14 +21,19 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FeatureLocationDAOImplTest extends BaseTest {
-    private FeatureLocationDAOImpl featureLocationDAO = new FeatureLocationDAOImpl(BaseTest.em);
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+public class FeatureLocationDAOImplTest {
+
+    @Autowired
+    private FeatureLocationDAO featureLocationDAO;
     private FeatureLocation featureLocation;
 
     @AfterEach
     void cleanUp(){
         if(this.featureLocation != null){
-            executeInsideTransaction(dao -> dao.delete(this.featureLocation), this.featureLocationDAO);
+            this.featureLocationDAO.delete(this.featureLocation);
             this.featureLocation = null;
         }
     }
@@ -32,11 +41,11 @@ public class FeatureLocationDAOImplTest extends BaseTest {
     @Test
     void testCreateFeatureLocation(){
         this.featureLocation = FeatureLocationTest.createFeatureLocationObject(UUID.randomUUID().toString());
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.featureLocation), this.featureLocationDAO);
+        this.featureLocationDAO.save(this.featureLocation);
         assertNotNull(this.featureLocation.getId(), "unable to create the evidence");
 
         // get the evidence and verify
-        Optional<FeatureLocation> optStoredFL = this.featureLocationDAO.get(this.featureLocation.getId());
+        Optional<FeatureLocation> optStoredFL = this.featureLocationDAO.findById(this.featureLocation.getId());
         assertTrue(optStoredFL.isPresent(), "unable to get the featureLocation");
 
         verifyFeatureLocation(this.featureLocation, optStoredFL.get());

@@ -15,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.dao.ProteinDAO;
 import uk.ac.ebi.uniprot.ds.model.Protein;
 
-import java.util.Optional;
-
 @Service
 public class ProteinService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProteinService.class);
@@ -31,19 +29,19 @@ public class ProteinService {
         builder.proteinId(proteinId).name(proteinName);
         builder.accession(accession).gene(gene).desc(description);
         Protein protein = builder.build();
-        this.proteinDAO.createOrUpdate(protein);
+        this.proteinDAO.save(protein);
         LOGGER.info("The protein created with id {}", protein.getId());
         return protein;
     }
 
     @Transactional
     public Protein createProtein(Protein protein){
-        this.proteinDAO.createOrUpdate(protein);
+        this.proteinDAO.save(protein);
         return protein;
     }
 
-    public Optional<Protein> getProteinByProteinId(String proteinId){
-        return this.proteinDAO.getProteinById(proteinId);
+    public Protein getProteinByProteinId(String proteinId){
+        return this.proteinDAO.findByProteinId(proteinId);
     }
 
 }

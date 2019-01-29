@@ -11,22 +11,30 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import uk.ac.ebi.uniprot.ds.dao.impl.EvidenceDAOImpl;
-import uk.ac.ebi.uniprot.ds.model.BaseTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.ac.ebi.uniprot.ds.model.Evidence;
 import uk.ac.ebi.uniprot.ds.model.EvidenceTest;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public class EvidenceDAOImplTest extends BaseTest {
-    private EvidenceDAOImpl evidenceDAO = new EvidenceDAOImpl(BaseTest.em);
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+public class EvidenceDAOImplTest{
+
+    @Autowired
+    private EvidenceDAO evidenceDAO;
     private Evidence evidence;
 
     @AfterEach
     void cleanUp(){
         if(this.evidence != null){
-            executeInsideTransaction(dao -> dao.delete(this.evidence), this.evidenceDAO);
+            this.evidenceDAO.delete(this.evidence);
             this.evidence = null;
         }
     }
@@ -34,11 +42,11 @@ public class EvidenceDAOImplTest extends BaseTest {
     @Test
     void testCreateEvidence(){
         this.evidence = EvidenceTest.createEvidenceObject(UUID.randomUUID().toString());
-        executeInsideTransaction(dao -> dao.createOrUpdate(this.evidence), this.evidenceDAO);
+        this.evidenceDAO.save(this.evidence);
         assertNotNull(this.evidence.getId(), "unable to create the evidence");
 
         // get the evidence and verify
-        Optional<Evidence> optStoredEv = this.evidenceDAO.get(this.evidence.getId());
+        Optional<Evidence> optStoredEv = this.evidenceDAO.findById(this.evidence.getId());
         assertTrue(optStoredEv.isPresent(), "unable to get the evidence");
 
         verifyEvidence(this.evidence, optStoredEv.get());
