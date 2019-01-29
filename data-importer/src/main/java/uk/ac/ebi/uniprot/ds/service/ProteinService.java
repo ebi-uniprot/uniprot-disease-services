@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.dao.ProteinDAO;
 import uk.ac.ebi.uniprot.ds.model.Protein;
 
+import java.util.Optional;
+
 @Service
 public class ProteinService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProteinService.class);
@@ -40,7 +42,7 @@ public class ProteinService {
         return protein;
     }
 
-    public Protein getProteinByProteinId(String proteinId){
+    public Optional<Protein> getProteinByProteinId(String proteinId){
         return this.proteinDAO.findByProteinId(proteinId);
     }
 

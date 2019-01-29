@@ -71,9 +71,9 @@ public class ProteinDAOImplTest{
         this.protein = this.proteinDAO.save(this.protein);
         assertNotNull(this.protein.getId());
 
-        Protein savedProtein = this.proteinDAO.findByProteinId(this.protein.getProteinId());
-        assertNotNull(savedProtein);
-        verifyProtein(this.protein, savedProtein);
+        Optional<Protein> savedProtein = this.proteinDAO.findByProteinId(this.protein.getProteinId());
+        assertTrue(savedProtein.isPresent());
+        verifyProtein(this.protein, savedProtein.get());
     }
 
     @Test
@@ -82,23 +82,23 @@ public class ProteinDAOImplTest{
         this.protein = this.proteinDAO.save(this.protein);
         assertNotNull(this.protein.getId());
 
-        Protein savedProtein = this.proteinDAO.findByAccession(this.protein.getAccession());
-        assertNotNull(savedProtein);
-        verifyProtein(this.protein, savedProtein);
+        Optional<Protein> savedProtein = this.proteinDAO.findByAccession(this.protein.getAccession());
+        assertTrue(savedProtein.isPresent());
+        verifyProtein(this.protein, savedProtein.get());
     }
 
     @Test
     void testGetNonExistentProteinById(){
         String randomPID = UUID.randomUUID().toString() + new Random().nextInt();
-        Protein savedProtein = this.proteinDAO.findByProteinId(randomPID);
-        assertNull(savedProtein);
+        Optional<Protein> savedProtein = this.proteinDAO.findByProteinId(randomPID);
+        assertFalse(savedProtein.isPresent());
     }
 
     @Test
     void testGetNonExistentProteinByAccession(){
         String randomAcc = UUID.randomUUID().toString() + new Random().nextInt();
-        Protein savedProtein = this.proteinDAO.findByAccession(randomAcc);
-        assertNull(savedProtein);
+        Optional<Protein> savedProtein = this.proteinDAO.findByAccession(randomAcc);
+        assertFalse(savedProtein.isPresent());
     }
 
 

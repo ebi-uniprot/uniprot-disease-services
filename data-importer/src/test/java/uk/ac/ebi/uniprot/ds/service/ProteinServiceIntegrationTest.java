@@ -55,7 +55,7 @@ public class ProteinServiceIntegrationTest {
 
         Mockito.when(this.proteinDAO.findById(Mockito.anyLong())).thenReturn(Optional.of(this.protein));
 
-        Mockito.when(this.proteinDAO.findByProteinId(this.protein.getProteinId())).thenReturn(this.protein);
+        Mockito.when(this.proteinDAO.findByProteinId(this.protein.getProteinId())).thenReturn(Optional.ofNullable(this.protein));
     }
 
     @Test
@@ -69,8 +69,8 @@ public class ProteinServiceIntegrationTest {
 
     @Test
     void testGetProteinByProteinId(){
-        Protein storedProtein = this.proteinService.getProteinByProteinId(this.protein.getProteinId());
-        Assertions.assertNotNull(storedProtein);
-        Assertions.assertEquals(this.protein.getProteinId(), storedProtein.getProteinId());
+        Optional<Protein> storedProtein = this.proteinService.getProteinByProteinId(this.protein.getProteinId());
+        Assertions.assertTrue(storedProtein.isPresent());
+        Assertions.assertEquals(this.protein.getProteinId(), storedProtein.get().getProteinId());
     }
 }

@@ -10,8 +10,10 @@ package uk.ac.ebi.uniprot.ds.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import uk.ac.ebi.uniprot.ds.model.Protein;
 
+import java.util.Optional;
+
 
 public interface ProteinDAO extends JpaRepository<Protein, Long> {
-    Protein findByProteinId(String proteinId);
-    Protein findByAccession(String accession);
+    Optional<Protein> findByProteinId(String proteinId);
+    Optional<Protein> findByAccession(String accession);
 }
