@@ -21,6 +21,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Disease extends BaseEntity {
 
     private static final long serialVersionUID = 924803633810006763L;
@@ -37,7 +38,9 @@ public class Disease extends BaseEntity {
     @Column
     private String acronym;
 
-    @ManyToMany(mappedBy = "diseases", cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "ds_disease_protein", joinColumns = @JoinColumn(name = "ds_disease_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "ds_protein_id"))
     private Set<Protein> proteins;
 
 //    @OneToMany(mappedBy = "disease")

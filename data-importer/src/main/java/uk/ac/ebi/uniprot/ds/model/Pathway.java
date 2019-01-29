@@ -7,8 +7,7 @@
 
 package uk.ac.ebi.uniprot.ds.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,6 +15,10 @@ import javax.persistence.*;
 @Table(name = "ds_pathway")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Pathway extends BaseEntity {
 
     private static final long serialVersionUID = -5081945044878223589L;

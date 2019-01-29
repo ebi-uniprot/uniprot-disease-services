@@ -7,15 +7,11 @@
 
 package uk.ac.ebi.uniprot.ds;
 
-import org.eclipse.persistence.config.BatchWriting;
 import org.eclipse.persistence.config.PersistenceUnitProperties;
-import org.eclipse.persistence.logging.SessionLog;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.autoconfigure.transaction.TransactionManagerCustomizers;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;

@@ -20,6 +20,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Protein extends BaseEntity {
 
     private static final long serialVersionUID = -6896338892189706610L;
@@ -38,9 +39,7 @@ public class Protein extends BaseEntity {
     @Column(name = "description")
     private String desc;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "ds_disease_protein", joinColumns = @JoinColumn(name = "ds_protein_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "ds_disease_id"))
+    @ManyToMany(mappedBy = "proteins")
     private Set<Disease> diseases;
 
     @Override

@@ -7,8 +7,7 @@
 
 package uk.ac.ebi.uniprot.ds.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,6 +15,10 @@ import javax.persistence.*;
 @Table(name = "ds_variant")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Variant extends BaseEntity {
 
     private static final long serialVersionUID = 1901616724895902919L;
