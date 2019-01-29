@@ -94,6 +94,19 @@ public class DiseaseDAOImplTest {
     }
 
     @Test
+    void testDeleteDiseaseByDiseaseId(){
+        // create the disease
+        this.disease = createDisease();
+
+        // delete the disease now
+        this.diseaseDAO.deleteByDiseaseId(this.disease.getDiseaseId());
+        // try to get the disease now
+        Optional<Disease> optDisease = this.diseaseDAO.findById(this.disease.getId());
+        assertFalse(optDisease.isPresent(), "Unable to delete the disease by disease id");
+        this.disease= null;
+    }
+
+    @Test
     void testGetDisease(){
         // create the disease
        this.disease = createDisease();

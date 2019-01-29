@@ -46,4 +46,6 @@ public class ProteinService {
         return this.proteinDAO.findByProteinId(proteinId);
     }
 
+
+
 }

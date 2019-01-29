@@ -7,8 +7,7 @@
 
 package uk.ac.ebi.uniprot.ds.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,6 +18,9 @@ import java.util.Set;
 @Table(name = "ds_disease")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Disease extends BaseEntity {
 
     private static final long serialVersionUID = 924803633810006763L;

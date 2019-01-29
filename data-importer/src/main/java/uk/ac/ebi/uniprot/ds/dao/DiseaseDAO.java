@@ -8,9 +8,15 @@
 package uk.ac.ebi.uniprot.ds.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.model.Disease;
 
-public interface DiseaseDAO extends JpaRepository<Disease, Long> {
-    // custom methods related to Disease only if any
+import java.util.Optional;
 
+public interface DiseaseDAO extends JpaRepository<Disease, Long> {
+    @Transactional
+    Optional<Disease> findByDiseaseId(String diseaseId);
+
+    @Transactional
+    void deleteByDiseaseId(String diseaseId);
 }
