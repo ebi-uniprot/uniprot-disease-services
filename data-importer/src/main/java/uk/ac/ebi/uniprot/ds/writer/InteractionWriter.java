@@ -44,12 +44,12 @@ public class InteractionWriter implements ItemWriter<UniProtEntry> {
         }
     }
 
-    //TODO use batch insert,
     private void createInteractions(Protein protein, List<uk.ac.ebi.kraken.interfaces.uniprot.comments.Interaction> commentInteractions){
-        commentInteractions.forEach(ci -> createInteraction(protein, ci));
+        List<Interaction> interactions = commentInteractions.stream().map(ci -> createInteraction(protein, ci)).collect(Collectors.toList());
+        this.interactionDAO.saveAll(interactions);
     }
 
-    private void createInteraction(Protein protein, uk.ac.ebi.kraken.interfaces.uniprot.comments.Interaction commentInteraction) {
+    private Interaction createInteraction(Protein protein, uk.ac.ebi.kraken.interfaces.uniprot.comments.Interaction commentInteraction) {
         Interaction.InteractionBuilder builder = Interaction.builder();
         builder.type(commentInteraction.getInteractionType().name());
         builder.accession(commentInteraction.getInteractorUniProtAccession().getValue());
@@ -59,7 +59,7 @@ public class InteractionWriter implements ItemWriter<UniProtEntry> {
         builder.secondInteractor(commentInteraction.getSecondInteractor().getValue());
         builder.protein(protein);
         Interaction interaction = builder.build();
-        this.interactionDAO.save(interaction);
+        return interaction;
     }
 
     protected List<uk.ac.ebi.kraken.interfaces.uniprot.comments.Interaction> getInteractions(UniProtEntry entry) {

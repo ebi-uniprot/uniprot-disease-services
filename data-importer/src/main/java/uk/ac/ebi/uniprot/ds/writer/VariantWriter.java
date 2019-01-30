@@ -34,7 +34,7 @@ public class VariantWriter implements ItemWriter<UniProtEntry> {
     @Override
     public void write(List<? extends UniProtEntry> entries) throws Exception {
         for(UniProtEntry entry : entries){
-            Protein protein = this.proteinIdProteinMap.remove(entry.getUniProtId().getValue());
+            Protein protein = this.proteinIdProteinMap.get(entry.getUniProtId().getValue());
             assert protein != null;
             Collection<VariantFeature> vfs = entry.getFeatures(FeatureType.VARIANT);
 
@@ -61,7 +61,6 @@ public class VariantWriter implements ItemWriter<UniProtEntry> {
                 builder.featureStatus(vf.getFeatureStatus().getName());
                 builder.protein(protein);
                 Variant variant = builder.build();
-                System.out.println("Going to save " + variant);
                 this.variantDAO.save(variant);
             }
         }

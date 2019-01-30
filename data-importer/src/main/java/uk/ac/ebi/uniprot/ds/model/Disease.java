@@ -38,7 +38,7 @@ public class Disease extends BaseEntity {
     @Column
     private String acronym;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "ds_disease_protein", joinColumns = @JoinColumn(name = "ds_disease_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "ds_protein_id"))
     private Set<Protein> proteins;

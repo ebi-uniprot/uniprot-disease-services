@@ -16,11 +16,13 @@ import uk.ac.ebi.kraken.interfaces.uniprot.ProteinDescription;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.FieldType;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.Name;
+import uk.ac.ebi.uniprot.ds.dao.ProteinDAO;
 import uk.ac.ebi.uniprot.ds.model.Protein;
 import uk.ac.ebi.uniprot.ds.service.ProteinService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ProteinWriter implements ItemWriter<UniProtEntry> {
     private static final Logger logger = LoggerFactory.getLogger(ProteinWriter.class);
@@ -35,16 +37,9 @@ public class ProteinWriter implements ItemWriter<UniProtEntry> {
 
     @Override
     public void write(List<? extends UniProtEntry> entries) throws Exception {
-
-        entries.forEach(entry -> {
-            Protein protein = convertToProtein(entry);
-            logger.info("Saving protein {}", protein);
-            this.proteinService.createProtein(protein);
-            this.proteinIdProteinMap.put(protein.getProteinId(), protein);
-        });
-
-        logger.info("The size of map is {}", this.proteinIdProteinMap.size());
-
+        List<Protein> proteins = entries.stream().map(entry -> convertToProtein(entry)).collect(Collectors.toList());
+        this.proteinService.saveAll(proteins);
+        this.proteinIdProteinMap.putAll(proteins.stream().collect(Collectors.toMap(p -> p.getProteinId(), p -> p)));
     }
 
     private Protein convertToProtein(UniProtEntry entry) {

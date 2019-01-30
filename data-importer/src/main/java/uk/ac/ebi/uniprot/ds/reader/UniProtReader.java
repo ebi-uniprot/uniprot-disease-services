@@ -21,7 +21,6 @@ import java.io.File;
 import java.util.List;
 
 public class UniProtReader implements ItemReader<UniProtEntry> {
-    private static int count = 0;
     private static final String HUMAX_TAXANOMY_ID = "9606";
     private EntryIterator iterator;
 
@@ -43,9 +42,7 @@ public class UniProtReader implements ItemReader<UniProtEntry> {
 
         if(iterator.hasNext()){
             entry = iterator.next();
-            System.out.println(count++);
         }
-
         return entry;
     }
 }

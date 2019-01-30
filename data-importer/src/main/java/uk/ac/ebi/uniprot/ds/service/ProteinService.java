@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.dao.ProteinDAO;
 import uk.ac.ebi.uniprot.ds.model.Protein;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,6 +45,11 @@ public class ProteinService {
 
     public Optional<Protein> getProteinByProteinId(String proteinId){
         return this.proteinDAO.findByProteinId(proteinId);
+    }
+
+    @Transactional
+    public List<Protein> saveAll(List<Protein> proteins){
+        return this.proteinDAO.saveAll(proteins);
     }
 
 

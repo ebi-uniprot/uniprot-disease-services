@@ -10,6 +10,7 @@ package uk.ac.ebi.uniprot.ds.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import uk.ac.ebi.uniprot.ds.model.*;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface VariantDAO extends JpaRepository<Variant, Long> {
@@ -21,4 +22,6 @@ public interface VariantDAO extends JpaRepository<Variant, Long> {
     Optional<Variant> findByProtein(Protein protein);
 
     Optional<Variant> findByDisease(Disease disease);
+
+    List<Variant> findAllByReportContaining(String diseaseAcronym);
 }

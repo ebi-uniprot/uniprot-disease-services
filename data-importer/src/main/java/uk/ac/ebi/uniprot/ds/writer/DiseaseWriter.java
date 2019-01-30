@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.CommentType;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.DiseaseCommentStructured;
+import uk.ac.ebi.uniprot.ds.dao.VariantDAO;
 import uk.ac.ebi.uniprot.ds.model.Disease;
 import uk.ac.ebi.uniprot.ds.model.Protein;
+import uk.ac.ebi.uniprot.ds.model.Variant;
 import uk.ac.ebi.uniprot.ds.service.DiseaseService;
 
 import java.util.*;
@@ -25,6 +27,8 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
 
     @Autowired
     private DiseaseService diseaseService;
+    @Autowired
+    private VariantDAO variantDAO;
     public DiseaseWriter(Map<String, Protein> proteinIdProteinMap){
         this.proteinIdProteinMap = proteinIdProteinMap;
     }
@@ -34,18 +38,15 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
         // get the list of proteins from entries
         for(UniProtEntry entry : entries){
             // get the protein from the uniprot entry
-            Protein protein = this.proteinIdProteinMap.get(entry.getUniProtId().getValue());
+            Protein protein = this.proteinIdProteinMap.remove(entry.getUniProtId().getValue());
             assert protein != null;
             List<Disease> diseases = getDiseasesFromUniProtEntry(entry);
             upsertDiseases(protein, diseases);
         }
-
-        System.out.println("The size of map is "  + this.proteinIdProteinMap.size());
     }
 
     private void upsertDiseases(Protein protein, List<Disease> diseases) {
         for(Disease disease : diseases){
-            System.out.println("Disease to be written " + disease);
             Optional<Disease> optDisease = this.diseaseService.findByDiseaseId(disease.getDiseaseId());
             Disease pDisease;
             if(optDisease.isPresent()){
@@ -58,7 +59,16 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
                 pDisease.setProteins(proteins);
             }
             this.diseaseService.createUpdateDisease(pDisease);
+            // update the variant
+            updateDiseaseVariants(pDisease);
+
         }
+    }
+
+    private void updateDiseaseVariants(Disease pDisease) {
+        List<Variant> variants = this.variantDAO.findAllByReportContaining(pDisease.getAcronym());
+        variants.forEach(v -> v.setDisease(pDisease));
+        this.variantDAO.saveAll(variants);
     }
 
     private List<Disease> getDiseasesFromUniProtEntry(UniProtEntry entry) {
@@ -84,6 +94,4 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
         return builder.build();
 
     }
-
-
 }
