@@ -21,12 +21,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
+import uk.ac.ebi.uniprot.disease.model.sources.uniprot.UniProtDisease;
 import uk.ac.ebi.uniprot.ds.listener.LogJobListener;
 import uk.ac.ebi.uniprot.ds.listener.LogStepListener;
+import uk.ac.ebi.uniprot.ds.model.Disease;
 import uk.ac.ebi.uniprot.ds.model.Protein;
+import uk.ac.ebi.uniprot.ds.processor.UniProtDiseaseToDiseaseConverter;
+import uk.ac.ebi.uniprot.ds.reader.HumDiseaseReader;
 import uk.ac.ebi.uniprot.ds.reader.UniProtReader;
 import uk.ac.ebi.uniprot.ds.writer.*;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,13 +50,40 @@ public class BatchConfigurationUniProtData {
 
     // tag::jobstep[]
     @Bean
-    public Job importUniProtDataJob(){
+    public Job importUniProtDataJob() throws FileNotFoundException {
         return jobBuilderFactory.get("importUniProtData")
                 .incrementer(new RunIdIncrementer())
-                .flow(importUniProtDataStep())
+                .flow(importHumDiseaseData())
+                .next(importUniProtDataStep())
                 .end()
                 .listener(logJobListener())
                 .build();
+    }
+    @Bean
+    public Step importHumDiseaseData() throws FileNotFoundException {
+        return this.stepBuilderFactory.get("importHumDiseaseData")
+                .<UniProtDisease, Disease>chunk(50)
+                .reader(humDiseaseReader())
+                .processor(converter())
+                .writer(humDiseaseWriter())
+                .listener(logStepListener())
+                .build();
+    }
+
+    @Bean
+    public UniProtDiseaseToDiseaseConverter converter() {
+        return new UniProtDiseaseToDiseaseConverter();
+    }
+
+    @Bean
+    public HumDiseaseWriter humDiseaseWriter(){
+        return new HumDiseaseWriter();
+    }
+
+    @Bean
+    ItemReader<UniProtDisease> humDiseaseReader() throws FileNotFoundException {
+        ItemReader<UniProtDisease> reader = new HumDiseaseReader("/Users/sahmad/work/proj/uniprot-disease-services/data-importer/src/main/resources/uniprot/humdisease.txt");
+        return reader;
     }
 
     @Bean

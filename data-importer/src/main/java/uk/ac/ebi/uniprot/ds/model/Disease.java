@@ -10,6 +10,7 @@ package uk.ac.ebi.uniprot.ds.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -21,7 +22,6 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Disease extends BaseEntity {
 
     private static final long serialVersionUID = 924803633810006763L;
@@ -43,8 +43,18 @@ public class Disease extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "ds_protein_id"))
     private Set<Protein> proteins;
 
-//    @OneToMany(mappedBy = "disease")
-//    private List<Synonym> synonyms;
+    @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Synonym> synonyms;
+
+    public void addSynonym(Synonym synonym){
+        this.synonyms.add(synonym);
+        synonym.setDisease(this);
+    }
+
+    public void removeSynonym(Synonym synonym){
+        this.synonyms.remove(synonym);
+        synonym.setDisease(null);
+    }
 
     @Override
     public boolean equals(Object obj) {

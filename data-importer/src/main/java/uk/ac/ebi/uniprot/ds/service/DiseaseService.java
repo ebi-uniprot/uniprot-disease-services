@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.dao.DiseaseDAO;
 import uk.ac.ebi.uniprot.ds.model.Disease;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -61,5 +62,14 @@ public class DiseaseService {
     @Transactional
     public void deleteDiseaseByDiseaseId(String diseaseId){
         this.diseaseDAO.deleteByDiseaseId(diseaseId);
+    }
+
+    @Transactional
+    public List<Disease> saveAll(List<Disease> diseases){
+        return this.diseaseDAO.saveAll(diseases);
+    }
+
+    public Optional<Disease> findByDiseaseIdOrNameOrAcronym(String diseaseId, String diseaseName, String acronym) {
+        return this.diseaseDAO.findDiseaseByDiseaseIdOrNameOrAcronym(diseaseId, diseaseName, acronym);
     }
 }

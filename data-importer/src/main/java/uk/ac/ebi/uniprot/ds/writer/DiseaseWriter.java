@@ -47,10 +47,14 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
 
     private void upsertDiseases(Protein protein, List<Disease> diseases) {
         for(Disease disease : diseases){
-            Optional<Disease> optDisease = this.diseaseService.findByDiseaseId(disease.getDiseaseId());
+
+            Optional<Disease> optDisease = this.diseaseService.findByDiseaseIdOrNameOrAcronym
+                    (disease.getDiseaseId(), disease.getName(), disease.getAcronym());
+
             Disease pDisease;
             if(optDisease.isPresent()){
                 pDisease = optDisease.get();
+                pDisease.setDiseaseId(disease.getDiseaseId());
                 pDisease.getProteins().add(protein);
             } else {
                 Set<Protein> proteins = new HashSet<>();
