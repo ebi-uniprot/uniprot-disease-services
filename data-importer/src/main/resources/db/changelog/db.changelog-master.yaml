@@ -1,3 +1,5 @@
+# This is a dummy file to satisfy springboot.
+# do not add anything here.. the changes should go in changelog-master.xml
 databaseChangeLog:
   - preConditions:
       - dbms:

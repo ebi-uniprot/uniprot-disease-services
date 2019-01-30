@@ -13,10 +13,10 @@ import uk.ac.ebi.uniprot.ds.model.Disease;
 
 import java.util.List;
 
-public class NoOpItemWriter implements ItemWriter<Disease> {
+public class NoOpItemWriter implements ItemWriter<UniProtEntry> {
 
     @Override
-    public void write(List<? extends Disease> list) throws Exception {
+    public void write(List<? extends UniProtEntry> list) throws Exception {
         // do nothing
         System.out.println(list);
     }

@@ -10,14 +10,17 @@ package uk.ac.ebi.uniprot.ds.config;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
@@ -29,6 +32,7 @@ import uk.ac.ebi.uniprot.ds.model.Protein;
 import uk.ac.ebi.uniprot.ds.processor.UniProtDiseaseToDiseaseConverter;
 import uk.ac.ebi.uniprot.ds.reader.HumDiseaseReader;
 import uk.ac.ebi.uniprot.ds.reader.UniProtReader;
+import uk.ac.ebi.uniprot.ds.util.Constants;
 import uk.ac.ebi.uniprot.ds.writer.*;
 
 import java.io.FileNotFoundException;
@@ -48,30 +52,56 @@ public class BatchConfigurationUniProtData {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
-    // tag::jobstep[]
+    @Value("${ds.humdisease.data.file.path}")
+    private String humDiseaseDataFile;
+
+    @Value("${ds.uniprot.data.file.absolute.path}")
+    private String uniProtDataAbsFilePath;
+
+    @Value(("${ds.import.chunk.size}"))
+    private Integer chunkSize;
+
     @Bean
-    public Job importUniProtDataJob() throws FileNotFoundException {
-        return jobBuilderFactory.get("importUniProtData")
+    public Job importUniProtDataJob(JobExecutionListener jobExecutionListener, Step humDiseaseStep,
+                                    Step uniProtStep) throws FileNotFoundException {
+
+        return jobBuilderFactory.get(Constants.DISEASE_SERVICE_DATA_LOADER)
                 .incrementer(new RunIdIncrementer())
-                .flow(importHumDiseaseData())
-                .next(importUniProtDataStep())
+                .flow(humDiseaseStep)
+                .next(uniProtStep)
                 .end()
-                .listener(logJobListener())
+                .listener(jobExecutionListener)
                 .build();
     }
+
+
     @Bean
-    public Step importHumDiseaseData() throws FileNotFoundException {
-        return this.stepBuilderFactory.get("importHumDiseaseData")
-                .<UniProtDisease, Disease>chunk(50)
-                .reader(humDiseaseReader())
-                .processor(converter())
-                .writer(humDiseaseWriter())
-                .listener(logStepListener())
+    public Step humDiseaseStep(StepExecutionListener stepListener,
+                               ItemReader<UniProtDisease> humDiseaseReader,
+                               ItemProcessor<UniProtDisease, Disease> humDiseaseConverter,
+                               ItemWriter<Disease> humDiseaseWriter) throws FileNotFoundException {
+        return this.stepBuilderFactory.get(Constants.DS_HUM_DISEASE_DATA_LOADER_STEP)
+                .<UniProtDisease, Disease>chunk(chunkSize)
+                .reader(humDiseaseReader)
+                .processor(humDiseaseConverter)
+                .writer(humDiseaseWriter)
+                .listener(stepListener)
                 .build();
     }
 
     @Bean
-    public UniProtDiseaseToDiseaseConverter converter() {
+    public Step uniProtStep(StepExecutionListener stepListener,
+                            ItemReader<UniProtEntry> uniProtReader, CompositeItemWriter<UniProtEntry> uniProtCompositeWriter) {
+        return stepBuilderFactory.get(Constants.DS_UNIPROT_DATA_LOADER_STEP)
+                .<UniProtEntry, UniProtEntry>chunk(chunkSize)
+                .reader(uniProtReader)
+                .writer(uniProtCompositeWriter)
+                .listener(stepListener)
+                .build();
+    }
+
+    @Bean
+    public UniProtDiseaseToDiseaseConverter humDiseaseConverter() {
         return new UniProtDiseaseToDiseaseConverter();
     }
 
@@ -82,18 +112,8 @@ public class BatchConfigurationUniProtData {
 
     @Bean
     ItemReader<UniProtDisease> humDiseaseReader() throws FileNotFoundException {
-        ItemReader<UniProtDisease> reader = new HumDiseaseReader("/Users/sahmad/work/proj/uniprot-disease-services/data-importer/src/main/resources/uniprot/humdisease.txt");
+        ItemReader<UniProtDisease> reader = new HumDiseaseReader(humDiseaseDataFile);
         return reader;
-    }
-
-    @Bean
-    public Step importUniProtDataStep() {
-        return stepBuilderFactory.get("importUniProtDataStep")
-                .<UniProtEntry, UniProtEntry>chunk(50)
-                .reader(uniprotReader())
-                .writer(compositeItemWriter())
-                .listener(logStepListener())
-                .build();
     }
 
     @Bean
@@ -102,7 +122,7 @@ public class BatchConfigurationUniProtData {
     }
 
     @Bean
-    public CompositeItemWriter<UniProtEntry> compositeItemWriter(){
+    public CompositeItemWriter<UniProtEntry> uniProtCompositeWriter(){
         CompositeItemWriter compositeWriter = new CompositeItemWriter();
         ProteinWriter writer1 = proteinWriter();
         InteractionWriter writer2 = interactionWriter();
@@ -140,19 +160,19 @@ public class BatchConfigurationUniProtData {
     }
 
     @Bean
-    public ItemReader<? extends UniProtEntry> uniprotReader() {
-        UniProtReader reader = new UniProtReader("/Users/sahmad/Documents/uniprot_sprot.dat");
+    public ItemReader<UniProtEntry> uniProtReader() {
+        UniProtReader reader = new UniProtReader(uniProtDataAbsFilePath);
         return reader;
     }
 
     @Bean
-    public JobExecutionListener logJobListener() {
+    public JobExecutionListener jobExecutionListener() {
         return new LogJobListener();
 
     }
 
     @Bean
-    public LogStepListener logStepListener(){
+    public StepExecutionListener stepListener(){
         return new LogStepListener();
     }
 }

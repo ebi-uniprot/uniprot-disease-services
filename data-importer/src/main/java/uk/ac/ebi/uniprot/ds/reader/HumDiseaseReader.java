@@ -47,9 +47,9 @@ public class HumDiseaseReader implements ItemReader<UniProtDisease> {
 
 
     public HumDiseaseReader(String fileName) throws FileNotFoundException {
-        //ClassLoader classLoader = getClass().getClassLoader();
-        //File file = new File(classLoader.getResource(fileName).getFile());
-        reader = new Scanner(new File(fileName), StandardCharsets.UTF_8.name());
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource(fileName).getFile());
+        reader = new Scanner(file, StandardCharsets.UTF_8.name());
         dataRegionStarted = false;
     }
 
