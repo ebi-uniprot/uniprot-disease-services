@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - preConditions:
+      - dbms:
+          type: postgresql

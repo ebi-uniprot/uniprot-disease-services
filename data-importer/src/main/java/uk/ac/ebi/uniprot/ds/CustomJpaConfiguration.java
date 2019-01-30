@@ -46,9 +46,9 @@ public class CustomJpaConfiguration extends JpaBaseConfiguration {
     protected Map<String, Object> getVendorProperties() {
         Map<String, Object> map = new HashMap<>();
         map.put(PersistenceUnitProperties.WEAVING, detectWeavingMode());
-       // map.put(PersistenceUnitProperties.DDL_GENERATION, "drop-and-create-tables");
-        map.put(PersistenceUnitProperties.LOGGING_LEVEL, "FINEST");
-        map.put("eclipselink.logging.level.sql", "FINEST");
+       //map.put(PersistenceUnitProperties.DDL_GENERATION, "drop-and-create-tables");
+        map.put(PersistenceUnitProperties.LOGGING_LEVEL, "SEVERE");
+        map.put("eclipselink.logging.level.sql", "SEVERE");
         return map;
     }
 

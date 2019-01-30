@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="sahmad (generated)" id="1548860672822-1">
+        <createSequence sequenceName="ds_disease_id_seq"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-2">
+        <createSequence sequenceName="ds_evidence_id_seq"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-3">
+        <createSequence sequenceName="ds_feature_location_id_seq"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-4">
+        <createSequence sequenceName="ds_interaction_id_seq"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-5">
+        <createSequence sequenceName="ds_pathway_id_seq"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-6">
+        <createSequence sequenceName="ds_protein_id_seq"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-7">
+        <createSequence sequenceName="ds_synonym_id_seq"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-8">
+        <createSequence sequenceName="ds_variant_id_seq"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-9">
+        <createTable tableName="ds_disease">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="ds_disease_pk"/>
+            </column>
+            <column name="disease_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="disease_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="acronym" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-10">
+        <createTable tableName="ds_disease_protein">
+            <column name="ds_disease_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ds_protein_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-11">
+        <createTable tableName="ds_evidence">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="ds_evidence_pk"/>
+            </column>
+            <column name="evidence_id" type="VARCHAR(255)"/>
+            <column name="evidence_type" type="VARCHAR(255)"/>
+            <column name="evidence_attribute" type="VARCHAR(255)"/>
+            <column name="evidence_code" type="VARCHAR(255)"/>
+            <column name="use_eco_code" type="BOOL"/>
+            <column name="type_value" type="VARCHAR(255)"/>
+            <column name="has_type_value" type="BOOL"/>
+            <column name="created_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-12">
+        <createTable tableName="ds_feature_location">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="ds_feature_location_pk"/>
+            </column>
+            <column name="start_modifier" type="VARCHAR(255)"/>
+            <column name="end_modifier" type="VARCHAR(255)"/>
+            <column name="start_id" type="INT"/>
+            <column name="end_id" type="INT"/>
+            <column name="created_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-13">
+        <createTable tableName="ds_interaction">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="ds_interaction_pk"/>
+            </column>
+            <column name="interaction_type" type="VARCHAR(255)"/>
+            <column name="accession" type="VARCHAR(255)"/>
+            <column name="gene" type="VARCHAR(255)"/>
+            <column name="experiment_count" type="INT"/>
+            <column name="first_interactor" type="VARCHAR(255)"/>
+            <column name="second_interactor" type="VARCHAR(255)"/>
+            <column name="ds_protein_id" type="BIGINT"/>
+            <column name="created_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-14">
+        <createTable tableName="ds_pathway">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="ds_pathway_pk"/>
+            </column>
+            <column name="primary_id" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="db_type" type="VARCHAR(255)"/>
+            <column name="isoform_id" type="VARCHAR(255)"/>
+            <column name="third" type="VARCHAR(255)"/>
+            <column name="fourth" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ds_protein_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-15">
+        <createTable tableName="ds_protein">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="ds_protein_pk"/>
+            </column>
+            <column name="protein_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="protein_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="accession" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="gene" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-16">
+        <createTable tableName="ds_synonym">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="ds_synonyms_pk"/>
+            </column>
+            <column name="disease_name" type="VARCHAR(255)"/>
+            <column name="ds_disease_id" type="BIGINT"/>
+            <column name="created_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-17">
+        <createTable tableName="ds_variant">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="ds_variant_pk"/>
+            </column>
+            <column name="original_sequence" type="VARCHAR(255)"/>
+            <column name="alternate_sequence" type="VARCHAR(255)"/>
+            <column name="feature_id" type="VARCHAR(255)"/>
+            <column name="variant_report" type="TEXT"/>
+            <column name="ds_feature_location_id" type="BIGINT"/>
+            <column name="feature_status" type="VARCHAR(255)"/>
+            <column name="ds_evidence_id" type="BIGINT"/>
+            <column name="ds_protein_id" type="BIGINT"/>
+            <column name="ds_disease_id" type="BIGINT"/>
+            <column name="created_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-18">
+        <addUniqueConstraint columnNames="ds_disease_id, ds_protein_id" constraintName="ds_disease_protein_un"
+                             tableName="ds_disease_protein"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-19">
+        <addUniqueConstraint columnNames="disease_id" constraintName="ds_disease_un" tableName="ds_disease"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-20">
+        <addUniqueConstraint columnNames="protein_id" constraintName="ds_protein_un1" tableName="ds_protein"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-21">
+        <addUniqueConstraint columnNames="accession" constraintName="ds_protein_un2" tableName="ds_protein"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-22">
+        <addForeignKeyConstraint baseColumnNames="ds_disease_id" baseTableName="ds_disease_protein"
+                                 constraintName="ds_disease_protein_ds_disease_fk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="ds_disease"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-23">
+        <addForeignKeyConstraint baseColumnNames="ds_protein_id" baseTableName="ds_disease_protein"
+                                 constraintName="ds_disease_protein_ds_protein_fk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="ds_protein"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-24">
+        <addForeignKeyConstraint baseColumnNames="ds_disease_id" baseTableName="ds_synonym"
+                                 constraintName="ds_synonyms_ds_disease_fk" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="ds_disease"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-25">
+        <addForeignKeyConstraint baseColumnNames="ds_protein_id" baseTableName="ds_interaction"
+                                 constraintName="interaction_protein_fk" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="ds_protein"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-26">
+        <addForeignKeyConstraint baseColumnNames="ds_protein_id" baseTableName="ds_pathway"
+                                 constraintName="pathway_protein_fk" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="ds_protein"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-27">
+        <addForeignKeyConstraint baseColumnNames="ds_disease_id" baseTableName="ds_variant"
+                                 constraintName="variant_disease_fk" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="ds_disease"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-28">
+        <addForeignKeyConstraint baseColumnNames="ds_evidence_id" baseTableName="ds_variant"
+                                 constraintName="variant_evidence_fk" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="ds_evidence"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-29">
+        <addForeignKeyConstraint baseColumnNames="ds_feature_location_id" baseTableName="ds_variant"
+                                 constraintName="variant_feature_location_fk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="ds_feature_location"/>
+    </changeSet>
+    <changeSet author="sahmad (generated)" id="1548860672822-30">
+        <addForeignKeyConstraint baseColumnNames="ds_protein_id" baseTableName="ds_variant"
+                                 constraintName="variant_protein_fk" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="ds_protein"/>
+    </changeSet>
+</databaseChangeLog>
