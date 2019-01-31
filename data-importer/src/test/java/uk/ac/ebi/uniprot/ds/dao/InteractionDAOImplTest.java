@@ -42,12 +42,12 @@ public class InteractionDAOImplTest{
     @AfterEach
     void cleanUp(){
         if(this.interaction != null){
-            this.interactionDAO.delete(this.interaction);
+            this.interactionDAO.deleteById(this.interaction.getId());
             this.interaction = null;
         }
 
         if(this.interactionList != null && !this.interactionList.isEmpty()){
-            this.interactionList.forEach(i -> this.interactionDAO.delete(i));
+            this.interactionList.forEach(i -> this.interactionDAO.deleteById(i.getId()));
             this.interactionList = null;
         }
 

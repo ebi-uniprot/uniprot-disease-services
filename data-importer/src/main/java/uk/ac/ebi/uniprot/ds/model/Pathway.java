@@ -19,7 +19,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@EqualsAndHashCode
 public class Pathway extends BaseEntity {
 
     private static final long serialVersionUID = -5081945044878223589L;

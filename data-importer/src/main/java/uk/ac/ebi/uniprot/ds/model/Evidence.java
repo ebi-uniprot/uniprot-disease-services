@@ -19,7 +19,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@EqualsAndHashCode
 public class Evidence extends BaseEntity {
 
     private static final long serialVersionUID = 110658268790740113L;

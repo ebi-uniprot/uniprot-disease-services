@@ -45,17 +45,17 @@ public class VariantDAOImplTest{
     @AfterEach
     void cleanUp(){
         if(this.variant != null){
-            this.variantDAO.delete(this.variant);
+            this.variantDAO.deleteById(this.variant.getId());
             this.variant = null;
         }
 
         if(this.featureLocation != null){
-            this.flDAO.delete(this.featureLocation);
+            this.flDAO.deleteById(this.featureLocation.getId());
             this.featureLocation = null;
         }
 
         if(this.evidence != null){
-            this.evidenceDAO.delete(this.evidence);
+            this.evidenceDAO.deleteById(this.evidence.getId());
             this.evidence = null;
         }
 

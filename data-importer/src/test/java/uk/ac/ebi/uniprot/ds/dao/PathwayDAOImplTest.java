@@ -40,12 +40,12 @@ public class PathwayDAOImplTest{
     @AfterEach
     void cleanUp(){
         if(this.pathway != null){
-            this.pathwayDAO.delete(this.pathway);
+            this.pathwayDAO.deleteById(this.pathway.getId());
             this.pathway = null;
         }
 
         if(this.pathwayList != null && !this.pathwayList.isEmpty()){
-            this.pathwayList.forEach(i -> this.pathwayDAO.delete(i));
+            this.pathwayList.forEach(i -> this.pathwayDAO.deleteById(i.getId()));
             this.pathwayList = null;
         }
 

@@ -33,7 +33,7 @@ public class FeatureLocationDAOImplTest {
     @AfterEach
     void cleanUp(){
         if(this.featureLocation != null){
-            this.featureLocationDAO.delete(this.featureLocation);
+            this.featureLocationDAO.deleteById(this.featureLocation.getId());
             this.featureLocation = null;
         }
     }

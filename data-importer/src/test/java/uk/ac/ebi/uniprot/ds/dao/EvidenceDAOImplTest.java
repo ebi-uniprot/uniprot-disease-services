@@ -34,7 +34,7 @@ public class EvidenceDAOImplTest{
     @AfterEach
     void cleanUp(){
         if(this.evidence != null){
-            this.evidenceDAO.delete(this.evidence);
+            this.evidenceDAO.deleteById(this.evidence.getId());
             this.evidence = null;
         }
     }
