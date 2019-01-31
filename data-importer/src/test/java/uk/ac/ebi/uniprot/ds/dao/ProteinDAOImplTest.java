@@ -34,6 +34,7 @@ public class ProteinDAOImplTest{
 
     private Protein protein;
     private Set<Disease> diseases;
+    private String randomUUID = UUID.randomUUID().toString();
 
     @AfterEach
     public void cleanUp(){
@@ -48,7 +49,6 @@ public class ProteinDAOImplTest{
         }
     }
 
-    @Disabled
     @Test
     void createProteinWithDiseases(){
         this.protein = ProteinTest.createProteinObject(UUID.randomUUID().toString());
@@ -91,14 +91,14 @@ public class ProteinDAOImplTest{
 
     @Test
     void testGetNonExistentProteinById(){
-        String randomPID = UUID.randomUUID().toString() + new Random().nextInt();
+        String randomPID = "pid-" + this.randomUUID;
         Optional<Protein> savedProtein = this.proteinDAO.findByProteinId(randomPID);
         assertFalse(savedProtein.isPresent());
     }
 
     @Test
     void testGetNonExistentProteinByAccession(){
-        String randomAcc = UUID.randomUUID().toString() + new Random().nextInt();
+        String randomAcc = "Acc-" + this.randomUUID;
         Optional<Protein> savedProtein = this.proteinDAO.findByAccession(randomAcc);
         assertFalse(savedProtein.isPresent());
     }
@@ -122,6 +122,7 @@ public class ProteinDAOImplTest{
 
     private Disease createDisease(int nextInt) {
         Disease dis = DiseaseTest.createDiseaseObject(String.valueOf(nextInt));
+        this.diseaseDAO.save(dis);
         return dis;
     }
 }
