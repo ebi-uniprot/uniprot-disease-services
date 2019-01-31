@@ -13,6 +13,7 @@
         <module>common</module>
         <module>batch-loader</module>
         <module>data-importer</module>
+        <module>rest-service</module>
     </modules>
 
     <parent>
