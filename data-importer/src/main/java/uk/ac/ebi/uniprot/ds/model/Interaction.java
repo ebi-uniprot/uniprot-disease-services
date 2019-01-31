@@ -19,6 +19,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class Interaction extends BaseEntity {
 
     private static final long serialVersionUID = -553557262535945394L;

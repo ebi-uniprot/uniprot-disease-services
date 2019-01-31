@@ -19,6 +19,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class FeatureLocation extends BaseEntity {
 
     private static final long serialVersionUID = 4794420300156338467L;
