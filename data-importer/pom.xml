@@ -115,10 +115,10 @@
                         <version>3.4.1</version>
                         <executions>
                             <execution>
-                                <id>build-local-database</id>
+                                <id>reset-database</id>
                                 <phase>process-classes</phase>
                                 <configuration>
-                                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+                                    <propertyFile>src/main/resources/liquibase-${spring.profiles.active}.properties</propertyFile>
                                     <changeLogFile>src/main/resources/db/changelog/changelog-master.xml</changeLogFile>
                                     <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
                                     <clearCheckSums>true</clearCheckSums>
@@ -146,10 +146,10 @@
                         <version>3.4.1</version>
                         <executions>
                             <execution>
-                                <id>build-local-database</id>
+                                <id>update-database</id>
                                 <phase>process-classes</phase>
                                 <configuration>
-                                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+                                    <propertyFile>src/main/resources/liquibase-${spring.profiles.active}.properties</propertyFile>
                                     <changeLogFile>src/main/resources/db/changelog/changelog-master.xml</changeLogFile>
                                     <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
                                     <clearCheckSums>true</clearCheckSums>
@@ -195,5 +195,6 @@
         <junit.vintage.version>5.2.0</junit.vintage.version>
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
         <eclipselink.version>2.7.1</eclipselink.version>
+        <spring.profiles.active>dev</spring.profiles.active>
     </properties>
 </project>
