@@ -10,6 +10,7 @@ package uk.ac.ebi.uniprot.ds.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -37,13 +38,21 @@ public class Disease extends BaseEntity {
     @Column
     private String acronym;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "ds_disease_protein", joinColumns = @JoinColumn(name = "ds_disease_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "ds_protein_id"))
+    @ManyToMany(mappedBy = "diseases")
     private Set<Protein> proteins;
 
-    @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "disease", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Synonym> synonyms;
+
+    @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Variant> variants;
+
+    public void addVariants(List<Variant> variants) {
+        if(this.variants == null){
+            this.variants = new ArrayList<>();
+        }
+        this.variants.addAll(variants);
+    }
 
     public void addSynonym(Synonym synonym){
         this.synonyms.add(synonym);

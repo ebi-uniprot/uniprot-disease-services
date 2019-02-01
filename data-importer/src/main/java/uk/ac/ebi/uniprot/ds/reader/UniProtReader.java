@@ -31,18 +31,18 @@ public class UniProtReader implements ItemReader<UniProtEntry> {
     @Override
     public UniProtEntry read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
         UniProtEntry entry = null;
-//        // get only human protein
-//        while(entry == null && iterator.hasNext()){
-//            UniProtEntry tmpEntry = iterator.next();
-//            List<NcbiTaxonomyId> taxonomyIds = tmpEntry.getNcbiTaxonomyIds();
-//            if(taxonomyIds != null && !taxonomyIds.isEmpty() && HUMAX_TAXANOMY_ID.equals(taxonomyIds.get(0).getValue())){
-//                entry = tmpEntry;
-//            }
-//        }
-
-        if(iterator.hasNext()){
-            entry = iterator.next();
+        // get only human protein
+        while(entry == null && iterator.hasNext()){
+            UniProtEntry tmpEntry = iterator.next();
+            List<NcbiTaxonomyId> taxonomyIds = tmpEntry.getNcbiTaxonomyIds();
+            if(taxonomyIds != null && !taxonomyIds.isEmpty() && HUMAX_TAXANOMY_ID.equals(taxonomyIds.get(0).getValue())){
+                entry = tmpEntry;
+            }
         }
+
+//        if(iterator.hasNext()){
+//            entry = iterator.next();
+//        }
         return entry;
     }
 }

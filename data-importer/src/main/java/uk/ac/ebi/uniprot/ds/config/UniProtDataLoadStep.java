@@ -10,8 +10,10 @@ package uk.ac.ebi.uniprot.ds.config;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.support.CompositeItemProcessor;
 import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +21,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.uniprot.ds.model.Protein;
+import uk.ac.ebi.uniprot.ds.processor.*;
 import uk.ac.ebi.uniprot.ds.reader.UniProtReader;
 import uk.ac.ebi.uniprot.ds.util.Constants;
 import uk.ac.ebi.uniprot.ds.writer.*;
@@ -30,7 +33,8 @@ import java.util.Map;
 
 @Configuration
 public class UniProtDataLoadStep {
-    private Map<String, Protein> proteinIdProteinMap = new HashMap<>();
+    Map<String, Protein> proteinIdProteinMap = new HashMap<>();
+    private List<Protein> proteins = new ArrayList<>();
 
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
@@ -48,7 +52,8 @@ public class UniProtDataLoadStep {
         return stepBuilderFactory.get(Constants.DS_UNIPROT_DATA_LOADER_STEP)
                 .<UniProtEntry, UniProtEntry>chunk(chunkSize)
                 .reader(uniProtReader)
-                .writer(uniProtCompositeWriter)
+                .processor(compositeItemProcessor())
+                .writer(proteinWriter1())
                 .listener(stepListener)
                 .build();
     }
@@ -57,6 +62,24 @@ public class UniProtDataLoadStep {
     public ItemReader<UniProtEntry> uniProtReader() {
         UniProtReader reader = new UniProtReader(uniProtDataAbsFilePath);
         return reader;
+    }
+    @Bean
+    public CompositeItemProcessor<UniProtEntry, UniProtEntry> compositeItemProcessor(){
+        CompositeItemProcessor<UniProtEntry, UniProtEntry> compositeProcessor = new CompositeItemProcessor<>();
+
+        List itemProcessors = new ArrayList<>();
+        itemProcessors.add(new ProteinProcessor(this.proteins));
+        itemProcessors.add(new PathwayProcessor(this.proteins));
+        itemProcessors.add(new InteractionProcessor(this.proteins));
+        itemProcessors.add(diseaseProcessor());
+        itemProcessors.add(new VariantProcessor(this.proteins));
+        compositeProcessor.setDelegates(itemProcessors);
+        return compositeProcessor;
+    }
+
+    @Bean
+    DiseaseProcessor diseaseProcessor(){
+        return new DiseaseProcessor(this.proteins);
     }
 
     @Bean
@@ -78,7 +101,14 @@ public class UniProtDataLoadStep {
     }
 
     @Bean
+    public ProteinWriter1 proteinWriter1() {
+
+        return new ProteinWriter1(this.proteins);
+    }
+
+    @Bean
     public ProteinWriter proteinWriter() {
+
         return new ProteinWriter(proteinIdProteinMap);
     }
 

@@ -37,7 +37,7 @@ public class Variant extends BaseEntity {
     @Column(name = "feature_status")
     private String featureStatus; //TODO make it enum
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ds_feature_location_id")
     private FeatureLocation featureLocation;
 
@@ -45,11 +45,11 @@ public class Variant extends BaseEntity {
     @JoinColumn(name = "ds_evidence_id")
     private Evidence evidence;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ds_protein_id")
     private Protein protein;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ds_disease_id")
     private Disease disease;
 }

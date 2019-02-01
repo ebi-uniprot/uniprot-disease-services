@@ -49,6 +49,59 @@ public class ProteinDAOImplTest{
         }
     }
 
+
+
+    @Test
+    void createProteinWithPathwayInteractionVariant(){
+        String uuid = UUID.randomUUID().toString();
+        this.protein = ProteinTest.createProteinObject(uuid);
+        // 3 interactions
+        Interaction int1 = InteractionTest.createInteractionObject(UUID.randomUUID().toString());
+        Interaction int2 = InteractionTest.createInteractionObject(UUID.randomUUID().toString());
+        Interaction int3 = InteractionTest.createInteractionObject(UUID.randomUUID().toString());
+        int1.setProtein(this.protein);
+        int2.setProtein(this.protein);
+        int3.setProtein(this.protein);
+        List<Interaction> ints = new ArrayList<>();
+        ints.add(int1);ints.add(int2);ints.add(int3);
+        this.protein.addInteractions(ints);
+
+        // 3 pathways
+        Pathway p1 = PathwayTest.createPathwayObject(UUID.randomUUID().toString());
+        Pathway p2 = PathwayTest.createPathwayObject(UUID.randomUUID().toString());
+        Pathway p3 = PathwayTest.createPathwayObject(UUID.randomUUID().toString());
+        p1.setProtein(this.protein);
+        p2.setProtein(this.protein);
+        p3.setProtein(this.protein);
+        List<Pathway> ps = new ArrayList<>();
+        ps.add(p1);ps.add(p2);ps.add(p3);
+        this.protein.addPathways(ps);
+
+        // 3 variants
+        Variant v1 = VariantTest.createVariantObject(UUID.randomUUID().toString());
+        FeatureLocation f1 = FeatureLocationTest.createFeatureLocationObject(UUID.randomUUID().toString());
+        v1.setFeatureLocation(f1);
+
+        Variant v2 = VariantTest.createVariantObject(UUID.randomUUID().toString());
+        FeatureLocation f2 = FeatureLocationTest.createFeatureLocationObject(UUID.randomUUID().toString());
+        v2.setFeatureLocation(f2);
+
+        Variant v3 = VariantTest.createVariantObject(UUID.randomUUID().toString());
+        FeatureLocation f3 = FeatureLocationTest.createFeatureLocationObject(UUID.randomUUID().toString());
+        v3.setFeatureLocation(f3);
+
+        List<Variant> vars = new ArrayList<>();
+        v1.setProtein(this.protein);
+        v2.setProtein(this.protein);
+        v3.setProtein(this.protein);
+        vars.add(v1);vars.add(v2);vars.add(v3);
+        this.protein.addVariants(vars);
+
+
+        //save now
+        this.proteinDAO.save(this.protein);
+    }
+
     @Test
     void createProteinWithDiseases(){
         this.protein = ProteinTest.createProteinObject(UUID.randomUUID().toString());
