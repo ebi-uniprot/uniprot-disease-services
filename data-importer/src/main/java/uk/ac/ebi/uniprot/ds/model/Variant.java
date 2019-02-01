@@ -10,6 +10,8 @@ package uk.ac.ebi.uniprot.ds.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "ds_variant")
@@ -18,7 +20,6 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Variant extends BaseEntity {
 
     private static final long serialVersionUID = 1901616724895902919L;
@@ -41,9 +42,9 @@ public class Variant extends BaseEntity {
     @JoinColumn(name = "ds_feature_location_id")
     private FeatureLocation featureLocation;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "ds_evidence_id")
-    private Evidence evidence;
+
+    @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Evidence> evidences;
 
     @OneToOne
     @JoinColumn(name = "ds_protein_id")
@@ -52,4 +53,20 @@ public class Variant extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "ds_disease_id")
     private Disease disease;
+
+    public void addEvidence(Evidence evidence){
+        if(this.evidences == null){
+            this.evidences = new ArrayList<>();
+        }
+        this.evidences.add(evidence);
+        evidence.setVariant(this);
+    }
+
+    public void addEvidences(List<Evidence> evidences) {
+        if(this.evidences == null){
+            this.evidences = new ArrayList<>();
+        }
+
+        this.evidences.addAll(evidences);
+    }
 }

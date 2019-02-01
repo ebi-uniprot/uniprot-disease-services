@@ -18,7 +18,6 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Evidence extends BaseEntity {
 
     private static final long serialVersionUID = 110658268790740113L;
@@ -43,4 +42,8 @@ public class Evidence extends BaseEntity {
 
     @Column(name = "has_type_value")
     private Boolean hasTypeValue;
+
+    @ManyToOne
+    @JoinColumn(name="ds_variant_id")
+    private Variant variant;
 }

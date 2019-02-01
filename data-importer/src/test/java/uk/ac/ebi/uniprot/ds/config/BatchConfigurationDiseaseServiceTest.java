@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -44,6 +45,7 @@ public class BatchConfigurationDiseaseServiceTest {
         this.proteinDAO.deleteAll();
     }
 
+    @Ignore
     @Test
     public void testDiseaseServiceJob() throws Exception {
         //verifyEmptyDB(); FIXME

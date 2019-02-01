@@ -5,6 +5,5 @@
     <include file="src/main/resources/db/changelog/changes/alter_ds_synonym_name_not_null.sql"/>
     <include file="src/main/resources/db/changelog/changes/alter_ds_interaction_type_not_null.sql"/>
     <include file="src/main/resources/db/changelog/changes/alter_ds_protein_gene_nullable.sql"/>
-
-
+    <include file="src/main/resources/db/changelog/changes/alter_variant_evidence_tables.sql"/>
 </databaseChangeLog>

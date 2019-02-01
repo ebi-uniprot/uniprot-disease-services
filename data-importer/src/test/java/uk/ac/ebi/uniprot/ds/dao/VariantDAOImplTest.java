@@ -30,8 +30,6 @@ public class VariantDAOImplTest{
     @Autowired
     private FeatureLocationDAO flDAO;
     @Autowired
-    private EvidenceDAO evidenceDAO;
-    @Autowired
     private ProteinDAO proteinDAO;
     @Autowired
     private DiseaseDAO diseaseDAO;
@@ -52,11 +50,6 @@ public class VariantDAOImplTest{
         if(this.featureLocation != null){
             this.flDAO.deleteById(this.featureLocation.getId());
             this.featureLocation = null;
-        }
-
-        if(this.evidence != null){
-            this.evidenceDAO.deleteById(this.evidence.getId());
-            this.evidence = null;
         }
 
         if(this.protein != null){
@@ -101,26 +94,27 @@ public class VariantDAOImplTest{
     }
 
     @Test
-    void testCreateVariantWithEvidence(){
+    void testCreateVariantWithEvidences(){
         String uuid = UUID.randomUUID().toString();
         // create evidence
-        this.evidence = EvidenceTest.createEvidenceObject(uuid);
-        this.evidenceDAO.save(this.evidence);
-        assertNotNull(this.evidence.getId(), "unable to create evidence");
+        Evidence e1 = EvidenceTest.createEvidenceObject(uuid);
+        Evidence e2 = EvidenceTest.createEvidenceObject(uuid+2);
 
         // create variant with evidence
         this.variant = VariantTest.createVariantObject(uuid);
-        this.variant.setEvidence(this.evidence);
+        this.variant.addEvidence(e1);
+        this.variant.addEvidence(e2);
         this.variantDAO.save(this.variant);
         assertNotNull(this.variant.getId(), "unable to create variant with evidence");
-        assertEquals(this.evidence.getId(), this.variant.getEvidence().getId());
+        assertNotNull(e1.getId());
+        assertNotNull(e2.getId());
 
-        // get the variant by the evidence
-        Optional<Variant> storedVariant = this.variantDAO.findByEvidence(this.evidence);
-        assertTrue(storedVariant.isPresent(), "unable to get variant by evidence");
-
-        verifyVariant(this.variant, storedVariant.get());
-        verifyEvidence(this.evidence, storedVariant.get().getEvidence());
+        // get the variant by id
+        Optional<Variant> var = this.variantDAO.findById(this.variant.getId());
+        assertTrue(var.isPresent());
+        Variant gVar = var.get();
+        assertEquals(this.variant.getId(), gVar.getId());
+        assertEquals(2, gVar.getEvidences().size());
     }
 
     @Test
