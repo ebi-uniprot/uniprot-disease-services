@@ -18,6 +18,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.ac.ebi.uniprot.ds.model.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -133,11 +134,11 @@ public class VariantDAOImplTest{
         assertEquals(this.protein.getId(), this.variant.getProtein().getId());
 
         // get the variant by the protein
-        Optional<Variant> storedVariant = this.variantDAO.findByProtein(this.protein);
-        assertTrue(storedVariant.isPresent(), "unable to get variant by protein");
+        List<Variant> storedVariant = this.variantDAO.findAllByProtein(this.protein);
+        assertEquals(1, storedVariant.size(), "unable to get variant by protein");
 
-        verifyVariant(this.variant, storedVariant.get());
-        verifyProtein(this.protein, storedVariant.get().getProtein());
+        verifyVariant(this.variant, storedVariant.get(0));
+        verifyProtein(this.protein, storedVariant.get(0).getProtein());
     }
 
     @Test
@@ -156,11 +157,11 @@ public class VariantDAOImplTest{
         assertEquals(this.disease.getId(), this.variant.getDisease().getId());
 
         // get the variant by the disease
-        Optional<Variant> storedVariant = this.variantDAO.findByDisease(this.disease);
-        assertTrue(storedVariant.isPresent(), "unable to get variant by disease");
+        List<Variant> storedVariant = this.variantDAO.findAllByDisease(this.disease);
+        assertEquals(1, storedVariant.size(), "unable to get variant by disease");
 
-        verifyVariant(this.variant, storedVariant.get());
-        verifyDisease(this.disease, storedVariant.get().getDisease());
+        verifyVariant(this.variant, storedVariant.get(0));
+        verifyDisease(this.disease, storedVariant.get(0).getDisease());
     }
 
     private void verifyDisease(Disease actual, Disease expected) {

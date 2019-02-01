@@ -10,6 +10,7 @@ package uk.ac.ebi.uniprot.ds.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -45,7 +46,13 @@ public class Disease extends BaseEntity {
     @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Synonym> synonyms;
 
+    @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Variant> variants;
+
     public void addSynonym(Synonym synonym){
+        if(this.synonyms == null){
+            this.synonyms = new ArrayList<>();
+        }
         this.synonyms.add(synonym);
         synonym.setDisease(this);
     }

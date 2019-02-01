@@ -32,6 +32,7 @@ public class VariantWriter implements ItemWriter<UniProtEntry> {
 
     @Override
     public void write(List<? extends UniProtEntry> entries) throws Exception {
+        List<Variant> variants = new ArrayList<>();
         for(UniProtEntry entry : entries){
             Protein protein = this.proteinIdProteinMap.get(entry.getUniProtId().getValue());
             assert protein != null;
@@ -58,10 +59,12 @@ public class VariantWriter implements ItemWriter<UniProtEntry> {
                 Variant variant = builder.build();
                 List<Evidence> evidences = getEvidences(vf, variant);
                 variant.addEvidences(evidences);
-
-                this.variantDAO.save(variant);
+                variants.add(variant);
+                //this.variantDAO.save(variant);
             }
         }
+        this.variantDAO.saveAll(variants);
+        int i = 0;
 
     }
 

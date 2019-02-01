@@ -10,7 +10,9 @@ package uk.ac.ebi.uniprot.ds.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.model.Disease;
+import uk.ac.ebi.uniprot.ds.model.Protein;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface DiseaseDAO extends JpaRepository<Disease, Long> {
@@ -23,4 +25,6 @@ public interface DiseaseDAO extends JpaRepository<Disease, Long> {
     Optional<Disease> findDiseaseByName(String diseaseName);
 
     Optional<Disease> findDiseaseByDiseaseIdOrNameOrAcronym(String diseaseId, String name, String acronym);
+
+    List<Disease> findAllByProteinsIs(Protein protein);
 }

@@ -10,6 +10,7 @@ package uk.ac.ebi.uniprot.ds.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -41,6 +42,9 @@ public class Protein extends BaseEntity {
 
     @ManyToMany(mappedBy = "proteins")
     private Set<Disease> diseases;
+
+    @OneToMany(mappedBy = "protein", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Variant> variants;
 
     @Override
     public boolean equals(Object obj) {

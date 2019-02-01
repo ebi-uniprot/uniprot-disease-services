@@ -9,6 +9,10 @@ package uk.ac.ebi.uniprot.ds.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import uk.ac.ebi.uniprot.ds.model.Evidence;
+import uk.ac.ebi.uniprot.ds.model.Variant;
+
+import java.util.List;
 
 public interface EvidenceDAO extends JpaRepository<Evidence, Long> {
+    List<Evidence> findAllByVariant(Variant variant);
 }

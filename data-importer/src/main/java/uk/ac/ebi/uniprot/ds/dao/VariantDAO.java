@@ -17,9 +17,9 @@ public interface VariantDAO extends JpaRepository<Variant, Long> {
 
     Optional<Variant> findByFeatureLocation(FeatureLocation fl);
 
-    Optional<Variant> findByProtein(Protein protein);
+    List<Variant> findAllByProtein(Protein protein);
 
-    Optional<Variant> findByDisease(Disease disease);
+    List<Variant> findAllByDisease(Disease disease);
 
     List<Variant> findAllByReportContaining(String diseaseAcronym);
 }

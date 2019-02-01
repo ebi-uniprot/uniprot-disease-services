@@ -9,9 +9,7 @@ package uk.ac.ebi.uniprot.ds.config;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -21,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.uniprot.ds.dao.*;
 import uk.ac.ebi.uniprot.ds.model.*;
 
-import java.util.List;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -45,11 +43,8 @@ public class BatchConfigurationDiseaseServiceTest {
         this.proteinDAO.deleteAll();
     }
 
-    @Ignore
     @Test
     public void testDiseaseServiceJob() throws Exception {
-        //verifyEmptyDB(); FIXME
-
         JobParameters jobParameters = new JobParametersBuilder().addLong("time",System.currentTimeMillis()).toJobParameters();
 
         JobExecution jobExecution = jobLauncher.run(importUniProtDataJob, jobParameters);
@@ -57,48 +52,59 @@ public class BatchConfigurationDiseaseServiceTest {
         Assert.assertEquals(status, BatchStatus.COMPLETED);
 
         // verify the data
-        List<Disease> diseases = this.diseaseDAO.findAll();
-        Assert.assertTrue(diseases.size() > 5000);
+        // hum disease first
+        List<Disease> hds = this.diseaseDAO.findAll();
+        Assert.assertTrue(hds.size() > 5000);
+        List<Synonym> hsn = this.synonymDAO.findAll();
+        Assert.assertTrue(hsn.size() > 9000);
+        // protein
+        Optional<Protein> optPr = this.proteinDAO.findByAccession("P22607");
+        Assert.assertTrue(optPr.isPresent());
+        Protein pr = optPr.get();
+        Assert.assertNotNull(pr.getId());
+        Assert.assertEquals("FGFR3_HUMAN", pr.getProteinId());
+        Assert.assertEquals("Fibroblast growth factor receptor 3", pr.getName());
+        Assert.assertEquals("FGFR3", pr.getGene());
 
-        List<Protein> proteins = this.proteinDAO.findAll();
-        Assert.assertTrue(proteins.size() > 0);
+        //get the diseases by protein
+        Set<Disease> diseases = new HashSet<>(this.diseaseDAO.findAllByProteinsIs(pr));
+        Assert.assertEquals(15, diseases.size());
 
-        List<Evidence> evidences = this.evidenceDAO.findAll();
-        Assert.assertTrue(evidences.size() >= 0); //TODO add an entry in test file to populate this
+        // get synonyms
+        List<Synonym> syns = new ArrayList<>();
+        for(Disease d : diseases) {
+            syns.addAll(this.synonymDAO.findAllByDisease(d));
+        }
+        Assert.assertEquals(30, syns.size());
 
-        List<FeatureLocation> fls = this.featureLocationDAO.findAll();
-        Assert.assertTrue(fls.size() > 0);
+        // get interaction
+        List<Interaction> ints = this.interactionDAO.findAllByProtein(pr);
+        Assert.assertEquals(3, ints.size());
 
-        List<Interaction> interactions = this.interactionDAO.findAll();
-        Assert.assertTrue(interactions.size() > 0);
+        // get pathways
+        List<Pathway> paths = this.pathwayDAO.findAllByProtein(pr);
+        Assert.assertEquals(17, paths.size());
 
-        List<Pathway> pathways = this.pathwayDAO.findAll();
-        Assert.assertTrue(pathways.size() > 0);
+        // get protein variants
+        List<Variant> prVars = this.variantDAO.findAllByProtein(pr);
+        Assert.assertEquals(28, prVars.size());
 
-        List<Synonym> syns = this.synonymDAO.findAll();
-        Assert.assertTrue(syns.size() > 0);
+        // get all disease variants
+        List<Variant> disVars = new ArrayList<>();
+        for(Disease dis : diseases){
+            disVars.addAll(this.variantDAO.findAllByDisease(dis));
+        }
+        Assert.assertEquals(14, disVars.size());
 
-        List<Variant> vars = this.variantDAO.findAll();
-        Assert.assertTrue(vars.size() > 0);
+        // Get evidence for each variant
+        List<Evidence> prEvidences = new ArrayList<>();
+        for(Variant v : prVars){
+            prEvidences.addAll(this.evidenceDAO.findAllByVariant(v));
+        }
+        Assert.assertEquals(78, prEvidences.size());
+
     }
 
-    private void verifyEmptyDB() {
-        Assert.assertTrue(this.diseaseDAO.findAll().isEmpty());
-
-        Assert.assertTrue(this.proteinDAO.findAll().isEmpty());
-
-        Assert.assertTrue(this.evidenceDAO.findAll().isEmpty());
-
-        Assert.assertTrue( this.featureLocationDAO.findAll().isEmpty());
-
-        Assert.assertTrue(this.interactionDAO.findAll().isEmpty());
-
-        Assert.assertTrue(this.pathwayDAO.findAll().isEmpty());
-
-        Assert.assertTrue(this.synonymDAO.findAll().isEmpty());
-
-        Assert.assertTrue(this.variantDAO.findAll().isEmpty());
-    }
 
 
     @Autowired

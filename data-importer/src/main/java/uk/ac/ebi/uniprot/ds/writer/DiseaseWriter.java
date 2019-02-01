@@ -62,17 +62,16 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
                 pDisease = disease;
                 pDisease.setProteins(proteins);
             }
+            List<Variant> variants = getDiseaseVariants(pDisease);
+            pDisease.setVariants(variants);
             this.diseaseService.createUpdateDisease(pDisease);
-            // update the variant
-            updateDiseaseVariants(pDisease);
-
         }
     }
 
-    private void updateDiseaseVariants(Disease pDisease) {
+    private List<Variant> getDiseaseVariants(Disease pDisease) {
         List<Variant> variants = this.variantDAO.findAllByReportContaining(pDisease.getAcronym());
         variants.forEach(v -> v.setDisease(pDisease));
-        this.variantDAO.saveAll(variants);
+        return variants;
     }
 
     private List<Disease> getDiseasesFromUniProtEntry(UniProtEntry entry) {

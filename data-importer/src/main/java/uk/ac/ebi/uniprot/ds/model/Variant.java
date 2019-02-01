@@ -46,11 +46,11 @@ public class Variant extends BaseEntity {
     @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Evidence> evidences;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ds_protein_id")
     private Protein protein;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ds_disease_id")
     private Disease disease;
 
