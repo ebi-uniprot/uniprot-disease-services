@@ -45,4 +45,10 @@ public class SynonymTest extends BaseTest {
         Assertions.assertNotNull(syn.getDisease());
         Assertions.assertEquals(disease.getId(), syn.getDisease().getId());
     }
+
+    public static Synonym createSynonymObject(String uuid){
+        Synonym synonym = new Synonym();
+        synonym.setName("Name-" + uuid);
+        return synonym;
+    }
 }

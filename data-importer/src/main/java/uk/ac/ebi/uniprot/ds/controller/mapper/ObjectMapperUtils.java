@@ -1,37 +1,37 @@
 /*
- * Created by sahmad on 28/01/19 19:14
+ * Created by sahmad on 04/02/19 17:12
  * UniProt Consortium.
  * Copyright (c) 2002-2019.
  *
  */
 
-package uk.ac.ebi.uniprot.ds;
+package uk.ac.ebi.uniprot.ds.controller.mapper;
 
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.modelmapper.convention.MatchingStrategies;
 import org.modelmapper.spi.MappingContext;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import uk.ac.ebi.uniprot.ds.controller.dto.DiseaseDTO;
 import uk.ac.ebi.uniprot.ds.model.Disease;
 import uk.ac.ebi.uniprot.ds.model.Protein;
 import uk.ac.ebi.uniprot.ds.model.Synonym;
 import uk.ac.ebi.uniprot.ds.model.Variant;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@SpringBootApplication
-public class EclipselinkSpringDataApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(EclipselinkSpringDataApplication.class, args);
-    }
-    @Bean
-    ModelMapper modelMapper(){
-        ModelMapper modelMapper = new ModelMapper();
+public class ObjectMapperUtils {
+    private ModelMapper modelMapper = new ModelMapper();
+
+    public ObjectMapperUtils() {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         // Protein to String(Accession) Converter
         Converter<Set<Protein>, List<String>> proteinToAccessionString = new Converter<Set<Protein>, List<String>>() {
             @Override
@@ -78,6 +78,19 @@ public class EclipselinkSpringDataApplication {
             }
         };
         modelMapper.addMappings(propertyMap);
-        return modelMapper;
+    }
+
+//
+//    private ObjectMapperUtils() {
+//    }
+
+    public <D, T> D map(T entity, Class<D> outClass) {
+        return modelMapper.map(entity, outClass);
+    }
+
+    public <D, T> List<D> mapAll(Collection<T> entityList, Class<D> outCLass) {
+        return entityList.stream()
+                .map(entity -> map(entity, outCLass))
+                .collect(Collectors.toList());
     }
 }

@@ -8,6 +8,7 @@
 package uk.ac.ebi.uniprot.ds;
 
 import org.eclipse.persistence.config.PersistenceUnitProperties;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;

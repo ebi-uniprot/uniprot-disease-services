@@ -158,7 +158,7 @@ public class DiseaseDAOImplTest {
     @Test
     void testDeleteNonExistentDisease(){
         EmptyResultDataAccessException exception = assertThrows(EmptyResultDataAccessException.class, () -> this.diseaseDAO.deleteById(new Random().nextLong()));
-        assertTrue(exception.getMessage().contains("No class uk.ac.ebi.uniprot.ds.model.Disease entity with id"));
+        assertTrue(exception.getMessage().contains("No class uk.ac.ebi.uniprot.ds.model.Disease dto with id"));
     }
 
     @Test
