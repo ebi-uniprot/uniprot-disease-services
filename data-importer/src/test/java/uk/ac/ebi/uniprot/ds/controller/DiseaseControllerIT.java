@@ -9,35 +9,30 @@ package uk.ac.ebi.uniprot.ds.controller;
 
 import org.hamcrest.Matchers;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.method.annotation.ExceptionHandlerMethodResolver;
-import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
-import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
-import uk.ac.ebi.uniprot.ds.controller.error.DiseaseControllerAdvice;
+import uk.ac.ebi.uniprot.ds.EclipselinkSpringDataApplication;
+import uk.ac.ebi.uniprot.ds.controller.mapper.EntityToDTOMapper;
 import uk.ac.ebi.uniprot.ds.exception.AssetNotFoundException;
 import uk.ac.ebi.uniprot.ds.model.*;
 import uk.ac.ebi.uniprot.ds.service.DiseaseService;
-
-import java.lang.reflect.Method;
 import java.util.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(DiseaseController.class)
+@ContextConfiguration(classes={EclipselinkSpringDataApplication.class, EntityToDTOMapper.class})
 public class DiseaseControllerIT {
     private String uuid = UUID.randomUUID().toString();
 
@@ -46,22 +41,6 @@ public class DiseaseControllerIT {
 
     @MockBean
     private DiseaseService diseaseService;
-
-    @Before
-    public void setUp(){
-        //this.mockMvc = MockMvcBuilders.standaloneSetup(diseaseController).setControllerAdvice(new DiseaseControllerAdvice()).build();
-    }
-
-    private ExceptionHandlerExceptionResolver createExceptionResolver() {
-        ExceptionHandlerExceptionResolver exceptionResolver = new ExceptionHandlerExceptionResolver() {
-            protected ServletInvocableHandlerMethod getExceptionHandlerMethod(HandlerMethod handlerMethod, Exception exception) {
-                Method method = new ExceptionHandlerMethodResolver(DiseaseControllerAdvice.class).resolveMethod(exception);
-                return new ServletInvocableHandlerMethod(new DiseaseControllerAdvice(), method);
-            }
-        };
-        exceptionResolver.afterPropertiesSet();
-        return exceptionResolver;
-    }
 
     @Test
     public void testGetDisease() throws Exception {

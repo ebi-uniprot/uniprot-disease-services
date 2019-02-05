@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.dao.ProteinDAO;
+import uk.ac.ebi.uniprot.ds.exception.AssetNotFoundException;
 import uk.ac.ebi.uniprot.ds.model.Protein;
 
 import java.util.List;
@@ -45,6 +46,14 @@ public class ProteinService {
 
     public Optional<Protein> getProteinByProteinId(String proteinId){
         return this.proteinDAO.findByProteinId(proteinId);
+    }
+
+    public Optional<Protein> getProteinByAccession(String accession){
+        Optional<Protein> optProtein = this.proteinDAO.findProteinByAccession(accession);
+        if(!optProtein.isPresent()){
+            throw new AssetNotFoundException("Unable to find the accession '" + accession + "'.");
+        }
+        return optProtein;
     }
 
     @Transactional

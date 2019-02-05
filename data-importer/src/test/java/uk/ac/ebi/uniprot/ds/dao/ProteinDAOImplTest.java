@@ -84,7 +84,7 @@ public class ProteinDAOImplTest{
         this.protein = this.proteinDAO.save(this.protein);
         assertNotNull(this.protein.getId());
 
-        Optional<Protein> savedProtein = this.proteinDAO.findByAccession(this.protein.getAccession());
+        Optional<Protein> savedProtein = this.proteinDAO.findProteinByAccession(this.protein.getAccession());
         assertTrue(savedProtein.isPresent());
         verifyProtein(this.protein, savedProtein.get());
     }
@@ -99,7 +99,7 @@ public class ProteinDAOImplTest{
     @Test
     void testGetNonExistentProteinByAccession(){
         String randomAcc = "Acc-" + this.randomUUID;
-        Optional<Protein> savedProtein = this.proteinDAO.findByAccession(randomAcc);
+        Optional<Protein> savedProtein = this.proteinDAO.findProteinByAccession(randomAcc);
         assertFalse(savedProtein.isPresent());
     }
 

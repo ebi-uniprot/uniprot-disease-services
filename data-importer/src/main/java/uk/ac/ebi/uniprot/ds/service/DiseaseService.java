@@ -48,11 +48,11 @@ public class DiseaseService {
     }
 
     public Optional<Disease> findByDiseaseId(String diseaseId){
-        Optional<Disease> optProtein = this.diseaseDAO.findByDiseaseId(diseaseId);
-        if(!optProtein.isPresent()){
+        Optional<Disease> optDisease = this.diseaseDAO.findByDiseaseId(diseaseId);
+        if(!optDisease.isPresent()){
             throw new AssetNotFoundException("Unable to find the diseaseId '" + diseaseId + "'.");
         }
-        return optProtein;
+        return optDisease;
     }
 
     public Optional<Disease> findById(Long id){

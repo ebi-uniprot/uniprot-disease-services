@@ -15,5 +15,5 @@ import java.util.Optional;
 
 public interface ProteinDAO extends JpaRepository<Protein, Long> {
     Optional<Protein> findByProteinId(String proteinId);
-    Optional<Protein> findByAccession(String accession);
+    Optional<Protein> findProteinByAccession(String accession);
 }

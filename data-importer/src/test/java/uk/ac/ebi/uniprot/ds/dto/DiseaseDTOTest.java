@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.uniprot.ds.controller.dto.DiseaseDTO;
-import uk.ac.ebi.uniprot.ds.controller.mapper.ObjectMapperUtils;
 import uk.ac.ebi.uniprot.ds.model.*;
 
 import java.util.Arrays;
@@ -28,7 +27,6 @@ import java.util.UUID;
 @SpringBootTest
 public class DiseaseDTOTest {
     private String uuid = UUID.randomUUID().toString();
-    private String uuid1 = UUID.randomUUID().toString();
     @Autowired
     private ModelMapper modelMapper;
 
@@ -64,9 +62,9 @@ public class DiseaseDTOTest {
         verifyDiseaseDTO(disease, dto);
 
         // verify other details
-        Assert.assertEquals(3, dto.getProteins().size());
-        Assert.assertEquals(2, dto.getSynonyms().size());
-        Assert.assertEquals(4, dto.getVariants().size());
+        Assert.assertEquals(disease.getProteins().size(),  dto.getProteins().size());
+        Assert.assertEquals(disease.getSynonyms().size(), dto.getSynonyms().size());
+        Assert.assertEquals(disease.getVariants().size(), dto.getVariants().size());
     }
 
     private void verifyDiseaseDTO(Disease disease, DiseaseDTO diseaseDTO) {

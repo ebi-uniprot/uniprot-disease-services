@@ -58,7 +58,7 @@ public class BatchConfigurationDiseaseServiceTest {
         List<Synonym> hsn = this.synonymDAO.findAll();
         Assert.assertTrue(hsn.size() > 9000);
         // protein
-        Optional<Protein> optPr = this.proteinDAO.findByAccession("P22607");
+        Optional<Protein> optPr = this.proteinDAO.findProteinByAccession("P22607");
         Assert.assertTrue(optPr.isPresent());
         Protein pr = optPr.get();
         Assert.assertNotNull(pr.getId());
