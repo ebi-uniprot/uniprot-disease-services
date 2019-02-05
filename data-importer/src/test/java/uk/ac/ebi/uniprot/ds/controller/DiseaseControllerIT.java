@@ -9,8 +9,10 @@ package uk.ac.ebi.uniprot.ds.controller;
 
 import org.hamcrest.Matchers;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -21,9 +23,17 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.method.annotation.ExceptionHandlerMethodResolver;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
+import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
+import uk.ac.ebi.uniprot.ds.controller.error.DiseaseControllerAdvice;
+import uk.ac.ebi.uniprot.ds.exception.AssetNotFoundException;
 import uk.ac.ebi.uniprot.ds.model.*;
 import uk.ac.ebi.uniprot.ds.service.DiseaseService;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 @RunWith(SpringRunner.class)
@@ -37,6 +47,22 @@ public class DiseaseControllerIT {
     @MockBean
     private DiseaseService diseaseService;
 
+    @Before
+    public void setUp(){
+        //this.mockMvc = MockMvcBuilders.standaloneSetup(diseaseController).setControllerAdvice(new DiseaseControllerAdvice()).build();
+    }
+
+    private ExceptionHandlerExceptionResolver createExceptionResolver() {
+        ExceptionHandlerExceptionResolver exceptionResolver = new ExceptionHandlerExceptionResolver() {
+            protected ServletInvocableHandlerMethod getExceptionHandlerMethod(HandlerMethod handlerMethod, Exception exception) {
+                Method method = new ExceptionHandlerMethodResolver(DiseaseControllerAdvice.class).resolveMethod(exception);
+                return new ServletInvocableHandlerMethod(new DiseaseControllerAdvice(), method);
+            }
+        };
+        exceptionResolver.afterPropertiesSet();
+        return exceptionResolver;
+    }
+
     @Test
     public void testGetDisease() throws Exception {
         String diseaseId = "DISEASE_ID";
@@ -48,18 +74,22 @@ public class DiseaseControllerIT {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/disease/" + diseaseId).
+                                get("/v1/ds/diseases/" + diseaseId).
                                 param("diseaseId", diseaseId)
                 );
 
         res.andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.diseaseId", Matchers.equalTo(diseaseId)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.diseaseName", Matchers.startsWith("DN")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.acronym", Matchers.startsWith("ACRONYM")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.description", Matchers.startsWith("DESC")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.proteins", Matchers.nullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.variants", Matchers.nullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.synonyms", Matchers.nullValue()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.requestId", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.hasError", Matchers.equalTo(false)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.warnings", Matchers.nullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.diseaseId", Matchers.equalTo(diseaseId)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.diseaseName", Matchers.startsWith("DN")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.acronym", Matchers.startsWith("ACRONYM")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.description", Matchers.startsWith("DESC")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.proteins", Matchers.nullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.variants", Matchers.nullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.synonyms", Matchers.nullValue()));
         Assert.assertNotNull(res);
     }
 
@@ -90,29 +120,33 @@ public class DiseaseControllerIT {
         Mockito.when(this.diseaseService.findByDiseaseId(diseaseId)).thenReturn(Optional.of(disease));
 
         ResultActions res = this.mockMvc.
-                perform(MockMvcRequestBuilders.get("/v1/ds/disease/" + diseaseId).param("diseaseId", diseaseId));
+                perform(MockMvcRequestBuilders.get("/v1/ds/diseases/" + diseaseId).param("diseaseId", diseaseId));
 
         res.andDo(MockMvcResultHandlers.print())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.diseaseId", Matchers.equalTo(diseaseId)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.diseaseName", Matchers.startsWith("DN")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.acronym", Matchers.startsWith("ACRONYM")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.description", Matchers.startsWith("DESC")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.proteins.length()", Matchers.equalTo(3)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.variants.length()", Matchers.equalTo(4)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.synonyms.length()", Matchers.equalTo(2)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.requestId", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.hasError", Matchers.equalTo(false)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.warnings", Matchers.nullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.diseaseId", Matchers.equalTo(diseaseId)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.diseaseName", Matchers.startsWith("DN")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.acronym", Matchers.startsWith("ACRONYM")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.description", Matchers.startsWith("DESC")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.proteins.length()", Matchers.equalTo(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.variants.length()", Matchers.equalTo(4)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.synonyms.length()", Matchers.equalTo(2)));
     }
 
-    @Test//FIXME add custom error
+    @Test
     public void testNonExistentDisease() throws Exception {
-        /*String diseaseId = "randomDisease";
+
+        String diseaseId = "randomDisease";
+        Mockito.when(this.diseaseService.findByDiseaseId(diseaseId)).thenThrow(new AssetNotFoundException("Unable to find the diseaseId '" + diseaseId + "'."));
         ResultActions res = this.mockMvc.
-                perform(MockMvcRequestBuilders.get("/disease/" + diseaseId).param("diseaseId", diseaseId));
+                perform(MockMvcRequestBuilders.get("/v1/ds/diseases/" + diseaseId).param("diseaseId", diseaseId));
         res.andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp", Matchers.notNullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.status", Matchers.equalTo(500)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.equalTo("Internal Server Error")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.equalTo("No value present")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.path", Matchers.endsWith(diseaseId)));
-*/
+                .andExpect(MockMvcResultMatchers.jsonPath("$.requestId", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.hasError", Matchers.equalTo(true)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage", Matchers.startsWith("Unable to find the diseaseId")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errorCode", Matchers.equalTo(404)));
     }
 }

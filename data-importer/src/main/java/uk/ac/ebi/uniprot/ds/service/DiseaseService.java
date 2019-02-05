@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.dao.DiseaseDAO;
+import uk.ac.ebi.uniprot.ds.exception.AssetNotFoundException;
 import uk.ac.ebi.uniprot.ds.model.Disease;
 
 import java.util.List;
@@ -47,7 +48,11 @@ public class DiseaseService {
     }
 
     public Optional<Disease> findByDiseaseId(String diseaseId){
-        return this.diseaseDAO.findByDiseaseId(diseaseId);
+        Optional<Disease> optProtein = this.diseaseDAO.findByDiseaseId(diseaseId);
+        if(!optProtein.isPresent()){
+            throw new AssetNotFoundException("Unable to find the diseaseId '" + diseaseId + "'.");
+        }
+        return optProtein;
     }
 
     public Optional<Disease> findById(Long id){

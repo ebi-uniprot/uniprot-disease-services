@@ -13,13 +13,16 @@ import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import uk.ac.ebi.uniprot.ds.controller.dto.DiseaseDTO;
+import uk.ac.ebi.uniprot.ds.controller.filter.CorrelationHeaderFilter;
 import uk.ac.ebi.uniprot.ds.model.Disease;
 import uk.ac.ebi.uniprot.ds.model.Protein;
 import uk.ac.ebi.uniprot.ds.model.Synonym;
 import uk.ac.ebi.uniprot.ds.model.Variant;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -79,5 +82,14 @@ public class EclipselinkSpringDataApplication {
         };
         modelMapper.addMappings(propertyMap);
         return modelMapper;
+    }
+
+    @Bean
+    public FilterRegistrationBean correlationHeaderFilter() {
+        FilterRegistrationBean filterRegBean = new FilterRegistrationBean();
+        filterRegBean.setFilter(new CorrelationHeaderFilter());
+        filterRegBean.setUrlPatterns(Arrays.asList("/*"));
+
+        return filterRegBean;
     }
 }
