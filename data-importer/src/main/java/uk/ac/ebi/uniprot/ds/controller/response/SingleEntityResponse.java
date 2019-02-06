@@ -13,15 +13,10 @@ import java.util.List;
 
 @Getter
 @Setter
-public class SingleEntityResponse<T> {
-    private String requestId;
-    private Boolean hasError;
-    private List<String> warnings;
+public class SingleEntityResponse<T> extends BaseEntityResponse {
     private T result;
     public SingleEntityResponse(String requestId, Boolean hasError, List<String> warnings, T result){
-        this.requestId = requestId;
-        this.hasError = hasError;
-        this.warnings = warnings;
+        super(requestId, hasError, warnings);
         this.result = result;
     }
 }

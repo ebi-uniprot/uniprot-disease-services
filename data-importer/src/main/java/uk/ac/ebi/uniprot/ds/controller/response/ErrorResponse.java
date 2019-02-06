@@ -10,16 +10,16 @@ package uk.ac.ebi.uniprot.ds.controller.response;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
-public class ErrorResponse {
-    private String requestId;
-    private Boolean hasError = true;
+public class ErrorResponse extends BaseEntityResponse{
     private String errorMessage;
     private Integer errorCode;
 
-    public ErrorResponse(String requestId, String errorMessage, Integer errorCode){
-        this.requestId = requestId;
+    public ErrorResponse(String requestId, List<String> warning, String errorMessage, Integer errorCode){
+        super(requestId, true, warning);
         this.errorMessage = errorMessage;
         this.errorCode = errorCode;
     }

@@ -61,6 +61,11 @@ public class ProteinService {
         return this.proteinDAO.saveAll(proteins);
     }
 
+    public List<Protein> getAllProteinsByAccessions(List<String> accessions){
+        List<Protein> proteins = this.proteinDAO.getProteinsByAccessions(accessions);
+        return proteins;
+    }
+
 
 
 }

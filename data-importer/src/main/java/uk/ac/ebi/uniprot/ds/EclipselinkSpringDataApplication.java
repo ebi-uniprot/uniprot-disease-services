@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import uk.ac.ebi.uniprot.ds.controller.dto.DiseaseDTO;
 import uk.ac.ebi.uniprot.ds.controller.dto.ProteinDTO;
 import uk.ac.ebi.uniprot.ds.controller.filter.CorrelationHeaderFilter;
+import uk.ac.ebi.uniprot.ds.controller.mapper.ProteinToProteinPathwaysDTOMap;
 import uk.ac.ebi.uniprot.ds.model.*;
 
 import java.util.Arrays;
@@ -31,6 +32,7 @@ public class EclipselinkSpringDataApplication {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.addMappings(diseaseToDiseaseDTOMap);
         modelMapper.addMappings(proteinToProteinDTOMap);
+        modelMapper.addMappings(new ProteinToProteinPathwaysDTOMap());
         return modelMapper;
     }
 

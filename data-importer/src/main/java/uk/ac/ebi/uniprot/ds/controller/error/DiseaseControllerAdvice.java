@@ -24,8 +24,8 @@ public class DiseaseControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = AssetNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleAssetNotFoundException(AssetNotFoundException anf, WebRequest req){
 
-        ErrorResponse errorResponse = new ErrorResponse(RequestCorrelation.getCorrelationId(), anf.getMessage(),
-                HttpStatus.NOT_FOUND.value());
+        ErrorResponse errorResponse = new ErrorResponse(RequestCorrelation.getCorrelationId(), null,
+                anf.getMessage(), HttpStatus.NOT_FOUND.value());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }

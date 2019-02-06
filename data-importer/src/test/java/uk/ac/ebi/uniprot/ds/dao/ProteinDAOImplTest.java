@@ -103,6 +103,32 @@ public class ProteinDAOImplTest{
         assertFalse(savedProtein.isPresent());
     }
 
+    @Test
+    void testGetProteinsByAccessions(){
+        // create multiple proteins
+        Protein p1 = ProteinTest.createProteinObject(randomUUID + 1);
+        String a1 = "ACC1-"+ randomUUID;
+        p1.setAccession(a1);
+
+        Protein p2 = ProteinTest.createProteinObject(randomUUID + 2);
+        String a2 = "ACC2-"+ randomUUID;
+        p2.setAccession(a2);
+
+        Protein p3 = ProteinTest.createProteinObject(randomUUID + 3);
+        String a3 = "ACC3-"+ randomUUID;
+        p3.setAccession(a3);
+
+        this.proteinDAO.saveAll(Arrays.asList(p1, p2, p3));
+        List<String> accs = new ArrayList<>();
+        accs.add(a1);accs.add(a2);accs.add(a3);
+
+        // get proteins by accessions
+        List<Protein> proteins = this.proteinDAO.getProteinsByAccessions(accs);
+        assertEquals(3, proteins.size());
+        // clean up - delete now
+        this.proteinDAO.deleteAll(proteins);
+    }
+
 
     private void verifyDiseases(Set<Disease> diseases) {
         assertEquals(5, diseases.size());

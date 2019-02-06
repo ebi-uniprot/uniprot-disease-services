@@ -32,7 +32,7 @@ public class DiseaseController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping("/diseases/{diseaseId}")
+    @GetMapping(value = {"/diseases/{diseaseId}"})
     public SingleEntityResponse<DiseaseDTO> getDisease(@PathVariable("diseaseId") String diseaseId){
         String requestId = RequestCorrelation.getCorrelationId();
         Optional<Disease> optDisease = this.diseaseService.findByDiseaseId(diseaseId);
