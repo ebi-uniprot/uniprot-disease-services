@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -109,5 +110,26 @@ public class ProteinControllerGetPathwaysIT {
                 .andExpect(jsonPath("$.results[0].pathways.length()", equalTo(p1.getPathways().size())))
                 .andExpect(jsonPath("$.results[1].pathways.length()", equalTo(p2.getPathways().size())))
                 .andExpect(jsonPath("$.results[2].pathways", nullValue()));
+    }
+
+
+    @Test
+    public void testMoreThan20Accession() throws Exception {
+        String accessions = "acc1,acc2,acc3,acc4,acc5,acc1,acc2,acc3,acc4,acc5,acc1,acc2,acc3,acc4,acc5,acc1,acc2,acc3,acc4,acc5,acc5";
+
+        Mockito.when(this.proteinService.getAllProteinsByAccessions(ArgumentMatchers.anyList())).thenReturn(new ArrayList<>());
+        ResultActions res = this.mockMvc.perform
+                (
+                        MockMvcRequestBuilders.
+                                get("/v1/ds/" + accessions +"/pathways").
+                                param("accessions", accessions)
+                );
+
+        res.andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.requestId", notNullValue()))
+                .andExpect(jsonPath("$.hasError", equalTo(true)))
+                .andExpect(jsonPath("$.warnings", nullValue()))
+                .andExpect(jsonPath("$.errorCode", equalTo(HttpStatus.BAD_REQUEST.value())))
+                .andExpect(jsonPath("$.errorMessage", equalTo("The total count of accessions passed must be between 1 and 20 both inclusive.")));
     }
 }

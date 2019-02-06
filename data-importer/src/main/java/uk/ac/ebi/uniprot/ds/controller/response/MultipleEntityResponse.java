@@ -15,7 +15,11 @@ import java.util.List;
 @Getter
 @Setter
 public class MultipleEntityResponse<T> extends BaseEntityResponse {
+    private Integer offset;
+    private Integer maxReturn;
+    private Integer total;
     private List<T> results;
+
 
     public MultipleEntityResponse(String requestId, Boolean hasError, List<String> warnings, List<T> results){
         super(requestId, hasError, warnings);

@@ -13,6 +13,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import uk.ac.ebi.uniprot.ds.controller.dto.DiseaseDTO;
 import uk.ac.ebi.uniprot.ds.controller.dto.ProteinDTO;
 import uk.ac.ebi.uniprot.ds.controller.filter.CorrelationHeaderFilter;
@@ -43,5 +44,10 @@ public class EclipselinkSpringDataApplication {
         filterRegBean.setUrlPatterns(Arrays.asList("/*"));
 
         return filterRegBean;
+    }
+
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
+        return new MethodValidationPostProcessor();
     }
 }
