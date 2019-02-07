@@ -47,7 +47,7 @@ public class ProteinController {
 
     @GetMapping(value={"/proteins/{accessions}/pathways"}, name = "Get the pathways for the given list of accession")
     public MultipleEntityResponse<ProteinPathwaysDTO> getProteinsPathway(
-            @Size(min = 1, max = 20, message = "The total count of accessions passed must be between 1 and 20 both inclusive.")
+            @Size(min = 1, max = 200, message = "The total count of accessions passed must be between 1 and 20 both inclusive.")
             @PathVariable(name = "accessions")
                     List<String> accessions)
     {
@@ -60,7 +60,7 @@ public class ProteinController {
 
     @GetMapping(value={"/proteins/{accessions}/diseases"}, name = "Get the diseases for the given list of accession")
     public MultipleEntityResponse<ProteinDiseasesDTO> getProteinsDiseases(
-            @Size(min = 1, max = 20, message = "The total count of accessions passed must be between 1 and 20 both inclusive.")
+            @Size(min = 1, max = 200, message = "The total count of accessions passed must be between 1 and 20 both inclusive.")
             @PathVariable(name = "accessions")
                     List<String> accessions)
     {
