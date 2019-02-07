@@ -18,6 +18,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.ac.ebi.uniprot.ds.model.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -164,25 +165,50 @@ public class VariantDAOImplTest{
         verifyDisease(this.disease, storedVariant.get(0).getDisease());
     }
 
+    @Test
+    void testGetVariantsByDiseaseAcronymInIt(){
+        String diseaseAcronym = "in DISEASE-123;";
+        String uuid = UUID.randomUUID().toString();
+        // create a variant with disease acronym and feature id
+        Variant var1 = VariantTest.createVariantObject(uuid + 1);
+        var1.setReport(var1.getReport() + diseaseAcronym);
+
+        // create a variant without disease acronym but with feature id
+        Variant var2 = VariantTest.createVariantObject(uuid + 2);
+        var2.setReport(var2.getReport());
+
+        // create a variant with disease acronym but without feature id
+        Variant var3 = VariantTest.createVariantObject(uuid + 3);
+        var3.setReport(diseaseAcronym + var3.getReport());
+        var3.setFeatureId(null);
+
+        // create a variant without disease acronym in it and without feature id
+        Variant var4 = VariantTest.createVariantObject(uuid + 4);
+        var4.setReport(diseaseAcronym + var4.getReport());
+        var4.setFeatureId(null);
+
+        this.variantDAO.saveAll(Arrays.asList(var1, var2, var3, var4));
+
+        // get only one record
+        List<Variant> result = this.variantDAO.findAllByReportContainingAndFeatureIdIsNotNull(diseaseAcronym);
+        assertEquals(1, result.size());
+        verifyVariant(var1, result.get(0));
+
+        // delete all the above variants
+        this.variantDAO.deleteById(var1.getId());
+        this.variantDAO.deleteById(var2.getId());
+        this.variantDAO.deleteById(var3.getId());
+        this.variantDAO.deleteById(var4.getId());
+
+
+    }
+
     private void verifyDisease(Disease actual, Disease expected) {
         assertEquals(actual.getId(), expected.getId());
         assertEquals(actual.getDiseaseId(), expected.getDiseaseId());
         assertEquals(actual.getName(), expected.getName());
         assertEquals(actual.getDesc(), expected.getDesc());
         assertEquals(actual.getAcronym(), expected.getAcronym());
-        assertEquals(actual.getCreatedAt(), expected.getCreatedAt());
-        assertEquals(actual.getUpdatedAt(), expected.getUpdatedAt());
-    }
-
-    private void verifyEvidence(Evidence actual, Evidence expected) {
-        assertEquals(actual.getId(), expected.getId());
-        assertEquals(actual.getEvidenceId(), expected.getEvidenceId());
-        assertEquals(actual.getType(), expected.getType());
-        assertEquals(actual.getAttribute(), expected.getAttribute());
-        assertEquals(actual.getUseECOCode(), expected.getUseECOCode());
-        assertEquals(actual.getUseECOCode(), expected.getUseECOCode());
-        assertEquals(actual.getTypeValue(), expected.getTypeValue());
-        assertEquals(actual.getHasTypeValue(), expected.getHasTypeValue());
         assertEquals(actual.getCreatedAt(), expected.getCreatedAt());
         assertEquals(actual.getUpdatedAt(), expected.getUpdatedAt());
     }

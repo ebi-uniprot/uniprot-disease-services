@@ -1,5 +1,5 @@
 /*
- * Created by sahmad on 06/02/19 12:16
+ * Created by sahmad on 06/02/19 20:01
  * UniProt Consortium.
  * Copyright (c) 2002-2019.
  *
@@ -27,15 +27,15 @@ import uk.ac.ebi.uniprot.ds.model.*;
 import uk.ac.ebi.uniprot.ds.service.ProteinService;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ProteinController.class)
 @ContextConfiguration(classes={EclipselinkSpringDataApplication.class, EntityToDTOMapper.class})
-public class ProteinControllerGetPathwaysIT {
+public class ProteinControllerGetDiseasesIT {
     private String uuid = UUID.randomUUID().toString();
 
     @Autowired
@@ -51,7 +51,7 @@ public class ProteinControllerGetPathwaysIT {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/proteins/" + accessions +"/pathways").
+                                get("/v1/ds/proteins/" + accessions +"/diseases").
                                 param("accessions", accessions)
                 );
 
@@ -64,22 +64,22 @@ public class ProteinControllerGetPathwaysIT {
     }
 
     @Test
-    public void testGetPathways() throws Exception {
+    public void testGetDiseases() throws Exception {
 
         // create multiple proteins
         Protein p1 = ProteinTest.createProteinObject(uuid + 1);
         String a1 = "ACC1-"+ uuid;
         p1.setAccession(a1);
-        Pathway pt1 = PathwayTest.createPathwayObject(uuid + 1);
-        Pathway pt2 = PathwayTest.createPathwayObject(uuid + 2);
-        Pathway pt3 = PathwayTest.createPathwayObject(uuid + 3);
-        p1.setPathways(Arrays.asList(pt1, pt2, pt3));
+        Disease d1 = DiseaseTest.createDiseaseObject(uuid + 1);
+        Disease d2 = DiseaseTest.createDiseaseObject(uuid + 2);
+        Disease d3 = DiseaseTest.createDiseaseObject(uuid + 3);
+        p1.setDiseases(new HashSet<>(Arrays.asList(d1, d2, d3)));
 
         Protein p2 = ProteinTest.createProteinObject(uuid + 2);
         String a2 = "ACC2-"+ uuid;
         p2.setAccession(a2);
-        Pathway pt4 = PathwayTest.createPathwayObject(uuid + 4);
-        p2.setPathways(Arrays.asList(pt4));
+        Disease d4 = DiseaseTest.createDiseaseObject(uuid + 4);
+        p2.setDiseases(new HashSet<>(Arrays.asList(d4)));
 
         Protein p3 = ProteinTest.createProteinObject(uuid + 3);
         String a3 = "ACC3-"+ uuid;
@@ -91,7 +91,7 @@ public class ProteinControllerGetPathwaysIT {
         String accessions = a1 + "," + a2 + "," + a3;
 
         ResultActions res = this.mockMvc.
-                perform(MockMvcRequestBuilders.get("/v1/ds/proteins/" + accessions + "/pathways").param("accessions", accessions));
+                perform(MockMvcRequestBuilders.get("/v1/ds/proteins/" + accessions + "/diseases").param("accessions", accessions));
 
         res.andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.requestId", notNullValue()))
@@ -103,11 +103,12 @@ public class ProteinControllerGetPathwaysIT {
                 .andExpect(jsonPath("$.results[*].proteinId", notNullValue()))
                 .andExpect(jsonPath("$.results[*].proteinName", notNullValue()))
                 .andExpect(jsonPath("$.results[*].gene", notNullValue()))
-                .andExpect(jsonPath("$.results[0].pathways.length()", equalTo(p1.getPathways().size())))
-                .andExpect(jsonPath("$.results[1].pathways.length()", equalTo(p2.getPathways().size())))
-                .andExpect(jsonPath("$.results[2].pathways", nullValue()));
+                .andExpect(jsonPath("$.results[0].diseases.length()", equalTo(p1.getDiseases().size())))
+                .andExpect(jsonPath("$.results[0].diseases[*].diseaseId", notNullValue()))
+                .andExpect(jsonPath("$.results[0].diseases[*].acronym", notNullValue()))
+                .andExpect(jsonPath("$.results[1].diseases.length()", equalTo(p2.getDiseases().size())))
+                .andExpect(jsonPath("$.results[2].diseases", nullValue()));
     }
-
 
     @Test
     public void testMoreThan20Accession() throws Exception {
@@ -117,7 +118,7 @@ public class ProteinControllerGetPathwaysIT {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/proteins/" + accessions +"/pathways").
+                                get("/v1/ds/proteins/" + accessions +"/diseases").
                                 param("accessions", accessions)
                 );
 

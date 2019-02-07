@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.uniprot.ds.controller.dto.ProteinDTO;
+import uk.ac.ebi.uniprot.ds.controller.dto.ProteinDiseasesDTO;
 import uk.ac.ebi.uniprot.ds.controller.dto.ProteinPathwaysDTO;
 import uk.ac.ebi.uniprot.ds.controller.filter.RequestCorrelation;
 import uk.ac.ebi.uniprot.ds.controller.response.MultipleEntityResponse;
@@ -44,7 +45,7 @@ public class ProteinController {
         return new SingleEntityResponse<>(requestId, false, null, proteinDTO) ;
     }
 
-    @GetMapping(value={"/{accessions}/pathways"}, name = "Get the pathways for the given list of accession")
+    @GetMapping(value={"/proteins/{accessions}/pathways"}, name = "Get the pathways for the given list of accession")
     public MultipleEntityResponse<ProteinPathwaysDTO> getProteinsPathway(
             @Size(min = 1, max = 20, message = "The total count of accessions passed must be between 1 and 20 both inclusive.")
             @PathVariable(name = "accessions")
@@ -57,6 +58,19 @@ public class ProteinController {
         return resp;
     }
 
+    @GetMapping(value={"/proteins/{accessions}/diseases"}, name = "Get the diseases for the given list of accession")
+    public MultipleEntityResponse<ProteinDiseasesDTO> getProteinsDiseases(
+            @Size(min = 1, max = 20, message = "The total count of accessions passed must be between 1 and 20 both inclusive.")
+            @PathVariable(name = "accessions")
+                    List<String> accessions)
+    {
+        String requestId = RequestCorrelation.getCorrelationId();
+        List<Protein> proteins = this.proteinService.getAllProteinsByAccessions(accessions);
+        List<ProteinDiseasesDTO> dtos = toProteinDiseasesDTOList(proteins);
+        MultipleEntityResponse<ProteinDiseasesDTO> resp = new MultipleEntityResponse<>(requestId, dtos);
+        return resp;
+    }
+
     private ProteinDTO convertToDTO(Protein protein) {
         ProteinDTO proteinDTO = modelMapper.map(protein, ProteinDTO.class);
         return proteinDTO;
@@ -64,5 +78,9 @@ public class ProteinController {
 
     public List<ProteinPathwaysDTO> toProteinPathwaysDTOList(List<Protein> from){
         return this.modelMapper.map(from, new TypeToken<List<ProteinPathwaysDTO>>(){}.getType());
+    }
+
+    public List<ProteinDiseasesDTO> toProteinDiseasesDTOList(List<Protein> from){
+        return this.modelMapper.map(from, new TypeToken<List<ProteinDiseasesDTO>>(){}.getType());
     }
 }

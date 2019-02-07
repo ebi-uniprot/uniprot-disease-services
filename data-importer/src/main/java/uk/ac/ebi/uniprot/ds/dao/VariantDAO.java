@@ -21,5 +21,5 @@ public interface VariantDAO extends JpaRepository<Variant, Long> {
 
     List<Variant> findAllByDisease(Disease disease);
 
-    List<Variant> findAllByReportContaining(String diseaseAcronym);
+    List<Variant> findAllByReportContainingAndFeatureIdIsNotNull(String diseaseAcronym);
 }

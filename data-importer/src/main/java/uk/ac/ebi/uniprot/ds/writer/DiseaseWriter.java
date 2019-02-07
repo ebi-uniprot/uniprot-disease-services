@@ -69,7 +69,12 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
     }
 
     private List<Variant> getDiseaseVariants(Disease pDisease) {
-        List<Variant> variants = this.variantDAO.findAllByReportContaining(pDisease.getAcronym());
+        String likeValue = "in " + pDisease.getAcronym() + ";";
+        //String likeValue = "in " + pDisease.getAcronym() + ".";
+        //in COD4 and ACHM5;
+        //missing in ACHM5.
+        //missing in ACHM5;
+        List<Variant> variants = this.variantDAO.findAllByReportContainingAndFeatureIdIsNotNull(likeValue);
         variants.forEach(v -> v.setDisease(pDisease));
         return variants;
     }
