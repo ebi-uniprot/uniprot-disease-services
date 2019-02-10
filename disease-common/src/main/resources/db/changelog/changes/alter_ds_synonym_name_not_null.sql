@@ -1,0 +1,1 @@
+ALTER TABLE ds_synonym ALTER COLUMN disease_name SET NOT NULL;

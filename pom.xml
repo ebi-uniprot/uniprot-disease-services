@@ -9,11 +9,9 @@
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
-        <module>data-loader</module>
-        <module>common</module>
-        <module>batch-loader</module>
-        <module>data-importer</module>
-        <module>rest-service</module>
+        <module>disease-data-importer</module>
+        <module>disease-rest-service</module>
+        <module>disease-common</module>
     </modules>
 
     <parent>
@@ -233,5 +231,4 @@
             </distributionManagement>
         </profile>
     </profiles>
-
 </project>

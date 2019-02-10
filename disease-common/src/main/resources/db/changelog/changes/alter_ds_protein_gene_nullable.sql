@@ -1,0 +1,1 @@
+ALTER TABLE ds_protein ALTER COLUMN gene DROP NOT NULL;
