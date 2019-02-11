@@ -187,7 +187,12 @@ public class VariantDAOImplTest{
         var4.setReport(diseaseAcronym + var4.getReport());
         var4.setFeatureId(null);
 
-        this.variantDAO.saveAll(Arrays.asList(var1, var2, var3, var4));
+        // create a variant with disease acronym and with empty feature id
+        Variant var5 = VariantTest.createVariantObject(uuid + 5);
+        var5.setReport(var5.getReport() + diseaseAcronym);
+        var5.setFeatureId("");
+
+        this.variantDAO.saveAll(Arrays.asList(var1, var2, var3, var4, var5));
 
         // get only one record
         List<Variant> result = this.variantDAO.findByReportContains(diseaseAcronym);
