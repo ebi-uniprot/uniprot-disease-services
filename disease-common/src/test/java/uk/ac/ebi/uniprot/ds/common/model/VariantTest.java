@@ -82,6 +82,6 @@ public class VariantTest extends BaseTest {
         return variant;
     }
     public static Variant createVariantObject(){
-        return createVariantObject(String.valueOf(random));
+        return createVariantObject(BaseTest.random);
     }
 }

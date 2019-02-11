@@ -40,7 +40,7 @@ public class InteractionTest extends BaseTest {
     @Test
     void testCreateInteraction(){
         String uuid = UUID.randomUUID().toString();
-        this.pr = ProteinTest.createProteinObject(String.valueOf(random));
+        this.pr = ProteinTest.createProteinObject(BaseTest.random);
         em.persist(this.pr);
         em.flush();
         assertNotNull(this.pr.getId(), "unable to create a protein");

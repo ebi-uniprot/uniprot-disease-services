@@ -10,9 +10,10 @@ package uk.ac.ebi.uniprot.ds.common.model;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Random;
+import java.util.UUID;
 
 public class BaseTest {
     @PersistenceContext
     EntityManager em;
-    protected static int random = new Random().nextInt();
+    protected static String random = UUID.randomUUID().toString();
 }

@@ -63,7 +63,7 @@ public class ProteinTest extends BaseTest{
         return protein;
     }
     public static Protein createProteinObject() {
-        return createProteinObject(String.valueOf(random));
+        return createProteinObject(BaseTest.random);
 
     }
 

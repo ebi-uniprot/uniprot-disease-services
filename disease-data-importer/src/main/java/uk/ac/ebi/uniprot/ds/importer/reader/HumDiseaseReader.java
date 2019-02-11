@@ -27,23 +27,20 @@ public class HumDiseaseReader implements ItemReader<Disease> {
     private static Integer id = 0;
     private Scanner reader;
     private boolean dataRegionStarted;
-    private final static String DATA_REGION_SEP = "___________________________________________________________________________";
-    private final static String COPYRIGHT_SEP = "-----------------------------------------------------------------------";
-    private final static String DATA_SEP = "//";
-    private final static String LINE_SEP = "\n";
-    private final static String KEY_VAL_SEP = "   ";
-    private final static String ID_STR = "ID";
-    private final static String AC_STR = "AC";
-    private final static String AR_STR = "AR";
-    private final static String DE_STR = "DE";
-    private final static String SY_STR = "SY";
-    private final static String DR_STR = "DR";
-    private final static String KW_STR = "KW";
-    private final static String SEMI_COLON = ";";
-    private final static String COLON = ":";
-    private final static String FULL_STOP = ".";
-    private final static String EMPTY_STR = "";
-
+    private static final String DATA_REGION_SEP = "___________________________________________________________________________";
+    private static final String COPYRIGHT_SEP = "-----------------------------------------------------------------------";
+    private static final String DATA_SEP = "//";
+    private static final String LINE_SEP = "\n";
+    private static final String KEY_VAL_SEP = "   ";
+    private static final String ID_STR = "ID";
+    private static final String AC_STR = "AC";
+    private static final String AR_STR = "AR";
+    private static final String DE_STR = "DE";
+    private static final String SY_STR = "SY";
+    private static final String DR_STR = "DR";
+    private static final String KW_STR = "KW";
+    private static final String FULL_STOP = ".";
+    private static final String EMPTY_STR = "";
 
     public HumDiseaseReader(String fileName) throws FileNotFoundException {
         reader = new Scanner(new File(fileName), StandardCharsets.UTF_8.name());
@@ -121,7 +118,7 @@ public class HumDiseaseReader implements ItemReader<Disease> {
         return name.replace(FULL_STOP, EMPTY_STR);
     }
 
-    private String generateDiseaseId(String acronym) {
+    private static String generateDiseaseId(String acronym) {
         return ++HumDiseaseReader.id + "-" + acronym;
     }
 }

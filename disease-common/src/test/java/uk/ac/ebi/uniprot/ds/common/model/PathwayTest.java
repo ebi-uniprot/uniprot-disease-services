@@ -37,7 +37,7 @@ public class PathwayTest extends BaseTest {
     @Test
     void testCreatePathway(){
         pr = createProtein();
-        pt = createPathwayObject(UUID.randomUUID().toString());
+        pt = createPathwayObject(BaseTest.random);
         pt.setProtein(pr);
 
         // persist

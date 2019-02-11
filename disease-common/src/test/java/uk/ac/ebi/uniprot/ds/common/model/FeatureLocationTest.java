@@ -45,7 +45,7 @@ public class FeatureLocationTest extends BaseTest{
     }
 
     public static FeatureLocation createFeatureLocationObject() {
-       return createFeatureLocationObject(String.valueOf(random));
+       return createFeatureLocationObject(BaseTest.random);
     }
 
     public static FeatureLocation createFeatureLocationObject(String uuid) {
