@@ -16,7 +16,6 @@ import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ProteinToProteinDiseasesDTOMap extends PropertyMap<Protein, ProteinDiseasesDTO> {
@@ -27,12 +26,11 @@ public class ProteinToProteinDiseasesDTOMap extends PropertyMap<Protein, Protein
 
     }
 
-    private class DiseasesToDiseaseDTOs implements Converter<Set<Disease>, List<ProteinDiseasesDTO.BasicDiseaseDTO>>{
-
+    private class DiseasesToDiseaseDTOs implements Converter<List<Disease>, List<ProteinDiseasesDTO.BasicDiseaseDTO>>{
         @Override
-        public List<ProteinDiseasesDTO.BasicDiseaseDTO> convert(MappingContext<Set<Disease>, List<ProteinDiseasesDTO.BasicDiseaseDTO>> context) {
+        public List<ProteinDiseasesDTO.BasicDiseaseDTO> convert(MappingContext<List<Disease>, List<ProteinDiseasesDTO.BasicDiseaseDTO>> context) {
 
-            Set<Disease> diseases = context.getSource();
+            List<Disease> diseases = context.getSource();
             List<ProteinDiseasesDTO.BasicDiseaseDTO> diseaseDTOs = null;
 
             if(diseases != null){

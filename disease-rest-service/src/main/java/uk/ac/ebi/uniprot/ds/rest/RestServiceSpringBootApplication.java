@@ -21,6 +21,8 @@ import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.dto.DiseaseDTO;
 import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDTO;
 import uk.ac.ebi.uniprot.ds.rest.filter.CorrelationHeaderFilter;
+import uk.ac.ebi.uniprot.ds.rest.mapper.DiseaseToDiseaseDTOMap;
+import uk.ac.ebi.uniprot.ds.rest.mapper.ProteinToProteinDTOMap;
 import uk.ac.ebi.uniprot.ds.rest.mapper.ProteinToProteinDiseasesDTOMap;
 import uk.ac.ebi.uniprot.ds.rest.mapper.ProteinToProteinPathwaysDTOMap;
 
@@ -41,10 +43,10 @@ public class RestServiceSpringBootApplication {
     }
 
     @Bean
-    ModelMapper modelMapper(PropertyMap<Disease, DiseaseDTO> diseaseToDiseaseDTOMap, PropertyMap<Protein, ProteinDTO> proteinToProteinDTOMap) {
+    ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.addMappings(diseaseToDiseaseDTOMap);
-        modelMapper.addMappings(proteinToProteinDTOMap);
+        modelMapper.addMappings(new DiseaseToDiseaseDTOMap());
+        modelMapper.addMappings(new ProteinToProteinDTOMap());
         modelMapper.addMappings(new ProteinToProteinPathwaysDTOMap());
         modelMapper.addMappings(new ProteinToProteinDiseasesDTOMap());
         return modelMapper;

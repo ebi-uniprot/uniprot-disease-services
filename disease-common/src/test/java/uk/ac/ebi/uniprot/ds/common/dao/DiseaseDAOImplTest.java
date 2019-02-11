@@ -179,7 +179,7 @@ public class DiseaseDAOImplTest {
         String uuid = UUID.randomUUID().toString();
         this.disease = DiseaseTest.createDiseaseObject(uuid);
         Protein protein = ProteinTest.createProteinObject(uuid);
-        this.disease.setProteins(new HashSet<>(Arrays.asList(protein)));
+        this.disease.setProteins(Arrays.asList(protein));
         this.diseaseDAO.save(this.disease);
 
         List<Disease> dbDisease = this.diseaseDAO.findAllByProteinsIs(protein);

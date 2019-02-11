@@ -35,7 +35,7 @@ public class ProteinDAOImplTest{
     private DiseaseDAO diseaseDAO;
 
     private Protein protein;
-    private Set<Disease> diseases;
+    private List<Disease> diseases;
     private String randomUUID = UUID.randomUUID().toString();
 
     @AfterEach
@@ -55,7 +55,7 @@ public class ProteinDAOImplTest{
     void createProteinWithDiseases(){
         this.protein = ProteinTest.createProteinObject(UUID.randomUUID().toString());
         // create 5 diseases
-        this.diseases = new HashSet<>();
+        this.diseases = new ArrayList<>();
         IntStream.range(1, 6).forEach(i -> this.diseases.add(createDisease(new Random().nextInt())));
 
         this.protein.setDiseases(this.diseases);
@@ -132,7 +132,7 @@ public class ProteinDAOImplTest{
     }
 
 
-    private void verifyDiseases(Set<Disease> diseases) {
+    private void verifyDiseases(List<Disease> diseases) {
         assertEquals(5, diseases.size());
         diseases.forEach(disease -> assertNotNull(disease.getId()));
     }

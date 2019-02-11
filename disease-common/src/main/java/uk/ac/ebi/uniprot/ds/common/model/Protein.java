@@ -11,7 +11,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "ds_protein")
@@ -40,7 +39,7 @@ public class Protein extends BaseEntity {
     private String desc;
 
     @ManyToMany(mappedBy = "proteins")
-    private Set<Disease> diseases;
+    private List<Disease> diseases;
 
     @OneToMany(mappedBy = "protein", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Variant> variants;

@@ -56,7 +56,7 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
                 pDisease.setDiseaseId(disease.getDiseaseId());
                 pDisease.getProteins().add(protein);
             } else {
-                Set<Protein> proteins = new HashSet<>();
+                List<Protein> proteins = new ArrayList<>();
                 proteins.add(protein);
                 pDisease = disease;
                 pDisease.setProteins(proteins);

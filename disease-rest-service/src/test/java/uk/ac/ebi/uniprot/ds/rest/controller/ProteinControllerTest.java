@@ -24,13 +24,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import uk.ac.ebi.uniprot.ds.common.model.*;
 import uk.ac.ebi.uniprot.ds.rest.RestServiceSpringBootApplication;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
-import uk.ac.ebi.uniprot.ds.rest.mapper.EntityToDTOMapper;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ProteinController.class)
-@ContextConfiguration(classes={RestServiceSpringBootApplication.class, EntityToDTOMapper.class})
+@ContextConfiguration(classes={RestServiceSpringBootApplication.class})
 public class ProteinControllerTest {
     private String uuid = UUID.randomUUID().toString();
 
@@ -92,7 +90,7 @@ public class ProteinControllerTest {
 
         Disease d1 = ModelCreationUtils.createDiseaseObject(uuid + 1);
         Disease d2 = ModelCreationUtils.createDiseaseObject(uuid + 2);
-        protein.setDiseases(new HashSet<>(Arrays.asList(d1, d2)));
+        protein.setDiseases(Arrays.asList(d1, d2));
 
         Variant v1 = ModelCreationUtils.createVariantObject(uuid + 1);
         Variant v2 = ModelCreationUtils.createVariantObject(uuid + 2);

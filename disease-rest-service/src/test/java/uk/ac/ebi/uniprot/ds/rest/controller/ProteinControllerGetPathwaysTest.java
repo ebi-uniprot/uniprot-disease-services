@@ -25,7 +25,6 @@ import uk.ac.ebi.uniprot.ds.common.DiseaseCommonSpringBootApplication;
 import uk.ac.ebi.uniprot.ds.common.model.Pathway;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.RestServiceSpringBootApplication;
-import uk.ac.ebi.uniprot.ds.rest.mapper.EntityToDTOMapper;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
@@ -40,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ProteinController.class)
-@ContextConfiguration(classes={RestServiceSpringBootApplication.class, EntityToDTOMapper.class,
+@ContextConfiguration(classes={RestServiceSpringBootApplication.class,
         DiseaseCommonSpringBootApplication.class})
 public class ProteinControllerGetPathwaysTest {
     private String uuid = UUID.randomUUID().toString();

@@ -25,21 +25,17 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import uk.ac.ebi.uniprot.ds.common.DiseaseCommonSpringBootApplication;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.common.model.Synonym;
 import uk.ac.ebi.uniprot.ds.common.model.Variant;
 import uk.ac.ebi.uniprot.ds.rest.DataSourceTestConfig;
-import uk.ac.ebi.uniprot.ds.rest.RestServiceSpringBootApplication;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
-import uk.ac.ebi.uniprot.ds.rest.mapper.EntityToDTOMapper;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -104,7 +100,7 @@ public class DiseaseControllerTest {
         Protein p1 = ModelCreationUtils.createProteinObject(uuid + 1);
         Protein p2 = ModelCreationUtils.createProteinObject(uuid + 2);
         Protein p3 = ModelCreationUtils.createProteinObject(uuid + 3);
-        disease.setProteins(new HashSet<>(Arrays.asList(p1, p2, p3)));
+        disease.setProteins(Arrays.asList(p1, p2, p3));
 
         // variants
         Variant v1 = ModelCreationUtils.createVariantObject(uuid + 1);

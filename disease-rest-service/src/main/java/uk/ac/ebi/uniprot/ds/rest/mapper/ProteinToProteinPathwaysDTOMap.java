@@ -26,7 +26,6 @@ public class ProteinToProteinPathwaysDTOMap extends PropertyMap<Protein, Protein
     }
 
     private class PathwaysToPathwayDTOs implements Converter<List<Pathway>, List<ProteinPathwaysDTO.PathwayDTO>>{
-
         @Override
         public List<ProteinPathwaysDTO.PathwayDTO> convert(MappingContext<List<Pathway>,
                 List<ProteinPathwaysDTO.PathwayDTO>> context) {

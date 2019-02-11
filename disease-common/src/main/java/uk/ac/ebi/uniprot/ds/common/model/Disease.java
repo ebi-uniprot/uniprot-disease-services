@@ -12,7 +12,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "ds_disease")
@@ -40,7 +39,7 @@ public class Disease extends BaseEntity {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "ds_disease_protein", joinColumns = @JoinColumn(name = "ds_disease_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "ds_protein_id"))
-    private Set<Protein> proteins;
+    private List<Protein> proteins;
 
     @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Synonym> synonyms;

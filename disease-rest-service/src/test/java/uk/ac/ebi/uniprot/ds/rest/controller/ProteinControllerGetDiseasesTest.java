@@ -27,14 +27,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import uk.ac.ebi.uniprot.ds.common.CustomJpaConfiguration;
 import uk.ac.ebi.uniprot.ds.common.DiseaseCommonSpringBootApplication;
-import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.DataSourceTestConfig;
 import uk.ac.ebi.uniprot.ds.rest.RestServiceSpringBootApplication;
-import uk.ac.ebi.uniprot.ds.rest.mapper.EntityToDTOMapper;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
@@ -46,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = {ProteinController.class})
-@Import(value = {DataSourceTestConfig.class, RestServiceSpringBootApplication.class, EntityToDTOMapper.class,
+@Import(value = {DataSourceTestConfig.class, RestServiceSpringBootApplication.class,
         DiseaseCommonSpringBootApplication.class})
 public class ProteinControllerGetDiseasesTest {
     private String uuid = UUID.randomUUID().toString();
@@ -89,13 +86,13 @@ public class ProteinControllerGetDiseasesTest {
         Disease d1 = ModelCreationUtils.createDiseaseObject(uuid + 1);
         Disease d2 = ModelCreationUtils.createDiseaseObject(uuid + 2);
         Disease d3 = ModelCreationUtils.createDiseaseObject(uuid + 3);
-        p1.setDiseases(new HashSet<>(Arrays.asList(d1, d2, d3)));
+        p1.setDiseases(Arrays.asList(d1, d2, d3));
 
         Protein p2 = ModelCreationUtils.createProteinObject(uuid + 2);
         String a2 = "ACC2-"+ uuid;
         p2.setAccession(a2);
         Disease d4 = ModelCreationUtils.createDiseaseObject(uuid + 4);
-        p2.setDiseases(new HashSet<>(Arrays.asList(d4)));
+        p2.setDiseases(Arrays.asList(d4));
 
         Protein p3 = ModelCreationUtils.createProteinObject(uuid + 3);
         String a3 = "ACC3-"+ uuid;
