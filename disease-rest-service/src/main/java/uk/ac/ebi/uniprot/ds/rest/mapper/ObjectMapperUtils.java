@@ -24,7 +24,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ObjectMapperUtils {
-    private ModelMapper modelMapper = new ModelMapper();
+    /*private ModelMapper modelMapper = new ModelMapper();
 
     public ObjectMapperUtils() {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -88,5 +88,5 @@ public class ObjectMapperUtils {
         return entityList.stream()
                 .map(entity -> map(entity, outCLass))
                 .collect(Collectors.toList());
-    }
+    }*/
 }
