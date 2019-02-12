@@ -36,7 +36,7 @@ public class Variant extends BaseEntity {
     private String report;
 
     @Column(name = "feature_status")
-    private String featureStatus; //TODO make it enum
+    private String featureStatus;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ds_feature_location_id")

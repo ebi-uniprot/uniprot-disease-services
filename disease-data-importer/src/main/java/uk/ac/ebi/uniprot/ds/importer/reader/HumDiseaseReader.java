@@ -82,7 +82,7 @@ public class HumDiseaseReader implements ItemReader<Disease> {
                         builder.name(keyVal[1].replace(FULL_STOP, EMPTY_STR));
                         break;
                     case AC_STR:
-                        //upd.setAccession(keyVal[1]); TODO ignore accession of disease for now
+                        //upd.setAccession(keyVal[1]); ignore accession of disease for now
                         break;
                     case AR_STR:
                         String acronym = keyVal[1].replace(FULL_STOP, EMPTY_STR);

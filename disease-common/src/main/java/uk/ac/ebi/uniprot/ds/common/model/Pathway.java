@@ -28,7 +28,7 @@ public class Pathway extends BaseEntity {
     private String desc;
 
     @Column(name = "db_type")
-    private String dbType;//TODO probably make an enum
+    private String dbType;
 
     @Column(name = "isoform_id")
     private String isoformId;

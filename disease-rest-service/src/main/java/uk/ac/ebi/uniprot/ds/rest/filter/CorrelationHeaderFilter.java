@@ -20,7 +20,7 @@ public class CorrelationHeaderFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        // do nothing
     }
 
     @Override
@@ -44,6 +44,6 @@ public class CorrelationHeaderFilter implements Filter {
 
     @Override
     public void destroy() {
-
+        // do nothing
     }
 }

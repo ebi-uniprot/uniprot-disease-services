@@ -25,7 +25,7 @@ public class Evidence extends BaseEntity {
     private String evidenceId;
 
     @Column(name = "evidence_type")
-    private String type; // TODO make an enum
+    private String type;
 
     @Column(name = "evidence_attribute")
     private String attribute;

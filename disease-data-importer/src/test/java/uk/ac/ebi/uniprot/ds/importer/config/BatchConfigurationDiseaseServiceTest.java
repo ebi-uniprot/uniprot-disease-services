@@ -37,14 +37,14 @@ public class BatchConfigurationDiseaseServiceTest {
 
     @After
     public void cleanUp(){
-//        this.synonymDAO.deleteAll();
-//        this.variantDAO.deleteAll();
-//        this.pathwayDAO.deleteAll();
-//        this.interactionDAO.deleteAll();
-//        this.featureLocationDAO.deleteAll();
-//        this.evidenceDAO.deleteAll();
-//        this.diseaseDAO.deleteAll();
-//        this.proteinDAO.deleteAll();
+        this.synonymDAO.deleteAll();
+        this.variantDAO.deleteAll();
+        this.pathwayDAO.deleteAll();
+        this.interactionDAO.deleteAll();
+        this.featureLocationDAO.deleteAll();
+        this.evidenceDAO.deleteAll();
+        this.diseaseDAO.deleteAll();
+        this.proteinDAO.deleteAll();
     }
 
     @Test
@@ -93,13 +93,12 @@ public class BatchConfigurationDiseaseServiceTest {
         List<Variant> prVars = this.variantDAO.findAllByProtein(pr);
         Assert.assertEquals(28, prVars.size());
 
-//        TODO fix me
-//        // get all disease variants
-//        List<Variant> disVars = new ArrayList<>();
-//        for(Disease dis : diseases){
-//            disVars.addAll(this.variantDAO.findAllByDisease(dis));
-//        }
-//        Assert.assertEquals(14, disVars.size());
+        // get all disease variants
+        List<Variant> disVars = new ArrayList<>();
+        for(Disease dis : diseases){
+            disVars.addAll(this.variantDAO.findAllByDisease(dis));
+        }
+        Assert.assertEquals(5, disVars.size());
 
         // Get evidence for each variant
         List<Evidence> prEvidences = new ArrayList<>();

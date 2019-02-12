@@ -42,11 +42,4 @@ public class ProteinToProteinDiseasesDTOMap extends PropertyMap<Protein, Protein
             return diseaseDTOs;
         }
     }
-
-    private DiseaseDTO convertToDiseaseDTO(Disease disease) {
-        DiseaseDTO dto = new DiseaseDTO();
-        dto.setDiseaseId(disease.getDiseaseId());
-        dto.setAcronym(disease.getAcronym());
-        return dto;
-    }
 }

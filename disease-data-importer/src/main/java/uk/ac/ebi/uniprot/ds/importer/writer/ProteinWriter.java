@@ -7,14 +7,12 @@
 
 package uk.ac.ebi.uniprot.ds.importer.writer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.ac.ebi.kraken.interfaces.uniprot.Gene;
 import uk.ac.ebi.kraken.interfaces.uniprot.ProteinDescription;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
-import uk.ac.ebi.kraken.interfaces.uniprot.comments.Comment;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.CommentType;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.FunctionComment;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.FieldType;
@@ -26,8 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class ProteinWriter implements ItemWriter<UniProtEntry> {
-    private static final Logger logger = LoggerFactory.getLogger(ProteinWriter.class);
 
     @Autowired
     private ProteinDAO proteinDAO;

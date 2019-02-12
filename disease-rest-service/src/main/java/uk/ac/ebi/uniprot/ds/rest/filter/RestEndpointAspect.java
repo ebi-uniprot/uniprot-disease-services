@@ -37,6 +37,7 @@ public class RestEndpointAspect {
                 log.info("Request: \n {}", mapper.writeValueAsString(signatureArgs[0]));
             }
         } catch (JsonProcessingException e) {
+            // ignore
         }
     }
 
@@ -47,6 +48,7 @@ public class RestEndpointAspect {
         try {
             log.info("Response: \n {}", mapper.writeValueAsString(returnValue));
         } catch (JsonProcessingException e) {
+            // ignore
         }
         log.info(p.getTarget().getClass().getSimpleName() + " " + p.getSignature().getName() + " END");
     }
