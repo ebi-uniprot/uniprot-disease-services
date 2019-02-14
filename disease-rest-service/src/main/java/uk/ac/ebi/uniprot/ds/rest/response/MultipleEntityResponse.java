@@ -21,12 +21,20 @@ public class MultipleEntityResponse<T> extends BaseEntityResponse {
     private List<T> results;
 
 
-    public MultipleEntityResponse(String requestId, Boolean hasError, List<String> warnings, List<T> results){
+    public MultipleEntityResponse(String requestId, Boolean hasError, List<String> warnings, List<T> results,
+                                  Integer offset, Integer maxReturn, Integer total){
         super(requestId, hasError, warnings);
         this.results = results;
+        this.offset = offset;
+        this.maxReturn = maxReturn;
+        this.total = total;
     }
 
     public MultipleEntityResponse(String requestId, List<T> results){
-        this(requestId, false, null, results);
+        this(requestId, false, null, results, null, null, null);
+    }
+
+    public MultipleEntityResponse(String requestId, List<T> results, Integer offset, Integer maxReturn){
+        this(requestId, false, null, results, offset, maxReturn, null);
     }
 }

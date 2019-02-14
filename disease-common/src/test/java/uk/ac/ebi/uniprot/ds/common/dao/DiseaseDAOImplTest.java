@@ -13,6 +13,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
@@ -157,7 +159,7 @@ public class DiseaseDAOImplTest {
 
         EmptyResultDataAccessException exception = assertThrows(EmptyResultDataAccessException.class,
                 () -> this.diseaseDAO.deleteById(id > 0 ? id : -id));
-        System.out.println(exception.getMessage());
+
         assertTrue(exception.getMessage().contains("No class uk.ac.ebi.uniprot.ds.common.model.Disease entity with id"));
     }
 
@@ -179,6 +181,40 @@ public class DiseaseDAOImplTest {
         List<Disease> dbDisease = this.diseaseDAO.findAllByProteinsIs(protein);
         assertEquals(1, dbDisease.size());
     }
+
+    @Test
+    void testSearchDiseasesByKeyword(){
+        // create 100s of diseases
+        String keyword = "123syndrome123";
+        this.diseases = new ArrayList<>();
+        IntStream.range(0, 100).forEach(i -> this.diseases.add(createDisease(keyword)));
+
+        // search by keyword
+        int size = 20;
+        Sort sortBy = Sort.by("id");
+        List<Disease> batch1 = this.diseaseDAO.findAllByNameContaining(keyword, PageRequest.of(0, size, sortBy));
+        assertEquals(size, batch1.size());
+        List<Disease> batch2 = this.diseaseDAO.findAllByNameContaining(keyword, PageRequest.of(1, size, sortBy));
+        assertEquals(size, batch2.size());
+        List<Disease> batch3 = this.diseaseDAO.findAllByNameContaining(keyword, PageRequest.of(2, size, sortBy));
+        assertEquals(size, batch3.size());
+        List<Disease> batch4 = this.diseaseDAO.findAllByNameContaining(keyword, PageRequest.of(3, size, sortBy));
+        assertEquals(size, batch4.size());
+        List<Disease> batch5 = this.diseaseDAO.findAllByNameContaining(keyword, PageRequest.of(4, size, sortBy));
+        assertEquals(size, batch5.size());
+        List<Disease> batch6 = this.diseaseDAO.findAllByNameContaining(keyword, PageRequest.of(5, size, sortBy));
+        assertEquals(0, batch6.size());
+    }
+
+    private Disease createDisease(String keyword) {
+        String uuid = UUID.randomUUID().toString();
+        Disease dis = uuid.indexOf(uuid.length()-1) % 2 == 0 ?
+                DiseaseTest.createDiseaseObject(uuid+keyword):DiseaseTest.createDiseaseObject(keyword+uuid);
+        dis = this.diseaseDAO.save(dis);
+        assertNotNull(dis.getId(), "Unable to save the disease");
+        return dis;
+    }
+
 
 
     private Disease createDisease() {

@@ -31,7 +31,6 @@ public class DataSourceTestConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        System.out.println(env.getProperty("spring.datasource.url"));
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl(env.getProperty("spring.datasource.url"));
         dataSource.setUsername(env.getProperty("spring.datasource.username"));

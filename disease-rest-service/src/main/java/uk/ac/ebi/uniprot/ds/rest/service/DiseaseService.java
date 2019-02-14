@@ -7,7 +7,10 @@
 
 package uk.ac.ebi.uniprot.ds.rest.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
@@ -18,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class DiseaseService {
     @Autowired
     private DiseaseDAO diseaseDAO;
@@ -76,5 +80,15 @@ public class DiseaseService {
 
     public Optional<Disease> findByDiseaseIdOrNameOrAcronym(String diseaseId, String diseaseName, String acronym) {
         return this.diseaseDAO.findDiseaseByDiseaseIdOrNameOrAcronym(diseaseId, diseaseName, acronym);
+    }
+
+    public List<Disease> searchDiseases(String keyword, Integer offset, Integer size) {
+
+        log.info("Searching diseases with the name {}, offset {} and size {}", keyword, offset, size);
+
+        PageRequest pageRequest = PageRequest.of(offset, size, Sort.by("id"));
+
+        return this.diseaseDAO.findAllByNameContaining(keyword, pageRequest);
+
     }
 }

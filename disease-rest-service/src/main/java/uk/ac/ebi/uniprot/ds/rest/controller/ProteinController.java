@@ -79,11 +79,11 @@ public class ProteinController {
         return proteinDTO;
     }
 
-    public List<ProteinPathwaysDTO> toProteinPathwaysDTOList(List<Protein> from){
+    private List<ProteinPathwaysDTO> toProteinPathwaysDTOList(List<Protein> from){
         return this.modelMapper.map(from, new TypeToken<List<ProteinPathwaysDTO>>(){}.getType());
     }
 
-    public List<ProteinDiseasesDTO> toProteinDiseasesDTOList(List<Protein> from){
+    private List<ProteinDiseasesDTO> toProteinDiseasesDTOList(List<Protein> from){
         return this.modelMapper.map(from, new TypeToken<List<ProteinDiseasesDTO>>(){}.getType());
     }
 }

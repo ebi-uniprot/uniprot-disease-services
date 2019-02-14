@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -22,6 +23,7 @@ import uk.ac.ebi.uniprot.ds.common.model.Variant;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -65,6 +67,16 @@ public class DiseaseToDiseaseDTOTest {
         Assert.assertEquals(disease.getProteins().size(),  dto.getProteins().size());
         Assert.assertEquals(disease.getSynonyms().size(), dto.getSynonyms().size());
         Assert.assertEquals(disease.getVariants().size(), dto.getVariants().size());
+    }
+
+    @Test
+    public void testDiseasesToDiseaseDTOList(){
+        List<Disease> diseases = new ArrayList<>();
+        IntStream.range(0, 10).forEach(i -> diseases.add(ModelCreationUtils.createDiseaseObject(this.uuid+i)));
+        // convert the list of diseases to list of disease dtos
+        List<DiseaseDTO> dtos = modelMapper.map(diseases, new TypeToken<List<DiseaseDTO>>() {}.getType());
+        Assert.assertEquals(10, dtos.size());
+        IntStream.range(0, 10).forEach(i -> verifyDiseaseDTO(diseases.get(i), dtos.get(i)));
     }
 
     private void verifyDiseaseDTO(Disease disease, DiseaseDTO diseaseDTO) {
