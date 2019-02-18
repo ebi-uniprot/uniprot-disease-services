@@ -37,14 +37,14 @@ public class BatchConfigurationDiseaseServiceTest {
 
     @After
     public void cleanUp(){
-        this.synonymDAO.deleteAll();
-        this.variantDAO.deleteAll();
-        this.pathwayDAO.deleteAll();
-        this.interactionDAO.deleteAll();
-        this.featureLocationDAO.deleteAll();
-        this.evidenceDAO.deleteAll();
-        this.diseaseDAO.deleteAll();
-        this.proteinDAO.deleteAll();
+//        this.synonymDAO.deleteAll();
+//        this.variantDAO.deleteAll();
+//        this.pathwayDAO.deleteAll();
+//        this.interactionDAO.deleteAll();
+//        this.featureLocationDAO.deleteAll();
+//        this.evidenceDAO.deleteAll();
+//        this.diseaseDAO.deleteAll();
+//        this.proteinDAO.deleteAll();
     }
 
     @Test
@@ -107,9 +107,16 @@ public class BatchConfigurationDiseaseServiceTest {
         }
         Assert.assertEquals(78, prEvidences.size());
 
+        // verify cross refs
+        List<CrossRef> crossRefs = this.crossRefDAO.findAll();
+        Assert.assertTrue(!crossRefs.isEmpty());
+
     }
 
 
+
+    @Autowired
+    private CrossRefDAO crossRefDAO;
 
     @Autowired
     private SynonymDAO synonymDAO;

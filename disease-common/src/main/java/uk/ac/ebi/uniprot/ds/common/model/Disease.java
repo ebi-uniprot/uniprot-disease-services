@@ -47,6 +47,17 @@ public class Disease extends BaseEntity {
     @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Variant> variants;
 
+    @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CrossRef> crossRefs;
+
+    public void addCrossRef(CrossRef crossRef){
+        if(this.crossRefs == null){
+            this.crossRefs = new ArrayList<>();
+        }
+        this.crossRefs.add(crossRef);
+        crossRef.setDisease(this);
+    }
+
     public void addSynonym(Synonym synonym){
         if(this.synonyms == null){
             this.synonyms = new ArrayList<>();

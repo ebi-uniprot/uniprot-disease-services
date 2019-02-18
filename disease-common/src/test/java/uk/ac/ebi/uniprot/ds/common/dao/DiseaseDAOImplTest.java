@@ -8,6 +8,7 @@
 package uk.ac.ebi.uniprot.ds.common.dao;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.DiseaseTest;
-import uk.ac.ebi.uniprot.ds.common.model.Protein;
-import uk.ac.ebi.uniprot.ds.common.model.ProteinTest;
+import uk.ac.ebi.uniprot.ds.common.model.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,6 +36,12 @@ public class DiseaseDAOImplTest {
 
     private Disease disease;
     private List<Disease> diseases;
+    private String uuid;
+
+    @BeforeEach
+    void setUp(){
+        uuid = java.util.UUID.randomUUID().toString();
+    }
 
     @AfterEach
     void cleanUp(){
@@ -119,17 +124,11 @@ public class DiseaseDAOImplTest {
         assertTrue(optStoredDisease.isPresent(), "unable to get the disease");
 
         Disease storedDisease = optStoredDisease.get();
+        verifyDisease(this.disease, storedDisease);
 
-        assertAll("disease values",
-                () -> assertEquals(this.disease.getId(), storedDisease.getId()),
-                () -> assertEquals(this.disease.getDiseaseId(), storedDisease.getDiseaseId()),
-                () -> assertEquals(this.disease.getName(), storedDisease.getName()),
-                () -> assertEquals(this.disease.getDesc(), storedDisease.getDesc()),
-                () -> assertEquals(this.disease.getAcronym(), storedDisease.getAcronym()),
-                () -> assertEquals(this.disease.getCreatedAt(), storedDisease.getCreatedAt()),
-                () -> assertEquals(this.disease.getUpdatedAt(), storedDisease.getUpdatedAt())
-                );
     }
+
+
 
     @Test
     void testDeleteById(){
@@ -206,6 +205,28 @@ public class DiseaseDAOImplTest {
         assertEquals(0, batch6.size());
     }
 
+    @Test
+    void testCreateDiseaseWithCrossRefs(){
+        this.disease = DiseaseTest.createDiseaseObject(uuid);
+        // create 10 cross refs
+        List<CrossRef> xRefs = IntStream.range(0, 10).mapToObj(i -> CrossRefDAOTest.createCrossRef(uuid + i))
+                .collect(Collectors.toList());
+        this.disease.setCrossRefs(xRefs);
+        this.diseaseDAO.save(this.disease);
+
+        // get the disease by disease id and verify the cross refs as well
+        Optional<Disease> optDis = this.diseaseDAO.findById(this.disease.getId());
+        assertTrue(optDis.isPresent());
+        Disease dis = optDis.get();
+        verifyDisease(this.disease, dis);
+        // verify the cross refs
+        List<CrossRef> crossRefs = dis.getCrossRefs();
+        assertEquals(xRefs.size(), crossRefs.size());
+
+    }
+
+
+
     private Disease createDisease(String keyword) {
         String uuid = UUID.randomUUID().toString();
         Disease dis = uuid.indexOf(uuid.length()-1) % 2 == 0 ?
@@ -223,5 +244,17 @@ public class DiseaseDAOImplTest {
         dis = this.diseaseDAO.save(dis);
         assertNotNull(dis.getId(), "Unable to save the disease");
         return dis;
+    }
+
+    private void verifyDisease(Disease expected, Disease actual) {
+        assertAll("disease values",
+                () -> assertEquals(expected.getId(), actual.getId()),
+                () -> assertEquals(expected.getDiseaseId(), actual.getDiseaseId()),
+                () -> assertEquals(expected.getName(), actual.getName()),
+                () -> assertEquals(expected.getDesc(), actual.getDesc()),
+                () -> assertEquals(expected.getAcronym(), actual.getAcronym()),
+                () -> assertEquals(expected.getCreatedAt(), actual.getCreatedAt()),
+                () -> assertEquals(expected.getUpdatedAt(), actual.getUpdatedAt())
+        );
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
+import uk.ac.ebi.uniprot.ds.common.model.CrossRef;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Synonym;
 
@@ -41,6 +42,7 @@ public class HumDiseaseReader implements ItemReader<Disease> {
     private static final String KW_STR = "KW";
     private static final String FULL_STOP = ".";
     private static final String EMPTY_STR = "";
+    private static final String SEMI_COLON =";";
 
     public HumDiseaseReader(String fileName) throws FileNotFoundException {
         reader = new Scanner(new File(fileName), StandardCharsets.UTF_8.name());
@@ -73,6 +75,7 @@ public class HumDiseaseReader implements ItemReader<Disease> {
 
         StringBuilder desc = new StringBuilder();
         List<Synonym> synonyms = new ArrayList<>();
+        List<CrossRef> crossRefs = new ArrayList<>();
         for (String token : tokens) {
             if (!StringUtils.isEmpty(token.trim())) {
                 // split by 3 spaces
@@ -97,6 +100,10 @@ public class HumDiseaseReader implements ItemReader<Disease> {
                         synonyms.add(synonym);
                         break;
                     case DR_STR:
+                        CrossRef xRef = getCrossRef(keyVal[1]);
+                        if(xRef != null) {
+                            crossRefs.add(xRef);
+                        }
                         break;
                     case KW_STR:
                         break;
@@ -110,7 +117,8 @@ public class HumDiseaseReader implements ItemReader<Disease> {
         Disease disease = builder.build();
         disease.setSynonyms(synonyms);
         synonyms.forEach(synonym -> synonym.setDisease(disease));
-
+        disease.setCrossRefs(crossRefs);
+        crossRefs.forEach(crossRef -> crossRef.setDisease(disease));
         return disease;
     }
 
@@ -120,5 +128,16 @@ public class HumDiseaseReader implements ItemReader<Disease> {
 
     private static String generateDiseaseId(String acronym) {
         return ++HumDiseaseReader.id + "-" + acronym;
+    }
+
+    private CrossRef getCrossRef(String diseaseRef) {
+        String[] tokens = diseaseRef.split(SEMI_COLON);
+        CrossRef cr = null;
+        if(tokens.length >= 2) {
+            cr = new CrossRef();
+            cr.setRefType(tokens[0].trim());
+            cr.setRefId(tokens[1].trim().replace(FULL_STOP, EMPTY_STR));
+        }
+        return cr;
     }
 }
