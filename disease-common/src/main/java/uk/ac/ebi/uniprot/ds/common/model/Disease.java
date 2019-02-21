@@ -36,6 +36,10 @@ public class Disease extends BaseEntity {
     @Column
     private String acronym;
 
+    @Column(name="source_name", nullable = false)
+    private String source;
+
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "ds_disease_protein", joinColumns = @JoinColumn(name = "ds_disease_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "ds_protein_id"))
@@ -68,7 +72,6 @@ public class Disease extends BaseEntity {
 
     public void removeSynonym(Synonym synonym){
         this.synonyms.remove(synonym);
-        synonym.setDisease(null);
     }
 
     @Override

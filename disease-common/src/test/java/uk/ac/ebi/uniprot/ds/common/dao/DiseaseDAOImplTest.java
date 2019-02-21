@@ -72,10 +72,12 @@ public class DiseaseDAOImplTest {
         String dn = "UDN-" + random;
         String desc = "UDESC-" + random;
         String acr = "UACRONYM-" + random;
+        String src = "SRC-" + random;
         this.disease.setDiseaseId(dId);
         this.disease.setName(dn);
         this.disease.setDesc(desc);
         this.disease.setAcronym(acr);
+        this.disease.setSource(src);
         this.disease = this.diseaseDAO.save(this.disease);
 
         // get the disease and verify
@@ -87,6 +89,7 @@ public class DiseaseDAOImplTest {
         assertEquals(dn, sDis.getName());
         assertEquals(desc, sDis.getDesc());
         assertEquals(acr, sDis.getAcronym());
+        assertEquals(src, sDis.getSource());
     }
 
     @Test
@@ -209,7 +212,7 @@ public class DiseaseDAOImplTest {
     void testCreateDiseaseWithCrossRefs(){
         this.disease = DiseaseTest.createDiseaseObject(uuid);
         // create 10 cross refs
-        List<CrossRef> xRefs = IntStream.range(0, 10).mapToObj(i -> CrossRefDAOTest.createCrossRef(uuid + i))
+        List<CrossRef> xRefs = IntStream.range(0, 10).mapToObj(i -> CrossRefDAOTest.createCrossRef(uuid + i, this.disease))
                 .collect(Collectors.toList());
         this.disease.setCrossRefs(xRefs);
         this.diseaseDAO.save(this.disease);
@@ -225,7 +228,32 @@ public class DiseaseDAOImplTest {
 
     }
 
+    @Test
+    void testCreateDiseaseWithSynonymsAndXrefs(){
+        this.disease = DiseaseTest.createDiseaseObject(this.uuid);
+        // create couple of new xrefs
+        List<CrossRef> xRefs = IntStream.range(0, 2)
+                .mapToObj(i -> CrossRefDAOTest.createCrossRef(uuid + i, this.disease))
+                .collect(Collectors.toList());
+        // create couple of new synonyms
+        List<Synonym> syns = IntStream.range(0, 2)
+                .mapToObj(i -> SynonymTest.createSynonymObject(this.uuid + i, this.disease))
+                .collect(Collectors.toList());
 
+        // set them to the disease
+        this.disease.setCrossRefs(xRefs);
+        this.disease.setSynonyms(syns);
+
+        // persist the data
+        this.diseaseDAO.save(this.disease);
+
+        // get the disease by the disease id
+        Optional<Disease> optDis = this.diseaseDAO.findById(this.disease.getId());
+        assertTrue(optDis.isPresent());
+        // get the xrefs and synonyms
+        assertEquals(xRefs.size(), optDis.get().getCrossRefs().size());
+        assertEquals(syns.size(), optDis.get().getSynonyms().size());
+    }
 
     private Disease createDisease(String keyword) {
         String uuid = UUID.randomUUID().toString();
@@ -254,7 +282,8 @@ public class DiseaseDAOImplTest {
                 () -> assertEquals(expected.getDesc(), actual.getDesc()),
                 () -> assertEquals(expected.getAcronym(), actual.getAcronym()),
                 () -> assertEquals(expected.getCreatedAt(), actual.getCreatedAt()),
-                () -> assertEquals(expected.getUpdatedAt(), actual.getUpdatedAt())
+                () -> assertEquals(expected.getUpdatedAt(), actual.getUpdatedAt()),
+                () -> assertEquals(expected.getSource(), actual.getSource())
         );
     }
 }

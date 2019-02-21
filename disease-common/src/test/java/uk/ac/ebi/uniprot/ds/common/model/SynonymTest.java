@@ -39,6 +39,7 @@ public class SynonymTest extends BaseTest {
         // create synonyms
         syn = new Synonym();
         syn.setName("Name-" + random);
+        syn.setSource(disease.getSource());
         syn.setDisease(disease);
 
         em.persist(disease);
@@ -49,9 +50,12 @@ public class SynonymTest extends BaseTest {
         Assertions.assertEquals(disease.getId(), syn.getDisease().getId());
     }
 
-    public static Synonym createSynonymObject(String uuid){
+    public static Synonym createSynonymObject(String uuid, Disease disease){
         Synonym synonym = new Synonym();
+        String source = "SRC-" + uuid;
         synonym.setName("Name-" + uuid);
+        synonym.setSource(source);
+        synonym.setDisease(disease);
         return synonym;
     }
 }

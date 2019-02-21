@@ -28,8 +28,11 @@ public class CrossRef extends BaseEntity{
     @Column(name = "ref_id")
     private String refId;
 
+    @Column(name="source_name", nullable = false)
+    private String source;
+
     @ManyToOne
-    @JoinColumn(name="ds_disease_id")
+    @JoinColumn(name="ds_disease_id", nullable = false)
     private Disease disease;
 
     @Override
@@ -46,11 +49,12 @@ public class CrossRef extends BaseEntity{
         CrossRef crossRef = (CrossRef) obj;
         return Objects.equals(getRefType(), crossRef.getRefType())
                 && Objects.equals(getRefId(), crossRef.getRefId())
+                && Objects.equals(getSource(), crossRef.getSource())
                 && Objects.equals(getDisease(), crossRef.getDisease());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getRefType(), getRefId(), getDisease());
+        return Objects.hash(getRefType(), getSource(), getRefId(), getDisease());
     }
 }

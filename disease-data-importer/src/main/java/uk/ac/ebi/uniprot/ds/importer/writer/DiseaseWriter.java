@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.CommentType;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.DiseaseCommentStructured;
+import uk.ac.ebi.uniprot.ds.common.common.SourceType;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.VariantDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
@@ -60,6 +61,7 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
                 proteins.add(protein);
                 pDisease = disease;
                 pDisease.setProteins(proteins);
+                pDisease.setSource(SourceType.UniProt.name());
             }
             List<Variant> variants = getDiseaseVariants(pDisease);
             pDisease.setVariants(variants);

@@ -8,4 +8,11 @@
     <include file="src/main/resources/db/changelog/changes/alter_variant_evidence_tables.sql"/>
     <include file="src/main/resources/db/changelog/changes/alter_ds_protein_description_to_text.sql"/>
     <include file="src/main/resources/db/changelog/changes/create_ds_cross_ref_table.sql"/>
+    <include file="src/main/resources/db/changelog/changes/add_column_source_in_ds_synonym.sql"/>
+    <include file="src/main/resources/db/changelog/changes/add_column_source_in_ds_disease.sql"/>
+    <include file="src/main/resources/db/changelog/changes/add_column_source_in_ds_cross_ref.sql"/>
+    <include file="src/main/resources/db/changelog/changes/alter_ds_synonym.sql"/>
+    <include file="src/main/resources/db/changelog/changes/alter_ds_cross_ref.sql"/>
+
+
 </databaseChangeLog>

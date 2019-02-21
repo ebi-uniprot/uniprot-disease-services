@@ -63,15 +63,17 @@ public class SynonymDAOImplTest{
         assertNotNull(this.disease.getId());
         String GUID = UUID.randomUUID().toString();
         String name = "SYN-" + GUID;
+        String src = this.disease.getSource();
         this.synonym = new Synonym();
         this.synonym.setName(name);
+        this.synonym.setSource(src);
         this.synonym.setDisease(this.disease);
         // save in the db
         this.synonymDAO.save(this.synonym);
         verifyCreation(this.synonym);
         // get the Synonym and verify
         Optional<Synonym> optSD = this.synonymDAO.findById(this.synonym.getId());
-        verifySynonym(optSD, name);
+        verifySynonym(optSD, name, src);
     }
 
     @Test
@@ -82,15 +84,17 @@ public class SynonymDAOImplTest{
         assertNotNull(this.disease.getId());
         String GUID = UUID.randomUUID().toString();
         String name = "SYN-" + GUID;
+        String src = this.disease.getSource();
         this.synonym = new Synonym();
         this.synonym.setName(name);
+        this.synonym.setSource(src);
         this.synonym.setDisease(this.disease);
         // save in the db
         this.synonymDAO.save(this.synonym);
         verifyCreation(this.synonym);
         // get the Synonym and verify
         Optional<Synonym> optSD = this.synonymDAO.findById(this.synonym.getId());
-        verifySynonym(optSD, name);
+        verifySynonym(optSD, name, src);
 
         // update the name
         String newName = "Updated-" + name;
@@ -98,7 +102,7 @@ public class SynonymDAOImplTest{
         this.synonymDAO.save(this.synonym);
         // get the Synonym and verify
         Optional<Synonym> optSD1 = this.synonymDAO.findById(this.synonym.getId());
-        verifySynonym(optSD1, newName);
+        verifySynonym(optSD1, newName, src);
     }
 
     @Test
@@ -109,8 +113,10 @@ public class SynonymDAOImplTest{
         assertNotNull(this.disease.getId());
         String GUID = UUID.randomUUID().toString();
         String name = "SYN-" + GUID;
+        String src = this.disease.getSource();
         this.synonym = new Synonym();
         this.synonym.setName(name);
+        this.synonym.setSource(src);
         this.synonym.setDisease(this.disease);
         // save in the db
         this.synonymDAO.save(this.synonym);
@@ -147,8 +153,10 @@ public class SynonymDAOImplTest{
     private Synonym createSynonym(int i) {
         String GUID = UUID.randomUUID().toString();
         String name = "SYN-"+ i + "-" + GUID;
+        String src = this.disease.getSource();
         Synonym syn = new Synonym();
         syn.setName(name);
+        syn.setSource(src);
         syn.setDisease(this.disease);
         // save in the db
         this.synonymDAO.save(syn);
@@ -156,7 +164,7 @@ public class SynonymDAOImplTest{
         return syn;
     }
 
-    private void verifySynonym( Optional<Synonym> optSD, String name) {
+    private void verifySynonym( Optional<Synonym> optSD, String name, String src) {
         assertTrue(optSD.isPresent(), "Unable to get the synonym");
         assertEquals(this.synonym.getId(), optSD.get().getId());
         assertEquals(name, optSD.get().getName());
@@ -165,6 +173,7 @@ public class SynonymDAOImplTest{
         Disease sd = this.synonym.getDisease();
         assertNotNull(sd, "Disease is null for synonym");
         assertEquals(this.disease, sd);
+        assertEquals(src, optSD.get().getSource());
     }
 
     private void verifyCreation(Synonym synonym) {

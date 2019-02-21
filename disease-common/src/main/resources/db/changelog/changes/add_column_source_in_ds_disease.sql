@@ -1,0 +1,1 @@
+ALTER TABLE ds_synonym ADD source_name varchar(255) NOT NULL;

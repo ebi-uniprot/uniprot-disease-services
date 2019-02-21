@@ -9,7 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.ac.ebi.uniprot.ds.common.model.CrossRef;
+import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.common.model.DiseaseTest;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
@@ -19,24 +22,30 @@ public class CrossRefDAOTest {
 
     @Autowired
     private CrossRefDAO crossRefDAO;
+    @Autowired
+    private DiseaseDAO diseaseDAO;
     private CrossRef crossRef;
+    private Disease disease;
     private String UUID = java.util.UUID.randomUUID().toString();
 
     @AfterEach
     void cleanUp(){
-        if(this.crossRef != null){
-            this.crossRefDAO.delete(crossRef);
+        if(this.disease != null){
+            this.diseaseDAO.delete(this.disease);
         }
     }
 
     @Test
     void testCreateCrossRef(){
-        this.crossRef = CrossRefDAOTest.createCrossRef(this.UUID);
-        this.crossRefDAO.save(this.crossRef);
+        this.disease = DiseaseTest.createDiseaseObject(this.UUID);
+        this.crossRef = CrossRefDAOTest.createCrossRef(this.UUID, this.disease);
+        this.disease.setCrossRefs(Arrays.asList(this.crossRef));
+        this.diseaseDAO.save(this.disease);
+
         Assertions.assertNotNull(this.crossRef.getId(), "unable to create cross ref");
 
         // get the cross ref by id
-        Optional<CrossRef> optcr = this.crossRefDAO.findById(this.crossRef.getId());
+        Optional<CrossRef> optcr = this.crossRefDAO.findById(this.disease.getCrossRefs().get(0).getId());
         Assertions.assertTrue(optcr.isPresent());
         CrossRef cr = optcr.get();
         verifyCrossRef(this.crossRef, cr);
@@ -49,6 +58,8 @@ public class CrossRefDAOTest {
         Assertions.assertEquals(expected.getDisease(), actual.getDisease());
         Assertions.assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
         Assertions.assertEquals(expected.getUpdatedAt(), actual.getUpdatedAt());
+        Assertions.assertEquals(expected.getSource(), actual.getSource());
+        Assertions.assertEquals(expected.getDisease().getId(), actual.getDisease().getId());
     }
 
     /**
@@ -56,11 +67,13 @@ public class CrossRefDAOTest {
      * @param uuid
      * @return
      */
-    public static CrossRef createCrossRef(String uuid){
+    public static CrossRef createCrossRef(String uuid, Disease disease){
         String refType = "Type-" + uuid;
         String refId = "ID-" + uuid;
+        String source = "SRC-" + uuid;
         CrossRef.CrossRefBuilder builder = CrossRef.builder();
-        builder.refType(refType).refId(refId);
+        builder.refType(refType).refId(refId).source(source);
+        builder.disease(disease);
         return builder.build();
     }
 }

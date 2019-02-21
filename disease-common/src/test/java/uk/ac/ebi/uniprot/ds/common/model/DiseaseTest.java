@@ -41,7 +41,7 @@ public class DiseaseTest extends BaseTest {
     void testDiseaseWithSynonyms(){
         this.disease = createDiseaseObject(BaseTest.random);
         // add synonym
-        Synonym synonym = SynonymTest.createSynonymObject(BaseTest.random);
+        Synonym synonym = SynonymTest.createSynonymObject(BaseTest.random, null);
         this.disease.addSynonym(synonym);
         // create disease with a synonym
         em.persist(this.disease);
@@ -57,7 +57,7 @@ public class DiseaseTest extends BaseTest {
     void testDiseaseSynonymRemove(){
         this.disease = createDiseaseObject(BaseTest.random);
         // add synonym
-        Synonym synonym = SynonymTest.createSynonymObject(BaseTest.random);
+        Synonym synonym = SynonymTest.createSynonymObject(BaseTest.random, null);
         this.disease.addSynonym(synonym);
         // create disease with a synonym
         em.persist(this.disease);
@@ -82,10 +82,12 @@ public class DiseaseTest extends BaseTest {
         String dn = "DN-" + random;
         String desc = "DESC-" + random;
         String acr = "ACRONYM-" + random;
+        String source = "SRC-" + random;
         disease.setDiseaseId(dId);
         disease.setName(dn);
         disease.setDesc(desc);
         disease.setAcronym(acr);
+        disease.setSource(source);
         return disease;
     }
 

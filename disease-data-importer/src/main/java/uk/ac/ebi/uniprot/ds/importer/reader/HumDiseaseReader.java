@@ -12,6 +12,7 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
+import uk.ac.ebi.uniprot.ds.common.common.SourceType;
 import uk.ac.ebi.uniprot.ds.common.model.CrossRef;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Synonym;
@@ -85,7 +86,11 @@ public class HumDiseaseReader implements ItemReader<Disease> {
                         builder.name(keyVal[1].replace(FULL_STOP, EMPTY_STR));
                         break;
                     case AC_STR:
-                        //upd.setAccession(keyVal[1]); ignore accession of disease for now
+                        CrossRef.CrossRefBuilder blr = CrossRef.builder();
+                        blr.refType(SourceType.UniProt.name());
+                        blr.refId(keyVal[1]);
+                        blr.source(SourceType.UniProt_HUM.name());
+                        crossRefs.add(blr.build());
                         break;
                     case AR_STR:
                         String acronym = keyVal[1].replace(FULL_STOP, EMPTY_STR);
@@ -96,7 +101,7 @@ public class HumDiseaseReader implements ItemReader<Disease> {
                         desc.append(keyVal[1]);
                         break;
                     case SY_STR:
-                        Synonym synonym = new Synonym(getSynonym(keyVal[1]));
+                        Synonym synonym = new Synonym(getSynonym(keyVal[1]), SourceType.UniProt_HUM.name());
                         synonyms.add(synonym);
                         break;
                     case DR_STR:
@@ -114,6 +119,7 @@ public class HumDiseaseReader implements ItemReader<Disease> {
         }
 
         builder.desc(desc.toString());
+        builder.source(SourceType.UniProt_HUM.name());
         Disease disease = builder.build();
         disease.setSynonyms(synonyms);
         synonyms.forEach(synonym -> synonym.setDisease(disease));
@@ -137,6 +143,7 @@ public class HumDiseaseReader implements ItemReader<Disease> {
             cr = new CrossRef();
             cr.setRefType(tokens[0].trim());
             cr.setRefId(tokens[1].trim().replace(FULL_STOP, EMPTY_STR));
+            cr.setSource(SourceType.UniProt_HUM.name());
         }
         return cr;
     }
