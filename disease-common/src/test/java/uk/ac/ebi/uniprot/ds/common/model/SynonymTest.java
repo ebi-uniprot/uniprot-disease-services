@@ -7,10 +7,7 @@
 
 package uk.ac.ebi.uniprot.ds.common.model;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -29,8 +26,12 @@ public class SynonymTest extends BaseTest {
 
     @AfterEach
     void cleanUp(){
-        em.remove(syn);
-        em.remove(disease);
+        if(this.syn != null) {
+            em.remove(syn);
+        }
+        if(this.disease != null) {
+            em.remove(disease);
+        }
     }
 
     @Test
@@ -48,6 +49,22 @@ public class SynonymTest extends BaseTest {
         Assertions.assertNotNull(syn.getId());
         Assertions.assertNotNull(syn.getDisease());
         Assertions.assertEquals(disease.getId(), syn.getDisease().getId());
+    }
+
+    @Test
+    void testEquals(){
+        Disease dis = DiseaseTest.createDiseaseObject(random);
+        Synonym.SynonymBuilder blr = Synonym.builder();
+        blr.name("name").source("abcd").disease(dis);
+        Synonym syn1 = blr.build();
+
+        // create another one
+        Disease dis1 = DiseaseTest.createDiseaseObject(random);
+        Synonym.SynonymBuilder blr1 = Synonym.builder();
+        blr1.name("name").source("abcd").disease(dis1);
+        Synonym syn2 = blr1.build();
+
+        Assertions.assertTrue(syn1.equals(syn2));
     }
 
     public static Synonym createSynonymObject(String uuid, Disease disease){
