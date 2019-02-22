@@ -13,6 +13,5 @@
     <include file="src/main/resources/db/changelog/changes/add_column_source_in_ds_cross_ref.sql"/>
     <include file="src/main/resources/db/changelog/changes/alter_ds_synonym.sql"/>
     <include file="src/main/resources/db/changelog/changes/alter_ds_cross_ref.sql"/>
-
-
+    <include file="src/main/resources/db/changelog/changes/create_ds_gene_coordinate_table.sql"/>
 </databaseChangeLog>

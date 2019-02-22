@@ -50,6 +50,9 @@ public class Protein extends BaseEntity {
     @OneToMany(mappedBy = "protein", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Interaction> interactions;
 
+    @OneToOne(mappedBy = "protein", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private GeneCoordinate geneCoordinate;
+
     @Override
     public boolean equals(Object obj) {
 
