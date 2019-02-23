@@ -1,7 +1,7 @@
 
 CREATE TABLE ds_gene_coordinate (
 	id bigserial NOT NULL,
-	chromosome_number varchar(4) NULL,
+	chromosome_number varchar(63) NULL,
 	gene_start int8 NOT NULL,
 	gene_end int8 NOT NULL,
 	ensembl_gene_id varchar(127) NOT NULL,

@@ -40,15 +40,14 @@ public class GeneCoordinateDAOTest {
     @Test
     void testCreateGeneCoord(){
         this.protein = ProteinTest.createProteinObject(this.uuid);
+        this.proteinDAO.save(this.protein);
         this.gc = GeneCoordinateDAOTest.createObject(this.uuid, this.protein);
-        this.protein.setGeneCoordinate(this.gc);
+        this.protein.getGeneCoordinates().add(this.gc);
         this.geneCoordinateDAO.save(this.gc);
-
         // the gene and verify
         Optional<GeneCoordinate> optGC = this.geneCoordinateDAO.findById(this.gc.getId());
         Assertions.assertTrue(optGC.isPresent(), "Unable to persist the gene coordinate");
         verifyGeneCoord(this.gc, optGC.get());
-
     }
 
     private void verifyGeneCoord(GeneCoordinate expected, GeneCoordinate actual) {

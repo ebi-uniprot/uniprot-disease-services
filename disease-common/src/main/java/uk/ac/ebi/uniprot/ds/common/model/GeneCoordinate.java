@@ -25,7 +25,7 @@ public class GeneCoordinate extends BaseEntity {
     private String enTranscriptId;
     @Column(name="ensembl_translation_id", nullable = false)
     private String enTranslationId;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "ds_protein_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "ds_protein_id")
     private Protein protein;
 }

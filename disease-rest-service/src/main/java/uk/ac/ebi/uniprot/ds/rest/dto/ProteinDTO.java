@@ -7,6 +7,7 @@
 
 package uk.ac.ebi.uniprot.ds.rest.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,4 +25,17 @@ public class ProteinDTO {
     private List<String> interactions;
     private List<String> variants;
     private List<String> diseases;
+    private List<GeneCoordinateDTO> geneCoordinates;
+
+    @Getter
+    @Setter
+    @Builder
+    public static class GeneCoordinateDTO {
+        String chromosome;
+        Long start;
+        Long end;
+        String ensemblGeneId;
+        String ensemblTranscriptId;
+        String ensemblTranslationId;
+    }
 }

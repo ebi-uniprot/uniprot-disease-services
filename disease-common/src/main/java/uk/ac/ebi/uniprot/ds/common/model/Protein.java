@@ -9,6 +9,7 @@ package uk.ac.ebi.uniprot.ds.common.model;
 
 import lombok.*;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,8 +51,8 @@ public class Protein extends BaseEntity {
     @OneToMany(mappedBy = "protein", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Interaction> interactions;
 
-    @OneToOne(mappedBy = "protein", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private GeneCoordinate geneCoordinate;
+    @OneToMany(mappedBy = "protein", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GeneCoordinate> geneCoordinates = new ArrayList<>();
 
     @Override
     public boolean equals(Object obj) {

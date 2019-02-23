@@ -15,8 +15,6 @@ import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.uniprot.ds.common.dao.*;
 import uk.ac.ebi.uniprot.ds.common.model.*;
@@ -26,7 +24,7 @@ import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {DataImporterSpringBootApplication.class, BatchConfigurationDiseaseService.class,
-        HumDiseaseDataLoadStep.class, UniProtDataLoadStep.class})
+        HumDiseaseDataLoadStep.class, UniProtDataLoadStep.class, GeneCoordinateDataLoadStep.class})
 public class BatchConfigurationDiseaseServiceTest {
 
     @Autowired
@@ -55,9 +53,11 @@ public class BatchConfigurationDiseaseServiceTest {
         BatchStatus status = jobExecution.getStatus();
         Assert.assertEquals(status, BatchStatus.COMPLETED);
 
+        Assert.assertFalse(this.geneCoordinateDAO.findAll().isEmpty());
+
         // verify the data
         // hum disease first
-        List<Disease> hds = this.diseaseDAO.findAll();
+        /*List<Disease> hds = this.diseaseDAO.findAll();
         Assert.assertTrue(hds.size() > 5000);
         List<Synonym> hsn = this.synonymDAO.findAll();
         Assert.assertTrue(hsn.size() > 9000);
@@ -109,11 +109,13 @@ public class BatchConfigurationDiseaseServiceTest {
 
         // verify cross refs
         List<CrossRef> crossRefs = this.crossRefDAO.findAll();
-        Assert.assertTrue(!crossRefs.isEmpty());
+        Assert.assertTrue(!crossRefs.isEmpty());*/
 
     }
 
 
+    @Autowired
+    private GeneCoordinateDAO geneCoordinateDAO;
 
     @Autowired
     private CrossRefDAO crossRefDAO;

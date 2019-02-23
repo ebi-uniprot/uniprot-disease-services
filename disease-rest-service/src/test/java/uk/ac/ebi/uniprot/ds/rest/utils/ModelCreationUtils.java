@@ -131,4 +131,17 @@ public class ModelCreationUtils {
         variant.setReport(vr);
         return variant;
     }
+
+    public static GeneCoordinate createGeneCoordinateObject(String uuid){
+        String chrom = String.valueOf(new Random().nextInt(1000));
+        Long start = new Random().nextLong();
+        Long end = new Random().nextLong();
+        String eng = "ENG-" + uuid;
+        String ent = "ENT-" + uuid;
+        String enp = "ENP-" + uuid;
+        GeneCoordinate.GeneCoordinateBuilder bl = GeneCoordinate.builder();
+        bl.chromosomeNumber(chrom).startPos(start).endPos(end);
+        bl.enGeneId(eng).enTranscriptId(ent).enTranslationId(enp);
+        return bl.build();
+    }
 }

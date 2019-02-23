@@ -40,7 +40,7 @@ public class ProteinController {
     private ModelMapper modelMapper;
 
     @GetMapping(value = {"/proteins/{accession}"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public SingleEntityResponse<ProteinDTO> getDisease(@PathVariable("accession") String accession){
+    public SingleEntityResponse<ProteinDTO> getProtein(@PathVariable("accession") String accession){
         String requestId = RequestCorrelation.getCorrelationId();
         Optional<Protein> optProtein = this.proteinService.getProteinByAccession(accession);
         Protein protein = optProtein.orElse(new Protein());

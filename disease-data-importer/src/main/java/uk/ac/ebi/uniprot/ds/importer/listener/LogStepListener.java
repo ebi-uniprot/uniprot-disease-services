@@ -21,6 +21,8 @@ public class LogStepListener implements StepExecutionListener {
     private String uniProtDataFilePath;
     @Value("${ds.humdisease.data.file.path}")
     private String humDiseaseDataFile;
+    @Value("${ds.genecoords.data.file.path}")
+    private String geneCoordsDataFile;
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
@@ -29,6 +31,8 @@ public class LogStepListener implements StepExecutionListener {
             LOGGER.info("Using the input file: {}", humDiseaseDataFile);
         }else if(Constants.DS_UNIPROT_DATA_LOADER_STEP.equals(stepExecution.getStepName())){
             LOGGER.info("Using the input file: {}", uniProtDataFilePath);
+        }else if(Constants.DS_GENE_COORD_LOADER_STEP.equals(stepExecution.getStepName())){
+            LOGGER.info("Using the input file: {}", geneCoordsDataFile);
         }
     }
 

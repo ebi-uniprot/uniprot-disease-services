@@ -25,16 +25,15 @@ import uk.ac.ebi.uniprot.ds.importer.util.Constants;
 public class BatchConfigurationDiseaseService {
     @Bean
     public Job importUniProtDataJob(JobBuilderFactory jobBuilderFactory, JobExecutionListener jobExecutionListener,
-                                    Step humDiseaseStep, Step uniProtStep) {//, Step enrichHumDiseaseStep
+                                    Step humDiseaseStep, Step uniProtStep, Step geneCoordsLoad) {
 
         return jobBuilderFactory.get(Constants.DISEASE_SERVICE_DATA_LOADER)
                 .incrementer(new RunIdIncrementer())
                 .start(humDiseaseStep)
                 .next(uniProtStep)
-                //.next(enrichHumDiseaseStep)// enrich the hum disease by DisGeNET data based on OMIM and MeSH mapping
+                .next(geneCoordsLoad)
                 .listener(jobExecutionListener)
                 .build();
-
     }
 
 

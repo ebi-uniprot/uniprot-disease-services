@@ -78,7 +78,7 @@ public class ProteinControllerTest {
                 .andExpect(jsonPath("$.result.pathways", nullValue()))
                 .andExpect(jsonPath("$.result.variants", nullValue()))
                 .andExpect(jsonPath("$.result.interactions", nullValue()))
-                .andExpect(jsonPath("$.result.interactions", nullValue()));
+                .andExpect(jsonPath("$.result.geneCoordinates.length()", equalTo(0)));
     }
 
     @Test
@@ -110,6 +110,14 @@ public class ProteinControllerTest {
         Interaction in4 = ModelCreationUtils.createInteractionObject(uuid + 4);
         protein.setInteractions(Arrays.asList(in1, in2, in3, in4));
 
+        // create GeneCoordinates
+        GeneCoordinate gc1 = ModelCreationUtils.createGeneCoordinateObject(uuid + 1);
+        GeneCoordinate gc2 = ModelCreationUtils.createGeneCoordinateObject(uuid + 2);
+        GeneCoordinate gc3 = ModelCreationUtils.createGeneCoordinateObject(uuid + 3);
+        GeneCoordinate gc4 = ModelCreationUtils.createGeneCoordinateObject(uuid + 4);
+        GeneCoordinate gc5 = ModelCreationUtils.createGeneCoordinateObject(uuid + 5);
+        protein.setGeneCoordinates(Arrays.asList(gc1, gc2, gc3, gc4, gc5));
+
         Mockito.when(this.proteinService.getProteinByAccession(accession)).thenReturn(Optional.of(protein));
 
         ResultActions res = this.mockMvc.
@@ -128,7 +136,8 @@ public class ProteinControllerTest {
                 .andExpect(jsonPath("$.result.pathways.length()", equalTo(protein.getPathways().size())))
                 .andExpect(jsonPath("$.result.interactions.length()", equalTo(protein.getInteractions().size())))
                 .andExpect(jsonPath("$.result.variants.length()", equalTo(protein.getVariants().size())))
-                .andExpect(jsonPath("$.result.diseases.length()", equalTo(protein.getDiseases().size())));
+                .andExpect(jsonPath("$.result.diseases.length()", equalTo(protein.getDiseases().size())))
+                .andExpect(jsonPath("$.result.geneCoordinates.length()", equalTo(protein.getGeneCoordinates().size())));
     }
 
     @Test

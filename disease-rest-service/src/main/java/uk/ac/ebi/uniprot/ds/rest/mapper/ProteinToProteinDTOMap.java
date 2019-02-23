@@ -3,12 +3,10 @@ package uk.ac.ebi.uniprot.ds.rest.mapper;
 import org.modelmapper.Converter;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.Interaction;
-import uk.ac.ebi.uniprot.ds.common.model.Pathway;
-import uk.ac.ebi.uniprot.ds.common.model.Protein;
+import uk.ac.ebi.uniprot.ds.common.model.*;
 import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +18,8 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
         using(new InteractionsToAccessionsConverter()).map(source.getInteractions()).setInteractions(null);
         using(new DiseaseToDiseaseIdConverter()).map(source.getDiseases()).setDiseases(null);
         using(new PathwaysToPrimaryIds()).map(source.getPathways()).setPathways(null);
+        using(new GeneCoordinatesToGeneCoordindateDTOsCoverter()).map(source.getGeneCoordinates()).setGeneCoordinates(null);
+
     }
 
     private class InteractionsToAccessionsConverter implements Converter<List<Interaction>, List<String>> {
@@ -57,6 +57,26 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
                 intsStr = ints.stream().map(in -> in.getPrimaryId()).collect(Collectors.toList());
             }
             return intsStr;
+        }
+    }
+
+    private class GeneCoordinatesToGeneCoordindateDTOsCoverter
+            implements Converter<List<GeneCoordinate>, List<ProteinDTO.GeneCoordinateDTO>>{
+
+        @Override
+        public List<ProteinDTO.GeneCoordinateDTO> convert(MappingContext<List<GeneCoordinate>, List<ProteinDTO.GeneCoordinateDTO>> context) {
+            List<GeneCoordinate> geneCoordList = context.getSource();
+            List<ProteinDTO.GeneCoordinateDTO> dtoList = new ArrayList<>();
+            for(GeneCoordinate geneCoord: geneCoordList) {
+                ProteinDTO.GeneCoordinateDTO.GeneCoordinateDTOBuilder builder = ProteinDTO.GeneCoordinateDTO.builder();
+                builder.chromosome(geneCoord.getChromosomeNumber());
+                builder.start(geneCoord.getStartPos()).end(geneCoord.getEndPos());
+                builder.ensemblGeneId(geneCoord.getEnGeneId()).ensemblTranscriptId(geneCoord.getEnTranscriptId());
+                builder.ensemblTranslationId(geneCoord.getEnTranslationId());
+                ProteinDTO.GeneCoordinateDTO dto = builder.build();
+                dtoList.add(dto);
+            }
+            return dtoList;
         }
     }
 }

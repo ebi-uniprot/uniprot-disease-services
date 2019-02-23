@@ -61,6 +61,14 @@ public class ProteinToProteinDTOTest {
         Interaction in4 = ModelCreationUtils.createInteractionObject(uuid + 4);
         protein.setInteractions(Arrays.asList(in1, in2, in3, in4));
 
+        // create GeneCoordinates
+        GeneCoordinate gc1 = ModelCreationUtils.createGeneCoordinateObject(uuid + 1);
+        GeneCoordinate gc2 = ModelCreationUtils.createGeneCoordinateObject(uuid + 2);
+        GeneCoordinate gc3 = ModelCreationUtils.createGeneCoordinateObject(uuid + 3);
+        GeneCoordinate gc4 = ModelCreationUtils.createGeneCoordinateObject(uuid + 4);
+        GeneCoordinate gc5 = ModelCreationUtils.createGeneCoordinateObject(uuid + 5);
+        protein.setGeneCoordinates(Arrays.asList(gc1, gc2, gc3, gc4, gc5));
+
         ProteinDTO proteinDTO = modelMapper.map(protein, ProteinDTO.class);
         verifyProteinDTO(protein, proteinDTO);
 
@@ -68,6 +76,7 @@ public class ProteinToProteinDTOTest {
         Assert.assertEquals(protein.getVariants().size(), proteinDTO.getVariants().size());
         Assert.assertEquals(protein.getPathways().size(), proteinDTO.getPathways().size());
         Assert.assertEquals(protein.getInteractions().size(), proteinDTO.getInteractions().size());
+        Assert.assertEquals(protein.getGeneCoordinates().size(), proteinDTO.getGeneCoordinates().size());
     }
 
     private void verifyProteinDTO(Protein protein, ProteinDTO proteinDTO) {
