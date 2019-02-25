@@ -255,6 +255,33 @@ public class DiseaseDAOImplTest {
         assertEquals(syns.size(), optDis.get().getSynonyms().size());
     }
 
+    @Test
+    void testCreateDiseaseWithChildren(){
+        Disease parent = DiseaseTest.createDiseaseObject(this.uuid);
+        Disease child1 = DiseaseTest.createDiseaseObject(this.uuid + 1);
+        Disease child2 = DiseaseTest.createDiseaseObject(this.uuid + 2);
+        Disease child3 = DiseaseTest.createDiseaseObject(this.uuid + 3);
+        child1.setParent(parent);
+        child2.setParent(parent);
+        child3.setParent(parent);
+        parent.setChildren(Arrays.asList(child1, child2, child3));
+        this.diseaseDAO.save(parent);
+
+        // get the parent disease and verify it and its children
+        Optional<Disease> optDis = this.diseaseDAO.findById(parent.getId());
+        assertTrue(optDis.isPresent());
+        verifyDisease(parent, optDis.get());
+
+        // check the children
+        List<Disease> children = optDis.get().getChildren();
+        assertEquals(3, children.size());
+        assertEquals(optDis.get().getId(), children.get(0).getParent().getId());
+        assertEquals(optDis.get().getId(), children.get(1).getParent().getId());
+        assertEquals(optDis.get().getId(), children.get(2).getParent().getId());
+
+        this.disease = parent;
+    }
+
     private Disease createDisease(String keyword) {
         String uuid = UUID.randomUUID().toString();
         Disease dis = uuid.indexOf(uuid.length()-1) % 2 == 0 ?

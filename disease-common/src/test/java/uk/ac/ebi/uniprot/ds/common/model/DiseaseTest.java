@@ -16,6 +16,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 @ExtendWith(SpringExtension.class)
@@ -74,6 +75,24 @@ public class DiseaseTest extends BaseTest {
         em.flush();
         Assertions.assertNotNull(this.disease.getId());
         Assertions.assertEquals(0, this.disease.getSynonyms().size());
+    }
+
+    @Test
+    void testCreateDiseaseWithDiseaseChildren(){
+        Disease parent = DiseaseTest.createDiseaseObject(random);
+        Disease child1 = DiseaseTest.createDiseaseObject(random + 1);
+        Disease child2 = DiseaseTest.createDiseaseObject(random + 2);
+        child1.setParent(parent);
+        child2.setParent(parent);
+        parent.setChildren(Arrays.asList(child1, child2));
+        em.persist(parent);
+        em.flush();
+        Assertions.assertNotNull(parent.getId());
+        Assertions.assertNotNull(parent.getChildren());
+        Assertions.assertEquals(2, parent.getChildren().size());
+        Assertions.assertNotNull(parent.getChildren().get(0).getId());
+        Assertions.assertNotNull(parent.getChildren().get(1).getId());
+        this.disease = parent;// for clean up
     }
 
     public static Disease createDiseaseObject(String random) {
