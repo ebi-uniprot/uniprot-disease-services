@@ -82,8 +82,6 @@ public class DiseaseTest extends BaseTest {
         Disease parent = DiseaseTest.createDiseaseObject(random);
         Disease child1 = DiseaseTest.createDiseaseObject(random + 1);
         Disease child2 = DiseaseTest.createDiseaseObject(random + 2);
-        child1.setParent(parent);
-        child2.setParent(parent);
         parent.setChildren(Arrays.asList(child1, child2));
         em.persist(parent);
         em.flush();

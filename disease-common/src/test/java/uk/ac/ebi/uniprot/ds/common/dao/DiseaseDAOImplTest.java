@@ -131,8 +131,6 @@ public class DiseaseDAOImplTest {
 
     }
 
-
-
     @Test
     void testDeleteById(){
         // create the disease
@@ -261,9 +259,6 @@ public class DiseaseDAOImplTest {
         Disease child1 = DiseaseTest.createDiseaseObject(this.uuid + 1);
         Disease child2 = DiseaseTest.createDiseaseObject(this.uuid + 2);
         Disease child3 = DiseaseTest.createDiseaseObject(this.uuid + 3);
-        child1.setParent(parent);
-        child2.setParent(parent);
-        child3.setParent(parent);
         parent.setChildren(Arrays.asList(child1, child2, child3));
         this.diseaseDAO.save(parent);
 
@@ -275,10 +270,39 @@ public class DiseaseDAOImplTest {
         // check the children
         List<Disease> children = optDis.get().getChildren();
         assertEquals(3, children.size());
-        assertEquals(optDis.get().getId(), children.get(0).getParent().getId());
-        assertEquals(optDis.get().getId(), children.get(1).getParent().getId());
-        assertEquals(optDis.get().getId(), children.get(2).getParent().getId());
+        assertNotNull(children.get(0).getId());
+        assertNotNull(children.get(1).getId());
+        assertNotNull(children.get(2).getId());
 
+        this.disease = parent;
+    }
+
+    @Test
+    void testCreateDiseasesThenUpdateHierarchy(){
+        Disease parent = DiseaseTest.createDiseaseObject(this.uuid);
+        Disease child1 = DiseaseTest.createDiseaseObject(this.uuid + 1);
+        Disease child2 = DiseaseTest.createDiseaseObject(this.uuid + 2);
+        this.diseaseDAO.save(child1);
+        this.diseaseDAO.save(child2);
+        this.diseaseDAO.save(parent);
+        Optional<Disease> par1 = this.diseaseDAO.findById(parent.getId());
+        // verify there are no children
+        assertTrue(par1.isPresent());
+        assertTrue(par1.get().getChildren().isEmpty());
+
+        // update with children
+        parent.setChildren(Arrays.asList(child1, child2));
+        this.diseaseDAO.save(parent);
+        // get the parent disease and verify it and its children
+        Optional<Disease> optDis = this.diseaseDAO.findById(parent.getId());
+        assertTrue(optDis.isPresent());
+        verifyDisease(parent, optDis.get());
+
+        // check the children
+        List<Disease> children = optDis.get().getChildren();
+        assertEquals(2, children.size());
+        assertNotNull(children.get(0).getId());
+        assertNotNull(children.get(1).getId());
         this.disease = parent;
     }
 
@@ -290,8 +314,6 @@ public class DiseaseDAOImplTest {
         assertNotNull(dis.getId(), "Unable to save the disease");
         return dis;
     }
-
-
 
     private Disease createDisease() {
         String uuid = UUID.randomUUID().toString();

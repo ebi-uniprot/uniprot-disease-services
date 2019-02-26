@@ -39,10 +39,6 @@ public class Disease extends BaseEntity {
     @Column(name="source_name", nullable = false)
     private String source;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Disease parent;
-
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "ds_disease_protein", joinColumns = @JoinColumn(name = "ds_disease_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "ds_protein_id"))
@@ -57,8 +53,15 @@ public class Disease extends BaseEntity {
     @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CrossRef> crossRefs;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "ds_disease_relation", joinColumns = @JoinColumn(name = "ds_disease_parent_id"),
+            inverseJoinColumns = @JoinColumn(name = "ds_disease_id"))
     private List<Disease> children;
+
+    @ManyToMany
+    @JoinTable(name = "ds_disease_relation", joinColumns = @JoinColumn(name = "ds_disease_id"),
+            inverseJoinColumns = @JoinColumn(name = "ds_disease_parent_id"))
+    private List<Disease> parents;
 
     public void addCrossRef(CrossRef crossRef){
         if(this.crossRefs == null){
