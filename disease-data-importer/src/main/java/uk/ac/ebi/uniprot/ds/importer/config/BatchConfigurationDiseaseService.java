@@ -25,13 +25,14 @@ import uk.ac.ebi.uniprot.ds.importer.util.Constants;
 public class BatchConfigurationDiseaseService {
     @Bean
     public Job importUniProtDataJob(JobBuilderFactory jobBuilderFactory, JobExecutionListener jobExecutionListener,
-                                    Step humDiseaseStep, Step uniProtStep, Step geneCoordsLoad) {
+                                    Step humDiseaseStep, Step uniProtStep, Step geneCoordsLoad, Step doLoad) {
 
         return jobBuilderFactory.get(Constants.DISEASE_SERVICE_DATA_LOADER)
                 .incrementer(new RunIdIncrementer())
                 .start(humDiseaseStep)
                 .next(uniProtStep)
                 .next(geneCoordsLoad)
+                .next(doLoad)
                 .listener(jobExecutionListener)
                 .build();
     }

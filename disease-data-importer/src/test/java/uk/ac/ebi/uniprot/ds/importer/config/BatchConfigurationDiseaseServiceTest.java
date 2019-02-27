@@ -53,8 +53,6 @@ public class BatchConfigurationDiseaseServiceTest {
         BatchStatus status = jobExecution.getStatus();
         Assert.assertEquals(status, BatchStatus.COMPLETED);
 
-        Assert.assertFalse(this.geneCoordinateDAO.findAll().isEmpty());
-
         // verify the data
         // hum disease first
         /*List<Disease> hds = this.diseaseDAO.findAll();

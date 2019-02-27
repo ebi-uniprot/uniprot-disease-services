@@ -39,7 +39,8 @@ public class CustomJpaConfiguration extends JpaBaseConfiguration {
         map.put(PersistenceUnitProperties.WEAVING, detectWeavingMode());
         //map.put(PersistenceUnitProperties.DDL_GENERATION, "drop-and-create-tables");
         map.put(PersistenceUnitProperties.LOGGING_LEVEL, "SEVERE");
-        map.put("eclipselink.logging.level.sql", "FINE");
+        map.put("eclipselink.logging.level.sql", "SEVERE");
+        //map.put("eclipselink.logging.parameters", "true");
         return map;
     }
 

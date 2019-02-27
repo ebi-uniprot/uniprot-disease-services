@@ -12,6 +12,7 @@ public class Constants {
     public static final String DS_HUM_DISEASE_DATA_LOADER_STEP = "DS_HUM_DISEASE_DATA_LOADER_STEP";
     public static final String DS_UNIPROT_DATA_LOADER_STEP = "DS_UNIPROT_DATA_LOADER_STEP";
     public static final String DS_GENE_COORD_LOADER_STEP = "DS_GENE_COORD_LOADER_STEP";
+    public static final String DS_DISEASE_ONTOLOGY_LOADER_STEP = "DS_DISEASE_ONTOLOGY_LOADER_STEP";
     public static final String TAB = "\t";
     private Constants(){}
 }
