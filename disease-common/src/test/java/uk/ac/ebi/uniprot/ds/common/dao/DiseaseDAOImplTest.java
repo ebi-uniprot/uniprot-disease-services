@@ -183,30 +183,6 @@ public class DiseaseDAOImplTest {
     }
 
     @Test
-    void testSearchDiseasesByKeyword(){
-        // create 100s of diseases
-        String keyword = "123syndrome123";
-        this.diseases = new ArrayList<>();
-        IntStream.range(0, 100).forEach(i -> this.diseases.add(createDisease(keyword)));
-
-        // search by keyword
-        int size = 20;
-        Sort sortBy = Sort.by("id");
-        List<Disease> batch1 = this.diseaseDAO.findAllByNameContaining(keyword, PageRequest.of(0, size, sortBy));
-        assertEquals(size, batch1.size());
-        List<Disease> batch2 = this.diseaseDAO.findAllByNameContaining(keyword, PageRequest.of(1, size, sortBy));
-        assertEquals(size, batch2.size());
-        List<Disease> batch3 = this.diseaseDAO.findAllByNameContaining(keyword, PageRequest.of(2, size, sortBy));
-        assertEquals(size, batch3.size());
-        List<Disease> batch4 = this.diseaseDAO.findAllByNameContaining(keyword, PageRequest.of(3, size, sortBy));
-        assertEquals(size, batch4.size());
-        List<Disease> batch5 = this.diseaseDAO.findAllByNameContaining(keyword, PageRequest.of(4, size, sortBy));
-        assertEquals(size, batch5.size());
-        List<Disease> batch6 = this.diseaseDAO.findAllByNameContaining(keyword, PageRequest.of(5, size, sortBy));
-        assertEquals(0, batch6.size());
-    }
-
-    @Test
     void testCreateDiseaseWithCrossRefs(){
         this.disease = DiseaseTest.createDiseaseObject(uuid);
         // create 10 cross refs
@@ -304,6 +280,27 @@ public class DiseaseDAOImplTest {
         assertNotNull(children.get(0).getId());
         assertNotNull(children.get(1).getId());
         this.disease = parent;
+    }
+
+    @Test
+    void testCreateDiseaseWithKeywords(){
+        this.disease = DiseaseTest.createDiseaseObject(uuid);
+
+        // create 10 keyword
+        List<Keyword> kws = IntStream.range(0, 10).mapToObj(i -> KeywordDAOTest.createKeyword(uuid + i, this.disease))
+                .collect(Collectors.toList());
+        this.disease.setKeywords(kws);
+        this.diseaseDAO.save(this.disease);
+
+        // get the disease by disease id and verify the keywords as well
+        Optional<Disease> optDis = this.diseaseDAO.findById(this.disease.getId());
+        assertTrue(optDis.isPresent());
+        Disease dis = optDis.get();
+        verifyDisease(this.disease, dis);
+        // verify the cross refs
+        List<Keyword> keywords = dis.getKeywords();
+        assertEquals(kws.size(), keywords.size());
+
     }
 
     private Disease createDisease(String keyword) {

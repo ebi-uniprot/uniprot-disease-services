@@ -29,5 +29,5 @@ public interface DiseaseDAO extends JpaRepository<Disease, Long> {
 
     List<Disease> findAllByProteinsIs(Protein protein);
 
-    List<Disease> findAllByNameContaining(String keyword, Pageable pageable);
+    //List<Disease> findAllByNameContaining(String keyword, Pageable pageable);
 }

@@ -63,13 +63,8 @@ public class Disease extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "ds_disease_parent_id"))
     private List<Disease> parents;
 
-    public void addCrossRef(CrossRef crossRef){
-        if(this.crossRefs == null){
-            this.crossRefs = new ArrayList<>();
-        }
-        this.crossRefs.add(crossRef);
-        crossRef.setDisease(this);
-    }
+    @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Keyword> keywords;
 
     public void addSynonym(Synonym synonym){
         if(this.synonyms == null){
