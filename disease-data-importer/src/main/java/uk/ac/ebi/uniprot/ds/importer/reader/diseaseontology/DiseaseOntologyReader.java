@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -52,7 +53,7 @@ public class DiseaseOntologyReader implements ItemReader<List<OBOTerm>> {
                 this.reader.useDelimiter(TERM_PATTERN);
             }
         }
-        // read all terms in a list
+        // read all disease ontology obo terms in a list
         List<OBOTerm> oboTerms = new ArrayList<>();
         OBOTerm oboTerm;
         while ((oboTerm = readNextTerm()) != null) {
@@ -132,49 +133,12 @@ public class DiseaseOntologyReader implements ItemReader<List<OBOTerm>> {
         return builder.build();
     }
 
-
-//    public static void main(String[] args) throws Exception {
-//        List<OBOTerm> oboTerms = new ArrayList<>();
-//        DiseaseOntologyReader reader = new DiseaseOntologyReader("/Users/sahmad/Documents/HumanDO.obo.txt");
-//        OBOTerm oboTerm;
-//        while ((oboTerm = reader.read()) != null) {
-//            if (!oboTerm.isObsolete()) {
-//                oboTerms.add(oboTerm);
-//            }
-//        }
-//        AdjacencyList tree = new AdjacencyList();
-//        Map<String, Node> adjList = tree.buildAdjacencyList(oboTerms);
-//        List<OBOTerm> noOMIM = new ArrayList<>();
-//        List<OBOTerm> withOMIM = new ArrayList<>();
-//        StringBuilder in = new StringBuilder();
-//
-//        for(Map.Entry<String, Node> entry : adjList.entrySet()){
-//            Node node = entry.getValue();
-//            List<String> xrefs = node.getTerm().getXrefs();
-//            String omim = getOMIM(xrefs);
-//            if(omim == null){
-//                noOMIM.add(node.getTerm());
-//            } else {
-//                withOMIM.add(node.getTerm());
-//                in.append("'").append(omim).append("'").append(",");
-//            }
-//        }
-//
-//
-//        System.out.println(adjList);
-//    }
-//
-//    private static String getOMIM(List<String> xrefs){
-//        if(xrefs == null || xrefs.isEmpty()){
-//            return null;
-//        }
-//        for(String xref : xrefs){
-//            if(xref.startsWith("OMIM")){
-//                return xref.split(":")[1];
-//            }
-//        }
-//
-//        return null;
-//    }
+    public static void main(String[] args) throws FileNotFoundException {
+        DiseaseOntologyReader reader = new DiseaseOntologyReader("/Users/sahmad/Documents/HumanDO.obo.txt");
+        List<OBOTerm> terms = reader.read();
+        Map<String, Node> termIdTermMap = new AdjacencyList().buildAdjacencyList(terms);
+        // a term can be a child of multiple termId
+        System.out.println();
+    }
 
 }

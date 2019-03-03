@@ -13,7 +13,7 @@ public class DiseaseOntologyWriter implements ItemWriter<List<Disease>> {
     private DiseaseDAO diseaseDAO;
 
     @Override
-    public void write(List<? extends List<Disease>> items) throws Exception {
+    public void write(List<? extends List<Disease>> items) {
         this.diseaseDAO.saveAll(items.get(0));
     }
 }

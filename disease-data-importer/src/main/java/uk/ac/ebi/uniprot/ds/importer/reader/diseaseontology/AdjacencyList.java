@@ -4,10 +4,16 @@ import java.util.*;
 
 public class AdjacencyList {
 
+    /*
+      create an adjacency list
+      [oboTermId -> oboTerm Object with children(list of oboterms)
+     */
     public Map<String, Node>  buildAdjacencyList(List<OBOTerm> oboTerms) {
         Map<String, Node> termIdNodeMap = new HashMap<>();
+        // create a map with key as obo term id and term as object
         oboTerms.forEach(term -> termIdNodeMap.put(term.getId(), new Node(term)));
 
+        // add each value as child of another node(parent)
         termIdNodeMap.values().forEach(node ->
                 {
                     List<String> parentIds = node.getTerm().getIsAs();

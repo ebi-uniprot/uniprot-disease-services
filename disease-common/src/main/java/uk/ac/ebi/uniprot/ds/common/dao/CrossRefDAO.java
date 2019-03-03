@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CrossRefDAO extends JpaRepository<CrossRef, Long> {
     List<CrossRef> findAllByRefTypeAndRefId(String refType, String refId);
+    List<CrossRef> findAllByRefType(String refType);
 }
