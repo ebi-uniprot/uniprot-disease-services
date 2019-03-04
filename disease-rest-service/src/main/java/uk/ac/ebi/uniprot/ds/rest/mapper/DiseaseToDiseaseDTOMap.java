@@ -27,9 +27,13 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
         @Override
         public List<DiseaseDTO.ChildDiseaseDTO> convert(MappingContext<List<Disease>, List<DiseaseDTO.ChildDiseaseDTO>> context) {
             List<Disease> children = context.getSource();
+            List<DiseaseDTO.ChildDiseaseDTO> childDiseases = null;
+            if(children != null) {
+                childDiseases = children.stream().map(child -> new DiseaseDTO.ChildDiseaseDTO(child.getDiseaseId(), child.getName()))
+                        .collect(Collectors.toList());
+            }
 
-            return children.stream().map(child -> new DiseaseDTO.ChildDiseaseDTO(child.getDiseaseId(), child.getName()))
-                    .collect(Collectors.toList());
+            return childDiseases;
         }
     }
 
