@@ -60,6 +60,12 @@ public class DiseaseToDiseaseDTOTest {
         Variant v4 = ModelCreationUtils.createVariantObject(this.uuid + 4);
         disease.setVariants(Arrays.asList(v1, v2, v3, v4));
 
+        // create few child diseases
+        Disease child1 = ModelCreationUtils.createDiseaseObject(this.uuid + 1);
+        Disease child2 = ModelCreationUtils.createDiseaseObject(this.uuid + 2);
+        Disease child3 = ModelCreationUtils.createDiseaseObject(this.uuid + 3);
+        disease.setChildren(Arrays.asList(child1, child2, child3));
+
         DiseaseDTO dto = modelMapper.map(disease, DiseaseDTO.class);
         verifyDiseaseDTO(disease, dto);
 
@@ -67,6 +73,7 @@ public class DiseaseToDiseaseDTOTest {
         Assert.assertEquals(disease.getProteins().size(),  dto.getProteins().size());
         Assert.assertEquals(disease.getSynonyms().size(), dto.getSynonyms().size());
         Assert.assertEquals(disease.getVariants().size(), dto.getVariants().size());
+        Assert.assertEquals(disease.getChildren().size(), dto.getChildren().size());
     }
 
     @Test

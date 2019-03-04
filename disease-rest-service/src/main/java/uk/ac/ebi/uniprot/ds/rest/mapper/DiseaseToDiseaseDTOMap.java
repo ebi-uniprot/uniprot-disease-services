@@ -19,6 +19,18 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
         using(new ProteinsToAccessions()).map(source.getProteins()).setProteins(null);
         using(new SynonymsToNames()).map(source.getSynonyms()).setSynonyms(null);
         using(new VariantsToFeatureIdsConverter()).map(source.getVariants()).setVariants(null);
+        using(new DiseasesToChildDiseaseDTOs()).map(source.getChildren()).setChildren(null);
+    }
+
+    private class DiseasesToChildDiseaseDTOs implements Converter<List<Disease>, List<DiseaseDTO.ChildDiseaseDTO>>{
+
+        @Override
+        public List<DiseaseDTO.ChildDiseaseDTO> convert(MappingContext<List<Disease>, List<DiseaseDTO.ChildDiseaseDTO>> context) {
+            List<Disease> children = context.getSource();
+
+            return children.stream().map(child -> new DiseaseDTO.ChildDiseaseDTO(child.getDiseaseId(), child.getName()))
+                    .collect(Collectors.toList());
+        }
     }
 
     private class SynonymsToNames implements Converter<List<Synonym>, List<String>> {

@@ -29,10 +29,10 @@ public class BatchConfigurationDiseaseService {
 
         return jobBuilderFactory.get(Constants.DISEASE_SERVICE_DATA_LOADER)
                 .incrementer(new RunIdIncrementer())
-                .start(humDiseaseStep)
-                .next(uniProtStep)
-                .next(geneCoordsLoad)
-                .next(doLoad)
+                //.start(humDiseaseStep)
+                //.next(uniProtStep)
+                //.next(geneCoordsLoad)
+                .start(doLoad)
                 .listener(jobExecutionListener)
                 .build();
     }
