@@ -19,17 +19,17 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
         using(new ProteinsToAccessions()).map(source.getProteins()).setProteins(null);
         using(new SynonymsToNames()).map(source.getSynonyms()).setSynonyms(null);
         using(new VariantsToFeatureIdsConverter()).map(source.getVariants()).setVariants(null);
-        using(new DiseasesToChildDiseaseDTOs()).map(source.getChildren()).setChildren(null);
+        using(new DiseasesToParentDiseaseDTOs()).map(source.getParents()).setParents(null);
     }
 
-    private class DiseasesToChildDiseaseDTOs implements Converter<List<Disease>, List<DiseaseDTO.ChildDiseaseDTO>>{
+    private class DiseasesToParentDiseaseDTOs implements Converter<List<Disease>, List<DiseaseDTO.ParentDiseaseDTO>>{
 
         @Override
-        public List<DiseaseDTO.ChildDiseaseDTO> convert(MappingContext<List<Disease>, List<DiseaseDTO.ChildDiseaseDTO>> context) {
+        public List<DiseaseDTO.ParentDiseaseDTO> convert(MappingContext<List<Disease>, List<DiseaseDTO.ParentDiseaseDTO>> context) {
             List<Disease> children = context.getSource();
-            List<DiseaseDTO.ChildDiseaseDTO> childDiseases = null;
+            List<DiseaseDTO.ParentDiseaseDTO> childDiseases = null;
             if(children != null) {
-                childDiseases = children.stream().map(child -> new DiseaseDTO.ChildDiseaseDTO(child.getDiseaseId(), child.getName()))
+                childDiseases = children.stream().map(child -> new DiseaseDTO.ParentDiseaseDTO(child.getDiseaseId(), child.getName()))
                         .collect(Collectors.toList());
             }
 

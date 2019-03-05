@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.uniprot.ds.common.dao.*;
-import uk.ac.ebi.uniprot.ds.common.model.*;
 import uk.ac.ebi.uniprot.ds.importer.DataImporterSpringBootApplication;
-
-import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {DataImporterSpringBootApplication.class, BatchConfigurationDiseaseService.class,

@@ -12,15 +12,11 @@ import org.springframework.batch.item.ItemReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
 
-
 public class DiseaseOntologyReader implements ItemReader<List<OBOTerm>> {
-   // Constants
+    // Constants
     private static final String TERM_STR = "[Term]";
     private static final String TYPEDEF_STR = "[Typedef]";
     private static final Pattern TERM_PATTERN = Pattern.compile("^\\s*$", Pattern.MULTILINE);
@@ -28,13 +24,13 @@ public class DiseaseOntologyReader implements ItemReader<List<OBOTerm>> {
     private static final String COLON_SPACE = ": ";
     private static final String SPACE_EXCL = " !";
     private static final String ID = "id";
-    private static final String  NAME = "name";
+    private static final String NAME = "name";
     private static final String SYNONYM = "synonym";
-    private static final String  IS_A = "is_a";
-    private static final String  DEF = "def";
+    private static final String IS_A = "is_a";
+    private static final String DEF = "def";
     private static final String ALT_ID = "alt_id";
     private static final String XREF = "xref";
-    private static final String  IS_OBSOLETE = "is_obsolete";
+    private static final String IS_OBSOLETE = "is_obsolete";
 
     private Scanner reader;
     private boolean termStarted;
@@ -65,14 +61,14 @@ public class DiseaseOntologyReader implements ItemReader<List<OBOTerm>> {
         return oboTerms.isEmpty() ? null : oboTerms;
     }
 
-    private OBOTerm readNextTerm(){
+    private OBOTerm readNextTerm() {
         String termStr = null;
 
-        if(this.reader.hasNext()) {
+        if (this.reader.hasNext()) {
             termStr = this.reader.next();
         }
 
-        if(termStr == null || termStr.trim().startsWith(TYPEDEF_STR)) {
+        if (termStr == null || termStr.trim().startsWith(TYPEDEF_STR)) {
             return null;
         }
 
@@ -132,13 +128,4 @@ public class DiseaseOntologyReader implements ItemReader<List<OBOTerm>> {
 
         return builder.build();
     }
-
-    public static void main(String[] args) throws FileNotFoundException {
-        DiseaseOntologyReader reader = new DiseaseOntologyReader("/Users/sahmad/Documents/HumanDO.obo.txt");
-        List<OBOTerm> terms = reader.read();
-        Map<String, Node> termIdTermMap = new AdjacencyList().buildAdjacencyList(terms);
-        // a term can be a child of multiple termId
-        System.out.println();
-    }
-
 }

@@ -19,17 +19,17 @@ public class DiseaseDTO {
     private String diseaseName;
     private String acronym;
     private String description;
-    private List<ChildDiseaseDTO> children;
+    private List<ParentDiseaseDTO> parents;
     private List<String> synonyms;
     private List<String> proteins;
     private List<String> variants;
 
     @Getter
     @Setter
-    public static class ChildDiseaseDTO {
+    public static class ParentDiseaseDTO {
         String diseaseId;
         String diseaseName;
-        public ChildDiseaseDTO(String diseaseId, String diseaseName){
+        public ParentDiseaseDTO(String diseaseId, String diseaseName){
             this.diseaseId = diseaseId;
             this.diseaseName = diseaseName;
         }

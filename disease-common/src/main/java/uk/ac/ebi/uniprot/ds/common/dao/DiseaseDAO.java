@@ -23,11 +23,12 @@ public interface DiseaseDAO extends JpaRepository<Disease, Long> {
     @Transactional
     void deleteByDiseaseId(String diseaseId);
 
-    Optional<Disease> findDiseaseByName(String diseaseName);
+    Optional<Disease> findDiseaseByNameIgnoreCase(String diseaseName);
 
     Optional<Disease> findDiseaseByDiseaseIdOrNameOrAcronym(String diseaseId, String name, String acronym);
 
     List<Disease> findAllByProteinsIs(Protein protein);
+    List<Disease> findByNameContainingIgnoreCaseOrDescContainingIgnoreCase(String name, String desc, Pageable pageable);
 
     //List<Disease> findAllByNameContaining(String keyword, Pageable pageable);
 }

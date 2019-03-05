@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -280,6 +281,22 @@ public class DiseaseDAOImplTest {
         assertNotNull(children.get(0).getId());
         assertNotNull(children.get(1).getId());
         this.disease = parent;
+    }
+
+    @Test
+    void testSearchDisease(){
+        this.diseases = new ArrayList<>();
+        String nKey = "namekeyword";
+        String dKey = "desckeyword";
+        Disease d1 = createDisease(nKey);
+        Disease d2 = createDisease(nKey);
+        Disease d3 = createDisease();// without keyword
+        Disease d4 = createDisease();// with keyword in desc
+        d4.setDesc(d4.getDesc() + dKey);
+        this.diseases.addAll(Arrays.asList(d1,d2,d3,d4));
+        this.diseaseDAO.saveAll(this.diseases);
+        List<Disease> dList = this.diseaseDAO.findByNameContainingIgnoreCaseOrDescContainingIgnoreCase(nKey,dKey, PageRequest.of(0, 200));
+        assertEquals(3, dList.size());
     }
 
     @Test

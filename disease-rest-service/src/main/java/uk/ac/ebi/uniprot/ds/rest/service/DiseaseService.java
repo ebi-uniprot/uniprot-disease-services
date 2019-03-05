@@ -14,22 +14,17 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
-import uk.ac.ebi.uniprot.ds.common.dao.KeywordDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.Keyword;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class DiseaseService {
     @Autowired
     private DiseaseDAO diseaseDAO;
-    @Autowired
-    private KeywordDAO keywordDAO;
 
     @Transactional
     public Disease createUpdateDisease(String diseaseId, String diseaseName, String description, String acronym){
@@ -84,9 +79,8 @@ public class DiseaseService {
 
         PageRequest pageRequest = PageRequest.of(offset, size, Sort.by("id"));
 
-        List<Keyword> keywords = this.keywordDAO.findAllByKeyValueContaining(keyword.toLowerCase(), pageRequest);
-
-        List<Disease> diseases = keywords.stream().map(kw -> kw.getDisease()).collect(Collectors.toList());
+        List<Disease> diseases = this.diseaseDAO.findByNameContainingIgnoreCaseOrDescContainingIgnoreCase(keyword.toLowerCase(),
+                keyword.toLowerCase(), pageRequest);
 
         return diseases;
     }
