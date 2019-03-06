@@ -75,7 +75,7 @@ public class ProteinControllerTest {
                 .andExpect(jsonPath("$.result.accession", equalTo(protein.getAccession())))
                 .andExpect(jsonPath("$.result.gene", equalTo(protein.getGene())))
                 .andExpect(jsonPath("$.result.description", equalTo(protein.getDesc())))
-                .andExpect(jsonPath("$.result.crossRefs", nullValue()))
+                .andExpect(jsonPath("$.result.xrefs", nullValue()))
                 .andExpect(jsonPath("$.result.variants", nullValue()))
                 .andExpect(jsonPath("$.result.interactions", nullValue()))
                 .andExpect(jsonPath("$.result.geneCoordinates.length()", equalTo(0)));
@@ -133,7 +133,7 @@ public class ProteinControllerTest {
                 .andExpect(jsonPath("$.result.accession", equalTo(protein.getAccession())))
                 .andExpect(jsonPath("$.result.gene", equalTo(protein.getGene())))
                 .andExpect(jsonPath("$.result.description", equalTo(protein.getDesc())))
-                .andExpect(jsonPath("$.result.crossRefs.length()", equalTo(protein.getProteinCrossRefs().size())))
+                .andExpect(jsonPath("$.result.xrefs.length()", equalTo(protein.getProteinCrossRefs().size())))
                 .andExpect(jsonPath("$.result.interactions.length()", equalTo(protein.getInteractions().size())))
                 .andExpect(jsonPath("$.result.variants.length()", equalTo(protein.getVariants().size())))
                 .andExpect(jsonPath("$.result.diseases.length()", equalTo(protein.getDiseases().size())))
