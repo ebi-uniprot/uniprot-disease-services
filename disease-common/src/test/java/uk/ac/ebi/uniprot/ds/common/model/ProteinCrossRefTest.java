@@ -15,38 +15,36 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @Transactional
-public class PathwayTest extends BaseTest {
+public class ProteinCrossRefTest extends BaseTest {
 
-    private Pathway pt;
+    private ProteinCrossRef pcr;
     private Protein pr;
 
     @AfterEach
     void cleanUp(){
-        em.remove(pt);
+        em.remove(pcr);
         em.remove(pr);
     }
 
     @Test
-    void testCreatePathway(){
+    void testCreateProteinCrossRef(){
         pr = createProtein();
-        pt = createPathwayObject(BaseTest.random);
-        pt.setProtein(pr);
+        pcr = createProteinCrossRefObject(BaseTest.random);
+        pcr.setProtein(pr);
 
         // persist
-        em.persist(pt);
+        em.persist(pcr);
         em.flush();
 
-        assertNotNull(pt.getId(), "unable to create the pathway record");
-        assertNotNull(pt.getProtein());
-        assertNotNull(pt.getProtein().getId());
+        assertNotNull(pcr.getId(), "unable to create the protein cross ref record");
+        assertNotNull(pcr.getProtein());
+        assertNotNull(pcr.getProtein().getId());
     }
 
     private Protein createProtein() {
@@ -71,20 +69,20 @@ public class PathwayTest extends BaseTest {
         return protein;
     }
 
-    public  static Pathway createPathwayObject(String uuid) {
-        Pathway pathway = new Pathway();
+    public  static ProteinCrossRef createProteinCrossRefObject(String uuid) {
+        ProteinCrossRef proteinCrossRef = new ProteinCrossRef();
         String pId = "PID-" + uuid;
         String desc = "DESC-" + uuid;
         String type = "TYPE-" + uuid;
         String iid = "IID-" + uuid;
         String t = "T-" + uuid;
         String f = "F-" + uuid;
-        pathway.setPrimaryId(pId);
-        pathway.setDesc(desc);
-        pathway.setDbType(type);
-        pathway.setIsoformId(iid);
-        pathway.setThird(t);
-        pathway.setFourth(f);
-        return pathway;
+        proteinCrossRef.setPrimaryId(pId);
+        proteinCrossRef.setDesc(desc);
+        proteinCrossRef.setDbType(type);
+        proteinCrossRef.setIsoformId(iid);
+        proteinCrossRef.setThird(t);
+        proteinCrossRef.setFourth(f);
+        return proteinCrossRef;
     }
 }

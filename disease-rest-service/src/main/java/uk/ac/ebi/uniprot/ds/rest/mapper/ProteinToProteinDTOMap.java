@@ -17,7 +17,7 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
         using(new VariantsToFeatureIdsConverter()).map(source.getVariants()).setVariants(null);
         using(new InteractionsToAccessionsConverter()).map(source.getInteractions()).setInteractions(null);
         using(new DiseaseToDiseaseIdConverter()).map(source.getDiseases()).setDiseases(null);
-        using(new PathwaysToPrimaryIds()).map(source.getPathways()).setPathways(null);
+        using(new ProteinCrossRefsToPrimaryIds()).map(source.getProteinCrossRefs()).setXrefs(null);
         using(new GeneCoordinatesToGeneCoordindateDTOsCoverter()).map(source.getGeneCoordinates()).setGeneCoordinates(null);
 
     }
@@ -48,10 +48,10 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
         }
     }
 
-    private class PathwaysToPrimaryIds implements Converter<List<Pathway>, List<String>> {
+    private class ProteinCrossRefsToPrimaryIds implements Converter<List<ProteinCrossRef>, List<String>> {
         @Override
-        public List<String> convert(MappingContext<List<Pathway>, List<String>> context) {
-            List<Pathway> ints = context.getSource();
+        public List<String> convert(MappingContext<List<ProteinCrossRef>, List<String>> context) {
+            List<ProteinCrossRef> ints = context.getSource();
             List<String> intsStr = null;
             if (ints != null) {
                 intsStr = ints.stream().map(in -> in.getPrimaryId()).collect(Collectors.toList());

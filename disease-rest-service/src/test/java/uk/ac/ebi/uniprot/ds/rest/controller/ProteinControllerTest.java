@@ -75,7 +75,7 @@ public class ProteinControllerTest {
                 .andExpect(jsonPath("$.result.accession", equalTo(protein.getAccession())))
                 .andExpect(jsonPath("$.result.gene", equalTo(protein.getGene())))
                 .andExpect(jsonPath("$.result.description", equalTo(protein.getDesc())))
-                .andExpect(jsonPath("$.result.pathways", nullValue()))
+                .andExpect(jsonPath("$.result.crossRefs", nullValue()))
                 .andExpect(jsonPath("$.result.variants", nullValue()))
                 .andExpect(jsonPath("$.result.interactions", nullValue()))
                 .andExpect(jsonPath("$.result.geneCoordinates.length()", equalTo(0)));
@@ -97,11 +97,11 @@ public class ProteinControllerTest {
         Variant v3 = ModelCreationUtils.createVariantObject(uuid + 3);
         protein.setVariants(Arrays.asList(v1, v2,v3));
 
-        // pathways
-        Pathway p1 = ModelCreationUtils.createPathwayObject(uuid + 1);
-        Pathway p2 = ModelCreationUtils.createPathwayObject(uuid + 2);
-        Pathway p3 = ModelCreationUtils.createPathwayObject(uuid + 3);
-        protein.setPathways(Arrays.asList(p1, p2, p3));
+        // protein xrefs
+        ProteinCrossRef p1 = ModelCreationUtils.createProteinXRefObject(uuid + 1);
+        ProteinCrossRef p2 = ModelCreationUtils.createProteinXRefObject(uuid + 2);
+        ProteinCrossRef p3 = ModelCreationUtils.createProteinXRefObject(uuid + 3);
+        protein.setProteinCrossRefs(Arrays.asList(p1, p2, p3));
 
         // interactions
         Interaction in1 = ModelCreationUtils.createInteractionObject(uuid + 1);
@@ -133,7 +133,7 @@ public class ProteinControllerTest {
                 .andExpect(jsonPath("$.result.accession", equalTo(protein.getAccession())))
                 .andExpect(jsonPath("$.result.gene", equalTo(protein.getGene())))
                 .andExpect(jsonPath("$.result.description", equalTo(protein.getDesc())))
-                .andExpect(jsonPath("$.result.pathways.length()", equalTo(protein.getPathways().size())))
+                .andExpect(jsonPath("$.result.crossRefs.length()", equalTo(protein.getProteinCrossRefs().size())))
                 .andExpect(jsonPath("$.result.interactions.length()", equalTo(protein.getInteractions().size())))
                 .andExpect(jsonPath("$.result.variants.length()", equalTo(protein.getVariants().size())))
                 .andExpect(jsonPath("$.result.diseases.length()", equalTo(protein.getDiseases().size())))

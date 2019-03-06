@@ -8,7 +8,6 @@
 package uk.ac.ebi.uniprot.ds.rest;
 
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -16,15 +15,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.filter.OncePerRequestFilter;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.Protein;
-import uk.ac.ebi.uniprot.ds.rest.dto.DiseaseDTO;
-import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDTO;
 import uk.ac.ebi.uniprot.ds.rest.filter.CorrelationHeaderFilter;
 import uk.ac.ebi.uniprot.ds.rest.mapper.DiseaseToDiseaseDTOMap;
 import uk.ac.ebi.uniprot.ds.rest.mapper.ProteinToProteinDTOMap;
 import uk.ac.ebi.uniprot.ds.rest.mapper.ProteinToProteinDiseasesDTOMap;
-import uk.ac.ebi.uniprot.ds.rest.mapper.ProteinToProteinPathwaysDTOMap;
+import uk.ac.ebi.uniprot.ds.rest.mapper.ProteinToProteinCrossRefsDTOMap;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -47,7 +42,7 @@ public class RestServiceSpringBootApplication {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.addMappings(new DiseaseToDiseaseDTOMap());
         modelMapper.addMappings(new ProteinToProteinDTOMap());
-        modelMapper.addMappings(new ProteinToProteinPathwaysDTOMap());
+        modelMapper.addMappings(new ProteinToProteinCrossRefsDTOMap());
         modelMapper.addMappings(new ProteinToProteinDiseasesDTOMap());
         return modelMapper;
     }

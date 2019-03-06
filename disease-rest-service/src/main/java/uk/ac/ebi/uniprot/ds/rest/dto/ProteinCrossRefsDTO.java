@@ -14,19 +14,19 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ProteinPathwaysDTO {
+public class ProteinCrossRefsDTO {
     private String accession;
     private String proteinId;
     private String proteinName;
     private String gene;
-    private List<PathwayDTO> pathways;
+    private List<ProteinCrossRef> xrefs;
 
     @Getter
     @Setter
-    public static class PathwayDTO {
+    public static class ProteinCrossRef {
         String primaryId;
         String description;
-        public PathwayDTO(String primaryId, String description){
+        public ProteinCrossRef(String primaryId, String description){
             this.primaryId = primaryId;
             this.description = description;
         }

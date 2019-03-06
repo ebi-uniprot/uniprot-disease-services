@@ -76,21 +76,21 @@ public class ModelCreationUtils {
     }
 
 
-    public  static Pathway createPathwayObject(String uuid) {
-        Pathway pathway = new Pathway();
+    public  static ProteinCrossRef createProteinXRefObject(String uuid) {
+        ProteinCrossRef crossRef = new ProteinCrossRef();
         String pId = "PID-" + uuid;
         String desc = "DESC-" + uuid;
         String type = "TYPE-" + uuid;
         String iid = "IID-" + uuid;
         String t = "T-" + uuid;
         String f = "F-" + uuid;
-        pathway.setPrimaryId(pId);
-        pathway.setDesc(desc);
-        pathway.setDbType(type);
-        pathway.setIsoformId(iid);
-        pathway.setThird(t);
-        pathway.setFourth(f);
-        return pathway;
+        crossRef.setPrimaryId(pId);
+        crossRef.setDesc(desc);
+        crossRef.setDbType(type);
+        crossRef.setIsoformId(iid);
+        crossRef.setThird(t);
+        crossRef.setFourth(f);
+        return crossRef;
     }
 
     public static Protein createProteinObject(String random) {

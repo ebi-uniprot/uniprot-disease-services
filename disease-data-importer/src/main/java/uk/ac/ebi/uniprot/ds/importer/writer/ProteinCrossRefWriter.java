@@ -12,39 +12,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseCrossReference;
 import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseType;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
-import uk.ac.ebi.uniprot.ds.common.dao.PathwayDAO;
-import uk.ac.ebi.uniprot.ds.common.model.Pathway;
+import uk.ac.ebi.uniprot.ds.common.dao.ProteinCrossRefDAO;
+import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class PathwayWriter implements ItemWriter<UniProtEntry> {
+public class ProteinCrossRefWriter implements ItemWriter<UniProtEntry> {
     private final Map<String, Protein> proteinIdProteinMap;
 
     @Autowired
-    PathwayDAO pathwayDAO;
+    ProteinCrossRefDAO proteinCrossRefDAO;
 
-    public PathwayWriter(Map<String, Protein> proteinIdProteinMap) {
+    public ProteinCrossRefWriter(Map<String, Protein> proteinIdProteinMap) {
         this.proteinIdProteinMap = proteinIdProteinMap;
     }
 
     @Override
-    public void write(List<? extends UniProtEntry> entries) throws Exception {
+    public void write(List<? extends UniProtEntry> entries) {
         entries.stream().forEach(entry -> {
             Protein protein = this.proteinIdProteinMap.get(entry.getUniProtId().getValue());
             assert protein != null;
-            List<Pathway> interactions = getPathways(entry, protein);
-            this.pathwayDAO.saveAll(interactions);
+            List<ProteinCrossRef> interactions = getProteinCrossRefs(entry, protein);
+            this.proteinCrossRefDAO.saveAll(interactions);
         });
     }
 
-    private List<Pathway> getPathways(UniProtEntry entry, Protein protein) {
-        List<DatabaseCrossReference> dbXRefs = getUniProtPathways(entry);
-        List<Pathway> pathwayList = new ArrayList<>();
+    private List<ProteinCrossRef> getProteinCrossRefs(UniProtEntry entry, Protein protein) {
+        List<DatabaseCrossReference> dbXRefs = getUniProtProteinCrossRefs(entry);
+        List<ProteinCrossRef> proteinCrossRefs = new ArrayList<>();
         for (DatabaseCrossReference dbXR : dbXRefs) {
-            Pathway.PathwayBuilder builder = Pathway.builder();
+            ProteinCrossRef.ProteinCrossRefBuilder builder = ProteinCrossRef.builder();
             builder.primaryId(dbXR.getPrimaryId().getValue());
             builder.desc(dbXR.getDescription().getValue());
             builder.third(dbXR.getThird() != null ? dbXR.getThird().getValue() : null);
@@ -52,14 +52,14 @@ public class PathwayWriter implements ItemWriter<UniProtEntry> {
             builder.dbType(dbXR.getDatabase().getName());
             builder.isoformId(dbXR.getIsoformId().getValue());
             builder.protein(protein);
-            Pathway pathway = builder.build();
-            pathwayList.add(pathway);
+            ProteinCrossRef crossRef = builder.build();
+            proteinCrossRefs.add(crossRef);
         }
 
-        return pathwayList;
+        return proteinCrossRefs;
     }
 
-    protected List<DatabaseCrossReference> getUniProtPathways(UniProtEntry entry) {
+    protected List<DatabaseCrossReference> getUniProtProteinCrossRefs(UniProtEntry entry) {
         List<DatabaseCrossReference> dbXRefs = entry.getDatabaseCrossReferences(DatabaseType.REACTOME);
         return dbXRefs;
     }

@@ -16,4 +16,5 @@
     <include file="src/main/resources/db/changelog/changes/create_ds_gene_coordinate_table.sql"/>
     <include file="src/main/resources/db/changelog/changes/add_table_ds_disease_relation.sql"/>
     <include file="src/main/resources/db/changelog/changes/add_table_ds_keyword.sql"/>
+    <include file="src/main/resources/db/changelog/changes/rename_ds_protein.sql"/>
 </databaseChangeLog>

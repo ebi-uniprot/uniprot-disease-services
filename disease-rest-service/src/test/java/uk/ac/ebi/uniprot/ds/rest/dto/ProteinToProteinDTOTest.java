@@ -48,11 +48,11 @@ public class ProteinToProteinDTOTest {
         Variant v3 = ModelCreationUtils.createVariantObject(uuid + 3);
         protein.setVariants(Arrays.asList(v1, v2, v3));
 
-        // pathways
-        Pathway p1 = ModelCreationUtils.createPathwayObject(uuid + 1);
-        Pathway p2 = ModelCreationUtils.createPathwayObject(uuid + 2);
-        Pathway p3 = ModelCreationUtils.createPathwayObject(uuid + 3);
-        protein.setPathways(Arrays.asList(p1, p2, p3));
+        // protein cross ref
+        ProteinCrossRef p1 = ModelCreationUtils.createProteinXRefObject(uuid + 1);
+        ProteinCrossRef p2 = ModelCreationUtils.createProteinXRefObject(uuid + 2);
+        ProteinCrossRef p3 = ModelCreationUtils.createProteinXRefObject(uuid + 3);
+        protein.setProteinCrossRefs(Arrays.asList(p1, p2, p3));
 
         // interactions
         Interaction in1 = ModelCreationUtils.createInteractionObject(uuid + 1);
@@ -74,7 +74,7 @@ public class ProteinToProteinDTOTest {
 
         Assert.assertEquals(protein.getDiseases().size(), proteinDTO.getDiseases().size());
         Assert.assertEquals(protein.getVariants().size(), proteinDTO.getVariants().size());
-        Assert.assertEquals(protein.getPathways().size(), proteinDTO.getPathways().size());
+        Assert.assertEquals(protein.getProteinCrossRefs().size(), proteinDTO.getXrefs().size());
         Assert.assertEquals(protein.getInteractions().size(), proteinDTO.getInteractions().size());
         Assert.assertEquals(protein.getGeneCoordinates().size(), proteinDTO.getGeneCoordinates().size());
     }

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDTO;
 import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDiseasesDTO;
-import uk.ac.ebi.uniprot.ds.rest.dto.ProteinPathwaysDTO;
+import uk.ac.ebi.uniprot.ds.rest.dto.ProteinCrossRefsDTO;
 import uk.ac.ebi.uniprot.ds.rest.filter.RequestCorrelation;
 import uk.ac.ebi.uniprot.ds.rest.response.MultipleEntityResponse;
 import uk.ac.ebi.uniprot.ds.rest.response.SingleEntityResponse;
@@ -48,16 +48,16 @@ public class ProteinController {
         return new SingleEntityResponse<>(requestId, false, null, proteinDTO) ;
     }
 
-    @GetMapping(value={"/proteins/{accessions}/pathways"}, name = "Get the pathways for the given list of accession")
-    public MultipleEntityResponse<ProteinPathwaysDTO> getProteinsPathway(
+    @GetMapping(value={"/proteins/{accessions}/xrefs"}, name = "Get the cross refs for the given list of accession")
+    public MultipleEntityResponse<ProteinCrossRefsDTO> getProteinsXRefs(
             @Size(min = 1, max = 200, message = "The total count of accessions passed must be between 1 and 200 both inclusive.")
             @PathVariable(name = "accessions")
                     List<String> accessions)
     {
         String requestId = RequestCorrelation.getCorrelationId();
         List<Protein> proteins = this.proteinService.getAllProteinsByAccessions(accessions);
-        List<ProteinPathwaysDTO> dtos = toProteinPathwaysDTOList(proteins);
-        MultipleEntityResponse<ProteinPathwaysDTO> resp = new MultipleEntityResponse<>(requestId, dtos);
+        List<ProteinCrossRefsDTO> dtos = toProteinCrossRefsDTOList(proteins);
+        MultipleEntityResponse<ProteinCrossRefsDTO> resp = new MultipleEntityResponse<>(requestId, dtos);
         return resp;
     }
 
@@ -79,8 +79,8 @@ public class ProteinController {
         return proteinDTO;
     }
 
-    private List<ProteinPathwaysDTO> toProteinPathwaysDTOList(List<Protein> from){
-        return this.modelMapper.map(from, new TypeToken<List<ProteinPathwaysDTO>>(){}.getType());
+    private List<ProteinCrossRefsDTO> toProteinCrossRefsDTOList(List<Protein> from){
+        return this.modelMapper.map(from, new TypeToken<List<ProteinCrossRefsDTO>>(){}.getType());
     }
 
     private List<ProteinDiseasesDTO> toProteinDiseasesDTOList(List<Protein> from){

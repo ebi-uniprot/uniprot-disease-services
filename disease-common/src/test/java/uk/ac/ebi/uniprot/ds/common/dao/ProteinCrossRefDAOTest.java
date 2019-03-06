@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.ac.ebi.uniprot.ds.common.model.Pathway;
-import uk.ac.ebi.uniprot.ds.common.model.PathwayTest;
+import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
+import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRefTest;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.common.model.ProteinTest;
 
@@ -30,26 +30,26 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class PathwayDAOImplTest{
+public class ProteinCrossRefDAOTest {
     @Autowired
-    private PathwayDAO pathwayDAO;
+    private ProteinCrossRefDAO proteinCrossRefDAO;
     @Autowired
     private ProteinDAO proteinDAO;
-    private Pathway pathway;
-    private List<Pathway> pathwayList;
+    private ProteinCrossRef proteinCrossRef;
+    private List<ProteinCrossRef> proteinCrossRefs;
 
     private Protein protein;
 
     @AfterEach
     void cleanUp(){
-        if(this.pathway != null){
-            this.pathwayDAO.deleteById(this.pathway.getId());
-            this.pathway = null;
+        if(this.proteinCrossRef != null){
+            this.proteinCrossRefDAO.deleteById(this.proteinCrossRef.getId());
+            this.proteinCrossRef = null;
         }
 
-        if(this.pathwayList != null && !this.pathwayList.isEmpty()){
-            this.pathwayList.forEach(i -> this.pathwayDAO.deleteById(i.getId()));
-            this.pathwayList = null;
+        if(this.proteinCrossRefs != null && !this.proteinCrossRefs.isEmpty()){
+            this.proteinCrossRefs.forEach(i -> this.proteinCrossRefDAO.deleteById(i.getId()));
+            this.proteinCrossRefs = null;
         }
 
 
@@ -61,41 +61,41 @@ public class PathwayDAOImplTest{
     }
 
     @Test
-    void createPathwayWithoutProtein(){
-        this.pathway = PathwayTest.createPathwayObject(UUID.randomUUID().toString());
-        this.pathwayDAO.save(this.pathway);
-        assertNotNull(this.pathway.getId(), "unable to create pathway");
+    void createCrossRefWithoutProtein(){
+        this.proteinCrossRef = ProteinCrossRefTest.createProteinCrossRefObject(UUID.randomUUID().toString());
+        this.proteinCrossRefDAO.save(this.proteinCrossRef);
+        assertNotNull(this.proteinCrossRef.getId(), "unable to create protein cross ref");
 
-        // get and verify the pathway
-        Optional<Pathway> optInter = this.pathwayDAO.findById(this.pathway.getId());
-        assertTrue(optInter.isPresent(), "unable to get the pathway");
-        verifyPathway(this.pathway, optInter.get());
+        // get and verify the protein cross ref
+        Optional<ProteinCrossRef> optInter = this.proteinCrossRefDAO.findById(this.proteinCrossRef.getId());
+        assertTrue(optInter.isPresent(), "unable to get the protein cross ref");
+        verifyCrossRef(this.proteinCrossRef, optInter.get());
     }
 
     @Test
-    void testCreateMultiplePathwaysWithAProtein(){
+    void testCreateMultipleCrossRefsWithAProtein(){
         // create a protein
         this.protein = ProteinTest.createProteinObject(UUID.randomUUID().toString());
          this.proteinDAO.save(this.protein);
         assertNotNull(this.protein.getId(), "unable to create the protein");
 
-        // create 10 Pathways
-        this.pathwayList = new ArrayList<>();
+        // create 10 protein cross ref
+        this.proteinCrossRefs = new ArrayList<>();
         IntStream.range(1, 11).forEach(i -> {
-            Pathway storedPath = PathwayTest.createPathwayObject(UUID.randomUUID().toString());
+            ProteinCrossRef storedPath = ProteinCrossRefTest.createProteinCrossRefObject(UUID.randomUUID().toString());
             storedPath.setProtein(this.protein);
-            this.pathwayDAO.save(storedPath);
-            assertNotNull(storedPath.getId(), "unable to create pathway");
-            this.pathwayList.add(storedPath);
+            this.proteinCrossRefDAO.save(storedPath);
+            assertNotNull(storedPath.getId(), "unable to create protein cross ref");
+            this.proteinCrossRefs.add(storedPath);
         });
 
-        // get Pathways by protein
-        List<Pathway> storedProteins = this.pathwayDAO.findAllByProtein(this.protein);
-        assertFalse(storedProteins.isEmpty(), "unable to get list of pathways");
-        assertEquals(10, storedProteins.size());
+        // get protein cross refs by protein
+        List<ProteinCrossRef> storedCrossRefs = this.proteinCrossRefDAO.findAllByProtein(this.protein);
+        assertFalse(storedCrossRefs.isEmpty(), "unable to get list of protein cross refs");
+        assertEquals(10, storedCrossRefs.size());
     }
 
-    private void verifyPathway(Pathway actual, Pathway expected) {
+    private void verifyCrossRef(ProteinCrossRef actual, ProteinCrossRef expected) {
         assertEquals(actual.getId(), expected.getId());
         assertEquals(actual.getPrimaryId(), expected.getPrimaryId());
         assertEquals(actual.getDesc(), expected.getDesc());

@@ -39,7 +39,7 @@ public class ProteinToProteinDiseasesDTOTest {
     @Test
     public void testProteinToProteinDiseasesDTO(){
         Protein p = ModelCreationUtils.createProteinObject(uuid);
-        // create few pathways
+        // create few diseases
         Disease d1 = ModelCreationUtils.createDiseaseObject(uuid + 1);
         Disease d2 = ModelCreationUtils.createDiseaseObject(uuid + 2);
         Disease d3 = ModelCreationUtils.createDiseaseObject(uuid + 3);

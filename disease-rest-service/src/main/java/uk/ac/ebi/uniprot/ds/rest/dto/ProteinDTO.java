@@ -21,7 +21,7 @@ public class ProteinDTO {
     private String accession;
     private String gene;
     private String description;
-    private List<String>  pathways;
+    private List<String> xrefs;
     private List<String> interactions;
     private List<String> variants;
     private List<String> diseases;

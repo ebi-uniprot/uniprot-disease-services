@@ -11,14 +11,14 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "ds_pathway")
+@Table(name = "ds_protein_cross_ref")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Pathway extends BaseEntity {
+public class ProteinCrossRef extends BaseEntity {
 
     private static final long serialVersionUID = -5081945044878223589L;
     @Column(name = "primary_id")

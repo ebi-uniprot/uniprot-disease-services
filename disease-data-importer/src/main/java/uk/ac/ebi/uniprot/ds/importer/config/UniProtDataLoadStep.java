@@ -60,7 +60,7 @@ public class UniProtDataLoadStep {
         CompositeItemWriter compositeWriter = new CompositeItemWriter();
         ProteinWriter writer1 = proteinWriter();
         InteractionWriter writer2 = interactionWriter();
-        PathwayWriter writer3 = pathwayWriter();
+        ProteinCrossRefWriter writer3 = proteinCrossRefWriter();
         VariantWriter writer4 = variantWriter();
         DiseaseWriter writer5 = diseaseWriter();
         List<ItemWriter> writers = new ArrayList<>();
@@ -94,8 +94,8 @@ public class UniProtDataLoadStep {
     }
 
     @Bean
-    public PathwayWriter pathwayWriter() {
-        return new PathwayWriter(proteinIdProteinMap);
+    public ProteinCrossRefWriter proteinCrossRefWriter() {
+        return new ProteinCrossRefWriter(proteinIdProteinMap);
     }
 
 }

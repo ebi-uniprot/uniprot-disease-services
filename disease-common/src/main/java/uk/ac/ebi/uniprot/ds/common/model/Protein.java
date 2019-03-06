@@ -46,7 +46,7 @@ public class Protein extends BaseEntity {
     private List<Variant> variants;
 
     @OneToMany(mappedBy = "protein", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Pathway> pathways;
+    private List<ProteinCrossRef> proteinCrossRefs;
 
     @OneToMany(mappedBy = "protein", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Interaction> interactions;

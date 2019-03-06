@@ -1,0 +1,1 @@
+ALTER TABLE ds_pathway RENAME TO ds_protein_cross_ref;

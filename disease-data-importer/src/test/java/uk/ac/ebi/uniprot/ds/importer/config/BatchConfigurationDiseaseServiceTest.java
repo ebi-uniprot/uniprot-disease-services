@@ -34,7 +34,7 @@ public class BatchConfigurationDiseaseServiceTest {
     public void cleanUp(){
 //        this.synonymDAO.deleteAll();
 //        this.variantDAO.deleteAll();
-//        this.pathwayDAO.deleteAll();
+//        this.proteinCrossRefDAO.deleteAll();
 //        this.interactionDAO.deleteAll();
 //        this.featureLocationDAO.deleteAll();
 //        this.evidenceDAO.deleteAll();
@@ -80,8 +80,8 @@ public class BatchConfigurationDiseaseServiceTest {
         List<Interaction> ints = this.interactionDAO.findAllByProtein(pr);
         Assert.assertEquals(3, ints.size());
 
-        // get pathways
-        List<Pathway> paths = this.pathwayDAO.findAllByProtein(pr);
+        // get protein cross ref
+        List<ProteinCrossRef> paths = this.proteinCrossRefDAO.findAllByProtein(pr);
         Assert.assertEquals(17, paths.size());
 
         // get protein variants
@@ -122,7 +122,7 @@ public class BatchConfigurationDiseaseServiceTest {
     private VariantDAO variantDAO;
 
     @Autowired
-    private PathwayDAO pathwayDAO;
+    private ProteinCrossRefDAO proteinCrossRefDAO;
 
     @Autowired
     private InteractionDAO interactionDAO;

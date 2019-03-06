@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import uk.ac.ebi.uniprot.ds.common.DiseaseCommonSpringBootApplication;
-import uk.ac.ebi.uniprot.ds.common.model.Pathway;
+import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.RestServiceSpringBootApplication;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ProteinController.class)
 @ContextConfiguration(classes={RestServiceSpringBootApplication.class,
         DiseaseCommonSpringBootApplication.class})
-public class ProteinControllerGetPathwaysTest {
+public class ProteinControllerGetProteinXRefsTest {
     private String uuid = UUID.randomUUID().toString();
 
     @Autowired
@@ -60,7 +60,7 @@ public class ProteinControllerGetPathwaysTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/proteins/" + accessions +"/pathways").
+                                get("/v1/ds/proteins/" + accessions +"/xrefs").
                                 param("accessions", accessions)
                 );
 
@@ -73,22 +73,22 @@ public class ProteinControllerGetPathwaysTest {
     }
 
     @Test
-    public void testGetPathways() throws Exception {
+    public void testGetProteinXRefs() throws Exception {
 
         // create multiple proteins
         Protein p1 = ModelCreationUtils.createProteinObject(uuid + 1);
         String a1 = "ACC1-"+ uuid;
         p1.setAccession(a1);
-        Pathway pt1 = ModelCreationUtils.createPathwayObject(uuid + 1);
-        Pathway pt2 = ModelCreationUtils.createPathwayObject(uuid + 2);
-        Pathway pt3 = ModelCreationUtils.createPathwayObject(uuid + 3);
-        p1.setPathways(Arrays.asList(pt1, pt2, pt3));
+        ProteinCrossRef pt1 = ModelCreationUtils.createProteinXRefObject(uuid + 1);
+        ProteinCrossRef pt2 = ModelCreationUtils.createProteinXRefObject(uuid + 2);
+        ProteinCrossRef pt3 = ModelCreationUtils.createProteinXRefObject(uuid + 3);
+        p1.setProteinCrossRefs(Arrays.asList(pt1, pt2, pt3));
 
         Protein p2 = ModelCreationUtils.createProteinObject(uuid + 2);
         String a2 = "ACC2-"+ uuid;
         p2.setAccession(a2);
-        Pathway pt4 = ModelCreationUtils.createPathwayObject(uuid + 4);
-        p2.setPathways(Arrays.asList(pt4));
+        ProteinCrossRef pt4 = ModelCreationUtils.createProteinXRefObject(uuid + 4);
+        p2.setProteinCrossRefs(Arrays.asList(pt4));
 
         Protein p3 = ModelCreationUtils.createProteinObject(uuid + 3);
         String a3 = "ACC3-"+ uuid;
@@ -100,7 +100,7 @@ public class ProteinControllerGetPathwaysTest {
         String accessions = a1 + "," + a2 + "," + a3;
 
         ResultActions res = this.mockMvc.
-                perform(MockMvcRequestBuilders.get("/v1/ds/proteins/" + accessions + "/pathways").param("accessions", accessions));
+                perform(MockMvcRequestBuilders.get("/v1/ds/proteins/" + accessions + "/xrefs").param("accessions", accessions));
 
         res.andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.requestId", notNullValue()))
@@ -112,9 +112,9 @@ public class ProteinControllerGetPathwaysTest {
                 .andExpect(jsonPath("$.results[*].proteinId", notNullValue()))
                 .andExpect(jsonPath("$.results[*].proteinName", notNullValue()))
                 .andExpect(jsonPath("$.results[*].gene", notNullValue()))
-                .andExpect(jsonPath("$.results[0].pathways.length()", equalTo(p1.getPathways().size())))
-                .andExpect(jsonPath("$.results[1].pathways.length()", equalTo(p2.getPathways().size())))
-                .andExpect(jsonPath("$.results[2].pathways", nullValue()));
+                .andExpect(jsonPath("$.results[0].crossRefs.length()", equalTo(p1.getProteinCrossRefs().size())))
+                .andExpect(jsonPath("$.results[1].crossRefs.length()", equalTo(p2.getProteinCrossRefs().size())))
+                .andExpect(jsonPath("$.results[2].crossRefs", nullValue()));
     }
 
 
@@ -136,7 +136,7 @@ public class ProteinControllerGetPathwaysTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/proteins/" + accessions +"/pathways").
+                                get("/v1/ds/proteins/" + accessions +"/xrefs").
                                 param("accessions", accessions)
                 );
 

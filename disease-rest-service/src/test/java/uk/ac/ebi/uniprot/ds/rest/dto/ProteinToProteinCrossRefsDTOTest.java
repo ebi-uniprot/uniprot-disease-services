@@ -14,7 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.ac.ebi.uniprot.ds.common.model.Pathway;
+import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
@@ -23,35 +23,35 @@ import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ProteinToProteinPathwaysDTOTest {
+public class ProteinToProteinCrossRefsDTOTest {
     private String uuid = UUID.randomUUID().toString();
 
     @Autowired
     private ModelMapper modelMapper;
 
     @Test
-    public void testProteinToProteinPathwaysDTOWithoutPathways() {
+    public void testProteinToProteinXRefsDTOWithoutXRefs() {
         Protein p = ModelCreationUtils.createProteinObject(uuid);
-        ProteinPathwaysDTO dto = modelMapper.map(p, ProteinPathwaysDTO.class);
+        ProteinCrossRefsDTO dto = modelMapper.map(p, ProteinCrossRefsDTO.class);
         verifyDTO(p, dto);
-        Assert.assertNull(dto.getPathways());
+        Assert.assertNull(dto.getXrefs());
     }
 
     @Test
-    public void testProteinToProteinPathwaysDTO() {
+    public void testProteinToProteinCrossRefsDTO() {
         Protein pP = ModelCreationUtils.createProteinObject(uuid);
-        // create few pathways
-        Pathway p1 = ModelCreationUtils.createPathwayObject(uuid + 1);
-        Pathway p2 = ModelCreationUtils.createPathwayObject(uuid + 2);
-        Pathway p3 = ModelCreationUtils.createPathwayObject(uuid + 3);
-        pP.setPathways(Arrays.asList(p1, p2, p3));
+        // create few protein cross ref
+        ProteinCrossRef p1 = ModelCreationUtils.createProteinXRefObject(uuid + 1);
+        ProteinCrossRef p2 = ModelCreationUtils.createProteinXRefObject(uuid + 2);
+        ProteinCrossRef p3 = ModelCreationUtils.createProteinXRefObject(uuid + 3);
+        pP.setProteinCrossRefs(Arrays.asList(p1, p2, p3));
 
-        ProteinPathwaysDTO dto = modelMapper.map(pP, ProteinPathwaysDTO.class);
+        ProteinCrossRefsDTO dto = modelMapper.map(pP, ProteinCrossRefsDTO.class);
         verifyDTO(pP, dto);
-        Assert.assertEquals(pP.getPathways().size(), dto.getPathways().size());
+        Assert.assertEquals(pP.getProteinCrossRefs().size(), dto.getXrefs().size());
     }
 
-    private void verifyDTO(Protein p, ProteinPathwaysDTO dto) {
+    private void verifyDTO(Protein p, ProteinCrossRefsDTO dto) {
         Assert.assertEquals(p.getProteinId(), dto.getProteinId());
         Assert.assertEquals(p.getName(), dto.getProteinName());
         Assert.assertEquals(p.getAccession(), dto.getAccession());
