@@ -29,11 +29,11 @@ public class BatchConfigurationDiseaseService {
 
         return jobBuilderFactory.get(Constants.DISEASE_SERVICE_DATA_LOADER)
                 .incrementer(new RunIdIncrementer())
-                .start(humDiseaseStep)
-                .next(uniProtStep)
-                .next(geneCoordsLoad)
-                .next(doSynLoad)
-                .next(doLoad)
+                .start(humDiseaseStep)//Load Diseases From HumDisease file
+                .next(uniProtStep)// Load Human Protein from curated Protein file
+                .next(geneCoordsLoad)// load gene co-ordinates
+                .next(doSynLoad)// load synonyms from Disease Ontology
+                .next(doLoad)// create parents children relationship
                 .listener(jobExecutionListener)
                 .build();
     }

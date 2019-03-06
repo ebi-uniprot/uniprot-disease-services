@@ -23,16 +23,17 @@ public class LogStepListener implements StepExecutionListener {
     private String humDiseaseDataFile;
     @Value("${ds.genecoords.data.file.path}")
     private String geneCoordsDataFile;
+    private static final String FILE_LOG_MESSAGE = "Using the input file: {}";
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
         LOGGER.info("Disease import STEP '{}' starting.", stepExecution.getStepName());
         if(Constants.DS_HUM_DISEASE_DATA_LOADER_STEP.equals(stepExecution.getStepName())){
-            LOGGER.info("Using the input file: {}", humDiseaseDataFile);
+            LOGGER.info(FILE_LOG_MESSAGE, humDiseaseDataFile);
         }else if(Constants.DS_UNIPROT_DATA_LOADER_STEP.equals(stepExecution.getStepName())){
-            LOGGER.info("Using the input file: {}", uniProtDataFilePath);
+            LOGGER.info(FILE_LOG_MESSAGE, uniProtDataFilePath);
         }else if(Constants.DS_GENE_COORD_LOADER_STEP.equals(stepExecution.getStepName())){
-            LOGGER.info("Using the input file: {}", geneCoordsDataFile);
+            LOGGER.info(FILE_LOG_MESSAGE, geneCoordsDataFile);
         }
     }
 

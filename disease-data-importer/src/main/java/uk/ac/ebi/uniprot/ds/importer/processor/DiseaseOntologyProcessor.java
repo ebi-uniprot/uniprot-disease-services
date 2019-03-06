@@ -19,7 +19,7 @@ public class DiseaseOntologyProcessor implements ItemProcessor<List<OBOTerm>, Li
     private DiseaseDAO diseaseDAO;
     @Autowired
     private SynonymDAO synonymDAO;
-    private Map<String, Disease> diseaseIdToDiseaseMap;
+    private Map<String, Disease> diseaseNameToDiseaseMap;
 
     @Override
     public List<Disease> process(List<OBOTerm> oboTerms) {
@@ -33,11 +33,11 @@ public class DiseaseOntologyProcessor implements ItemProcessor<List<OBOTerm>, Li
 
         for (Node parentNode : adjList.values()) {
             // get the Disease object for parent node aka obo term from cache
-            String doName = parentNode.getTerm().getName().trim().toLowerCase();
-            Disease parentDisease = this.diseaseIdToDiseaseMap.get(doName);
+            String doName = parentNode.getTerm().getName();
+            Disease parentDisease = this.diseaseNameToDiseaseMap.get(doName);
 
-            if (parentDisease == null) {
-                log.warn("Unable to find mapping for parent term {} in disease service", doName);
+            if (parentDisease == null) { // ignore the parent node and its children if there is no mapping in HumDisease or disease service
+                //log.warn("Unable to find mapping for parent term {} in disease service", doName);
             } else {
                 // get children nodes of term aka parent node
                 List<Node> childNodes = parentNode.getChildren();
@@ -54,10 +54,10 @@ public class DiseaseOntologyProcessor implements ItemProcessor<List<OBOTerm>, Li
     private Set<Disease> getChildDiseases(List<Node> childNodes) {
         Set<Disease> childDiseases = new HashSet<>();
         for (Node childNode : childNodes) {
-            String doName = childNode.getTerm().getName().trim().toLowerCase();
-            Disease childDisease = this.diseaseIdToDiseaseMap.get(doName);
+            String doName = childNode.getTerm().getName();
+            Disease childDisease = this.diseaseNameToDiseaseMap.get(doName);
             if(childDisease == null){
-                log.warn("Unable to find mapping for child term {} in disease service", doName);
+                //log.warn("Unable to find mapping for child term {} in disease service", doName);
             } else {
                 childDiseases.add(childDisease);
             }
@@ -66,7 +66,7 @@ public class DiseaseOntologyProcessor implements ItemProcessor<List<OBOTerm>, Li
     }
 
     private void loadCache() {
-        this.diseaseIdToDiseaseMap = new HashMap<>();
+        this.diseaseNameToDiseaseMap = new HashMap<>();
         loadDiseaseIdDiseaseMapFromDisease();
         loadDiseaseIdDiseaseMapFromSynonym();
     }
@@ -74,8 +74,8 @@ public class DiseaseOntologyProcessor implements ItemProcessor<List<OBOTerm>, Li
     private void loadDiseaseIdDiseaseMapFromSynonym() {
         List<Synonym> allSyns = this.synonymDAO.findAll();
         for (Synonym s : allSyns) {
-            if (!this.diseaseIdToDiseaseMap.containsKey(s.getName().trim().toLowerCase())) {
-                this.diseaseIdToDiseaseMap.put(s.getName().trim().toLowerCase(), s.getDisease());
+            if (!this.diseaseNameToDiseaseMap.containsKey(s.getName().trim().toLowerCase())) {
+                this.diseaseNameToDiseaseMap.put(s.getName().trim().toLowerCase(), s.getDisease());
             }
         }
     }
@@ -83,9 +83,7 @@ public class DiseaseOntologyProcessor implements ItemProcessor<List<OBOTerm>, Li
     private void loadDiseaseIdDiseaseMapFromDisease() {
         List<Disease> allDiseases = this.diseaseDAO.findAll();
         for (Disease d : allDiseases) {
-            this.diseaseIdToDiseaseMap.put(d.getDiseaseId().trim().toLowerCase(), d);
+            this.diseaseNameToDiseaseMap.put(d.getName().trim().toLowerCase(), d);
         }
     }
-
-
 }

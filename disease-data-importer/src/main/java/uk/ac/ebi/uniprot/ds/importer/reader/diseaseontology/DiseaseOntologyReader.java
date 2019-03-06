@@ -95,7 +95,7 @@ public class DiseaseOntologyReader implements ItemReader<List<OBOTerm>> {
                         builder.id(lineTokens[1]);
                         break;
                     case NAME:
-                        builder.name(lineTokens[1]);
+                        builder.name(lineTokens[1].trim().toLowerCase());
                         break;
                     case SYNONYM:
                         synonyms.add(lineTokens[1]);

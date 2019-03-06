@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Synonym;
+import uk.ac.ebi.uniprot.ds.importer.util.Constants;
 
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public class DOHumToSynonymConverter implements ItemProcessor<Pair<String, Strin
         Optional<Disease> optDisease = this.diseaseDAO.findDiseaseByNameIgnoreCase(item.getRight());
         if(optDisease.isPresent()){
             Synonym.SynonymBuilder bldr = Synonym.builder();
-            bldr.name(item.getLeft()).source("Disease Ontology");
+            bldr.name(item.getLeft()).source(Constants.DISEASE_ONTOLOGY);
             bldr.disease(optDisease.get());
             synonym = bldr.build();
         }
