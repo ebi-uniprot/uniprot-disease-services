@@ -13,13 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import uk.ac.ebi.kraken.interfaces.uniprot.Gene;
 import uk.ac.ebi.kraken.interfaces.uniprot.ProteinDescription;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
+import uk.ac.ebi.kraken.interfaces.uniprot.citationsNew.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.CommentType;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.FunctionComment;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.FieldType;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.Name;
+import uk.ac.ebi.uniprot.ds.common.common.PublicationType;
 import uk.ac.ebi.uniprot.ds.common.dao.ProteinDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
+import uk.ac.ebi.uniprot.ds.common.model.Publication;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -49,8 +53,15 @@ public class ProteinWriter implements ItemWriter<UniProtEntry> {
         builder.accession(entry.getPrimaryUniProtAccession().getValue());
         builder.desc(getDescription(entry.getComments(CommentType.FUNCTION)));
         builder.gene(getGene(entry.getGenes()));
-        return builder.build();
+        Protein protein = builder.build();
+
+        // get the publications
+        List<Publication> pubs = getPublications(entry, protein);
+        protein.setPublications(pubs);
+        return protein;
     }
+
+
 
     private String getDescription(List<FunctionComment> comments) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -93,4 +104,17 @@ public class ProteinWriter implements ItemWriter<UniProtEntry> {
         return list == null || list.isEmpty();
     }
 
+
+    private List<Publication> getPublications(UniProtEntry entry, Protein protein) {
+        List<Citation> citationList = entry.getCitationsNew();
+
+        // get pub from each citation
+        List<Publication> pubs = citationList
+                .stream()
+                .filter(cit -> cit.getCitationXrefs().hasPubmedId())
+                .map(cit -> new Publication(PublicationType.PubMed.name(), cit.getCitationXrefs().getPubmedId().getValue(), protein))
+                .collect(Collectors.toList());
+
+        return pubs;
+    }
 }

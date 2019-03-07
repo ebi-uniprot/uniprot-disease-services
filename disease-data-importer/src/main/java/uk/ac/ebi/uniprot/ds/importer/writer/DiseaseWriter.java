@@ -12,12 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.CommentType;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.DiseaseCommentStructured;
+import uk.ac.ebi.kraken.interfaces.uniprot.evidences.EvidenceId;
+import uk.ac.ebi.kraken.model.uniprot.evidences.EvidenceIdImpl;
+import uk.ac.ebi.uniprot.ds.common.common.PublicationType;
 import uk.ac.ebi.uniprot.ds.common.common.SourceType;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.VariantDAO;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.Protein;
-import uk.ac.ebi.uniprot.ds.common.model.Variant;
+import uk.ac.ebi.uniprot.ds.common.model.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -95,12 +96,26 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
     protected Disease getDisease(DiseaseCommentStructured dcs){
         uk.ac.ebi.kraken.interfaces.uniprot.comments.Disease upDisease = dcs.getDisease();
         String diseaseId = upDisease.getDiseaseId().getValue();
-        String descr = upDisease.getDescription().getValue();
+        String desc = upDisease.getDescription().getValue();
         String name = upDisease.getDiseaseId().getValue();
         String acronym = upDisease.getAcronym().getValue();
         Disease.DiseaseBuilder builder = Disease.builder();
-        builder.diseaseId(diseaseId).name(name).acronym(acronym).desc(descr);
-        return builder.build();
+        builder.diseaseId(diseaseId).name(name).acronym(acronym).desc(desc);
+        Disease disease = builder.build();
+        List<Publication> pubs = getPublications(upDisease, disease);
+        disease.setPublications(pubs);
+        return disease;
 
+    }
+
+    private List<Publication> getPublications(uk.ac.ebi.kraken.interfaces.uniprot.comments.Disease upDisease, Disease disease) {
+        List<EvidenceId> eIds = upDisease.getDescription().getEvidenceIds();
+
+        List<Publication> pubs = eIds
+                .stream()
+                .filter(e -> PublicationType.PubMed.name().equals(e.getTypeValue()))
+                .map(e -> new Publication(PublicationType.PubMed.name(), e.getAttribute().getValue(), disease)).collect(Collectors.toList());
+
+        return pubs;
     }
 }

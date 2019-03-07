@@ -37,4 +37,17 @@ public class Publication extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "ds_disease_id")
     private Disease disease;
+
+    public Publication(String pubType, String pubId, Protein protein){
+        this.pubType = pubType;
+        this.pubId = pubId;
+        this.protein = protein;
+    }
+
+    public Publication(String pubType, String pubId, Disease disease){
+        this.pubType = pubType;
+        this.pubId = pubId;
+        this.disease = disease;
+
+    }
 }
