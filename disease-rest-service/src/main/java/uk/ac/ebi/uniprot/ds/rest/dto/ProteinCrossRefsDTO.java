@@ -25,9 +25,11 @@ public class ProteinCrossRefsDTO {
     @Setter
     public static class ProteinCrossRef {
         String primaryId;
+        String dbType;
         String description;
-        public ProteinCrossRef(String primaryId, String description){
+        public ProteinCrossRef(String primaryId, String dbType, String description){
             this.primaryId = primaryId;
+            this.dbType = dbType;
             this.description = description;
         }
     }

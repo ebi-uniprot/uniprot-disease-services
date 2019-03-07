@@ -113,6 +113,9 @@ public class ProteinControllerGetProteinXRefsTest {
                 .andExpect(jsonPath("$.results[*].proteinName", notNullValue()))
                 .andExpect(jsonPath("$.results[*].gene", notNullValue()))
                 .andExpect(jsonPath("$.results[0].xrefs.length()", equalTo(p1.getProteinCrossRefs().size())))
+                .andExpect(jsonPath("$.results[0].xrefs[*].primaryId", notNullValue()))
+                .andExpect(jsonPath("$.results[0].xrefs[*].description", notNullValue()))
+                .andExpect(jsonPath("$.results[0].xrefs[*].dbType", notNullValue()))
                 .andExpect(jsonPath("$.results[1].xrefs.length()", equalTo(p2.getProteinCrossRefs().size())))
                 .andExpect(jsonPath("$.results[2].xrefs", nullValue()));
     }

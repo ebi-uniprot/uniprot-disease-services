@@ -61,6 +61,8 @@ public class ProteinCrossRefWriter implements ItemWriter<UniProtEntry> {
 
     protected List<DatabaseCrossReference> getUniProtProteinCrossRefs(UniProtEntry entry) {
         List<DatabaseCrossReference> dbXRefs = entry.getDatabaseCrossReferences(DatabaseType.REACTOME);
+        List<DatabaseCrossReference> chemblXRefs = entry.getDatabaseCrossReferences(DatabaseType.CHEMBL);
+        dbXRefs.addAll(chemblXRefs);
         return dbXRefs;
     }
 }

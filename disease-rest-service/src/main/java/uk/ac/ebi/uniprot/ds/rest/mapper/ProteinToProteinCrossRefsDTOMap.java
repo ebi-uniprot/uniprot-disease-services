@@ -14,7 +14,7 @@ import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
 import uk.ac.ebi.uniprot.ds.rest.dto.ProteinCrossRefsDTO;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProteinToProteinCrossRefsDTOMap extends PropertyMap<Protein, ProteinCrossRefsDTO> {
@@ -25,7 +25,9 @@ public class ProteinToProteinCrossRefsDTOMap extends PropertyMap<Protein, Protei
 
     }
 
-    private class ProteinCrossRefsToProteinCrossRefDTOs implements Converter<List<ProteinCrossRef>, List<ProteinCrossRefsDTO.ProteinCrossRef>> {
+    private class ProteinCrossRefsToProteinCrossRefDTOs implements
+            Converter<List<ProteinCrossRef>, List<ProteinCrossRefsDTO.ProteinCrossRef>> {
+
         @Override
         public List<ProteinCrossRefsDTO.ProteinCrossRef> convert(MappingContext<List<ProteinCrossRef>,
                 List<ProteinCrossRefsDTO.ProteinCrossRef>> context) {
@@ -34,13 +36,18 @@ public class ProteinToProteinCrossRefsDTOMap extends PropertyMap<Protein, Protei
             List<ProteinCrossRefsDTO.ProteinCrossRef> proteinXRefDTOs = null;
 
             if(proteinXRefs != null){
+
                 proteinXRefDTOs = proteinXRefs.stream().map(xref -> new ProteinCrossRefsDTO
-                        .ProteinCrossRef(xref.getPrimaryId(), xref.getDesc()))
+                        .ProteinCrossRef(xref.getPrimaryId(), xref.getDbType(), xref.getDesc()))
                         .collect(Collectors.toList());
+
+                // sort by dbType
+                Collections.sort(proteinXRefDTOs, (xref1, xref2) -> xref1.getDbType().compareToIgnoreCase(xref2.getDbType()));
 
             }
 
             return proteinXRefDTOs;
         }
+
     }
 }
