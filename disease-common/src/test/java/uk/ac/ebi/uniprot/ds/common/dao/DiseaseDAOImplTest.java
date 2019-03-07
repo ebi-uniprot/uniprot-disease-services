@@ -320,6 +320,26 @@ public class DiseaseDAOImplTest {
 
     }
 
+    @Test
+    void testCreateDiseaseWithPublications(){
+        this.disease = DiseaseTest.createDiseaseObject(this.uuid);
+        // create 5 publications under the disease
+        List<Publication> pubs = IntStream.range(0, 5)
+                .mapToObj(i -> PublicationDAOTest.createPublicationObject(this.uuid + i, this.disease, null))
+                .collect(Collectors.toList());
+        this.disease.setPublications(pubs);
+        // save the disease
+        this.diseaseDAO.save(this.disease);
+
+        // get the disease and verify pubs count
+        Optional<Disease> storedOptDis = this.diseaseDAO.findById(this.disease.getId());
+        assertTrue(storedOptDis.isPresent());
+        verifyDisease(this.disease, storedOptDis.get());
+        // verify pubs count
+        assertEquals(pubs.size(), storedOptDis.get().getPublications().size());
+
+    }
+
     private Disease createDisease(String keyword) {
         String uuid = UUID.randomUUID().toString();
         Disease dis = uuid.indexOf(uuid.length()-1) % 2 == 0 ?

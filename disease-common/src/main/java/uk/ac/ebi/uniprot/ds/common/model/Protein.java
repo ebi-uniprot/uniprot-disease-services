@@ -54,6 +54,9 @@ public class Protein extends BaseEntity {
     @OneToMany(mappedBy = "protein", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GeneCoordinate> geneCoordinates = new ArrayList<>();
 
+    @OneToMany(mappedBy = "protein", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Publication> publications;
+
     @Override
     public boolean equals(Object obj) {
 

@@ -66,6 +66,9 @@ public class Disease extends BaseEntity {
     @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Keyword> keywords;
 
+    @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Publication> publications;
+
     public void addSynonym(Synonym synonym){
         if(this.synonyms == null){
             this.synonyms = new ArrayList<>();

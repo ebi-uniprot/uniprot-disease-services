@@ -14,12 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.DiseaseTest;
-import uk.ac.ebi.uniprot.ds.common.model.Protein;
-import uk.ac.ebi.uniprot.ds.common.model.ProteinTest;
+import uk.ac.ebi.uniprot.ds.common.model.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -129,6 +127,25 @@ public class ProteinDAOImplTest{
         assertEquals(3, proteins.size());
         // clean up - delete now
         this.proteinDAO.deleteAll(proteins);
+    }
+
+    @Test
+    void testCreateProteinWithPubs(){
+        this.protein = ProteinTest.createProteinObject(this.randomUUID);
+        // create 5 pubs
+        List<Publication> pubs = IntStream.range(0, 5).mapToObj(i -> PublicationDAOTest
+                .createPublicationObject(this.randomUUID + i, null, this.protein))
+                .collect(Collectors.toList());
+        this.protein.setPublications(pubs);
+        // save the protein
+        this.proteinDAO.save(this.protein);
+
+        // get the protein and verify pubs
+        Optional<Protein> storedOptProt = this.proteinDAO.findById(this.protein.getId());
+        assertTrue(storedOptProt.isPresent());
+        verifyProtein(this.protein, storedOptProt.get());
+        // verify the size of the publications
+        assertEquals(pubs.size(), this.protein.getPublications().size());
     }
 
 
