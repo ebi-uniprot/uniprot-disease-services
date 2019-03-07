@@ -19,6 +19,7 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
         using(new DiseaseToDiseaseIdConverter()).map(source.getDiseases()).setDiseases(null);
         using(new ProteinCrossRefsToPrimaryIds()).map(source.getProteinCrossRefs()).setXrefs(null);
         using(new GeneCoordinatesToGeneCoordindateDTOsCoverter()).map(source.getGeneCoordinates()).setGeneCoordinates(null);
+        using(new PublicationsToPublicationDTOs()).map(source.getPublications()).setPublications(null);
 
     }
 

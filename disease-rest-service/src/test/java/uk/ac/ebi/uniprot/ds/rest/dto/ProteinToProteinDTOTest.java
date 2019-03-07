@@ -69,6 +69,13 @@ public class ProteinToProteinDTOTest {
         GeneCoordinate gc5 = ModelCreationUtils.createGeneCoordinateObject(uuid + 5);
         protein.setGeneCoordinates(Arrays.asList(gc1, gc2, gc3, gc4, gc5));
 
+        // create few publications
+        Publication pb1 = ModelCreationUtils.createPublicationObject(this.uuid + 1);
+        Publication pb2 = ModelCreationUtils.createPublicationObject(this.uuid + 2);
+        Publication pb3 = ModelCreationUtils.createPublicationObject(this.uuid + 3);
+        Publication pb4 = ModelCreationUtils.createPublicationObject(this.uuid + 4);
+        protein.setPublications(Arrays.asList(pb1, pb2, pb3, pb4));
+
         ProteinDTO proteinDTO = modelMapper.map(protein, ProteinDTO.class);
         verifyProteinDTO(protein, proteinDTO);
 
@@ -77,6 +84,7 @@ public class ProteinToProteinDTOTest {
         Assert.assertEquals(protein.getProteinCrossRefs().size(), proteinDTO.getXrefs().size());
         Assert.assertEquals(protein.getInteractions().size(), proteinDTO.getInteractions().size());
         Assert.assertEquals(protein.getGeneCoordinates().size(), proteinDTO.getGeneCoordinates().size());
+        Assert.assertEquals(protein.getPublications().size(), proteinDTO.getPublications().size());
     }
 
     private void verifyProteinDTO(Protein protein, ProteinDTO proteinDTO) {

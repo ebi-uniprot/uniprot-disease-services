@@ -114,7 +114,8 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
         List<Publication> pubs = eIds
                 .stream()
                 .filter(e -> PublicationType.PubMed.name().equals(e.getTypeValue()))
-                .map(e -> new Publication(PublicationType.PubMed.name(), e.getAttribute().getValue(), disease)).collect(Collectors.toList());
+                .map(e -> new Publication(PublicationType.PubMed.name(), e.getAttribute().getValue(), disease))
+                .collect(Collectors.toList());
 
         return pubs;
     }

@@ -16,10 +16,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.Protein;
-import uk.ac.ebi.uniprot.ds.common.model.Synonym;
-import uk.ac.ebi.uniprot.ds.common.model.Variant;
+import uk.ac.ebi.uniprot.ds.common.model.*;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
 import java.util.*;
@@ -66,6 +63,13 @@ public class DiseaseToDiseaseDTOTest {
         Disease pd3 = ModelCreationUtils.createDiseaseObject(this.uuid + 3);
         disease.setParents(Arrays.asList(pd1, pd2, pd3));
 
+        // create few publications
+        Publication pb1 = ModelCreationUtils.createPublicationObject(this.uuid + 1);
+        Publication pb2 = ModelCreationUtils.createPublicationObject(this.uuid + 2);
+        Publication pb3 = ModelCreationUtils.createPublicationObject(this.uuid + 3);
+        Publication pb4 = ModelCreationUtils.createPublicationObject(this.uuid + 4);
+        disease.setPublications(Arrays.asList(pb1, pb2, pb3, pb4));
+
         DiseaseDTO dto = modelMapper.map(disease, DiseaseDTO.class);
         verifyDiseaseDTO(disease, dto);
 
@@ -74,6 +78,7 @@ public class DiseaseToDiseaseDTOTest {
         Assert.assertEquals(disease.getSynonyms().size(), dto.getSynonyms().size());
         Assert.assertEquals(disease.getVariants().size(), dto.getVariants().size());
         Assert.assertEquals(disease.getParents().size(), dto.getParents().size());
+        Assert.assertEquals(disease.getPublications().size(), dto.getPublications().size());
     }
 
     @Test

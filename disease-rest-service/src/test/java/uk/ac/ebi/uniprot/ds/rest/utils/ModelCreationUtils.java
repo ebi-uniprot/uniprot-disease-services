@@ -144,4 +144,11 @@ public class ModelCreationUtils {
         bl.enGeneId(eng).enTranscriptId(ent).enTranslationId(enp);
         return bl.build();
     }
+
+    public static Publication createPublicationObject(String rand){
+        Publication.PublicationBuilder bldr = Publication.builder();
+        bldr.pubType("type-" + rand);
+        bldr.pubId("id-" + rand);
+        return bldr.build();
+    }
 }

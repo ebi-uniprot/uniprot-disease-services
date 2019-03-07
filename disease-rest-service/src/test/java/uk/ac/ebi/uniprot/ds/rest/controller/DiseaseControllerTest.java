@@ -25,10 +25,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.Protein;
-import uk.ac.ebi.uniprot.ds.common.model.Synonym;
-import uk.ac.ebi.uniprot.ds.common.model.Variant;
+import uk.ac.ebi.uniprot.ds.common.model.*;
 import uk.ac.ebi.uniprot.ds.rest.DataSourceTestConfig;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
@@ -109,6 +106,13 @@ public class DiseaseControllerTest {
         Variant v4 = ModelCreationUtils.createVariantObject(uuid + 4);
         disease.setVariants(Arrays.asList(v1, v2, v3, v4));
 
+        // create few publications
+        Publication pb1 = ModelCreationUtils.createPublicationObject(this.uuid + 1);
+        Publication pb2 = ModelCreationUtils.createPublicationObject(this.uuid + 2);
+        Publication pb3 = ModelCreationUtils.createPublicationObject(this.uuid + 3);
+        Publication pb4 = ModelCreationUtils.createPublicationObject(this.uuid + 4);
+        disease.setPublications(Arrays.asList(pb1, pb2, pb3, pb4));
+
         Mockito.when(this.diseaseService.findByDiseaseId(diseaseId)).thenReturn(Optional.of(disease));
 
         ResultActions res = this.mockMvc.
@@ -125,7 +129,10 @@ public class DiseaseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.description", Matchers.startsWith("DESC")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.proteins.length()", Matchers.equalTo(3)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.variants.length()", Matchers.equalTo(4)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.result.synonyms.length()", Matchers.equalTo(2)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.synonyms.length()", Matchers.equalTo(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications.length()", Matchers.equalTo(4)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications[*].type", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications[*].id", Matchers.notNullValue()));
     }
 
     @Test

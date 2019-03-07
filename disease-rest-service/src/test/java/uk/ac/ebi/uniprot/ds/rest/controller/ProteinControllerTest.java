@@ -118,6 +118,13 @@ public class ProteinControllerTest {
         GeneCoordinate gc5 = ModelCreationUtils.createGeneCoordinateObject(uuid + 5);
         protein.setGeneCoordinates(Arrays.asList(gc1, gc2, gc3, gc4, gc5));
 
+        // create few publications
+        Publication pb1 = ModelCreationUtils.createPublicationObject(this.uuid + 1);
+        Publication pb2 = ModelCreationUtils.createPublicationObject(this.uuid + 2);
+        Publication pb3 = ModelCreationUtils.createPublicationObject(this.uuid + 3);
+        Publication pb4 = ModelCreationUtils.createPublicationObject(this.uuid + 4);
+        protein.setPublications(Arrays.asList(pb1, pb2, pb3, pb4));
+
         Mockito.when(this.proteinService.getProteinByAccession(accession)).thenReturn(Optional.of(protein));
 
         ResultActions res = this.mockMvc.
@@ -137,7 +144,10 @@ public class ProteinControllerTest {
                 .andExpect(jsonPath("$.result.interactions.length()", equalTo(protein.getInteractions().size())))
                 .andExpect(jsonPath("$.result.variants.length()", equalTo(protein.getVariants().size())))
                 .andExpect(jsonPath("$.result.diseases.length()", equalTo(protein.getDiseases().size())))
-                .andExpect(jsonPath("$.result.geneCoordinates.length()", equalTo(protein.getGeneCoordinates().size())));
+                .andExpect(jsonPath("$.result.geneCoordinates.length()", equalTo(protein.getGeneCoordinates().size())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications.length()", Matchers.equalTo(4)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications[*].type", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications[*].id", Matchers.notNullValue()));
     }
 
     @Test

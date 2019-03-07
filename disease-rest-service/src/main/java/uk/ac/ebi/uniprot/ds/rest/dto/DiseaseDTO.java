@@ -23,6 +23,7 @@ public class DiseaseDTO {
     private List<String> synonyms;
     private List<String> proteins;
     private List<String> variants;
+    private List<PublicationDTO> publications;
 
     @Getter
     @Setter

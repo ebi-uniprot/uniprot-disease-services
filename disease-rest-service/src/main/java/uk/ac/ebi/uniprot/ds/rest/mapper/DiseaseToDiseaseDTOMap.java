@@ -20,6 +20,7 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
         using(new SynonymsToNames()).map(source.getSynonyms()).setSynonyms(null);
         using(new VariantsToFeatureIdsConverter()).map(source.getVariants()).setVariants(null);
         using(new DiseasesToParentDiseaseDTOs()).map(source.getParents()).setParents(null);
+        using(new PublicationsToPublicationDTOs()).map(source.getPublications()).setPublications(null);
     }
 
     private class DiseasesToParentDiseaseDTOs implements Converter<List<Disease>, List<DiseaseDTO.ParentDiseaseDTO>>{
