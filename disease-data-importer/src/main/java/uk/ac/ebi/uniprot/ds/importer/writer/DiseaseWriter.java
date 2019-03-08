@@ -57,6 +57,9 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
                 pDisease = optDisease.get();
                 pDisease.setDiseaseId(disease.getDiseaseId());
                 pDisease.getProteins().add(protein);
+                pDisease.setPublications(disease.getPublications());
+                // update the disease to the pubs
+                pDisease.getPublications().stream().forEach(pub -> pub.setDisease(pDisease));
             } else {
                 List<Protein> proteins = new ArrayList<>();
                 proteins.add(protein);
