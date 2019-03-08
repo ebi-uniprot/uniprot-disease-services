@@ -20,7 +20,6 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Protein extends BaseEntity {
 
     private static final long serialVersionUID = -6896338892189706610L;

@@ -1,0 +1,105 @@
+/*
+ * Created by sahmad on 07/02/19 10:56
+ * UniProt Consortium.
+ * Copyright (c) 2002-2019.
+ *
+ */
+
+package uk.ac.ebi.uniprot.ds.common.dao;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.ac.ebi.uniprot.ds.common.model.*;
+
+import java.util.*;
+import java.util.stream.IntStream;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+public class DrugDAOTest {
+    @Autowired
+    private DrugDAO drugDAO;
+    @Autowired
+    private ProteinDAO proteinDAO;
+    private Drug drug;
+    private Protein protein;
+    private String uuid;
+
+    @BeforeEach
+    void setUp(){
+        this.uuid = UUID.randomUUID().toString();
+    }
+
+    @AfterEach
+    void cleanUp(){
+        if(this.drug != null){
+            this.drugDAO.deleteById(this.drug.getId());
+            this.drug = null;
+        }
+
+        if(this.protein != null){
+            this.proteinDAO.deleteById(this.protein.getId());
+            this.protein = null;
+        }
+    }
+
+    @Test
+    void createDrug(){
+        this.drug = createDrugObject(this.uuid, null);
+        this.drugDAO.save(this.drug);
+        // get the drug and verify
+        Optional<Drug> optDrug = this.drugDAO.findById(this.drug.getId());
+        assertTrue(optDrug.isPresent());
+        verifyDrug(this.drug, optDrug.get());
+    }
+
+    @Test
+    void testCreateDrugWithProteinXRef(){
+        // create protein with protein xref
+        this.protein = ProteinTest.createProteinObject(this.uuid);
+        ProteinCrossRef xref = ProteinCrossRefTest.createProteinCrossRefObject(this.uuid);
+        xref.setProtein(protein);
+        protein.setProteinCrossRefs(Arrays.asList(xref));
+        this.proteinDAO.save(protein);
+
+        // create a drug with protein xref
+        this.drug = createDrugObject(this.uuid, xref);
+        this.drugDAO.save(this.drug);
+        // get the drug
+        Optional<Drug> optDrug = this.drugDAO.findById(this.drug.getId());
+        assertTrue(optDrug.isPresent());
+        verifyDrug(this.drug, optDrug.get());
+        assertEquals(this.drug.getProteinCrossRef().getId(), optDrug.get().getProteinCrossRef().getId());
+    }
+
+    private void verifyDrug(Drug actual, Drug expected) {
+        assertEquals(actual.getId(), expected.getId());
+        assertEquals(actual.getName(), expected.getName());
+        assertEquals(actual.getSourceType(), expected.getSourceType());
+        assertEquals(actual.getSourceId(), expected.getSourceId());
+        assertEquals(actual.getMoleculeType(), expected.getMoleculeType());
+        assertEquals(actual.getCreatedAt(), expected.getCreatedAt());
+        assertEquals(actual.getUpdatedAt(), expected.getUpdatedAt());
+    }
+
+    public static Drug createDrugObject(String rand, ProteinCrossRef xref){
+        Drug.DrugBuilder bl = Drug.builder();
+        String name = "Name-" + rand;
+        String sourceType = "type-" + rand;
+        String sourceid = "id-" + rand;
+        String moleculeType = "mol-" + rand;
+        bl.name(name).sourceType(sourceType).sourceId(sourceid);
+        bl.moleculeType(moleculeType).proteinCrossRef(xref);
+        return bl.build();
+    }
+
+}

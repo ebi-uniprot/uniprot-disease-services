@@ -9,6 +9,7 @@ package uk.ac.ebi.uniprot.ds.common.model;
 
 import lombok.*;
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "ds_protein_cross_ref")
@@ -17,7 +18,6 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class ProteinCrossRef extends BaseEntity {
 
     private static final long serialVersionUID = -5081945044878223589L;
@@ -42,4 +42,7 @@ public class ProteinCrossRef extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "ds_protein_id")
     private Protein protein;
+
+    @OneToMany(mappedBy = "proteinCrossRef", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Drug> drugs;
 }
