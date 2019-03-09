@@ -14,7 +14,12 @@ public class Constants {
     public static final String DS_GENE_COORD_LOADER_STEP = "DS_GENE_COORD_LOADER_STEP";
     public static final String DS_DISEASE_ONTOLOGY_LOADER_STEP = "DS_DISEASE_ONTOLOGY_LOADER_STEP";
     public static final String DS_DISEASE_ONTOLOGY_SYNONYM_LOADER_STEP = "DS_DISEASE_ONTOLOGY_SYNONYM_LOADER_STEP";
+    public static final String DS_DRUG_LOADER_STEP = "DS_DRUG_LOADER_STEP";
     public static final String DISEASE_ONTOLOGY = "Disease Ontology";
     public static final String TAB = "\t";
+    public static final String NAME_STR = "name";
+    public static final String SOURCE_ID_STR = "source_id";
+    public static final String MOLECULE_TYPE_STR = "molecule_type";
+    public static final String ChEMBL_STR = "ChEMBL";
     private Constants(){}
 }

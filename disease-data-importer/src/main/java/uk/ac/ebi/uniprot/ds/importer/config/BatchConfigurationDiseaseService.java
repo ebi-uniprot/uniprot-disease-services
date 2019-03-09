@@ -25,7 +25,8 @@ import uk.ac.ebi.uniprot.ds.importer.util.Constants;
 public class BatchConfigurationDiseaseService {
     @Bean
     public Job importUniProtDataJob(JobBuilderFactory jobBuilderFactory, JobExecutionListener jobExecutionListener,
-                                    Step humDiseaseStep, Step uniProtStep, Step geneCoordsLoad, Step doLoad, Step doSynLoad) {
+                                    Step humDiseaseStep, Step uniProtStep, Step geneCoordsLoad,
+                                    Step doLoad, Step doSynLoad, Step chDrugLoad) {
 
         return jobBuilderFactory.get(Constants.DISEASE_SERVICE_DATA_LOADER)
                 .incrementer(new RunIdIncrementer())
@@ -34,6 +35,7 @@ public class BatchConfigurationDiseaseService {
                 .next(geneCoordsLoad)// load gene co-ordinates
                 .next(doSynLoad)// load synonyms from Disease Ontology
                 .next(doLoad)// create parents children relationship
+                .next(chDrugLoad)
                 .listener(jobExecutionListener)
                 .build();
     }
