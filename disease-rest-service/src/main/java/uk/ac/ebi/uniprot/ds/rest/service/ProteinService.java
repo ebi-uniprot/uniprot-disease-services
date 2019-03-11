@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.common.dao.ProteinDAO;
+import uk.ac.ebi.uniprot.ds.common.model.Interaction;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
@@ -20,6 +21,7 @@ import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProteinService {
@@ -66,6 +68,13 @@ public class ProteinService {
         return proteinCrossRefs;
     }
 
-
-
+    public List<Interaction> getProteinInteractions(String accession){
+        Optional<Protein> optProtein = getProteinByAccession(accession);
+        List<Interaction> interactions = optProtein
+                                        .get()
+                                        .getInteractions()
+                                        .stream().filter(intrxn -> !intrxn.getType().equals("SELF"))
+                                        .collect(Collectors.toList());
+        return interactions;
+    }
 }

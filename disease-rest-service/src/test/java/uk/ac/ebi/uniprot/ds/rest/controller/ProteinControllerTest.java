@@ -30,6 +30,7 @@ import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -167,5 +168,33 @@ public class ProteinControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.hasError", Matchers.equalTo(true)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage", Matchers.startsWith("Unable to find the accession")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errorCode", Matchers.equalTo(404)));
+    }
+
+    @Test
+    public void testGetProteinInteractions() throws Exception {
+
+        String a1 = "ACC1-"+ uuid;
+        Interaction int1 = ModelCreationUtils.createInteractionObject(uuid + 1);
+        Interaction int2 = ModelCreationUtils.createInteractionObject(uuid + 2);
+        Interaction int3 = ModelCreationUtils.createInteractionObject(uuid + 3);
+        List<Interaction> ints = Arrays.asList(int1, int2, int3);
+
+        Mockito.when(this.proteinService.getProteinInteractions(a1)).thenReturn(ints);
+
+        ResultActions res = this.mockMvc.
+                perform(MockMvcRequestBuilders.get("/v1/ds/protein/" + a1 + "/interactions").param("accession", a1));
+
+        res.andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.requestId", notNullValue()))
+                .andExpect(jsonPath("$.hasError", equalTo(false)))
+                .andExpect(jsonPath("$.warnings", nullValue()))
+                .andExpect(jsonPath("$.results", notNullValue()))
+                .andExpect(jsonPath("$.results.length()", equalTo(ints.size())))
+                .andExpect(jsonPath("$.results[*].type", notNullValue()))
+                .andExpect(jsonPath("$.results[*].accession", notNullValue()))
+                .andExpect(jsonPath("$.results[*].gene", notNullValue()))
+                .andExpect(jsonPath("$.results[*].experimentCount", notNullValue()))
+                .andExpect(jsonPath("$.results[*].firstInteractor", notNullValue()))
+                .andExpect(jsonPath("$.results[*].secondInteractor", notNullValue()));
     }
 }

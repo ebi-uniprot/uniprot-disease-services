@@ -16,12 +16,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.ac.ebi.uniprot.ds.common.model.Interaction;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
-import uk.ac.ebi.uniprot.ds.rest.dto.ProteinCrossRefDTO;
-import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDTO;
-import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDiseasesDTO;
-import uk.ac.ebi.uniprot.ds.rest.dto.ProteinWithCrossRefsDTO;
+import uk.ac.ebi.uniprot.ds.rest.dto.*;
 import uk.ac.ebi.uniprot.ds.rest.filter.RequestCorrelation;
 import uk.ac.ebi.uniprot.ds.rest.response.MultipleEntityResponse;
 import uk.ac.ebi.uniprot.ds.rest.response.SingleEntityResponse;
@@ -84,6 +82,14 @@ public class ProteinController {
         return resp;
     }
 
+    @GetMapping(value={"/protein/{accession}/interactions"}, name = "Get the protein interactions for a given accession")
+    public MultipleEntityResponse<InteractionDTO> getProteinInteractions(@PathVariable(name = "accession") String accession) {
+        String requestId = RequestCorrelation.getCorrelationId();
+        List<Interaction> interactions = this.proteinService.getProteinInteractions(accession);
+        List<InteractionDTO> dtoList = toInteractionDTOList(interactions);
+        return new MultipleEntityResponse<>(requestId, dtoList);
+    }
+
     private ProteinDTO convertToDTO(Protein protein) {
         ProteinDTO proteinDTO = modelMapper.map(protein, ProteinDTO.class);
         return proteinDTO;
@@ -100,6 +106,12 @@ public class ProteinController {
     private List<ProteinCrossRefDTO> toProteinCrossRefDTOList(List<ProteinCrossRef> xrefs){
         List<ProteinCrossRefDTO> dtoList = modelMapper.map(xrefs,
                 new TypeToken<List<ProteinCrossRefDTO>>(){}.getType());
+        return dtoList;
+    }
+
+    private List<InteractionDTO> toInteractionDTOList(List<Interaction> intrxn){
+        List<InteractionDTO> dtoList = modelMapper.map(intrxn,
+                new TypeToken<List<InteractionDTO>>(){}.getType());
         return dtoList;
     }
 }
