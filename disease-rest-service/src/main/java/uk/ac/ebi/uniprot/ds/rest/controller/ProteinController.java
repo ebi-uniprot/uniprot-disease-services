@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDTO;
 import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDiseasesDTO;
@@ -74,6 +75,15 @@ public class ProteinController {
         return resp;
     }
 
+    @GetMapping(value={"/protein/{accession}/diseases"}, name = "Get the diseases for a given accession")
+    public SingleEntityResponse<ProteinDiseasesDTO> getProteinDiseases(@PathVariable(name = "accession") String accession) {
+        String requestId = RequestCorrelation.getCorrelationId();
+        Optional<Protein> optProtein = this.proteinService.getProteinByAccession(accession);
+        ProteinDiseasesDTO dto = toProteinDiseasesDTO(optProtein.orElse(new Protein()));
+        SingleEntityResponse<ProteinDiseasesDTO> resp = new SingleEntityResponse<>(requestId, false, null, dto);
+        return resp;
+    }
+
     private ProteinDTO convertToDTO(Protein protein) {
         ProteinDTO proteinDTO = modelMapper.map(protein, ProteinDTO.class);
         return proteinDTO;
@@ -85,5 +95,10 @@ public class ProteinController {
 
     private List<ProteinDiseasesDTO> toProteinDiseasesDTOList(List<Protein> from){
         return this.modelMapper.map(from, new TypeToken<List<ProteinDiseasesDTO>>(){}.getType());
+    }
+
+    private ProteinDiseasesDTO toProteinDiseasesDTO(Protein protein){
+        ProteinDiseasesDTO proteinDiseasesDTO = modelMapper.map(protein, ProteinDiseasesDTO.class);
+        return proteinDiseasesDTO;
     }
 }
