@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.common.dao.ProteinDAO;
+import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.common.model.Variant;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
@@ -28,6 +29,8 @@ public class VariantService {
 
     @Autowired
     private ProteinDAO proteinDAO;
+    @Autowired
+    private DiseaseService diseaseService;
 
     public List<Variant> getVariantsByAccession(String accession){
 
@@ -41,6 +44,12 @@ public class VariantService {
             variants = protein.get().getVariants();
         }
 
+        return variants;
+    }
+
+    public List<Variant> getVariantsByDiseaseId(String diseaseId) {
+        Optional<Disease> optDisease = this.diseaseService.findByDiseaseId(diseaseId);
+        List<Variant> variants = optDisease.get().getVariants();
         return variants;
     }
 }

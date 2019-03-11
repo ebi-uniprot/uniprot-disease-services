@@ -14,12 +14,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
-import uk.ac.ebi.uniprot.ds.common.dao.ProteinDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +27,7 @@ public class DiseaseService {
     @Autowired
     private DiseaseDAO diseaseDAO;
     @Autowired
-    private ProteinDAO proteinDAO;
+    private ProteinService proteinService;
 
     @Transactional
     public Disease createUpdateDisease(String diseaseId, String diseaseName, String description, String acronym){
@@ -91,11 +89,8 @@ public class DiseaseService {
     }
 
     public List<Disease> getDiseasesByProteinAccession(String accession) {
-        List<Disease> diseases = new ArrayList<>();
-        Optional<Protein> optProtein = this.proteinDAO.findProteinByAccession(accession);
-        if(optProtein.isPresent()){
-            diseases = optProtein.get().getDiseases();
-        }
+        Optional<Protein> optProtein = this.proteinService.getProteinByAccession(accession);
+        List<Disease> diseases = optProtein.get().getDiseases();
         return diseases;
     }
 }

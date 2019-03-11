@@ -90,6 +90,14 @@ public class ProteinController {
         return new MultipleEntityResponse<>(requestId, dtoList);
     }
 
+    @GetMapping(value = {"/disease/{diseaseId}/proteins"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public MultipleEntityResponse<ProteinDTO> getProteinsByDiseaseId(@PathVariable("diseaseId") String diseaseId){
+        String requestId = RequestCorrelation.getCorrelationId();
+        List<Protein> proteins = this.proteinService.getProteinsByDiseaseId(diseaseId);
+        List<ProteinDTO> dtoList = toProteinDTOList(proteins);
+        return new MultipleEntityResponse<>(requestId, dtoList) ;
+    }
+
     private ProteinDTO convertToDTO(Protein protein) {
         ProteinDTO proteinDTO = modelMapper.map(protein, ProteinDTO.class);
         return proteinDTO;
@@ -112,6 +120,12 @@ public class ProteinController {
     private List<InteractionDTO> toInteractionDTOList(List<Interaction> intrxn){
         List<InteractionDTO> dtoList = modelMapper.map(intrxn,
                 new TypeToken<List<InteractionDTO>>(){}.getType());
+        return dtoList;
+    }
+
+    private List<ProteinDTO> toProteinDTOList(List<Protein> proteins){
+        List<ProteinDTO> dtoList = modelMapper.map(proteins,
+                new TypeToken<List<ProteinDTO>>(){}.getType());
         return dtoList;
     }
 }

@@ -52,6 +52,21 @@ public class VariantController {
         return resp;
     }
 
+    @GetMapping(value = {"/disease/{diseaseId}/variants"}, name = "Get the variants for the given diseaseId",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public MultipleEntityResponse<VariantDTO> getVariantsByDiseaseId(@PathVariable("diseaseId") String diseaseId){
+
+        String requestId = RequestCorrelation.getCorrelationId();
+
+        List<Variant> variants = this.variantService.getVariantsByDiseaseId(diseaseId);
+
+        List<VariantDTO> dtos = toVariantDTOList(variants);
+
+        MultipleEntityResponse<VariantDTO> resp = new MultipleEntityResponse<>(requestId, dtos);
+
+        return resp;
+    }
+
     private List<VariantDTO> toVariantDTOList(List<Variant> from){
         return this.modelMapper.map(from, new TypeToken<List<VariantDTO>>(){}.getType());
     }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.common.dao.ProteinDAO;
+import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Interaction;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
@@ -29,6 +30,8 @@ public class ProteinService {
 
     @Autowired
     private ProteinDAO proteinDAO;
+    @Autowired
+    private DiseaseService diseaseService;
 
     @Transactional
     public Protein createProtein(String proteinId, String proteinName, String accession, String gene, String description){
@@ -76,5 +79,11 @@ public class ProteinService {
                                         .stream().filter(intrxn -> !intrxn.getType().equals("SELF"))
                                         .collect(Collectors.toList());
         return interactions;
+    }
+
+    public List<Protein> getProteinsByDiseaseId(String diseaseId) {
+        Optional<Disease> optDisease = this.diseaseService.findByDiseaseId(diseaseId);
+        List<Protein> proteins = optDisease.get().getProteins();
+        return proteins;
     }
 }
