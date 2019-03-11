@@ -4,8 +4,10 @@ import org.modelmapper.Converter;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.common.model.Synonym;
+import uk.ac.ebi.uniprot.ds.rest.dto.BasicDrugDTO;
 import uk.ac.ebi.uniprot.ds.rest.dto.DiseaseDTO;
 
 import java.util.List;
@@ -21,6 +23,33 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
         using(new VariantsToFeatureIdsConverter()).map(source.getVariants()).setVariants(null);
         using(new DiseasesToParentDiseaseDTOs()).map(source.getParents()).setParents(null);
         using(new PublicationsToPublicationDTOs()).map(source.getPublications()).setPublications(null);
+        using(new ProteinsToDrugs()).map(source.getProteins()).setDrugs(null);
+    }
+
+    private class ProteinsToDrugs implements Converter<List<Protein>, List<BasicDrugDTO>> {
+
+        @Override
+        public List<BasicDrugDTO> convert(MappingContext<List<Protein>, List<BasicDrugDTO>> context) {
+            List<Protein> proteins = context.getSource();
+            List<BasicDrugDTO> drugs = null;
+
+            if(proteins != null){
+                // get the drugs from protein --> protein xref --> drug --> basicdrugdto
+                drugs = proteins
+                        .stream()
+                        .filter(p -> p.getProteinCrossRefs() != null && !p.getProteinCrossRefs().isEmpty())
+                        .map(p -> p.getProteinCrossRefs())
+                        .flatMap(List::stream)
+                        .filter(xref -> xref.getDrugs() != null && !xref.getDrugs().isEmpty())
+                        .map(xref -> xref.getDrugs())
+                        .flatMap(List::stream)
+                        .map(d -> new BasicDrugDTO(d.getName(), d.getProteinCrossRef().getId()))
+                        .collect(Collectors.toList());
+
+            }
+
+            return drugs;
+        }
     }
 
     private class DiseasesToParentDiseaseDTOs implements Converter<List<Disease>, List<DiseaseDTO.ParentDiseaseDTO>>{

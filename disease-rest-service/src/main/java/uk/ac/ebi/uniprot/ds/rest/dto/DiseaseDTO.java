@@ -24,6 +24,7 @@ public class DiseaseDTO {
     private List<String> proteins;
     private List<String> variants;
     private List<PublicationDTO> publications;
+    private List<BasicDrugDTO> drugs;
 
     @Getter
     @Setter
