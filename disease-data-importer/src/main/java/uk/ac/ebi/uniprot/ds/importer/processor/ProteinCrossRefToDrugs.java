@@ -51,16 +51,16 @@ public class ProteinCrossRefToDrugs implements ItemProcessor<ProteinCrossRef, Li
     private List<Drug> getDrugs(ProteinCrossRef xref) throws SQLException {
         String chEMBLProteinId = xref.getPrimaryId().trim();
         this.pStat.setString(1, chEMBLProteinId);
-        ResultSet result = this.pStat.executeQuery();
         List<Drug> drugs = new ArrayList<>();
-        
-        while(result.next()){
-            Drug.DrugBuilder bldr = Drug.builder();
-            bldr.sourceType(Constants.ChEMBL_STR).sourceId(result.getString(Constants.SOURCE_ID_STR));
-            bldr.name(result.getString(Constants.NAME_STR));
-            bldr.moleculeType(result.getString(Constants.MOLECULE_TYPE_STR));
-            bldr.proteinCrossRef(xref);
-            drugs.add(bldr.build());
+        try (ResultSet result = this.pStat.executeQuery()) {
+            while (result.next()) {
+                Drug.DrugBuilder bldr = Drug.builder();
+                bldr.sourceType(Constants.ChEMBL_STR).sourceId(result.getString(Constants.SOURCE_ID_STR));
+                bldr.name(result.getString(Constants.NAME_STR));
+                bldr.moleculeType(result.getString(Constants.MOLECULE_TYPE_STR));
+                bldr.proteinCrossRef(xref);
+                drugs.add(bldr.build());
+            }
         }
 
         return drugs;
