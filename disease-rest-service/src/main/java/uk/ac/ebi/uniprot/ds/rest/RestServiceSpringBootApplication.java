@@ -16,10 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.filter.OncePerRequestFilter;
 import uk.ac.ebi.uniprot.ds.rest.filter.CorrelationHeaderFilter;
-import uk.ac.ebi.uniprot.ds.rest.mapper.DiseaseToDiseaseDTOMap;
-import uk.ac.ebi.uniprot.ds.rest.mapper.ProteinToProteinDTOMap;
-import uk.ac.ebi.uniprot.ds.rest.mapper.ProteinToProteinDiseasesDTOMap;
-import uk.ac.ebi.uniprot.ds.rest.mapper.ProteinToProteinCrossRefsDTOMap;
+import uk.ac.ebi.uniprot.ds.rest.mapper.*;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -44,6 +41,7 @@ public class RestServiceSpringBootApplication {
         modelMapper.addMappings(new ProteinToProteinDTOMap());
         modelMapper.addMappings(new ProteinToProteinCrossRefsDTOMap());
         modelMapper.addMappings(new ProteinToProteinDiseasesDTOMap());
+        modelMapper.addMappings(new VariantToVariantDTOMap());
         return modelMapper;
     }
 

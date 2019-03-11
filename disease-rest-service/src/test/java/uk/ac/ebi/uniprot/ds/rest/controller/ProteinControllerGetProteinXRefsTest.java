@@ -27,6 +27,7 @@ import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.RestServiceSpringBootApplication;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
+import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
 import java.util.ArrayList;
@@ -52,6 +53,9 @@ public class ProteinControllerGetProteinXRefsTest {
 
     @MockBean
     private DiseaseService diseaseService;
+
+    @MockBean
+    private VariantService variantService;
 
     @Test
     public void testNonExistentAccessions() throws Exception {

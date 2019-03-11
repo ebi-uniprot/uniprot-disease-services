@@ -24,6 +24,7 @@ import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.rest.DataSourceTestConfig;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
+import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
 import java.util.*;
@@ -47,6 +48,9 @@ public class DiseaseControllerSearchTest {
 
     @MockBean
     private ProteinService proteinService;
+
+    @MockBean
+    private VariantService variantService;
 
     @Test
     public void testSearchDisease() throws Exception {

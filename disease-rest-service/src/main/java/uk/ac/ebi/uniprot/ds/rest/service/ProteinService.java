@@ -38,12 +38,6 @@ public class ProteinService {
         return protein;
     }
 
-    @Transactional
-    public Protein createProtein(Protein protein){
-        this.proteinDAO.save(protein);
-        return protein;
-    }
-
     public Optional<Protein> getProteinByProteinId(String proteinId){
         return this.proteinDAO.findByProteinId(proteinId);
     }
@@ -54,11 +48,6 @@ public class ProteinService {
             throw new AssetNotFoundException("Unable to find the accession '" + accession + "'.");
         }
         return optProtein;
-    }
-
-    @Transactional
-    public List<Protein> saveAll(List<Protein> proteins){
-        return this.proteinDAO.saveAll(proteins);
     }
 
     public List<Protein> getAllProteinsByAccessions(List<String> accessions){

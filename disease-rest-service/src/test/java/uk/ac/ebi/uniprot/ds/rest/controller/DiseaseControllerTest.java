@@ -30,6 +30,7 @@ import uk.ac.ebi.uniprot.ds.rest.DataSourceTestConfig;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
+import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
 import java.util.Arrays;
@@ -51,6 +52,9 @@ public class DiseaseControllerTest {
 
     @MockBean
     private ProteinService proteinService;
+
+    @MockBean
+    private VariantService variantService;
 
     @Test
     public void testGetDisease() throws Exception {

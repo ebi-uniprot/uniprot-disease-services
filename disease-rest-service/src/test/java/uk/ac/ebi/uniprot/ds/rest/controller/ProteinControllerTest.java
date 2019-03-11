@@ -26,6 +26,7 @@ import uk.ac.ebi.uniprot.ds.rest.RestServiceSpringBootApplication;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
+import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
 import java.util.Arrays;
@@ -49,6 +50,9 @@ public class ProteinControllerTest {
 
     @MockBean
     private DiseaseService diseaseService;
+
+    @MockBean
+    private VariantService variantService;
 
     @Test
     public void testGetProtein() throws Exception {
