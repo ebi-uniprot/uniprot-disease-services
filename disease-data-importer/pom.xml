@@ -23,8 +23,8 @@
         <!-- ojdbc7.jar example -->
         <dependency>
             <groupId>com.oracle</groupId>
-            <artifactId>ojdbc7</artifactId>
-            <version>12.1.0</version>
+            <artifactId>${ojdbc.artifactid}</artifactId>
+            <version>${ojdbc.version}</version>
         </dependency>
         <dependency>
             <groupId>uk.ac.ebi.uniprot</groupId>
@@ -140,5 +140,7 @@
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
         <eclipselink.version>2.7.1</eclipselink.version>
         <spring.profiles.active>dev</spring.profiles.active>
+        <ojdbc.version>12.1.0</ojdbc.version>
+        <ojdbc.artifactid>ojdbc7</ojdbc.artifactid>
     </properties>
 </project>
