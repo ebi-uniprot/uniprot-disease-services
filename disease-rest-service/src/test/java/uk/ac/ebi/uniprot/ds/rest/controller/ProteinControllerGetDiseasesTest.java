@@ -157,32 +157,5 @@ public class ProteinControllerGetDiseasesTest {
                 .andExpect(jsonPath("$.errorMessage", equalTo("The total count of accessions passed must be between 1 and 200 both inclusive.")));
     }
 
-    @Test
-    public void testGetDiseasesByAccession() throws Exception {
 
-        Protein p1 = ModelCreationUtils.createProteinObject(uuid + 1);
-        String a1 = "ACC1-"+ uuid;
-        p1.setAccession(a1);
-        Disease d1 = ModelCreationUtils.createDiseaseObject(uuid + 1);
-        Disease d2 = ModelCreationUtils.createDiseaseObject(uuid + 2);
-        Disease d3 = ModelCreationUtils.createDiseaseObject(uuid + 3);
-        p1.setDiseases(Arrays.asList(d1, d2, d3));
-
-        Mockito.when(this.proteinService.getProteinByAccession(a1)).thenReturn(Optional.of(p1));
-        ResultActions res = this.mockMvc.
-                perform(MockMvcRequestBuilders.get("/v1/ds/protein/" + a1 + "/diseases").param("accession", a1));
-
-        res.andDo(MockMvcResultHandlers.print())
-                .andExpect(jsonPath("$.requestId", notNullValue()))
-                .andExpect(jsonPath("$.hasError", equalTo(false)))
-                .andExpect(jsonPath("$.warnings", nullValue()))
-                .andExpect(jsonPath("$.result", notNullValue()))
-                .andExpect(jsonPath("$.result.accession", equalTo(a1)))
-                .andExpect(jsonPath("$.result.proteinId", equalTo(p1.getProteinId())))
-                .andExpect(jsonPath("$.result.proteinName", equalTo(p1.getName())))
-                .andExpect(jsonPath("$.result.gene", equalTo(p1.getGene())))
-                .andExpect(jsonPath("$.result.diseases.length()", equalTo(p1.getDiseases().size())))
-                .andExpect(jsonPath("$.result.diseases[*].diseaseId", notNullValue()))
-                .andExpect(jsonPath("$.result.diseases[*].acronym", notNullValue()));
-    }
 }

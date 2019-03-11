@@ -32,7 +32,7 @@ public class ProteinToProteinCrossRefsDTOTest {
     @Test
     public void testProteinToProteinXRefsDTOWithoutXRefs() {
         Protein p = ModelCreationUtils.createProteinObject(uuid);
-        ProteinCrossRefsDTO dto = modelMapper.map(p, ProteinCrossRefsDTO.class);
+        ProteinWithCrossRefsDTO dto = modelMapper.map(p, ProteinWithCrossRefsDTO.class);
         verifyDTO(p, dto);
         Assert.assertNull(dto.getXrefs());
     }
@@ -46,12 +46,12 @@ public class ProteinToProteinCrossRefsDTOTest {
         ProteinCrossRef p3 = ModelCreationUtils.createProteinXRefObject(uuid + 3);
         pP.setProteinCrossRefs(Arrays.asList(p1, p2, p3));
 
-        ProteinCrossRefsDTO dto = modelMapper.map(pP, ProteinCrossRefsDTO.class);
+        ProteinWithCrossRefsDTO dto = modelMapper.map(pP, ProteinWithCrossRefsDTO.class);
         verifyDTO(pP, dto);
         Assert.assertEquals(pP.getProteinCrossRefs().size(), dto.getXrefs().size());
     }
 
-    private void verifyDTO(Protein p, ProteinCrossRefsDTO dto) {
+    private void verifyDTO(Protein p, ProteinWithCrossRefsDTO dto) {
         Assert.assertEquals(p.getProteinId(), dto.getProteinId());
         Assert.assertEquals(p.getName(), dto.getProteinName());
         Assert.assertEquals(p.getAccession(), dto.getAccession());

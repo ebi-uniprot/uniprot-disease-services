@@ -85,7 +85,7 @@ public class ModelCreationUtils {
         String t = "T-" + uuid;
         String f = "F-" + uuid;
         crossRef.setPrimaryId(pId);
-        crossRef.setDesc(desc);
+        crossRef.setDescription(desc);
         crossRef.setDbType(type);
         crossRef.setIsoformId(iid);
         crossRef.setThird(t);

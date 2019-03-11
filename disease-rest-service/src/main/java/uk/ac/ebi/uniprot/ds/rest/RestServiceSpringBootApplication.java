@@ -39,7 +39,7 @@ public class RestServiceSpringBootApplication {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.addMappings(new DiseaseToDiseaseDTOMap());
         modelMapper.addMappings(new ProteinToProteinDTOMap());
-        modelMapper.addMappings(new ProteinToProteinCrossRefsDTOMap());
+        modelMapper.addMappings(new ProteinToProteinWithCrossRefsDTOMap());
         modelMapper.addMappings(new ProteinToProteinDiseasesDTOMap());
         modelMapper.addMappings(new VariantToVariantDTOMap());
         return modelMapper;

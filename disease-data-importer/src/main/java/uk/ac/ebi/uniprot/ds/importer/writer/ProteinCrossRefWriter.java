@@ -46,7 +46,7 @@ public class ProteinCrossRefWriter implements ItemWriter<UniProtEntry> {
         for (DatabaseCrossReference dbXR : dbXRefs) {
             ProteinCrossRef.ProteinCrossRefBuilder builder = ProteinCrossRef.builder();
             builder.primaryId(dbXR.getPrimaryId().getValue());
-            builder.desc(dbXR.getDescription().getValue());
+            builder.description(dbXR.getDescription().getValue());
             builder.third(dbXR.getThird() != null ? dbXR.getThird().getValue() : null);
             builder.fourth(dbXR.getFourth() != null ? dbXR.getFourth().getValue() : null);
             builder.dbType(dbXR.getDatabase().getName());

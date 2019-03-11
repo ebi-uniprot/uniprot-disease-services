@@ -17,21 +17,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.common.model.Variant;
-import uk.ac.ebi.uniprot.ds.rest.dto.ProteinCrossRefsDTO;
-import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDTO;
-import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDiseasesDTO;
 import uk.ac.ebi.uniprot.ds.rest.dto.VariantDTO;
 import uk.ac.ebi.uniprot.ds.rest.filter.RequestCorrelation;
 import uk.ac.ebi.uniprot.ds.rest.response.MultipleEntityResponse;
-import uk.ac.ebi.uniprot.ds.rest.response.SingleEntityResponse;
-import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
 
-import javax.validation.constraints.Size;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/ds")

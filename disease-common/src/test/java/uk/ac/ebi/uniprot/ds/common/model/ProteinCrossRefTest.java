@@ -78,7 +78,7 @@ public class ProteinCrossRefTest extends BaseTest {
         String t = "T-" + uuid;
         String f = "F-" + uuid;
         proteinCrossRef.setPrimaryId(pId);
-        proteinCrossRef.setDesc(desc);
+        proteinCrossRef.setDescription(desc);
         proteinCrossRef.setDbType(type);
         proteinCrossRef.setIsoformId(iid);
         proteinCrossRef.setThird(t);

@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.common.dao.ProteinDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
+import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +55,15 @@ public class ProteinService {
     public List<Protein> getAllProteinsByAccessions(List<String> accessions){
         List<Protein> proteins = this.proteinDAO.getProteinsByAccessions(accessions);
         return proteins;
+    }
+
+    public List<ProteinCrossRef> getProteinCrossRefsByAccession(String accession){
+        Optional<Protein> optProtein = this.proteinDAO.findProteinByAccession(accession);
+        List<ProteinCrossRef> proteinCrossRefs = new ArrayList<>();
+        if(optProtein.isPresent()){
+            proteinCrossRefs = optProtein.get().getProteinCrossRefs();
+        }
+        return proteinCrossRefs;
     }
 
 

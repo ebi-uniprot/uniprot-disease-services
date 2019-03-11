@@ -155,15 +155,13 @@ public class ProteinControllerGetProteinXRefsTest {
     @Test
     public void testGetOneProteinXRefs() throws Exception {
 
-        Protein p1 = ModelCreationUtils.createProteinObject(uuid + 1);
         String a1 = "ACC1-"+ uuid;
-        p1.setAccession(a1);
         ProteinCrossRef pt1 = ModelCreationUtils.createProteinXRefObject(uuid + 1);
         ProteinCrossRef pt2 = ModelCreationUtils.createProteinXRefObject(uuid + 2);
         ProteinCrossRef pt3 = ModelCreationUtils.createProteinXRefObject(uuid + 3);
-        p1.setProteinCrossRefs(Arrays.asList(pt1, pt2, pt3));
+        List<ProteinCrossRef> xrefs = Arrays.asList(pt1, pt2, pt3);
 
-        Mockito.when(this.proteinService.getProteinByAccession(a1)).thenReturn(Optional.of(p1));
+        Mockito.when(this.proteinService.getProteinCrossRefsByAccession(a1)).thenReturn(xrefs);
 
         ResultActions res = this.mockMvc.
                 perform(MockMvcRequestBuilders.get("/v1/ds/protein/" + a1 + "/xrefs").param("accession", a1));
@@ -172,14 +170,10 @@ public class ProteinControllerGetProteinXRefsTest {
                 .andExpect(jsonPath("$.requestId", notNullValue()))
                 .andExpect(jsonPath("$.hasError", equalTo(false)))
                 .andExpect(jsonPath("$.warnings", nullValue()))
-                .andExpect(jsonPath("$.result", notNullValue()))
-                .andExpect(jsonPath("$.result.accession", notNullValue()))
-                .andExpect(jsonPath("$.result.proteinId", notNullValue()))
-                .andExpect(jsonPath("$.result.proteinName", notNullValue()))
-                .andExpect(jsonPath("$.result.gene", notNullValue()))
-                .andExpect(jsonPath("$.result.xrefs.length()", equalTo(p1.getProteinCrossRefs().size())))
-                .andExpect(jsonPath("$.result.xrefs[*].primaryId", notNullValue()))
-                .andExpect(jsonPath("$.result.xrefs[*].description", notNullValue()))
-                .andExpect(jsonPath("$.result.xrefs[*].dbType", notNullValue()));
+                .andExpect(jsonPath("$.results", notNullValue()))
+                .andExpect(jsonPath("$.results.length()", equalTo(xrefs.size())))
+                .andExpect(jsonPath("$.results[*].primaryId", notNullValue()))
+                .andExpect(jsonPath("$.results[*].dbType", notNullValue()))
+                .andExpect(jsonPath("$.results[*].description", notNullValue()));
     }
 }

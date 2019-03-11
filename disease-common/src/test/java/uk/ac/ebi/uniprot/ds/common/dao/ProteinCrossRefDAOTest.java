@@ -98,7 +98,7 @@ public class ProteinCrossRefDAOTest {
     private void verifyCrossRef(ProteinCrossRef actual, ProteinCrossRef expected) {
         assertEquals(actual.getId(), expected.getId());
         assertEquals(actual.getPrimaryId(), expected.getPrimaryId());
-        assertEquals(actual.getDesc(), expected.getDesc());
+        assertEquals(actual.getDescription(), expected.getDescription());
         assertEquals(actual.getDbType(), expected.getDbType());
         assertEquals(actual.getIsoformId(), expected.getIsoformId());
         assertEquals(actual.getThird(), expected.getThird());

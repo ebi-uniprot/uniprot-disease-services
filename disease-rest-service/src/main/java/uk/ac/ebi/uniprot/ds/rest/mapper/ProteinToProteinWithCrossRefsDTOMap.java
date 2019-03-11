@@ -11,13 +11,14 @@ import org.modelmapper.Converter;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
 import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
-import uk.ac.ebi.uniprot.ds.rest.dto.ProteinCrossRefsDTO;
+import uk.ac.ebi.uniprot.ds.rest.dto.ProteinCrossRefDTO;
+import uk.ac.ebi.uniprot.ds.rest.dto.ProteinWithCrossRefsDTO;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ProteinToProteinCrossRefsDTOMap extends PropertyMap<Protein, ProteinCrossRefsDTO> {
+public class ProteinToProteinWithCrossRefsDTOMap extends PropertyMap<Protein, ProteinWithCrossRefsDTO> {
 
     @Override
     protected void configure() {
@@ -26,19 +27,18 @@ public class ProteinToProteinCrossRefsDTOMap extends PropertyMap<Protein, Protei
     }
 
     private class ProteinCrossRefsToProteinCrossRefDTOs implements
-            Converter<List<ProteinCrossRef>, List<ProteinCrossRefsDTO.ProteinCrossRef>> {
+            Converter<List<ProteinCrossRef>, List<ProteinCrossRefDTO>> {
 
         @Override
-        public List<ProteinCrossRefsDTO.ProteinCrossRef> convert(MappingContext<List<ProteinCrossRef>,
-                List<ProteinCrossRefsDTO.ProteinCrossRef>> context) {
+        public List<ProteinCrossRefDTO> convert(MappingContext<List<ProteinCrossRef>,
+                List<ProteinCrossRefDTO>> context) {
 
             List<ProteinCrossRef> proteinXRefs = context.getSource();
-            List<ProteinCrossRefsDTO.ProteinCrossRef> proteinXRefDTOs = null;
+            List<ProteinCrossRefDTO> proteinXRefDTOs = null;
 
             if(proteinXRefs != null){
 
-                proteinXRefDTOs = proteinXRefs.stream().map(xref -> new ProteinCrossRefsDTO
-                        .ProteinCrossRef(xref.getPrimaryId(), xref.getDbType(), xref.getDesc()))
+                proteinXRefDTOs = proteinXRefs.stream().map(xref -> new ProteinCrossRefDTO(xref.getPrimaryId(), xref.getDbType(), xref.getDescription()))
                         .collect(Collectors.toList());
 
                 // sort by dbType

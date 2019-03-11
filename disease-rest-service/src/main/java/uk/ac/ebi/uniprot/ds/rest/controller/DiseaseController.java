@@ -64,6 +64,16 @@ public class DiseaseController {
 
     }
 
+    @GetMapping(value={"/protein/{accession}/diseases"}, name = "Get the diseases for a given accession")
+    public MultipleEntityResponse<DiseaseDTO> getProteinDiseases(@PathVariable(name = "accession") String accession) {
+        String requestId = RequestCorrelation.getCorrelationId();
+
+        List<Disease> diseases = this.diseaseService.getDiseasesByProteinAccession(accession);
+        List<DiseaseDTO> diseaseDTOList = toDiseaseDTOList(diseases);
+
+        return new MultipleEntityResponse<>(requestId, diseaseDTOList, null, null);
+    }
+
     private DiseaseDTO convertToDTO(Disease disease) {
         DiseaseDTO diseaseDTO = modelMapper.map(disease, DiseaseDTO.class);
         return diseaseDTO;

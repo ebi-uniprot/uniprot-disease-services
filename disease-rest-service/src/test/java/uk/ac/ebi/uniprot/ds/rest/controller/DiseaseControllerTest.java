@@ -7,18 +7,16 @@
 
 package uk.ac.ebi.uniprot.ds.rest.controller;
 
+import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -34,6 +32,7 @@ import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -151,5 +150,36 @@ public class DiseaseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.hasError", Matchers.equalTo(true)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage", Matchers.startsWith("Unable to find the diseaseId")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errorCode", Matchers.equalTo(404)));
+    }
+
+    @Test
+    public void testGetDiseasesByAccession() throws Exception {
+
+        String a1 = "ACC1-"+ uuid;
+        Disease d1 = ModelCreationUtils.createDiseaseObject(uuid + 1);
+        Disease d2 = ModelCreationUtils.createDiseaseObject(uuid + 2);
+        Disease d3 = ModelCreationUtils.createDiseaseObject(uuid + 3);
+        List<Disease> diseases = Arrays.asList(d1, d2, d3);
+
+        Mockito.when(this.diseaseService.getDiseasesByProteinAccession(a1)).thenReturn(diseases);
+        ResultActions res = this.mockMvc.
+                perform(MockMvcRequestBuilders.get("/v1/ds/protein/" + a1 + "/diseases").param("accession", a1));
+
+        res.andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.requestId", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.hasError", Matchers.equalTo(false)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.warnings", Matchers.nullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results.length()", Matchers.equalTo(diseases.size())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].diseaseId", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].diseaseName", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].acronym", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].description", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].proteins").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].variants").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].synonyms").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].drugs").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].publications").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].parents").exists());
     }
 }

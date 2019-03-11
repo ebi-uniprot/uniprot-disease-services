@@ -25,7 +25,7 @@ public class ProteinCrossRef extends BaseEntity {
     private String primaryId;
 
     @Column(name = "description")
-    private String desc;
+    private String description;
 
     @Column(name = "db_type")
     private String dbType;
