@@ -67,7 +67,7 @@ public class VariantControllerTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/proteins/" + accession + "/variants").
+                                get("/v1/ds/protein/" + accession + "/variants").
                                 param("accession", accession)
                 );
 

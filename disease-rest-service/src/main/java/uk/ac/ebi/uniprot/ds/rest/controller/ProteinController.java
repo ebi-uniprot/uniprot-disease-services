@@ -62,6 +62,14 @@ public class ProteinController {
         return resp;
     }
 
+    @GetMapping(value={"/protein/{accession}/xrefs"}, name = "Get the protein cross refs for a given accession")
+    public SingleEntityResponse<ProteinCrossRefsDTO> getProteinXRefs(@PathVariable(name = "accession") String accession) {
+        String requestId = RequestCorrelation.getCorrelationId();
+        Optional<Protein> optProtein = this.proteinService.getProteinByAccession(accession);
+        ProteinCrossRefsDTO dto = toProteinCrossRefsDTO(optProtein.orElse(new Protein()));
+        return new SingleEntityResponse<>(requestId, false, null, dto);
+    }
+
     @GetMapping(value={"/proteins/{accessions}/diseases"}, name = "Get the diseases for the given list of accession")
     public MultipleEntityResponse<ProteinDiseasesDTO> getProteinsDiseases(
             @Size(min = 1, max = 200, message = "The total count of accessions passed must be between 1 and 200 both inclusive.")
@@ -91,6 +99,10 @@ public class ProteinController {
 
     private List<ProteinCrossRefsDTO> toProteinCrossRefsDTOList(List<Protein> from){
         return this.modelMapper.map(from, new TypeToken<List<ProteinCrossRefsDTO>>(){}.getType());
+    }
+
+    private ProteinCrossRefsDTO toProteinCrossRefsDTO(Protein protein){
+        return this.modelMapper.map(protein, ProteinCrossRefsDTO.class);
     }
 
     private List<ProteinDiseasesDTO> toProteinDiseasesDTOList(List<Protein> from){
