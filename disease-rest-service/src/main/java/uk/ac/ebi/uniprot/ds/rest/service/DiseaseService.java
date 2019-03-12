@@ -15,11 +15,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -92,5 +95,25 @@ public class DiseaseService {
         Optional<Protein> optProtein = this.proteinService.getProteinByAccession(accession);
         List<Disease> diseases = optProtein.get().getDiseases();
         return diseases;
+    }
+
+    public List<Drug> getDrugsByDiseaseId(String diseaseId) {
+        Optional<Disease> optDisease = findByDiseaseId(diseaseId);
+        List<Protein> proteins = optDisease.get().getProteins();
+        List<Drug> drugs = new ArrayList<>();
+
+        if(proteins != null) {
+            drugs = proteins
+                    .stream()
+                    .filter(pr -> pr.getProteinCrossRefs() != null && !pr.getProteinCrossRefs().isEmpty())
+                    .map(pr -> pr.getProteinCrossRefs())
+                    .flatMap(List::stream)
+                    .filter(xref -> xref.getDrugs() != null && !xref.getDrugs().isEmpty())
+                    .map(xref -> xref.getDrugs())
+                    .flatMap(List::stream)
+                    .collect(Collectors.toList());
+        }
+
+        return drugs;
     }
 }

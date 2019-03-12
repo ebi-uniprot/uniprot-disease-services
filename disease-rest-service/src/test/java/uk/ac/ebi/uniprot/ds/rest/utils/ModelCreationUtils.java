@@ -151,4 +151,15 @@ public class ModelCreationUtils {
         bldr.pubId("id-" + rand);
         return bldr.build();
     }
+
+    public static Drug createDrugObject(String rand){
+        Drug.DrugBuilder bl = Drug.builder();
+        String name = "Name-" + rand;
+        String sourceType = "type-" + rand;
+        String sourceid = "id-" + rand;
+        String moleculeType = "mol-" + rand;
+        bl.name(name).sourceType(sourceType).sourceId(sourceid);
+        bl.moleculeType(moleculeType);
+        return bl.build();
+    }
 }

@@ -4,7 +4,6 @@ import org.modelmapper.Converter;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.common.model.Synonym;
 import uk.ac.ebi.uniprot.ds.rest.dto.BasicDrugDTO;
@@ -43,7 +42,7 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
                         .filter(xref -> xref.getDrugs() != null && !xref.getDrugs().isEmpty())
                         .map(xref -> xref.getDrugs())
                         .flatMap(List::stream)
-                        .map(d -> new BasicDrugDTO(d.getName(), d.getProteinCrossRef().getId()))
+                        .map(d -> new BasicDrugDTO(d.getName()))
                         .collect(Collectors.toList());
 
             }

@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.rest.dto.DiseaseDTO;
+import uk.ac.ebi.uniprot.ds.rest.dto.DrugDTO;
 import uk.ac.ebi.uniprot.ds.rest.filter.RequestCorrelation;
 import uk.ac.ebi.uniprot.ds.rest.response.MultipleEntityResponse;
 import uk.ac.ebi.uniprot.ds.rest.response.SingleEntityResponse;
@@ -74,6 +76,16 @@ public class DiseaseController {
         return new MultipleEntityResponse<>(requestId, diseaseDTOList, null, null);
     }
 
+    @GetMapping(value={"/disease/{diseaseId}/drugs"}, name = "Get the drugs for a given diseaseId")
+    public MultipleEntityResponse<DrugDTO> getDrugsByDiseaseId(@PathVariable(name = "diseaseId") String diseaseId) {
+        String requestId = RequestCorrelation.getCorrelationId();
+
+        List<Drug> drugs = this.diseaseService.getDrugsByDiseaseId(diseaseId);
+        List<DrugDTO> dtoList = toDrugDTOList(drugs);
+
+        return new MultipleEntityResponse<>(requestId, dtoList);
+    }
+
     private DiseaseDTO convertToDTO(Disease disease) {
         DiseaseDTO diseaseDTO = modelMapper.map(disease, DiseaseDTO.class);
         return diseaseDTO;
@@ -81,5 +93,9 @@ public class DiseaseController {
 
     private List<DiseaseDTO> toDiseaseDTOList(List<Disease> from){
         return this.modelMapper.map(from, new TypeToken<List<DiseaseDTO>>(){}.getType());
+    }
+
+    private List<DrugDTO> toDrugDTOList(List<Drug> from){
+        return this.modelMapper.map(from, new TypeToken<List<DrugDTO>>(){}.getType());
     }
 }
