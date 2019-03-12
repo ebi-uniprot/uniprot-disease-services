@@ -35,8 +35,8 @@ public class ProteinCrossRefWriter implements ItemWriter<UniProtEntry> {
         entries.stream().forEach(entry -> {
             Protein protein = this.proteinIdProteinMap.get(entry.getUniProtId().getValue());
             assert protein != null;
-            List<ProteinCrossRef> interactions = getProteinCrossRefs(entry, protein);
-            this.proteinCrossRefDAO.saveAll(interactions);
+            List<ProteinCrossRef> xrefs = getProteinCrossRefs(entry, protein);
+            this.proteinCrossRefDAO.saveAll(xrefs);
         });
     }
 
@@ -60,9 +60,18 @@ public class ProteinCrossRefWriter implements ItemWriter<UniProtEntry> {
     }
 
     protected List<DatabaseCrossReference> getUniProtProteinCrossRefs(UniProtEntry entry) {
-        List<DatabaseCrossReference> dbXRefs = entry.getDatabaseCrossReferences(DatabaseType.REACTOME);
+
+
+        List<DatabaseCrossReference> reactXrefs = entry.getDatabaseCrossReferences(DatabaseType.REACTOME);
         List<DatabaseCrossReference> chemblXRefs = entry.getDatabaseCrossReferences(DatabaseType.CHEMBL);
+        List<DatabaseCrossReference> openTargetsXRefs = entry.getDatabaseCrossReferences(DatabaseType.OPENTARGETS);
+        List<DatabaseCrossReference> disgenetXRefs = entry.getDatabaseCrossReferences(DatabaseType.DISGENET);
+        List<DatabaseCrossReference> dbXRefs = new ArrayList<>();
+        dbXRefs.addAll(reactXrefs);
         dbXRefs.addAll(chemblXRefs);
+        dbXRefs.addAll(openTargetsXRefs);
+        dbXRefs.addAll(disgenetXRefs);
+
         return dbXRefs;
     }
 }

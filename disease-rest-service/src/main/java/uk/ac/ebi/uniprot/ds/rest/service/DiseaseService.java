@@ -93,25 +93,33 @@ public class DiseaseService {
 
     public List<Disease> getDiseasesByProteinAccession(String accession) {
         Optional<Protein> optProtein = this.proteinService.getProteinByAccession(accession);
-        List<Disease> diseases = optProtein.get().getDiseases();
+        List<Disease> diseases = null;
+
+        if(optProtein.isPresent()) {
+            diseases = optProtein.get().getDiseases();
+        }
+
         return diseases;
     }
 
     public List<Drug> getDrugsByDiseaseId(String diseaseId) {
         Optional<Disease> optDisease = findByDiseaseId(diseaseId);
-        List<Protein> proteins = optDisease.get().getProteins();
         List<Drug> drugs = new ArrayList<>();
 
-        if(proteins != null) {
-            drugs = proteins
-                    .stream()
-                    .filter(pr -> pr.getProteinCrossRefs() != null && !pr.getProteinCrossRefs().isEmpty())
-                    .map(pr -> pr.getProteinCrossRefs())
-                    .flatMap(List::stream)
-                    .filter(xref -> xref.getDrugs() != null && !xref.getDrugs().isEmpty())
-                    .map(xref -> xref.getDrugs())
-                    .flatMap(List::stream)
-                    .collect(Collectors.toList());
+        if(optDisease.isPresent()) {
+            List<Protein> proteins = optDisease.get().getProteins();
+
+            if (proteins != null) {
+                drugs = proteins
+                        .stream()
+                        .filter(pr -> pr.getProteinCrossRefs() != null && !pr.getProteinCrossRefs().isEmpty())
+                        .map(pr -> pr.getProteinCrossRefs())
+                        .flatMap(List::stream)
+                        .filter(xref -> xref.getDrugs() != null && !xref.getDrugs().isEmpty())
+                        .map(xref -> xref.getDrugs())
+                        .flatMap(List::stream)
+                        .collect(Collectors.toList());
+            }
         }
 
         return drugs;

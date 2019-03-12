@@ -73,17 +73,26 @@ public class ProteinService {
 
     public List<Interaction> getProteinInteractions(String accession){
         Optional<Protein> optProtein = getProteinByAccession(accession);
-        List<Interaction> interactions = optProtein
-                                        .get()
-                                        .getInteractions()
-                                        .stream().filter(intrxn -> !intrxn.getType().equals("SELF"))
-                                        .collect(Collectors.toList());
+        List<Interaction> interactions = null;
+        if(optProtein.isPresent()) {
+            interactions = optProtein
+                            .get()
+                            .getInteractions()
+                            .stream().filter(intrxn -> !intrxn.getType().equals("SELF"))
+                            .collect(Collectors.toList());
+        }
         return interactions;
     }
 
     public List<Protein> getProteinsByDiseaseId(String diseaseId) {
         Optional<Disease> optDisease = this.diseaseService.findByDiseaseId(diseaseId);
-        List<Protein> proteins = optDisease.get().getProteins();
+
+        List<Protein> proteins = null;
+
+        if(optDisease.isPresent()) {
+            proteins = optDisease.get().getProteins();
+        }
+
         return proteins;
     }
 }
