@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ProteinController.class)
-@ContextConfiguration(classes={RestServiceSpringBootApplication.class})
+@ContextConfiguration(classes = {RestServiceSpringBootApplication.class})
 public class ProteinControllerTest {
     private String uuid = UUID.randomUUID().toString();
 
@@ -100,7 +100,7 @@ public class ProteinControllerTest {
         Variant v1 = ModelCreationUtils.createVariantObject(uuid + 1);
         Variant v2 = ModelCreationUtils.createVariantObject(uuid + 2);
         Variant v3 = ModelCreationUtils.createVariantObject(uuid + 3);
-        protein.setVariants(Arrays.asList(v1, v2,v3));
+        protein.setVariants(Arrays.asList(v1, v2, v3));
 
         // protein xrefs
         ProteinCrossRef p1 = ModelCreationUtils.createProteinXRefObject(uuid + 1);
@@ -173,7 +173,7 @@ public class ProteinControllerTest {
     @Test
     public void testGetProteinInteractions() throws Exception {
 
-        String a1 = "ACC1-"+ uuid;
+        String a1 = "ACC1-" + uuid;
         Interaction int1 = ModelCreationUtils.createInteractionObject(uuid + 1);
         Interaction int2 = ModelCreationUtils.createInteractionObject(uuid + 2);
         Interaction int3 = ModelCreationUtils.createInteractionObject(uuid + 3);
@@ -196,5 +196,75 @@ public class ProteinControllerTest {
                 .andExpect(jsonPath("$.results[*].experimentCount", notNullValue()))
                 .andExpect(jsonPath("$.results[*].firstInteractor", notNullValue()))
                 .andExpect(jsonPath("$.results[*].secondInteractor", notNullValue()));
+    }
+
+    @Test
+    public void testGetProteinsByDiseaseId() throws Exception {
+
+        String diseaseId = "diseaseId";
+        Protein p1 = ModelCreationUtils.createProteinObject(uuid+1);
+
+        Disease d1 = ModelCreationUtils.createDiseaseObject(uuid + 1);
+        Disease d2 = ModelCreationUtils.createDiseaseObject(uuid + 2);
+        p1.setDiseases(Arrays.asList(d1, d2));
+
+        Variant v1 = ModelCreationUtils.createVariantObject(uuid + 1);
+        Variant v2 = ModelCreationUtils.createVariantObject(uuid + 2);
+        Variant v3 = ModelCreationUtils.createVariantObject(uuid + 3);
+        p1.setVariants(Arrays.asList(v1, v2, v3));
+
+        // protein xrefs
+        ProteinCrossRef pcr1 = ModelCreationUtils.createProteinXRefObject(uuid + 1);
+        ProteinCrossRef pcr2 = ModelCreationUtils.createProteinXRefObject(uuid + 2);
+        ProteinCrossRef pcr3 = ModelCreationUtils.createProteinXRefObject(uuid + 3);
+        p1.setProteinCrossRefs(Arrays.asList(pcr1, pcr2, pcr3));
+
+        // interactions
+        Interaction in1 = ModelCreationUtils.createInteractionObject(uuid + 1);
+        Interaction in2 = ModelCreationUtils.createInteractionObject(uuid + 2);
+        Interaction in3 = ModelCreationUtils.createInteractionObject(uuid + 3);
+        Interaction in4 = ModelCreationUtils.createInteractionObject(uuid + 4);
+        p1.setInteractions(Arrays.asList(in1, in2, in3, in4));
+
+        // create GeneCoordinates
+        GeneCoordinate gc1 = ModelCreationUtils.createGeneCoordinateObject(uuid + 1);
+        GeneCoordinate gc2 = ModelCreationUtils.createGeneCoordinateObject(uuid + 2);
+        GeneCoordinate gc3 = ModelCreationUtils.createGeneCoordinateObject(uuid + 3);
+        GeneCoordinate gc4 = ModelCreationUtils.createGeneCoordinateObject(uuid + 4);
+        GeneCoordinate gc5 = ModelCreationUtils.createGeneCoordinateObject(uuid + 5);
+        p1.setGeneCoordinates(Arrays.asList(gc1, gc2, gc3, gc4, gc5));
+
+        // create few publications
+        Publication pb1 = ModelCreationUtils.createPublicationObject(this.uuid + 1);
+        Publication pb2 = ModelCreationUtils.createPublicationObject(this.uuid + 2);
+        Publication pb3 = ModelCreationUtils.createPublicationObject(this.uuid + 3);
+        Publication pb4 = ModelCreationUtils.createPublicationObject(this.uuid + 4);
+        p1.setPublications(Arrays.asList(pb1, pb2, pb3, pb4));
+
+        Mockito.when(this.proteinService.getProteinsByDiseaseId(diseaseId)).thenReturn(Arrays.asList(p1));
+
+        ResultActions res = this.mockMvc
+                .perform(MockMvcRequestBuilders
+                        .get("/v1/ds/disease/" + diseaseId + "/proteins")
+                        .param("diseaseId", diseaseId));
+
+        res.andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.requestId", notNullValue()))
+                .andExpect(jsonPath("$.hasError", equalTo(false)))
+                .andExpect(jsonPath("$.warnings", nullValue()))
+                .andExpect(jsonPath("$.results.length()", equalTo(1)))
+                .andExpect(jsonPath("$.results[0].proteinId", equalTo(p1.getProteinId())))
+                .andExpect(jsonPath("$.results[0].proteinName", equalTo(p1.getName())))
+                .andExpect(jsonPath("$.results[0].accession", equalTo(p1.getAccession())))
+                .andExpect(jsonPath("$.results[0].gene", equalTo(p1.getGene())))
+                .andExpect(jsonPath("$.results[0].description", equalTo(p1.getDesc())))
+                .andExpect(jsonPath("$.results[0].xrefs.length()", equalTo(p1.getProteinCrossRefs().size())))
+                .andExpect(jsonPath("$.results[0].interactions.length()", equalTo(p1.getInteractions().size())))
+                .andExpect(jsonPath("$.results[0].variants.length()", equalTo(p1.getVariants().size())))
+                .andExpect(jsonPath("$.results[0].diseases.length()", equalTo(p1.getDiseases().size())))
+                .andExpect(jsonPath("$.results[0].geneCoordinates.length()", equalTo(p1.getGeneCoordinates().size())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].publications.length()", Matchers.equalTo(4)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].publications[*].type", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].publications[*].id", Matchers.notNullValue()));
     }
 }

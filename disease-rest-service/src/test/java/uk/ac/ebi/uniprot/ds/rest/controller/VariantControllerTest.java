@@ -91,4 +91,45 @@ public class VariantControllerTest {
                 .andExpect(jsonPath("$.results[*].featureLocation.startId", notNullValue()))
                 .andExpect(jsonPath("$.results[*].featureLocation.endId", notNullValue()));
     }
+
+    @Test
+    public void testGetVariantsByDiseaseId() throws Exception {
+        String diseaseId = "diseaseId";
+        Variant v1 = ModelCreationUtils.createVariantObject(this.uuid+1);
+        FeatureLocation fl = ModelCreationUtils.createFeatureLocationObject(this.uuid+1);
+        v1.setFeatureLocation(fl);
+        Variant v2 = ModelCreationUtils.createVariantObject(this.uuid+2);
+        FeatureLocation fl1 = ModelCreationUtils.createFeatureLocationObject(this.uuid+2);
+        v2.setFeatureLocation(fl1);
+        List<Variant> variants = Arrays.asList(v1, v2);
+
+        Mockito.when(this.variantService.getVariantsByDiseaseId(diseaseId)).thenReturn(variants);
+
+        ResultActions res = this.mockMvc.perform
+                (
+                        MockMvcRequestBuilders.
+                                get("/v1/ds/disease/" + diseaseId + "/variants").
+                                param("diseaseId", diseaseId)
+                );
+
+        res.andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.requestId", notNullValue()))
+                .andExpect(jsonPath("$.hasError", equalTo(false)))
+                .andExpect(jsonPath("$.warnings", nullValue()))
+                .andExpect(jsonPath("$.total", nullValue()))
+                .andExpect(jsonPath("$.offset", nullValue()))
+                .andExpect(jsonPath("$.maxReturn", nullValue()))
+                .andExpect(jsonPath("$.results", notNullValue()))
+                .andExpect(jsonPath("$.results.length()", equalTo(variants.size())))
+                .andExpect(jsonPath("$.results[*].origSeq", notNullValue()))
+                .andExpect(jsonPath("$.results[*].altSeq", notNullValue()))
+                .andExpect(jsonPath("$.results[*].featureId", notNullValue()))
+                .andExpect(jsonPath("$.results[*].report", notNullValue()))
+                .andExpect(jsonPath("$.results[*].featureStatus", notNullValue()))
+                .andExpect(jsonPath("$.results[*].featureLocation", notNullValue()))
+                .andExpect(jsonPath("$.results[*].featureLocation.startModifier", notNullValue()))
+                .andExpect(jsonPath("$.results[*].featureLocation.endModifier", notNullValue()))
+                .andExpect(jsonPath("$.results[*].featureLocation.startId", notNullValue()))
+                .andExpect(jsonPath("$.results[*].featureLocation.endId", notNullValue()));
+    }
 }
