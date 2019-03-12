@@ -7,7 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DrugDTO extends BasicDrugDTO {
+public class DrugDTO {
+    private String name;
     private String sourceType;
     private String sourceId;
     private String moleculeType;

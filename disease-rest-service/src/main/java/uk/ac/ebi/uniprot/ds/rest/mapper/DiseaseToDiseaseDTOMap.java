@@ -6,7 +6,6 @@ import org.modelmapper.spi.MappingContext;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.common.model.Synonym;
-import uk.ac.ebi.uniprot.ds.rest.dto.BasicDrugDTO;
 import uk.ac.ebi.uniprot.ds.rest.dto.DiseaseDTO;
 
 import java.util.List;
@@ -25,15 +24,15 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
         using(new ProteinsToDrugs()).map(source.getProteins()).setDrugs(null);
     }
 
-    private class ProteinsToDrugs implements Converter<List<Protein>, List<BasicDrugDTO>> {
+    private class ProteinsToDrugs implements Converter<List<Protein>, List<String>> {
 
         @Override
-        public List<BasicDrugDTO> convert(MappingContext<List<Protein>, List<BasicDrugDTO>> context) {
+        public List<String> convert(MappingContext<List<Protein>, List<String>> context) {
             List<Protein> proteins = context.getSource();
-            List<BasicDrugDTO> drugs = null;
+            List<String> drugs = null;
 
             if(proteins != null){
-                // get the drugs from protein --> protein xref --> drug --> basicdrugdto
+                // get the drugs from protein --> protein xref --> drug --> name
                 drugs = proteins
                         .stream()
                         .filter(p -> p.getProteinCrossRefs() != null && !p.getProteinCrossRefs().isEmpty())
@@ -42,7 +41,7 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
                         .filter(xref -> xref.getDrugs() != null && !xref.getDrugs().isEmpty())
                         .map(xref -> xref.getDrugs())
                         .flatMap(List::stream)
-                        .map(d -> new BasicDrugDTO(d.getName()))
+                        .map(d -> d.getName())
                         .collect(Collectors.toList());
 
             }
