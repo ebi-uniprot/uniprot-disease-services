@@ -7,40 +7,18 @@
 
 package uk.ac.ebi.uniprot.ds.importer.writer;
 
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.beans.factory.annotation.Autowired;
 import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseCrossReference;
 import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseType;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
-import uk.ac.ebi.uniprot.ds.common.dao.ProteinCrossRefDAO;
 import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class ProteinCrossRefWriter implements ItemWriter<UniProtEntry> {
-    private final Map<String, Protein> proteinIdProteinMap;
+public class ProteinCrossRefHelper {
 
-    @Autowired
-    ProteinCrossRefDAO proteinCrossRefDAO;
-
-    public ProteinCrossRefWriter(Map<String, Protein> proteinIdProteinMap) {
-        this.proteinIdProteinMap = proteinIdProteinMap;
-    }
-
-    @Override
-    public void write(List<? extends UniProtEntry> entries) {
-        entries.stream().forEach(entry -> {
-            Protein protein = this.proteinIdProteinMap.get(entry.getUniProtId().getValue());
-            assert protein != null;
-            List<ProteinCrossRef> xrefs = getProteinCrossRefs(entry, protein);
-            this.proteinCrossRefDAO.saveAll(xrefs);
-        });
-    }
-
-    private List<ProteinCrossRef> getProteinCrossRefs(UniProtEntry entry, Protein protein) {
+    public List<ProteinCrossRef> getProteinCrossRefs(UniProtEntry entry, Protein protein) {
         List<DatabaseCrossReference> dbXRefs = getUniProtProteinCrossRefs(entry);
         List<ProteinCrossRef> proteinCrossRefs = new ArrayList<>();
         for (DatabaseCrossReference dbXR : dbXRefs) {

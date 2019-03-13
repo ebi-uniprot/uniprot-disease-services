@@ -59,16 +59,10 @@ public class UniProtDataLoadStep {
     public CompositeItemWriter<UniProtEntry> uniProtCompositeWriter(){
         CompositeItemWriter compositeWriter = new CompositeItemWriter();
         ProteinWriter writer1 = proteinWriter();
-        InteractionWriter writer2 = interactionWriter();
-        ProteinCrossRefWriter writer3 = proteinCrossRefWriter();
-        VariantWriter writer4 = variantWriter();
-        DiseaseWriter writer5 = diseaseWriter();
+        DiseaseWriter writer2 = diseaseWriter();
         List<ItemWriter> writers = new ArrayList<>();
         writers.add(writer1);
         writers.add(writer2);
-        writers.add(writer3);
-        writers.add(writer4);
-        writers.add(writer5);
         compositeWriter.setDelegates(writers);
         return compositeWriter;
     }
@@ -79,23 +73,7 @@ public class UniProtDataLoadStep {
     }
 
     @Bean
-    public VariantWriter variantWriter() {
-        return new VariantWriter(proteinIdProteinMap);
-    }
-
-    @Bean
-    public InteractionWriter interactionWriter() {
-        return new InteractionWriter(proteinIdProteinMap);
-    }
-
-    @Bean
     public DiseaseWriter diseaseWriter() {
         return new DiseaseWriter(proteinIdProteinMap);
     }
-
-    @Bean
-    public ProteinCrossRefWriter proteinCrossRefWriter() {
-        return new ProteinCrossRefWriter(proteinIdProteinMap);
-    }
-
 }

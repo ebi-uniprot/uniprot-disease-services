@@ -10,9 +10,7 @@ package uk.ac.ebi.uniprot.ds.importer.writer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
-import uk.ac.ebi.kraken.interfaces.uniprot.Gene;
-import uk.ac.ebi.kraken.interfaces.uniprot.ProteinDescription;
-import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
+import uk.ac.ebi.kraken.interfaces.uniprot.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.citationsNew.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.CommentType;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.FunctionComment;
@@ -20,10 +18,8 @@ import uk.ac.ebi.kraken.interfaces.uniprot.description.FieldType;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.Name;
 import uk.ac.ebi.uniprot.ds.common.common.PublicationType;
 import uk.ac.ebi.uniprot.ds.common.dao.ProteinDAO;
-import uk.ac.ebi.uniprot.ds.common.model.Protein;
-import uk.ac.ebi.uniprot.ds.common.model.Publication;
+import uk.ac.ebi.uniprot.ds.common.model.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,9 +30,15 @@ public class ProteinWriter implements ItemWriter<UniProtEntry> {
     @Autowired
     private ProteinDAO proteinDAO;
     private Map<String, Protein> proteinIdProteinMap;
+    private VariantHelper variantHelper;
+    private ProteinCrossRefHelper proteinCrossRefHelper;
+    private InteractionHelper interactionHelper;
 
     public ProteinWriter(Map<String, Protein> proteinIdProteinMap) {
         this.proteinIdProteinMap = proteinIdProteinMap;
+        this.variantHelper = new VariantHelper();
+        this.proteinCrossRefHelper = new ProteinCrossRefHelper();
+        this.interactionHelper = new InteractionHelper();
     }
 
     @Override
@@ -55,13 +57,23 @@ public class ProteinWriter implements ItemWriter<UniProtEntry> {
         builder.gene(getGene(entry.getGenes()));
         Protein protein = builder.build();
 
+        // variants
+        List<Variant> variants = this.variantHelper.getProteinVariants(entry, protein);
+        protein.setVariants(variants);
+
+        // protein cross ref
+        List<ProteinCrossRef> xrefs = this.proteinCrossRefHelper.getProteinCrossRefs(entry, protein);
+        protein.setProteinCrossRefs(xrefs);
+
+        // get the interactions
+        List<Interaction> interactions = this.interactionHelper.getInteractions(entry, protein);
+        protein.setInteractions(interactions);
         // get the publications
         List<Publication> pubs = getPublications(entry, protein);
         protein.setPublications(pubs);
+
         return protein;
     }
-
-
 
     private String getDescription(List<FunctionComment> comments) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -117,4 +129,6 @@ public class ProteinWriter implements ItemWriter<UniProtEntry> {
 
         return pubs;
     }
+
+
 }
