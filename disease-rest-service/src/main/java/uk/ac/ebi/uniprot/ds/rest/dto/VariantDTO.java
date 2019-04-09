@@ -22,6 +22,7 @@ public class VariantDTO {
     private String report;
     private FeatureLocationDTO featureLocation;
     private String featureStatus;
+    private String proteinAccession;
 
     @Getter
     @Setter

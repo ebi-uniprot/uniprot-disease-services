@@ -14,6 +14,7 @@ public class VariantToVariantDTOMap extends PropertyMap<Variant, VariantDTO> {
         map().setReport(source.getReport());
         map().setFeatureStatus(source.getFeatureStatus());
         using(new FeatureLocationToFeatureLocationDTO()).map(source.getFeatureLocation()).setFeatureLocation(null);
+        map().setProteinAccession(source.getProtein().getAccession());
     }
 
     private class FeatureLocationToFeatureLocationDTO implements Converter<FeatureLocation, VariantDTO.FeatureLocationDTO> {

@@ -34,11 +34,23 @@ public class VariantToVariantDTOTest {
         VariantDTO variantDTO = modelMapper.map(variant, VariantDTO.class);
         verifyVariantDTO(variant, variantDTO);
     }
+
     @Test
     public void testVariantWithFL(){
         Variant variant = ModelCreationUtils.createVariantObject(uuid);
         FeatureLocation fl = ModelCreationUtils.createFeatureLocationObject(uuid);
         variant.setFeatureLocation(fl);
+        VariantDTO variantDTO = modelMapper.map(variant, VariantDTO.class);
+        verifyVariantDTO(variant, variantDTO);
+    }
+
+    @Test
+    public void testVariantWithProtein(){
+        Variant variant = ModelCreationUtils.createVariantObject(uuid);
+        FeatureLocation fl = ModelCreationUtils.createFeatureLocationObject(uuid);
+        variant.setFeatureLocation(fl);
+        Protein protein = ModelCreationUtils.createProteinObject(uuid);
+        variant.setProtein(protein);
         VariantDTO variantDTO = modelMapper.map(variant, VariantDTO.class);
         verifyVariantDTO(variant, variantDTO);
     }
@@ -54,6 +66,10 @@ public class VariantToVariantDTOTest {
             Assert.assertEquals(variant.getFeatureLocation().getEndModifier(), variantDTO.getFeatureLocation().getEndModifier());
             Assert.assertEquals(variant.getFeatureLocation().getStartId(), variantDTO.getFeatureLocation().getStartId());
             Assert.assertEquals(variant.getFeatureLocation().getEndId(), variantDTO.getFeatureLocation().getEndId());
+        }
+
+        if(variant.getProtein() != null){
+            Assert.assertEquals(variant.getProtein().getAccession(), variantDTO.getProteinAccession());
         }
     }
 }

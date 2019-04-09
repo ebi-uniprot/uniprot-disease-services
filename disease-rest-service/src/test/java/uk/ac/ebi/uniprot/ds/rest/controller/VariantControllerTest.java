@@ -98,9 +98,13 @@ public class VariantControllerTest {
         Variant v1 = ModelCreationUtils.createVariantObject(this.uuid+1);
         FeatureLocation fl = ModelCreationUtils.createFeatureLocationObject(this.uuid+1);
         v1.setFeatureLocation(fl);
+        Protein p1 = ModelCreationUtils.createProteinObject(this.uuid + 1);
+        v1.setProtein(p1);
         Variant v2 = ModelCreationUtils.createVariantObject(this.uuid+2);
         FeatureLocation fl1 = ModelCreationUtils.createFeatureLocationObject(this.uuid+2);
         v2.setFeatureLocation(fl1);
+        Protein p2 = ModelCreationUtils.createProteinObject(this.uuid + 2);
+        v2.setProtein(p2);
         List<Variant> variants = Arrays.asList(v1, v2);
 
         Mockito.when(this.variantService.getVariantsByDiseaseId(diseaseId)).thenReturn(variants);
@@ -122,6 +126,7 @@ public class VariantControllerTest {
                 .andExpect(jsonPath("$.results", notNullValue()))
                 .andExpect(jsonPath("$.results.length()", equalTo(variants.size())))
                 .andExpect(jsonPath("$.results[*].origSeq", notNullValue()))
+                .andExpect(jsonPath("$.results[*].proteinAccession", notNullValue()))
                 .andExpect(jsonPath("$.results[*].altSeq", notNullValue()))
                 .andExpect(jsonPath("$.results[*].featureId", notNullValue()))
                 .andExpect(jsonPath("$.results[*].report", notNullValue()))
