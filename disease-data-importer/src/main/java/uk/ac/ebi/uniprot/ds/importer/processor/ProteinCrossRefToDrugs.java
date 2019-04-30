@@ -19,22 +19,15 @@ public class ProteinCrossRefToDrugs implements ItemProcessor<ProteinCrossRef, Li
     private Connection dbConnxn;
     private PreparedStatement pStat;
 
-    private static final String SQL_QUERY =     " SELECT" +
-                                                " drug.name AS name,"+
-                                                " mdict.chembl_id AS source_id,"+
-                                                " mdict.molecule_type AS molecule_type"+
-                                                " FROM"+
-                                                " CHEMBL_24_APP.TARGET_DICTIONARY dict,"+
-                                                " CHEMBL_24_APP.RECORD_DRUG_TARGETS drug,"+
-                                                " CHEMBL_24_APP.COMPOUND_RECORDS crec,"+
-                                                " CHEMBL_24_APP.MOLECULE_DICTIONARY mdict"+
-                                                " WHERE dict.tid = drug.tid"+
-                                                " AND"+
-                                                " crec.record_id = drug.record_id"+
-                                                " AND"+
-                                                " crec.molregno = mdict.molregno" +
-                                                " AND"+
-                                                " dict.chembl_id = ?";
+    private static final String SQL_QUERY =     "  SELECT" +
+                                                "   md.PREF_NAME AS name," +
+                                                "   md.CHEMBL_ID AS source_id," +
+                                                "   md.MOLECULE_TYPE AS molecule_type" +
+                                                "   FROM CHEMBL_24_APP.MOLECULE_DICTIONARY md" +
+                                                "   JOIN CHEMBL_24_APP.DRUG_MECHANISM dm ON md.molregno = dm.molregno" +
+                                                "   JOIN CHEMBL_24_APP.TARGET_DICTIONARY td ON dm.tid = td.tid" +
+                                                "   WHERE md.max_phase = 4" + // 4 for approved drug
+                                                "   AND td.chembl_id = ?";
 
     public ProteinCrossRefToDrugs(Connection dbConnxn) throws SQLException {
         this.dbConnxn = dbConnxn;
