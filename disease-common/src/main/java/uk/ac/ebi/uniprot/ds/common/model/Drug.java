@@ -3,6 +3,7 @@ package uk.ac.ebi.uniprot.ds.common.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "ds_drug")
@@ -23,5 +24,28 @@ public class Drug extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "ds_protein_cross_ref_id")
     private ProteinCrossRef proteinCrossRef;
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Drug crossRef = (Drug) obj;
+        return Objects.equals(getName(), crossRef.getName())
+                && Objects.equals(getSourceType(), crossRef.getSourceType())
+                && Objects.equals(getSourceId(), crossRef.getSourceId())
+                && Objects.equals(getMoleculeType(), crossRef.getMoleculeType());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getSourceType(), getSourceId(), getMoleculeType());
+    }
 
 }

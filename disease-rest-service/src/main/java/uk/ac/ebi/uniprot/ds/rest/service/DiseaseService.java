@@ -19,9 +19,7 @@ import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -104,7 +102,7 @@ public class DiseaseService {
 
     public List<Drug> getDrugsByDiseaseId(String diseaseId) {
         Optional<Disease> optDisease = findByDiseaseId(diseaseId);
-        List<Drug> drugs = new ArrayList<>();
+        Set<Drug> drugs = new HashSet<>();
 
         if(optDisease.isPresent()) {
             List<Protein> proteins = optDisease.get().getProteins();
@@ -118,10 +116,10 @@ public class DiseaseService {
                         .filter(xref -> xref.getDrugs() != null && !xref.getDrugs().isEmpty())
                         .map(xref -> xref.getDrugs())
                         .flatMap(List::stream)
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toSet());
             }
         }
 
-        return drugs;
+        return new ArrayList<>(drugs);
     }
 }
