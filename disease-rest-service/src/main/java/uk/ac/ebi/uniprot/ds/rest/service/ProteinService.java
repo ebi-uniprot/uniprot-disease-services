@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uk.ac.ebi.uniprot.ds.common.dao.ProteinCrossRefDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.ProteinDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Interaction;
@@ -32,6 +33,8 @@ public class ProteinService {
     private ProteinDAO proteinDAO;
     @Autowired
     private DiseaseService diseaseService;
+    @Autowired
+    private ProteinCrossRefDAO proteinCrossRefDAO;
 
     @Transactional
     public Protein createProtein(String proteinId, String proteinName, String accession, String gene, String description){
@@ -68,6 +71,19 @@ public class ProteinService {
         if(optProtein.isPresent()){
             proteinCrossRefs = optProtein.get().getProteinCrossRefs();
         }
+
+        // populate all the proteins access where each cross ref primary id is involved
+        for(int i = 0; i < proteinCrossRefs.size(); i++){
+            ProteinCrossRef pXRef = proteinCrossRefs.get(i);
+            List<ProteinCrossRef> xrefs = this.proteinCrossRefDAO.findAllByPrimaryId(pXRef.getPrimaryId());
+            List<String> accessions = xrefs.stream()
+                                            .filter(xref -> xref.getProtein() != null)
+                                            .map(xref -> xref.getProtein().getAccession())
+                                            .collect(Collectors.toList());
+            pXRef.setProteinAccessions(accessions);
+
+        }
+
         return proteinCrossRefs;
     }
 

@@ -38,7 +38,8 @@ public class ProteinToProteinWithCrossRefsDTOMap extends PropertyMap<Protein, Pr
 
             if(proteinXRefs != null){
 
-                proteinXRefDTOs = proteinXRefs.stream().map(xref -> new ProteinCrossRefDTO(xref.getPrimaryId(), xref.getDbType(), xref.getDescription()))
+                proteinXRefDTOs = proteinXRefs.stream().map(xref ->
+                        new ProteinCrossRefDTO(xref.getPrimaryId(), xref.getDbType(), xref.getDescription(), xref.getProteinAccessions()))
                         .collect(Collectors.toList());
 
                 // sort by dbType

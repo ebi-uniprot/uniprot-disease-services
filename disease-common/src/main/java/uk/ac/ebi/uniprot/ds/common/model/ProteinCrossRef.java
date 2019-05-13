@@ -45,4 +45,7 @@ public class ProteinCrossRef extends BaseEntity {
 
     @OneToMany(mappedBy = "proteinCrossRef", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Drug> drugs;
+
+    @Transient
+    private List<String> proteinAccessions;// protein accession with the same cross ref's primary id
 }

@@ -37,7 +37,7 @@ public class VariantController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping(value = {"/protein/{accession}/variants"}, name = "Get the variants for the given accession",
+    @GetMapping(value = {"/protein/{accession}/variants"}, name = "Get the variants for the given protein accession",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public MultipleEntityResponse<VariantDTO> getVariants(@PathVariable("accession") String accession){
 

@@ -95,6 +95,54 @@ public class ProteinCrossRefDAOTest {
         assertEquals(10, storedCrossRefs.size());
     }
 
+    @Test
+    void shouldGetMultipleCrossRefsByPrimaryId(){
+        // create 3 proteins
+        String uuid = UUID.randomUUID().toString();
+        Protein p1 = ProteinTest.createProteinObject(uuid + 1);
+        this.proteinDAO.save(p1);
+        assertNotNull(p1.getId(), "unable to create the protein");
+
+        Protein p2 = ProteinTest.createProteinObject(uuid + 2);
+        this.proteinDAO.save(p2);
+        assertNotNull(p2.getId(), "unable to create the protein");
+
+        Protein p3 = ProteinTest.createProteinObject(uuid + 3);
+        this.proteinDAO.save(p3);
+        assertNotNull(p3.getId(), "unable to create the protein");
+
+        // add xref in each protein with same primary id
+
+        ProteinCrossRef xref1 = ProteinCrossRefTest.createProteinCrossRefObject(uuid);
+        xref1.setProtein(p1);
+        this.proteinCrossRefDAO.save(xref1);
+        assertNotNull(xref1.getId(), "unable to create protein cross ref");
+
+        ProteinCrossRef xref2 = ProteinCrossRefTest.createProteinCrossRefObject(uuid);
+        xref2.setProtein(p2);
+        this.proteinCrossRefDAO.save(xref2);
+        assertNotNull(xref2.getId(), "unable to create protein cross ref");
+
+        ProteinCrossRef xref3 = ProteinCrossRefTest.createProteinCrossRefObject(uuid);
+        xref3.setProtein(p3);
+        this.proteinCrossRefDAO.save(xref3);
+        assertNotNull(xref3.getId(), "unable to create protein cross ref");
+
+        // get protein cross refs by protein
+        String pId = "PID-" + uuid;
+        List<ProteinCrossRef> storedCrossRefs = this.proteinCrossRefDAO.findAllByPrimaryId(pId);
+        assertFalse(storedCrossRefs.isEmpty(), "unable to get list of protein cross refs");
+        assertEquals(3, storedCrossRefs.size());
+
+        // clean up
+        this.proteinCrossRefDAO.deleteById(xref1.getId());
+        this.proteinCrossRefDAO.deleteById(xref2.getId());
+        this.proteinCrossRefDAO.deleteById(xref3.getId());
+        this.proteinDAO.deleteById(p1.getId());
+        this.proteinDAO.deleteById(p2.getId());
+        this.proteinDAO.deleteById(p3.getId());
+    }
+
     private void verifyCrossRef(ProteinCrossRef actual, ProteinCrossRef expected) {
         assertEquals(actual.getId(), expected.getId());
         assertEquals(actual.getPrimaryId(), expected.getPrimaryId());

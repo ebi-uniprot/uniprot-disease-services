@@ -16,4 +16,5 @@ import java.util.List;
 public interface ProteinCrossRefDAO extends JpaRepository<ProteinCrossRef, Long> {
     List<ProteinCrossRef> findAllByProtein(Protein protein);
     List<ProteinCrossRef> findAllByDbType(String dbType);
+    List<ProteinCrossRef> findAllByPrimaryId(String primaryId);
 }

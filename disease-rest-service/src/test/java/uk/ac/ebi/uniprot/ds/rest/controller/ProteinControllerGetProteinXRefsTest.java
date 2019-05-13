@@ -157,8 +157,11 @@ public class ProteinControllerGetProteinXRefsTest {
 
         String a1 = "ACC1-"+ uuid;
         ProteinCrossRef pt1 = ModelCreationUtils.createProteinXRefObject(uuid + 1);
+        pt1.setProteinAccessions(Arrays.asList("ACC1", "ACC2"));
         ProteinCrossRef pt2 = ModelCreationUtils.createProteinXRefObject(uuid + 2);
+        pt2.setProteinAccessions(Arrays.asList("ACC1", "ACC2"));
         ProteinCrossRef pt3 = ModelCreationUtils.createProteinXRefObject(uuid + 3);
+        pt3.setProteinAccessions(Arrays.asList("ACC1", "ACC2"));
         List<ProteinCrossRef> xrefs = Arrays.asList(pt1, pt2, pt3);
 
         Mockito.when(this.proteinService.getProteinCrossRefsByAccession(a1)).thenReturn(xrefs);
@@ -174,6 +177,7 @@ public class ProteinControllerGetProteinXRefsTest {
                 .andExpect(jsonPath("$.results.length()", equalTo(xrefs.size())))
                 .andExpect(jsonPath("$.results[*].primaryId", notNullValue()))
                 .andExpect(jsonPath("$.results[*].dbType", notNullValue()))
-                .andExpect(jsonPath("$.results[*].description", notNullValue()));
+                .andExpect(jsonPath("$.results[*].description", notNullValue()))
+                .andExpect(jsonPath("$.results[*].proteinAccessions", notNullValue()));
     }
 }
