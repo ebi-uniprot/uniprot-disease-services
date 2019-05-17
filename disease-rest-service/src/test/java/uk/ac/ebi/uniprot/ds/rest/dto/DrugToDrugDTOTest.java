@@ -31,5 +31,9 @@ public class DrugToDrugDTOTest {
         Assert.assertEquals(drug.getMoleculeType(), drugDTO.getMoleculeType());
         Assert.assertEquals(drug.getSourceId(), drugDTO.getSourceId());
         Assert.assertEquals(drug.getSourceType(), drugDTO.getSourceType());
+        Assert.assertEquals(drug.getClinicalTrialLink(), drugDTO.getClinicalTrialLink());
+        Assert.assertEquals(drug.getClinicalTrialPhase(), drugDTO.getClinicalTrialPhase());
+        Assert.assertEquals(drug.getMechanismOfAction(), drugDTO.getMechanismOfAction());
+        Assert.assertEquals(drug.getDrugEvidences().size(), drugDTO.getEvidences().size());
     }
 }

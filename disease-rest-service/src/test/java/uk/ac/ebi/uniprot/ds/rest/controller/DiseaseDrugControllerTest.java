@@ -79,6 +79,11 @@ public class DiseaseDrugControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].name", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].sourceType", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].sourceId", Matchers.notNullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].moleculeType", Matchers.notNullValue()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].moleculeType", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].clinicalTrialPhase", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].mechanismOfAction", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].clinicalTrialLink", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].evidences", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].evidences.length()", Matchers.equalTo(2)));
     }
 }

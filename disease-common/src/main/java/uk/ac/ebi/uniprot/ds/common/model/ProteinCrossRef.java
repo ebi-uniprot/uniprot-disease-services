@@ -10,6 +10,7 @@ package uk.ac.ebi.uniprot.ds.common.model;
 import lombok.*;
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "ds_protein_cross_ref")
@@ -48,4 +49,27 @@ public class ProteinCrossRef extends BaseEntity {
 
     @Transient
     private List<String> proteinAccessions;// protein accession with the same cross ref's primary id
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        ProteinCrossRef crossRef = (ProteinCrossRef) obj;
+
+        return Objects.equals(getPrimaryId(), crossRef.getPrimaryId())
+                && Objects.equals(getDbType(), crossRef.getDbType())
+                && Objects.equals(getProtein(), crossRef.getProtein());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPrimaryId(), getPrimaryId(), getProtein());
+    }
 }

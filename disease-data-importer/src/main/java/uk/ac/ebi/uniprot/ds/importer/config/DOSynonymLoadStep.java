@@ -8,6 +8,7 @@
 package uk.ac.ebi.uniprot.ds.importer.config;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -38,6 +39,7 @@ public class DOSynonymLoadStep {
 
     @Bean(name = "doSynLoad")
     public Step doSynLoadStep(StepBuilderFactory stepBuilderFactory, StepExecutionListener stepListener,
+                                        ChunkListener chunkListener,
                                         ItemReader<Pair<String, String>> humToDOReader,
                                         ItemProcessor<Pair<String, String>, Synonym> pairToSynonym,
                                         ItemWriter<Synonym> synonymWriter) throws FileNotFoundException {
@@ -47,6 +49,7 @@ public class DOSynonymLoadStep {
                 .processor(pairToSynonym)
                 .writer(synonymWriter)
                 .listener(stepListener)
+                .listener(chunkListener)
                 .build();
     }
 

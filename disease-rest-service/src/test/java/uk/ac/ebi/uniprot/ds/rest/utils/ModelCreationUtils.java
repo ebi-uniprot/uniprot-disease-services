@@ -9,6 +9,8 @@ package uk.ac.ebi.uniprot.ds.rest.utils;
 
 import uk.ac.ebi.uniprot.ds.common.model.*;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class ModelCreationUtils {
@@ -158,8 +160,16 @@ public class ModelCreationUtils {
         String sourceType = "type-" + rand;
         String sourceid = "id-" + rand;
         String moleculeType = "mol-" + rand;
+        Integer clinicalTrialPhase = 2;
+        String moa = "This is sample moa";
+        String trialLink = "sample clinical trial linkg";
+        DrugEvidence ev1 = new DrugEvidence("ref_type1", "sample url1", null);
+        DrugEvidence ev2 = new DrugEvidence("ref_type1", "sample url2", null);
+        List<DrugEvidence> evidences = Arrays.asList(ev1, ev2);
         bl.name(name).sourceType(sourceType).sourceId(sourceid);
         bl.moleculeType(moleculeType);
+        bl.clinicalTrialPhase(clinicalTrialPhase).clinicalTrialLink(trialLink).moleculeType(moa);
+        bl.drugEvidences(evidences);
         return bl.build();
     }
 }

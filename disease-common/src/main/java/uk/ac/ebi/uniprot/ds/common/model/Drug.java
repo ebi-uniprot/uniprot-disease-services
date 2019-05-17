@@ -3,6 +3,7 @@ package uk.ac.ebi.uniprot.ds.common.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -24,6 +25,15 @@ public class Drug extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "ds_protein_cross_ref_id")
     private ProteinCrossRef proteinCrossRef;
+    @Column(name = "clinical_trial_phase")
+    private Integer clinicalTrialPhase;
+    @Column(name = "mechanism_of_action")
+    private String mechanismOfAction;
+    @Column(name = "clinical_trial_link")
+    private String clinicalTrialLink;
+    @OneToMany(mappedBy = "drug", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DrugEvidence> drugEvidences;
+
 
     @Override
     public boolean equals(Object obj) {
@@ -40,12 +50,14 @@ public class Drug extends BaseEntity {
         return Objects.equals(getName(), crossRef.getName())
                 && Objects.equals(getSourceType(), crossRef.getSourceType())
                 && Objects.equals(getSourceId(), crossRef.getSourceId())
-                && Objects.equals(getMoleculeType(), crossRef.getMoleculeType());
+                && Objects.equals(getMoleculeType(), crossRef.getMoleculeType())
+                ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getSourceType(), getSourceId(), getMoleculeType());
+        return Objects.hash(getName(), getSourceType(),
+                getSourceId(), getMoleculeType());
     }
 
 }

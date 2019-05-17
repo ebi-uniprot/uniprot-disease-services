@@ -81,6 +81,32 @@ public class DrugDAOTest {
         assertEquals(this.drug.getProteinCrossRef().getId(), optDrug.get().getProteinCrossRef().getId());
     }
 
+    @Test
+    void testCreateDrugWithProteinXRefAndDrugEvidences(){
+        // create protein with protein xref
+        this.protein = ProteinTest.createProteinObject(this.uuid);
+        ProteinCrossRef xref = ProteinCrossRefTest.createProteinCrossRefObject(this.uuid);
+        xref.setProtein(protein);
+        protein.setProteinCrossRefs(Arrays.asList(xref));
+        this.proteinDAO.save(protein);
+
+        // create a drug with protein xref
+        this.drug = createDrugObject(this.uuid, xref);
+
+        // create couple of drug evidences
+        DrugEvidence ev1 = new DrugEvidence("refType1", "refUrl1", this.drug);
+        DrugEvidence ev2 = new DrugEvidence("refType2", "refUrl2", this.drug);
+        this.drug.setDrugEvidences(Arrays.asList(ev1, ev2));
+        this.drugDAO.save(this.drug);
+        // get the drug
+        Optional<Drug> optDrug = this.drugDAO.findById(this.drug.getId());
+        assertTrue(optDrug.isPresent());
+        verifyDrug(this.drug, optDrug.get());
+        assertEquals(this.drug.getProteinCrossRef().getId(), optDrug.get().getProteinCrossRef().getId());
+    }
+
+
+
     private void verifyDrug(Drug actual, Drug expected) {
         assertEquals(actual.getId(), expected.getId());
         assertEquals(actual.getName(), expected.getName());
@@ -89,6 +115,15 @@ public class DrugDAOTest {
         assertEquals(actual.getMoleculeType(), expected.getMoleculeType());
         assertEquals(actual.getCreatedAt(), expected.getCreatedAt());
         assertEquals(actual.getUpdatedAt(), expected.getUpdatedAt());
+        assertEquals(actual.getClinicalTrialPhase(), expected.getClinicalTrialPhase());
+        assertEquals(actual.getClinicalTrialLink(), expected.getClinicalTrialLink());
+        assertEquals(actual.getMechanismOfAction(), expected.getMechanismOfAction());
+        // verify the drug evidence
+        if(actual.getDrugEvidences() != null){
+            assertEquals(actual.getDrugEvidences().size(), expected.getDrugEvidences().size());
+            expected.getDrugEvidences().forEach(ev -> assertEquals(drug.getId(), ev.getDrug().getId()));
+
+        }
     }
 
     public static Drug createDrugObject(String rand, ProteinCrossRef xref){
@@ -97,8 +132,12 @@ public class DrugDAOTest {
         String sourceType = "type-" + rand;
         String sourceid = "id-" + rand;
         String moleculeType = "mol-" + rand;
+        Integer phase = 3;
+        String link = "https://www.example.com/something1234";
+        String mechnismOfAction = "this is a sample message";
         bl.name(name).sourceType(sourceType).sourceId(sourceid);
         bl.moleculeType(moleculeType).proteinCrossRef(xref);
+        bl.clinicalTrialPhase(phase).clinicalTrialLink(link).mechanismOfAction(mechnismOfAction);
         return bl.build();
     }
 

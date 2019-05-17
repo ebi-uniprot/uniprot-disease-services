@@ -7,6 +7,7 @@
 
 package uk.ac.ebi.uniprot.ds.importer.config;
 
+import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -40,12 +41,14 @@ public class UniProtDataLoadStep {
 
     @Bean
     public Step uniProtStep(StepBuilderFactory stepBuilderFactory, StepExecutionListener stepListener,
+                            ChunkListener chunkListener,
                             ItemReader<UniProtEntry> uniProtReader, CompositeItemWriter<UniProtEntry> uniProtCompositeWriter) {
         return stepBuilderFactory.get(Constants.DS_UNIPROT_DATA_LOADER_STEP)
                 .<UniProtEntry, UniProtEntry>chunk(chunkSize)
                 .reader(uniProtReader)
                 .writer(uniProtCompositeWriter)
                 .listener(stepListener)
+                .listener(chunkListener)
                 .build();
     }
 

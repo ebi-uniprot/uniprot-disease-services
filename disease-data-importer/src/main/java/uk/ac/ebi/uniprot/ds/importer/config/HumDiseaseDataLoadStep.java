@@ -7,6 +7,7 @@
 
 package uk.ac.ebi.uniprot.ds.importer.config;
 
+import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -33,6 +34,7 @@ public class HumDiseaseDataLoadStep {
 
     @Bean
     public Step humDiseaseStep(StepBuilderFactory stepBuilderFactory, StepExecutionListener stepListener,
+                               ChunkListener chunkListener,
                                ItemReader<Disease> humDiseaseReader,
                                ItemWriter<Disease> humDiseaseWriter) throws FileNotFoundException {
         return stepBuilderFactory.get(Constants.DS_HUM_DISEASE_DATA_LOADER_STEP)
@@ -40,6 +42,7 @@ public class HumDiseaseDataLoadStep {
                 .reader(humDiseaseReader)
                 .writer(humDiseaseWriter)
                 .listener(stepListener)
+                .listener(chunkListener)
                 .build();
     }
 

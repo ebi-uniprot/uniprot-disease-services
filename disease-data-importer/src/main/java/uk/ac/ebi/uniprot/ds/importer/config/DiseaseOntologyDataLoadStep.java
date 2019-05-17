@@ -7,6 +7,7 @@
 
 package uk.ac.ebi.uniprot.ds.importer.config;
 
+import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -37,6 +38,7 @@ public class DiseaseOntologyDataLoadStep {
 
     @Bean(name = "doLoad")
     public Step diseaseOntologyLoadStep(StepBuilderFactory stepBuilderFactory, StepExecutionListener stepListener,
+                                        ChunkListener chunkListener,
                                         ItemReader<List<OBOTerm>> doReader,
                                         ItemProcessor<List<OBOTerm>, List<Disease>> doProcessor,
                                         ItemWriter<List<Disease>> doWriter) throws FileNotFoundException {
@@ -46,6 +48,7 @@ public class DiseaseOntologyDataLoadStep {
                 .processor(doProcessor)
                 .writer(doWriter)
                 .listener(stepListener)
+                .listener(chunkListener)
                 .build();
     }
 

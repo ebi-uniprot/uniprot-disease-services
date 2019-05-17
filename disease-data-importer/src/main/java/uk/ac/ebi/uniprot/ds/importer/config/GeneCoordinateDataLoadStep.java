@@ -7,6 +7,7 @@
 
 package uk.ac.ebi.uniprot.ds.importer.config;
 
+import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -37,6 +38,7 @@ public class GeneCoordinateDataLoadStep {
 
     @Bean(name = "geneCoordsLoad")
     public Step geneCoordinatesLoadStep(StepBuilderFactory stepBuilderFactory, StepExecutionListener stepListener,
+                                       ChunkListener chunkListener,
                                        ItemReader<GnEntry> geneCoordinateReader,
                                        ItemProcessor<GnEntry, List<GeneCoordinate>> gnEntryToGnCoordConverter,
                                        ItemWriter<List<GeneCoordinate>> geneCoordindateWriter) throws FileNotFoundException {
@@ -46,6 +48,7 @@ public class GeneCoordinateDataLoadStep {
                 .processor(gnEntryToGnCoordConverter)
                 .writer(geneCoordindateWriter)
                 .listener(stepListener)
+                .listener(chunkListener)
                 .build();
     }
 

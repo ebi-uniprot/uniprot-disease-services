@@ -7,15 +7,13 @@
 
 package uk.ac.ebi.uniprot.ds.importer.config;
 
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecutionListener;
-import org.springframework.batch.core.Step;
-import org.springframework.batch.core.StepExecutionListener;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import uk.ac.ebi.uniprot.ds.importer.listener.LogChunkListener;
 import uk.ac.ebi.uniprot.ds.importer.listener.LogJobListener;
 import uk.ac.ebi.uniprot.ds.importer.listener.LogStepListener;
 import uk.ac.ebi.uniprot.ds.importer.util.Constants;
@@ -50,5 +48,10 @@ public class BatchConfigurationDiseaseService {
     @Bean
     public StepExecutionListener stepListener(){
         return new LogStepListener();
+    }
+
+    @Bean
+    public ChunkListener chunkListener() {
+        return new LogChunkListener();
     }
 }
