@@ -35,6 +35,9 @@ public class Disease extends BaseEntity {
 
     @Column
     private String acronym;
+    
+    @Column
+    private String note;
 
     @Column(name="source_name", nullable = false)
     private String source;

@@ -7,21 +7,27 @@
 
 package uk.ac.ebi.uniprot.ds.importer.writer;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.CommentType;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.DiseaseCommentStructured;
 import uk.ac.ebi.kraken.interfaces.uniprot.evidences.EvidenceId;
-import uk.ac.ebi.kraken.model.uniprot.evidences.EvidenceIdImpl;
 import uk.ac.ebi.uniprot.ds.common.common.PublicationType;
 import uk.ac.ebi.uniprot.ds.common.common.SourceType;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.VariantDAO;
-import uk.ac.ebi.uniprot.ds.common.model.*;
-
-import java.util.*;
-import java.util.stream.Collectors;
+import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.common.model.Protein;
+import uk.ac.ebi.uniprot.ds.common.model.Publication;
+import uk.ac.ebi.uniprot.ds.common.model.Variant;
 
 public class DiseaseWriter implements ItemWriter<UniProtEntry> {
 
@@ -55,6 +61,7 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
             Disease pDisease;
             if(optDisease.isPresent()){
                 pDisease = optDisease.get();
+                pDisease.setNote(disease.getNote());
                 pDisease.setDiseaseId(disease.getDiseaseId());
                 pDisease.getProteins().add(protein);
                 pDisease.setPublications(disease.getPublications());
@@ -103,12 +110,22 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
         String name = upDisease.getDiseaseId().getValue();
         String acronym = upDisease.getAcronym().getValue();
         Disease.DiseaseBuilder builder = Disease.builder();
-        builder.diseaseId(diseaseId).name(name).acronym(acronym).desc(desc);
+        builder.diseaseId(diseaseId).name(name).acronym(acronym).desc(desc)
+        .note(getDiseaseNote(dcs));
         Disease disease = builder.build();
         List<Publication> pubs = getPublications(upDisease, disease);
         disease.setPublications(pubs);
         return disease;
 
+    }
+    
+    private String getDiseaseNote(DiseaseCommentStructured dcs){
+    	String result =dcs.getNote().getTexts().stream().map(val ->val.getValue())
+    			.collect(Collectors.joining(". "));
+    	if(result.isEmpty()) {
+    		return result;
+    	}else
+    		return result+".";
     }
 
     private List<Publication> getPublications(uk.ac.ebi.kraken.interfaces.uniprot.comments.Disease upDisease, Disease disease) {
