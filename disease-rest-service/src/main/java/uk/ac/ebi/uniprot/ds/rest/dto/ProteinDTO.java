@@ -24,7 +24,7 @@ public class ProteinDTO {
     private List<String> xrefs;
     private List<String> interactions;
     private List<String> variants;
-    private List<String> diseases;
+    private List<DiseaseNameNoteDTO> diseases;
     private List<GeneCoordinateDTO> geneCoordinates;
     private List<PublicationDTO> publications;
 
@@ -38,5 +38,12 @@ public class ProteinDTO {
         String ensemblGeneId;
         String ensemblTranscriptId;
         String ensemblTranslationId;
+    }
+    @Getter
+    @Setter
+    @Builder
+    public static class DiseaseNameNoteDTO{
+    	private String diseaseName;
+    	private String note;
     }
 }

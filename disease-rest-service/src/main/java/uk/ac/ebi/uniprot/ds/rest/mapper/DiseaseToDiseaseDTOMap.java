@@ -16,6 +16,7 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
     protected void configure() {
         map().setDescription(source.getDesc());
         map().setDiseaseName(source.getName());
+        map().setNote(source.getNote());
         using(new ProteinsToAccessions()).map(source.getProteins()).setProteins(null);
         using(new SynonymsToNames()).map(source.getSynonyms()).setSynonyms(null);
         using(new VariantsToFeatureIdsConverter()).map(source.getVariants()).setVariants(null);

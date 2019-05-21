@@ -140,7 +140,32 @@
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
         <eclipselink.version>2.7.1</eclipselink.version>
         <spring.profiles.active>dev</spring.profiles.active>
-        <ojdbc.version>12.1.0</ojdbc.version>
-        <ojdbc.artifactid>ojdbc7</ojdbc.artifactid>
+        <ojdbc.version>11.2.0.4</ojdbc.version>
+        <ojdbc.artifactid>ojdbc6</ojdbc.artifactid>
+        <http-uniprot-private-url>http://wwwdev.ebi.ac.uk/uniprot/artifactory</http-uniprot-private-url>
+        
     </properties>
+    <repositories>
+    <repository>
+			<id>uniprot-artifactory-public-thirdparty</id>
+			<name>UniProt Artifactory Public Third-Party Libraries</name>
+			<releases>
+				<enabled>true</enabled>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<url>${http-uniprot-private-url}/public-thirdparty</url>
+		</repository>
+
+		<repository>
+			<id>uniprot-artifactory-private-thirdparty</id>
+			<name>UniProt Artifactory Private Third-Party Libraries</name>
+			<releases>
+				<enabled>true</enabled>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<url>${http-uniprot-private-url}/private-thirdparty</url>
+		</repository>
+    
+    
+    </repositories>
 </project>

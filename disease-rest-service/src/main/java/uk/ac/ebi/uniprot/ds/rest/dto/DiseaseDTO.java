@@ -19,6 +19,7 @@ public class DiseaseDTO {
     private String diseaseName;
     private String acronym;
     private String description;
+    private String note;
     private List<ParentDiseaseDTO> parents;
     private List<String> synonyms;
     private List<String> proteins;
