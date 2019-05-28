@@ -17,7 +17,7 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 		using(new VariantsToFeatureIdsConverter()).map(source.getVariants()).setVariants(null);
 		using(new InteractionsToAccessionsConverter()).map(source.getInteractions()).setInteractions(null);
 		using(new DiseaseToDiseaseIdConverter()).map(source.getDiseases()).setDiseases(null);
-		using(new ProteinCrossRefsToPrimaryIds()).map(source.getProteinCrossRefs()).setXrefs(null);
+		using(new ProteinCrossRefsPathwaysToPrimaryIds()).map(source.getProteinCrossRefs()).setPathways(null);
 		using(new GeneCoordinatesToGeneCoordindateDTOsCoverter()).map(source.getGeneCoordinates())
 				.setGeneCoordinates(null);
 		using(new PublicationsToPublicationDTOs()).map(source.getPublications()).setPublications(null);
@@ -68,6 +68,20 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 		}
 	}
 
+	private class ProteinCrossRefsPathwaysToPrimaryIds implements Converter<List<ProteinCrossRef>, List<String>> {
+		private static final String REACTOME = "Reactome";
+
+		@Override
+		public List<String> convert(MappingContext<List<ProteinCrossRef>, List<String>> context) {
+			List<ProteinCrossRef> ints = context.getSource();
+			List<String> intsStr = null;
+			if (ints != null) {
+				intsStr = ints.stream().filter(val ->val.getDbType().equals(REACTOME)).map(in -> in.getPrimaryId()).collect(Collectors.toList());
+			}
+			return intsStr;
+		}
+	}
+	
 	private class GeneCoordinatesToGeneCoordindateDTOsCoverter
 			implements Converter<List<GeneCoordinate>, List<ProteinDTO.GeneCoordinateDTO>> {
 
