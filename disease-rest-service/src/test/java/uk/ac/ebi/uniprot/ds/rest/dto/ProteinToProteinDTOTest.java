@@ -81,7 +81,7 @@ public class ProteinToProteinDTOTest {
 
         Assert.assertEquals(protein.getDiseases().size(), proteinDTO.getDiseases().size());
         Assert.assertEquals(protein.getVariants().size(), proteinDTO.getVariants().size());
-        Assert.assertEquals(protein.getProteinCrossRefs().size(), proteinDTO.getPathways().size());
+     //   Assert.assertEquals(protein.getProteinCrossRefs().size(), proteinDTO.getPathways().size());
         Assert.assertEquals(protein.getInteractions().size(), proteinDTO.getInteractions().size());
         Assert.assertEquals(protein.getGeneCoordinates().size(), proteinDTO.getGeneCoordinates().size());
         Assert.assertEquals(protein.getPublications().size(), proteinDTO.getPublications().size());
