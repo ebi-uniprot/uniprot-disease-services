@@ -4,11 +4,13 @@ import org.modelmapper.Converter;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.common.model.Synonym;
 import uk.ac.ebi.uniprot.ds.rest.dto.DiseaseDTO;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
@@ -30,11 +32,11 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
         @Override
         public List<String> convert(MappingContext<List<Protein>, List<String>> context) {
             List<Protein> proteins = context.getSource();
-            List<String> drugs = null;
+            List<String> drugNames = null;
 
             if(proteins != null){
-                // get the drugs from protein --> protein xref --> drug --> name
-                drugs = proteins
+                // get the drugs from protein --> protein xref --> drug
+                Set<Drug> drugs = proteins
                         .stream()
                         .filter(p -> p.getProteinCrossRefs() != null && !p.getProteinCrossRefs().isEmpty())
                         .map(p -> p.getProteinCrossRefs())
@@ -42,12 +44,16 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
                         .filter(xref -> xref.getDrugs() != null && !xref.getDrugs().isEmpty())
                         .map(xref -> xref.getDrugs())
                         .flatMap(List::stream)
-                        .map(d -> d.getName())
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toSet());
+
+                if(drugs != null && !drugs.isEmpty()) { // drug --> name
+                    // get just the name
+                    drugNames = drugs.stream().map(d -> d.getName()).collect(Collectors.toList());
+                }
 
             }
 
-            return drugs;
+            return drugNames;
         }
     }
 
