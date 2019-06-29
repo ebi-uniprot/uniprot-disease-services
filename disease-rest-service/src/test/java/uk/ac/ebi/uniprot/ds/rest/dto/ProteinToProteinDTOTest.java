@@ -48,10 +48,18 @@ public class ProteinToProteinDTOTest {
         Variant v3 = ModelCreationUtils.createVariantObject(uuid + 3);
         protein.setVariants(Arrays.asList(v1, v2, v3));
 
+        // create few drugs
+        Drug drug1 = ModelCreationUtils.createDrugObject(uuid + 1);
+        Drug drug2 = ModelCreationUtils.createDrugObject(uuid + 2);
+        Drug drug3 = ModelCreationUtils.createDrugObject(uuid + 3);
+
         // protein cross ref
         ProteinCrossRef p1 = ModelCreationUtils.createProteinXRefObject(uuid + 1);
+        p1.setDrugs(Arrays.asList(drug1, drug2, drug3));
         ProteinCrossRef p2 = ModelCreationUtils.createProteinXRefObject(uuid + 2);
+        p2.setDrugs(Arrays.asList(drug1, drug2, drug3));
         ProteinCrossRef p3 = ModelCreationUtils.createProteinXRefObject(uuid + 3);
+        p3.setDrugs(Arrays.asList(drug1, drug2, drug3));
         protein.setProteinCrossRefs(Arrays.asList(p1, p2, p3));
 
         // interactions
@@ -85,6 +93,7 @@ public class ProteinToProteinDTOTest {
         Assert.assertEquals(protein.getInteractions().size(), proteinDTO.getInteractions().size());
         Assert.assertEquals(protein.getGeneCoordinates().size(), proteinDTO.getGeneCoordinates().size());
         Assert.assertEquals(protein.getPublications().size(), proteinDTO.getPublications().size());
+        Assert.assertEquals(p1.getDrugs().size(), proteinDTO.getDrugs().size());
     }
 
     private void verifyProteinDTO(Protein protein, ProteinDTO proteinDTO) {

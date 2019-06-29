@@ -83,6 +83,7 @@ public class ProteinControllerTest {
                 .andExpect(jsonPath("$.result.pathways", nullValue()))
                 .andExpect(jsonPath("$.result.variants", nullValue()))
                 .andExpect(jsonPath("$.result.interactions", nullValue()))
+                .andExpect(jsonPath("$.result.drugs", nullValue()))
                 .andExpect(jsonPath("$.result.geneCoordinates.length()", equalTo(0)));
     }
 
@@ -102,8 +103,14 @@ public class ProteinControllerTest {
         Variant v3 = ModelCreationUtils.createVariantObject(uuid + 3);
         protein.setVariants(Arrays.asList(v1, v2, v3));
 
+        // create few drugs
+        Drug drug1 = ModelCreationUtils.createDrugObject(uuid + 1);
+        Drug drug2 = ModelCreationUtils.createDrugObject(uuid + 2);
+        Drug drug3 = ModelCreationUtils.createDrugObject(uuid + 3);
+
         // protein xrefs
         ProteinCrossRef p1 = ModelCreationUtils.createProteinXRefObject(uuid + 1);
+        p1.setDrugs(Arrays.asList(drug1, drug2, drug3));
         ProteinCrossRef p2 = ModelCreationUtils.createProteinXRefObject(uuid + 2);
         ProteinCrossRef p3 = ModelCreationUtils.createProteinXRefObject(uuid + 3);
         protein.setProteinCrossRefs(Arrays.asList(p1, p2, p3));
@@ -152,7 +159,8 @@ public class ProteinControllerTest {
                 .andExpect(jsonPath("$.result.geneCoordinates.length()", equalTo(protein.getGeneCoordinates().size())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications.length()", Matchers.equalTo(4)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications[*].type", Matchers.notNullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications[*].id", Matchers.notNullValue()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications[*].id", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.drugs.length()", Matchers.equalTo(3)));
     }
 
     @Test

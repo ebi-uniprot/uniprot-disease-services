@@ -8,6 +8,7 @@ import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
@@ -21,7 +22,35 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 		using(new GeneCoordinatesToGeneCoordindateDTOsCoverter()).map(source.getGeneCoordinates())
 				.setGeneCoordinates(null);
 		using(new PublicationsToPublicationDTOs()).map(source.getPublications()).setPublications(null);
+		using(new ProteinToDrugs()).map(source).setDrugs(null);
 
+	}
+
+	public class ProteinToDrugs implements Converter<Protein, List<String>> {
+
+		@Override
+		public List<String> convert(MappingContext<Protein, List<String>> context) {
+			Protein protein = context.getSource();
+			List<String> drugNames = null;
+
+			if(protein != null && protein.getProteinCrossRefs() != null){
+
+				Set<Drug> drugs = protein.getProteinCrossRefs()
+						.stream()
+						.filter(xref -> xref.getDrugs() != null && !xref.getDrugs().isEmpty())
+						.map(xref -> xref.getDrugs())
+						.flatMap(List::stream)
+						.collect(Collectors.toSet());
+
+				if(drugs != null && !drugs.isEmpty()) { // drug --> name
+					// get just the name
+					drugNames = drugs.stream().map(d -> d.getName()).collect(Collectors.toList());
+				}
+
+			}
+
+			return drugNames;
+		}
 	}
 
 	private class InteractionsToAccessionsConverter implements Converter<List<Interaction>, List<String>> {

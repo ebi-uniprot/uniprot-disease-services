@@ -27,6 +27,7 @@ public class ProteinDTO {
     private List<DiseaseNameNoteDTO> diseases;
     private List<GeneCoordinateDTO> geneCoordinates;
     private List<PublicationDTO> publications;
+    private List<String> drugs;
 
     @Getter
     @Setter
