@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.dto.*;
 import uk.ac.ebi.uniprot.ds.rest.filter.RequestCorrelation;
 import uk.ac.ebi.uniprot.ds.rest.response.MultipleEntityResponse;
 import uk.ac.ebi.uniprot.ds.rest.response.SingleEntityResponse;
+import uk.ac.ebi.uniprot.ds.rest.service.DrugService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 
 import javax.validation.constraints.Size;
@@ -33,6 +35,8 @@ public class ProteinController {
 
     @Autowired
     private ProteinService proteinService;
+    @Autowired
+    private DrugService drugService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -67,6 +71,16 @@ public class ProteinController {
         return new MultipleEntityResponse<>(requestId, dtoList) ;
     }
 
+    @GetMapping(value={"/protein/{accession}/drugs"}, name = "Get the drugs for a given protein accession")
+    public MultipleEntityResponse<DrugDTO> getDrugsByProteinAccession(@PathVariable(name = "accession") String accession) {
+        String requestId = RequestCorrelation.getCorrelationId();
+
+        List<Drug> drugs = this.drugService.getDrugsByAccession(accession);
+        List<DrugDTO> dtoList = toDrugDTOList(drugs);
+
+        return new MultipleEntityResponse<>(requestId, dtoList);
+    }
+
     private ProteinDTO convertToDTO(Protein protein) {
         ProteinDTO proteinDTO = modelMapper.map(protein, ProteinDTO.class);
         return proteinDTO;
@@ -80,5 +94,9 @@ public class ProteinController {
         List<ProteinDTO> dtoList = modelMapper.map(proteins,
                 new TypeToken<List<ProteinDTO>>(){}.getType());
         return dtoList;
+    }
+
+    private List<DrugDTO> toDrugDTOList(List<Drug> from){
+        return this.modelMapper.map(from, new TypeToken<List<DrugDTO>>(){}.getType());
     }
 }

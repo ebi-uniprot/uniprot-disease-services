@@ -30,6 +30,8 @@ import java.util.*;
 public class DiseaseServiceIntegrationTest {
     @Autowired
     private DiseaseService diseaseService;
+    @Autowired
+    private DrugService drugService;
 
     @MockBean
     private DiseaseDAO diseaseDAO;
@@ -134,7 +136,7 @@ public class DiseaseServiceIntegrationTest {
 
     @Test
     public void testGetDrugsByDiseaseId(){
-        List<Drug> drugs = this.diseaseService.getDrugsByDiseaseId(this.diseaseWithDrug.getDiseaseId());
+        List<Drug> drugs = this.drugService.getDrugsByDiseaseId(this.diseaseWithDrug.getDiseaseId());
         Assert.assertFalse(drugs.isEmpty());
         Assert.assertEquals(4, drugs.size());
     }

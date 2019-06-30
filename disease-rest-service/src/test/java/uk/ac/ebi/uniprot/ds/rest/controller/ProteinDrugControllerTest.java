@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import uk.ac.ebi.uniprot.ds.common.model.*;
+import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.rest.DataSourceTestConfig;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
 import uk.ac.ebi.uniprot.ds.rest.service.DrugService;
@@ -35,7 +35,7 @@ import java.util.*;
 @WebMvcTest(DiseaseController.class)
 @Import({DataSourceTestConfig.class})
 //@ComponentScan(basePackages = {"uk.ac.ebi.uniprot.ds.rest"})
-public class DiseaseDrugControllerTest {
+public class ProteinDrugControllerTest {
     private String uuid = UUID.randomUUID().toString();
 
     @Autowired
@@ -54,8 +54,8 @@ public class DiseaseDrugControllerTest {
     private DrugService drugService;
 
     @Test
-    public void testGetDrugsByDiseaseId() throws Exception {
-        String diseaseId = "DISEASE_ID";
+    public void testGetDrugsByProteinAccession() throws Exception {
+        String accession = "AC12345";
 
         Drug drug1 = ModelCreationUtils.createDrugObject(this.uuid + 1);
         Drug drug2 = ModelCreationUtils.createDrugObject(this.uuid + 2);
@@ -76,13 +76,13 @@ public class DiseaseDrugControllerTest {
         List<Drug> drugs = Arrays.asList(drug1, drug2, drug3);
 
 
-        Mockito.when(this.drugService.getDrugsByDiseaseId(diseaseId)).thenReturn(drugs);
+        Mockito.when(this.drugService.getDrugsByAccession(accession)).thenReturn(drugs);
 
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/disease/" + diseaseId + "/drugs").
-                                param("diseaseId", diseaseId)
+                                get("/v1/ds/protein/" + accession + "/drugs").
+                                param("accession", accession)
                 );
 
         res.andDo(MockMvcResultHandlers.print())

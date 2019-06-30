@@ -21,6 +21,7 @@ import uk.ac.ebi.uniprot.ds.rest.filter.RequestCorrelation;
 import uk.ac.ebi.uniprot.ds.rest.response.MultipleEntityResponse;
 import uk.ac.ebi.uniprot.ds.rest.response.SingleEntityResponse;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
+import uk.ac.ebi.uniprot.ds.rest.service.DrugService;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,8 @@ public class DiseaseController {
 
     @Autowired
     private DiseaseService diseaseService;
+    @Autowired
+    private DrugService drugService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -80,7 +83,7 @@ public class DiseaseController {
     public MultipleEntityResponse<DrugDTO> getDrugsByDiseaseId(@PathVariable(name = "diseaseId") String diseaseId) {
         String requestId = RequestCorrelation.getCorrelationId();
 
-        List<Drug> drugs = this.diseaseService.getDrugsByDiseaseId(diseaseId);
+        List<Drug> drugs = this.drugService.getDrugsByDiseaseId(diseaseId);
         List<DrugDTO> dtoList = toDrugDTOList(drugs);
 
         return new MultipleEntityResponse<>(requestId, dtoList);

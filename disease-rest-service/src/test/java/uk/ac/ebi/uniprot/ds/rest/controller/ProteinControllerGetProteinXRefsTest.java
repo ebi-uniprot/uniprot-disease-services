@@ -26,6 +26,7 @@ import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.RestServiceSpringBootApplication;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
+import uk.ac.ebi.uniprot.ds.rest.service.DrugService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
@@ -53,6 +54,9 @@ public class ProteinControllerGetProteinXRefsTest {
 
     @MockBean
     private VariantService variantService;
+
+    @MockBean
+    private DrugService drugService;
 
     @Test
     public void testNonExistentAccessions() throws Exception {

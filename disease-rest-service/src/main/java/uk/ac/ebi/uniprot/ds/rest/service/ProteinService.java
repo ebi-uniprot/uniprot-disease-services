@@ -14,15 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.common.dao.ProteinCrossRefDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.ProteinDAO;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.Interaction;
-import uk.ac.ebi.uniprot.ds.common.model.Protein;
-import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
+import uk.ac.ebi.uniprot.ds.common.model.*;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -110,9 +105,5 @@ public class ProteinService {
         }
 
         return proteins;
-    }
-
-    public List<Protein> getProteinsByDrugName(String drugName){
-        return proteinDAO.findAllByDrugName(drugName);
     }
 }
