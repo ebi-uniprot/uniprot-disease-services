@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.uniprot.ds.common.model.Drug;
+import uk.ac.ebi.uniprot.ds.common.model.Protein;
+import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
+import java.util.HashSet;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -26,6 +29,17 @@ public class DrugToDrugDTOTest {
         verifyDrug(drug, drugDTO);
     }
 
+    @Test
+    public void testDrugToDrugDTOWithDiseasesAndProteins(){
+        Drug drug = ModelCreationUtils.createDrugObject(this.uuid);
+        HashSet<String> dNames = new HashSet<>(); dNames.add("D-" + this.uuid + 1);dNames.add("D-" + this.uuid + 2);
+        HashSet<String> accessions = new HashSet<>(); accessions.add("A-" + this.uuid);
+        drug.setDiseases(dNames);
+        drug.setProteins(accessions);
+        DrugDTO drugDTO = modelMapper.map(drug, DrugDTO.class);
+        verifyDrug(drug, drugDTO);
+    }
+
     private void verifyDrug(Drug drug, DrugDTO drugDTO) {
         Assert.assertEquals(drug.getName(), drugDTO.getName());
         Assert.assertEquals(drug.getMoleculeType(), drugDTO.getMoleculeType());
@@ -35,5 +49,13 @@ public class DrugToDrugDTOTest {
         Assert.assertEquals(drug.getClinicalTrialPhase(), drugDTO.getClinicalTrialPhase());
         Assert.assertEquals(drug.getMechanismOfAction(), drugDTO.getMechanismOfAction());
         Assert.assertEquals(drug.getDrugEvidences().size(), drugDTO.getEvidences().size());
+
+        if(drug.getDiseases() != null){
+            Assert.assertEquals(drug.getDiseases().size(), drugDTO.getDiseases().size());
+        }
+
+        if(drug.getProteins() != null){
+            Assert.assertEquals(drug.getProteins().size(), drugDTO.getProteins().size());
+        }
     }
 }

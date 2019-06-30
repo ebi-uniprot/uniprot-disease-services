@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 import java.util.Objects;
 
 @Entity
@@ -33,6 +34,10 @@ public class Drug extends BaseEntity {
     private String clinicalTrialLink;
     @OneToMany(mappedBy = "drug", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DrugEvidence> drugEvidences;
+    @Transient
+    private Set<String> diseases;// to hold names of diseases those use this drug
+    @Transient
+    private Set<String> proteins;// to hold accessions of proteins those use this drug
 
 
     @Override

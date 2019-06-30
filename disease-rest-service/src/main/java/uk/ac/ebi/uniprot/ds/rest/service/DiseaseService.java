@@ -120,6 +120,28 @@ public class DiseaseService {
             }
         }
 
-        return new ArrayList<>(drugs);
+        List<Drug> drugList = new ArrayList<>(drugs);
+
+        // get the proteins for each drug and get the diseases for each drug
+        if(!drugList.isEmpty()){
+            for(Drug drug : drugList) {
+                List<Protein> proteins = this.proteinService.getProteinsByDrugName(drug.getName());
+                // get and set the protein accessions
+                Set<String> accessions = proteins.stream().map(protein -> protein.getAccession()).collect(Collectors.toSet());
+                drug.setProteins(accessions);
+
+                // get and set the disease names
+                Set<String> diseaseNames = proteins
+                                            .stream()
+                                            .filter(protein -> protein.getDiseases() != null && !protein.getDiseases().isEmpty())
+                                            .map(p -> p.getDiseases())
+                                            .flatMap(List::stream)
+                                            .map(d -> d.getName()).collect(Collectors.toSet());
+                drug.setDiseases(diseaseNames);
+            }
+
+        }
+
+        return drugList;
     }
 }

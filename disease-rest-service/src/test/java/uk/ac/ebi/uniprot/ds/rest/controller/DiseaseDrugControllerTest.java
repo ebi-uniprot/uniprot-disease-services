@@ -28,9 +28,7 @@ import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(DiseaseController.class)
@@ -59,6 +57,18 @@ public class DiseaseDrugControllerTest {
         Drug drug2 = ModelCreationUtils.createDrugObject(this.uuid + 2);
         Drug drug3 = ModelCreationUtils.createDrugObject(this.uuid + 3);
 
+        Set<String> accessions = new HashSet<>();
+        accessions.add("AC1");accessions.add("AC2");accessions.add("AC3");
+        Set<String> diseases = new HashSet<>();
+        diseases.add("DIS1"); diseases.add("DIS2"); diseases.add("DIS3");
+        // set disease names and accessions to each drug object
+        drug1.setDiseases(diseases);
+        drug1.setProteins(accessions);
+        drug2.setDiseases(diseases);
+        drug2.setProteins(accessions);
+        drug3.setDiseases(diseases);
+        drug3.setProteins(accessions);
+
         List<Drug> drugs = Arrays.asList(drug1, drug2, drug3);
 
 
@@ -84,6 +94,10 @@ public class DiseaseDrugControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].mechanismOfAction", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].clinicalTrialLink", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].evidences", Matchers.notNullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].evidences.length()", Matchers.equalTo(2)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].evidences.length()", Matchers.equalTo(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].diseases", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].proteins", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].diseases.length()", Matchers.equalTo(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].proteins.length()", Matchers.equalTo(3)));
     }
 }

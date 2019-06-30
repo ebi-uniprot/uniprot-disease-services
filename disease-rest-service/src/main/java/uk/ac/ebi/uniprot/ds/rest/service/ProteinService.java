@@ -111,4 +111,8 @@ public class ProteinService {
 
         return proteins;
     }
+
+    public List<Protein> getProteinsByDrugName(String drugName){
+        return proteinDAO.findAllByDrugName(drugName);
+    }
 }

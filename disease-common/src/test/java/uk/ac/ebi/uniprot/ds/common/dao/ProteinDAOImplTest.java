@@ -32,12 +32,30 @@ public class ProteinDAOImplTest{
     @Autowired
     private DiseaseDAO diseaseDAO;
 
+    @Autowired
+    private ProteinCrossRefDAO proteinCrossRefDAO;
+
+    @Autowired
+    private DrugDAO drugDAO;
+
     private Protein protein;
     private List<Disease> diseases;
+    private List<ProteinCrossRef> xrefs;
+    private List<Drug> drugs;
     private String randomUUID = UUID.randomUUID().toString();
 
     @AfterEach
     public void cleanUp(){
+        if(this.drugs != null){
+            this.drugs.forEach(drug -> this.drugDAO.deleteById(drug.getId()));
+            this.drugs = null;
+        }
+
+        if(this.xrefs != null){
+            this.xrefs.forEach(xref -> this.proteinCrossRefDAO.deleteById(xref.getId()));
+            this.xrefs = null;
+        }
+
         if(this.protein != null){
             this.proteinDAO.delete(this.protein);
             this.protein = null;
@@ -146,6 +164,38 @@ public class ProteinDAOImplTest{
         verifyProtein(this.protein, storedOptProt.get());
         // verify the size of the publications
         assertEquals(pubs.size(), this.protein.getPublications().size());
+    }
+
+    @Test
+    void testGetProteinsByDrugName(){
+        // create protein with protein xref
+        this.protein = ProteinTest.createProteinObject(this.randomUUID);
+        ProteinCrossRef xref = ProteinCrossRefTest.createProteinCrossRefObject(this.randomUUID);
+        xref.setProtein(protein);
+        this.xrefs = new ArrayList<>();
+        this.xrefs.add(xref);
+        protein.setProteinCrossRefs(this.xrefs);
+        this.proteinDAO.save(protein);
+
+        // create a drug with protein xref
+        this.drugs = new ArrayList<>();
+        Drug drug1 = DrugDAOTest.createDrugObject(this.randomUUID + 1, xref);
+        Drug drug2 = DrugDAOTest.createDrugObject(this.randomUUID + 1, xref);
+        this.drugs.add(drug1);
+        this.drugs.add(drug2);
+        this.drugDAO.saveAll(this.drugs);
+
+        this.diseases = new ArrayList<>();
+        Disease dis = DiseaseTest.createDiseaseObject(this.randomUUID);
+        //dis.setProteins(Arrays.asList(this.protein));
+        this.diseases.add(dis);
+        this.diseaseDAO.saveAll(this.diseases);
+        this.protein.setDiseases(Arrays.asList(dis));
+        this.proteinDAO.save(this.protein);
+
+        List<Protein> proteins = this.proteinDAO.findAllByDrugName(drug1.getName());
+        assertEquals(this.drugs.size(), proteins.size());
+        assertFalse(proteins.isEmpty());
     }
 
 

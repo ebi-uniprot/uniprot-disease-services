@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,4 +19,6 @@ public class DrugDTO {
     private String mechanismOfAction;
     private String clinicalTrialLink;
     private List<String> evidences;
+    private Set<String> proteins;
+    private Set<String> diseases;
 }
