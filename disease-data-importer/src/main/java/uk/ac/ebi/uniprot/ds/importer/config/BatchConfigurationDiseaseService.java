@@ -26,7 +26,7 @@ public class BatchConfigurationDiseaseService {
     public Job importUniProtDataJob(JobBuilderFactory jobBuilderFactory, JobExecutionListener jobExecutionListener,
                                     Step humDiseaseStep, Step uniProtStep, Step geneCoordsLoad,
                                     Step doLoad, Step doSynLoad, Step chDrugLoad,
-                                   Step adProteinLoad) {
+                                   Step alazheimerProteinLoad) {
 
         return jobBuilderFactory.get(Constants.DISEASE_SERVICE_DATA_LOADER)
                 .incrementer(new RunIdIncrementer())
@@ -36,7 +36,7 @@ public class BatchConfigurationDiseaseService {
                 .next(doSynLoad)// load synonyms from Disease Ontology
                 .next(doLoad)// create parents children relationship
                 .next(chDrugLoad)
-                .next(adProteinLoad)// Alzheimer disease protein load step
+                .next(alazheimerProteinLoad)// Alzheimer disease protein load step
                 .listener(jobExecutionListener)
                 .build();
     }

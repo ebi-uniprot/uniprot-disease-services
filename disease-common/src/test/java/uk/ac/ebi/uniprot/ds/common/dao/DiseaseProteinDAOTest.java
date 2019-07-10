@@ -1,10 +1,3 @@
-/*
- * Created by sahmad on 07/02/19 10:56
- * UniProt Consortium.
- * Copyright (c) 2002-2019.
- *
- */
-
 package uk.ac.ebi.uniprot.ds.common.dao;
 
 import org.junit.jupiter.api.AfterEach;
@@ -24,6 +17,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+/*
+ * Created by sahmad on 07/02/19 10:56
+ * UniProt Consortium.
+ * Copyright (c) 2002-2019.
+ *
+ */
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest

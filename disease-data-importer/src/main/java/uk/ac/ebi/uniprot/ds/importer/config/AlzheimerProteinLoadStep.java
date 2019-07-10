@@ -22,7 +22,7 @@ import javax.sql.DataSource;
  * @author sahmad
  */
 @Configuration
-public class ADProteinLoadStep {
+public class AlzheimerProteinLoadStep {
 
     // Query to get all the proteins which are manually mapped to AD
     private static final String QUERY_TO_GET_AD_PROTEIN = "select  p.id as protein_id, " +
@@ -92,7 +92,7 @@ public class ADProteinLoadStep {
     @Value(("${ds.import.chunk.size}"))
     private Integer chunkSize;
 
-    @Bean(name = "adProteinLoad")
+    @Bean(name = "alazheimerProteinLoad")
     public Step diseaseProteinStep(StepBuilderFactory stepBuilders, StepExecutionListener stepListener,
                                   ChunkListener chunkListener,
                                   ItemReader<DiseaseProteinReader.DiseaseProteinDTO> reader,

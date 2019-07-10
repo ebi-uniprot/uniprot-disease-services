@@ -48,6 +48,4 @@ public class DiseaseDTO {
             this.isExternallyMapped = isExternallyMapped;
         }
     }
-
-
 }

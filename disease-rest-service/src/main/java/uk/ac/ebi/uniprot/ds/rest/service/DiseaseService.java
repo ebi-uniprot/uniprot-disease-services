@@ -90,15 +90,14 @@ public class DiseaseService {
     }
 
     public List<Disease> getDiseasesByProteinAccession(String accession) {
-        Optional<Protein> optProtein = this.proteinService.getProteinByAccession(accession);
-        List<Disease> diseases = null;
-
-        if(optProtein.isPresent()) {
-            diseases = optProtein.get().getDiseaseProteins().stream().map(dp -> dp.getDisease()).collect(Collectors.toList());
-
-        }
-
-        return diseases;
+        return this.proteinService.getProteinByAccession(accession)
+                .map(
+                        prot -> prot.getDiseaseProteins()
+                                .stream()
+                                .map(dp -> dp.getDisease())
+                                .collect(Collectors.toList())
+                    )
+                .orElse(null);
     }
 
 }
