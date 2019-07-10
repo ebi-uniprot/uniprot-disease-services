@@ -7,6 +7,7 @@
 
 package uk.ac.ebi.uniprot.ds.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,8 @@ public class ProteinDTO {
     private String accession;
     private String gene;
     private String description;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Boolean isExternallyMapped;
     private List<String> pathways;
     private List<String> interactions;
     private List<String> variants;

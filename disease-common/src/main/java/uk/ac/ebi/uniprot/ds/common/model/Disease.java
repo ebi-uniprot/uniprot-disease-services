@@ -9,9 +9,7 @@ package uk.ac.ebi.uniprot.ds.common.model;
 
 import lombok.*;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "ds_disease")
@@ -42,10 +40,8 @@ public class Disease extends BaseEntity {
     @Column(name="source_name", nullable = false)
     private String source;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "ds_disease_protein", joinColumns = @JoinColumn(name = "ds_disease_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "ds_protein_id"))
-    private List<Protein> proteins;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "disease", cascade=CascadeType.ALL)
+    private Set<DiseaseProtein> diseaseProteins = new HashSet<>(0);
 
     @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Synonym> synonyms;

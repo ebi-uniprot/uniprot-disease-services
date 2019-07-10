@@ -43,9 +43,13 @@ public class DiseaseToDiseaseDTOTest {
         Protein p1 = ModelCreationUtils.createProteinObject(this.uuid + 1);
         Protein p2 = ModelCreationUtils.createProteinObject(this.uuid + 2);
         Protein p3 = ModelCreationUtils.createProteinObject(this.uuid + 3);
-        List<Protein> ps = new ArrayList<>();
-        ps.add(p1);ps.add(p2);ps.add(p3);
-        disease.setProteins(ps);
+
+        DiseaseProtein dp1 = new DiseaseProtein(disease, p1, true);
+        DiseaseProtein dp2 = new DiseaseProtein(disease, p2, true);
+        DiseaseProtein dp3 = new DiseaseProtein(disease, p3, true);
+        Set<DiseaseProtein> dps = new HashSet<>();
+        dps.add(dp1);dps.add(dp2);dps.add(dp3);
+        disease.setDiseaseProteins(dps);
 
         Synonym s1 = ModelCreationUtils.createSynonymObject(this.uuid + 1);
         Synonym s2 = ModelCreationUtils.createSynonymObject(this.uuid + 2);
@@ -74,7 +78,7 @@ public class DiseaseToDiseaseDTOTest {
         verifyDiseaseDTO(disease, dto);
 
         // verify other details
-        Assert.assertEquals(disease.getProteins().size(),  dto.getProteins().size());
+        Assert.assertEquals(disease.getDiseaseProteins().size(),  dto.getProteins().size());
         Assert.assertEquals(disease.getSynonyms().size(), dto.getSynonyms().size());
         Assert.assertEquals(disease.getVariants().size(), dto.getVariants().size());
         Assert.assertEquals(disease.getParents().size(), dto.getParents().size());

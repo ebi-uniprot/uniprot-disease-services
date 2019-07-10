@@ -7,10 +7,7 @@
 
 package uk.ac.ebi.uniprot.ds.importer.writer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.batch.item.ItemWriter;
@@ -24,10 +21,7 @@ import uk.ac.ebi.uniprot.ds.common.common.PublicationType;
 import uk.ac.ebi.uniprot.ds.common.common.SourceType;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.VariantDAO;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.Protein;
-import uk.ac.ebi.uniprot.ds.common.model.Publication;
-import uk.ac.ebi.uniprot.ds.common.model.Variant;
+import uk.ac.ebi.uniprot.ds.common.model.*;
 
 public class DiseaseWriter implements ItemWriter<UniProtEntry> {
 
@@ -63,15 +57,17 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
                 pDisease = optDisease.get();
                 pDisease.setNote(disease.getNote());
                 pDisease.setDiseaseId(disease.getDiseaseId());
-                pDisease.getProteins().add(protein);
+                DiseaseProtein dp = new DiseaseProtein(pDisease, protein, false);
+                pDisease.getDiseaseProteins().add(dp);
                 pDisease.setPublications(disease.getPublications());
-                // update the disease to the pubs
+                // update the disease to the publications
                 pDisease.getPublications().stream().forEach(pub -> pub.setDisease(pDisease));
             } else {
-                List<Protein> proteins = new ArrayList<>();
-                proteins.add(protein);
+                Set<DiseaseProtein> dps = new HashSet<>();
+                DiseaseProtein dp = new DiseaseProtein(disease, protein, false);
+                dps.add(dp);
                 pDisease = disease;
-                pDisease.setProteins(proteins);
+                pDisease.setDiseaseProteins(dps);
                 pDisease.setSource(SourceType.UniProt.name());
             }
             List<Variant> variants = getDiseaseVariants(pDisease);

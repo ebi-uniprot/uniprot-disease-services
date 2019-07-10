@@ -17,7 +17,7 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 		map().setDescription(source.getDesc());
 		using(new VariantsToFeatureIdsConverter()).map(source.getVariants()).setVariants(null);
 		using(new InteractionsToAccessionsConverter()).map(source.getInteractions()).setInteractions(null);
-		using(new DiseaseToDiseaseIdConverter()).map(source.getDiseases()).setDiseases(null);
+		using(new DisProtToDiseaseNameNoteDTOConverter()).map(source.getDiseaseProteins()).setDiseases(null);
 		using(new ProteinCrossRefsPathwaysToPrimaryIds()).map(source.getProteinCrossRefs()).setPathways(null);
 		using(new GeneCoordinatesToGeneCoordindateDTOsCoverter()).map(source.getGeneCoordinates())
 				.setGeneCoordinates(null);
@@ -26,7 +26,7 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 
 	}
 
-	public class ProteinToDrugs implements Converter<Protein, List<String>> {
+	public static class ProteinToDrugs implements Converter<Protein, List<String>> {
 
 		@Override
 		public List<String> convert(MappingContext<Protein, List<String>> context) {
@@ -53,7 +53,7 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 		}
 	}
 
-	private class InteractionsToAccessionsConverter implements Converter<List<Interaction>, List<String>> {
+	private static class InteractionsToAccessionsConverter implements Converter<List<Interaction>, List<String>> {
 		@Override
 		public List<String> convert(MappingContext<List<Interaction>, List<String>> context) {
 			List<Interaction> ints = context.getSource();
@@ -65,18 +65,21 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 		}
 	}
 
-	private class DiseaseToDiseaseIdConverter implements Converter<List<Disease>, List<ProteinDTO.DiseaseNameNoteDTO>> {
+	private static class DisProtToDiseaseNameNoteDTOConverter implements Converter<Set<DiseaseProtein>, List<ProteinDTO.DiseaseNameNoteDTO>> {
 		@Override
 		public List<ProteinDTO.DiseaseNameNoteDTO> convert(
-				MappingContext<List<Disease>, List<ProteinDTO.DiseaseNameNoteDTO>> context) {
-			List<Disease> diseases = context.getSource();
+				MappingContext<Set<DiseaseProtein>, List<ProteinDTO.DiseaseNameNoteDTO>> context) {
+			Set<DiseaseProtein> disProts = context.getSource();
 
 			List<ProteinDTO.DiseaseNameNoteDTO> diseaseNames = null;
-			if (diseases != null) {
-				diseaseNames = diseases.stream().map(dis -> {
+			if (disProts != null && !disProts.isEmpty()) {
+				diseaseNames = disProts.stream().map(dp -> {
 					ProteinDTO.DiseaseNameNoteDTO.DiseaseNameNoteDTOBuilder builder = ProteinDTO.DiseaseNameNoteDTO
 							.builder();
-					return builder.diseaseName(dis.getDiseaseId()).note(dis.getNote()).build();
+					return builder
+							.diseaseName(dp.getDisease().getDiseaseId())
+							.note(dp.getDisease().getNote())
+							.build();
 
 				}).collect(Collectors.toList());
 			}
@@ -85,19 +88,7 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 		}
 	}
 
-	private class ProteinCrossRefsToPrimaryIds implements Converter<List<ProteinCrossRef>, List<String>> {
-		@Override
-		public List<String> convert(MappingContext<List<ProteinCrossRef>, List<String>> context) {
-			List<ProteinCrossRef> ints = context.getSource();
-			List<String> intsStr = null;
-			if (ints != null) {
-				intsStr = ints.stream().map(in -> in.getPrimaryId()).collect(Collectors.toList());
-			}
-			return intsStr;
-		}
-	}
-
-	private class ProteinCrossRefsPathwaysToPrimaryIds implements Converter<List<ProteinCrossRef>, List<String>> {
+	private static class ProteinCrossRefsPathwaysToPrimaryIds implements Converter<List<ProteinCrossRef>, List<String>> {
 		private static final String REACTOME = "Reactome";
 
 		@Override
@@ -111,7 +102,7 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 		}
 	}
 	
-	private class GeneCoordinatesToGeneCoordindateDTOsCoverter
+	private static class GeneCoordinatesToGeneCoordindateDTOsCoverter
 			implements Converter<List<GeneCoordinate>, List<ProteinDTO.GeneCoordinateDTO>> {
 
 		@Override

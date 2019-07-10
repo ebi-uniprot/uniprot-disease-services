@@ -26,7 +26,7 @@ public class ProteinToProteinWithCrossRefsDTOMap extends PropertyMap<Protein, Pr
 
     }
 
-    private class ProteinCrossRefsToProteinCrossRefDTOs implements
+    private static class ProteinCrossRefsToProteinCrossRefDTOs implements
             Converter<List<ProteinCrossRef>, List<ProteinCrossRefDTO>> {
 
         @Override

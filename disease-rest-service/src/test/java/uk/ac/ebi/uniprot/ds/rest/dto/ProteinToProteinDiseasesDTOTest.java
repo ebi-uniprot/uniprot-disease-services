@@ -14,10 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -43,11 +45,15 @@ public class ProteinToProteinDiseasesDTOTest {
         Disease d1 = ModelCreationUtils.createDiseaseObject(uuid + 1);
         Disease d2 = ModelCreationUtils.createDiseaseObject(uuid + 2);
         Disease d3 = ModelCreationUtils.createDiseaseObject(uuid + 3);
-        p.setDiseases(Arrays.asList(d1, d2, d3));
+        DiseaseProtein dp1 = new DiseaseProtein(d1, p, false);
+        DiseaseProtein dp2 = new DiseaseProtein(d2, p, false);
+        DiseaseProtein dp3 = new DiseaseProtein(d3, p, false);
+
+        p.setDiseaseProteins(new HashSet<>(Arrays.asList(dp1, dp2, dp3)));
 
         ProteinDiseasesDTO dto = modelMapper.map(p, ProteinDiseasesDTO.class);
         verifyDTO(p, dto);
-        Assert.assertEquals(p.getDiseases().size(), dto.getDiseases().size());
+        Assert.assertEquals(p.getDiseaseProteins().size(), dto.getDiseases().size());
     }
 
     private void verifyDTO(Protein p, ProteinDiseasesDTO dto) {

@@ -16,7 +16,7 @@ public class DrugToDrugDTOMap extends PropertyMap<Drug, DrugDTO> {
 
     }
 
-    private class DrugEvidencesToEvidences implements Converter<List<DrugEvidence>, List<String>> {
+    private static class DrugEvidencesToEvidences implements Converter<List<DrugEvidence>, List<String>> {
         @Override
         public List<String> convert(MappingContext<List<DrugEvidence>, List<String>> context) {
 

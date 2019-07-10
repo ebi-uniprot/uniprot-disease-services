@@ -11,6 +11,7 @@ import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.ac.ebi.uniprot.ds.importer.listener.LogChunkListener;
@@ -24,7 +25,8 @@ public class BatchConfigurationDiseaseService {
     @Bean
     public Job importUniProtDataJob(JobBuilderFactory jobBuilderFactory, JobExecutionListener jobExecutionListener,
                                     Step humDiseaseStep, Step uniProtStep, Step geneCoordsLoad,
-                                    Step doLoad, Step doSynLoad, Step chDrugLoad) {
+                                    Step doLoad, Step doSynLoad, Step chDrugLoad,
+                                   Step adProteinLoad) {
 
         return jobBuilderFactory.get(Constants.DISEASE_SERVICE_DATA_LOADER)
                 .incrementer(new RunIdIncrementer())
@@ -34,6 +36,7 @@ public class BatchConfigurationDiseaseService {
                 .next(doSynLoad)// load synonyms from Disease Ontology
                 .next(doLoad)// create parents children relationship
                 .next(chDrugLoad)
+                .next(adProteinLoad)// Alzheimer disease protein load step
                 .listener(jobExecutionListener)
                 .build();
     }

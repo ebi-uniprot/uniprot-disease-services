@@ -63,7 +63,7 @@ public class ProteinController {
         return resp;
     }
 
-    @GetMapping(value = {"/disease/{diseaseId}/proteins"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = {"/disease/{diseaseId}/proteins"}, produces = MediaType.APPLICATION_JSON_VALUE, name = "Get proteins by the diseaseId")
     public MultipleEntityResponse<ProteinDTO> getProteinsByDiseaseId(@PathVariable("diseaseId") String diseaseId){
         String requestId = RequestCorrelation.getCorrelationId();
         List<Protein> proteins = this.proteinService.getProteinsByDiseaseId(diseaseId);

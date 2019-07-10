@@ -17,10 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.Drug;
-import uk.ac.ebi.uniprot.ds.common.model.Protein;
-import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
+import uk.ac.ebi.uniprot.ds.common.model.*;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
 import java.util.*;
@@ -83,7 +80,9 @@ public class DiseaseServiceIntegrationTest {
         pcr3.setDrugs(Arrays.asList(d3, d4));
 
         // add proteins to the disease
-        this.diseaseWithDrug.setProteins(Arrays.asList(protein1, protein2));
+        DiseaseProtein dp1 = new DiseaseProtein(this.diseaseWithDrug, protein1, true);
+        DiseaseProtein dp2 = new DiseaseProtein(this.diseaseWithDrug, protein2, true);
+        this.diseaseWithDrug.setDiseaseProteins(new HashSet<>(Arrays.asList(dp1, dp2)));
         Mockito.when(this.diseaseDAO.findByDiseaseId(this.diseaseWithDrug.getDiseaseId())).thenReturn(Optional.ofNullable(this.diseaseWithDrug));
     }
 

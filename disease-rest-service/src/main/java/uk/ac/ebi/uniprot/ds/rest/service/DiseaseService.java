@@ -15,10 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -92,7 +94,8 @@ public class DiseaseService {
         List<Disease> diseases = null;
 
         if(optProtein.isPresent()) {
-            diseases = optProtein.get().getDiseases();
+            diseases = optProtein.get().getDiseaseProteins().stream().map(dp -> dp.getDisease()).collect(Collectors.toList());
+
         }
 
         return diseases;

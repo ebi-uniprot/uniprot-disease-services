@@ -22,7 +22,7 @@ public class DiseaseDTO {
     private String note;
     private List<ParentDiseaseDTO> parents;
     private List<String> synonyms;
-    private List<String> proteins;
+    private List<BasicProtein> proteins;
     private List<String> variants;
     private List<PublicationDTO> publications;
     private List<String> drugs;
@@ -37,4 +37,17 @@ public class DiseaseDTO {
             this.diseaseName = diseaseName;
         }
     }
+
+    @Getter
+    @Setter
+    public static class BasicProtein{
+        String accession;
+        Boolean isExternallyMapped;
+        public BasicProtein(String accession, Boolean isExternallyMapped){
+            this.accession = accession;
+            this.isExternallyMapped = isExternallyMapped;
+        }
+    }
+
+
 }

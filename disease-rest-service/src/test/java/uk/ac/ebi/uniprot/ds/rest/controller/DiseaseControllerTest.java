@@ -32,10 +32,7 @@ import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(DiseaseController.class)
@@ -104,7 +101,12 @@ public class DiseaseControllerTest {
         Protein p1 = ModelCreationUtils.createProteinObject(uuid + 1);
         Protein p2 = ModelCreationUtils.createProteinObject(uuid + 2);
         Protein p3 = ModelCreationUtils.createProteinObject(uuid + 3);
-        disease.setProteins(Arrays.asList(p1, p2, p3));
+
+        DiseaseProtein dp1 = new DiseaseProtein(disease, p1, true);
+        DiseaseProtein dp2 = new DiseaseProtein(disease, p2, true);
+        DiseaseProtein dp3 = new DiseaseProtein(disease, p3, false);
+
+        disease.setDiseaseProteins(new HashSet<>(Arrays.asList(dp1, dp2, dp3)));
 
         // variants
         Variant v1 = ModelCreationUtils.createVariantObject(uuid + 1);
@@ -135,6 +137,8 @@ public class DiseaseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.acronym", Matchers.startsWith("ACRONYM")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.description", Matchers.startsWith("DESC")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.proteins.length()", Matchers.equalTo(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.proteins[*].isExternallyMapped", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.proteins[*].accession", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.variants.length()", Matchers.equalTo(4)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.synonyms.length()", Matchers.equalTo(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications.length()", Matchers.equalTo(4)))

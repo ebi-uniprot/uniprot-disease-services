@@ -20,4 +20,5 @@
     <include file="src/main/resources/db/changelog/changes/add_table_ds_publication.sql"/>
     <include file="src/main/resources/db/changelog/changes/add_table_ds_drug.sql"/>
     <include file="src/main/resources/db/changelog/changes/drug_related_change.sql"/>
+    <include file="src/main/resources/db/changelog/changes/add_column_ds_disease_protein.sql"/>
 </databaseChangeLog>

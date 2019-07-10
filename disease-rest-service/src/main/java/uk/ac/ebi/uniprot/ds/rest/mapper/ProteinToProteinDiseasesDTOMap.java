@@ -10,32 +10,34 @@ package uk.ac.ebi.uniprot.ds.rest.mapper;
 import org.modelmapper.Converter;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
+import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
 import uk.ac.ebi.uniprot.ds.rest.dto.DiseaseDTO;
 import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDiseasesDTO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ProteinToProteinDiseasesDTOMap extends PropertyMap<Protein, ProteinDiseasesDTO> {
 
     @Override
     protected void configure() {
-        using(new DiseasesToDiseaseDTOs()).map(source.getDiseases()).setDiseases(null);
+        using(new DisProteinsToDiseaseDTOs()).map(source.getDiseaseProteins()).setDiseases(null);
 
     }
 
-    private class DiseasesToDiseaseDTOs implements Converter<List<Disease>, List<ProteinDiseasesDTO.BasicDiseaseDTO>>{
+    private static class DisProteinsToDiseaseDTOs implements Converter<Set<DiseaseProtein>, List<ProteinDiseasesDTO.BasicDiseaseDTO>>{
         @Override
-        public List<ProteinDiseasesDTO.BasicDiseaseDTO> convert(MappingContext<List<Disease>, List<ProteinDiseasesDTO.BasicDiseaseDTO>> context) {
+        public List<ProteinDiseasesDTO.BasicDiseaseDTO> convert(MappingContext<Set<DiseaseProtein>, List<ProteinDiseasesDTO.BasicDiseaseDTO>> context) {
 
-            List<Disease> diseases = context.getSource();
+            Set<DiseaseProtein> disProts = context.getSource();
             List<ProteinDiseasesDTO.BasicDiseaseDTO> diseaseDTOs = null;
 
-            if(diseases != null){
-                diseaseDTOs = diseases.stream()
-                        .map(disease -> new ProteinDiseasesDTO.BasicDiseaseDTO(disease.getDiseaseId(), disease.getAcronym()))
+            if(disProts != null && !disProts.isEmpty()){
+                diseaseDTOs = disProts.stream()
+                        .map(dp -> new ProteinDiseasesDTO.BasicDiseaseDTO(dp.getDisease().getDiseaseId(), dp.getDisease().getAcronym()))
                         .collect(Collectors.toList());
             }
 

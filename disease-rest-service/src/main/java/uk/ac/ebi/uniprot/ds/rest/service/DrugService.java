@@ -27,7 +27,8 @@ public class DrugService {
         Set<Drug> drugs = new HashSet<>();
 
         if (optDisease.isPresent()) {
-            List<Protein> proteins = optDisease.get().getProteins();
+            List<Protein> proteins = optDisease.get().getDiseaseProteins()
+                    .stream().map(dp -> dp.getProtein()).collect(Collectors.toList());
 
             if (proteins != null) {
                 drugs = proteins
@@ -86,13 +87,12 @@ public class DrugService {
                 // get and set the disease names
                 Set<String> diseaseNames = proteins
                         .stream()
-                        .filter(protein -> protein.getDiseases() != null && !protein.getDiseases().isEmpty())
-                        .map(p -> p.getDiseases())
-                        .flatMap(List::stream)
-                        .map(d -> d.getName()).collect(Collectors.toSet());
+                        .filter(protein -> protein.getDiseaseProteins() != null && !protein.getDiseaseProteins().isEmpty())
+                        .map(p -> p.getDiseaseProteins())
+                        .flatMap(Set::stream)
+                        .map(dp -> dp.getDisease().getName()).collect(Collectors.toSet());
                 drug.setDiseases(diseaseNames);
             }
-
         }
     }
 }

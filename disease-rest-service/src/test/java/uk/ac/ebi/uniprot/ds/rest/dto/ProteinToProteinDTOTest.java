@@ -19,6 +19,7 @@ import uk.ac.ebi.uniprot.ds.common.model.*;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -41,7 +42,12 @@ public class ProteinToProteinDTOTest {
 
         Disease d1 = ModelCreationUtils.createDiseaseObject(uuid + 1);
         Disease d2 = ModelCreationUtils.createDiseaseObject(uuid + 2);
-        protein.setDiseases(Arrays.asList(d1, d2));
+
+        DiseaseProtein dp1 = new DiseaseProtein(d1, protein, true);
+        DiseaseProtein dp2 = new DiseaseProtein(d2, protein, true);
+
+
+        protein.setDiseaseProteins(new HashSet<>(Arrays.asList(dp1, dp2)));
 
         Variant v1 = ModelCreationUtils.createVariantObject(uuid + 1);
         Variant v2 = ModelCreationUtils.createVariantObject(uuid + 2);
@@ -87,7 +93,7 @@ public class ProteinToProteinDTOTest {
         ProteinDTO proteinDTO = modelMapper.map(protein, ProteinDTO.class);
         verifyProteinDTO(protein, proteinDTO);
 
-        Assert.assertEquals(protein.getDiseases().size(), proteinDTO.getDiseases().size());
+        Assert.assertEquals(protein.getDiseaseProteins().size(), proteinDTO.getDiseases().size());
         Assert.assertEquals(protein.getVariants().size(), proteinDTO.getVariants().size());
      //   Assert.assertEquals(protein.getProteinCrossRefs().size(), proteinDTO.getPathways().size());
         Assert.assertEquals(protein.getInteractions().size(), proteinDTO.getInteractions().size());

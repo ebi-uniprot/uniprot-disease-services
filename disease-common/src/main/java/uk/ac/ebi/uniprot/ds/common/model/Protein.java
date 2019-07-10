@@ -9,9 +9,7 @@ package uk.ac.ebi.uniprot.ds.common.model;
 
 import lombok.*;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "ds_protein")
@@ -38,8 +36,8 @@ public class Protein extends BaseEntity {
     @Column(name = "description")
     private String desc;
 
-    @ManyToMany(mappedBy = "proteins")
-    private List<Disease> diseases;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "protein", cascade=CascadeType.ALL)
+    private Set<DiseaseProtein> diseaseProteins = new HashSet<>(0);
 
     @OneToMany(mappedBy = "protein", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Variant> variants;
@@ -55,6 +53,9 @@ public class Protein extends BaseEntity {
 
     @OneToMany(mappedBy = "protein", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Publication> publications;
+
+    @Transient
+    private Boolean isExternallyMapped; // to keep manually mapped protein flag
 
     @Override
     public boolean equals(Object obj) {

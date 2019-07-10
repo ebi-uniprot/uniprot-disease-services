@@ -101,9 +101,18 @@ public class ProteinService {
         List<Protein> proteins = null;
 
         if(optDisease.isPresent()) {
-            proteins = optDisease.get().getProteins();
+
+            proteins = optDisease.get().getDiseaseProteins()
+                    .stream().map(dp -> getProtein(dp)).collect(Collectors.toList());
+
         }
 
         return proteins;
+    }
+
+    private Protein getProtein(DiseaseProtein dp) {
+        Protein p = dp.getProtein();
+        p.setIsExternallyMapped(dp.isMapped());
+        return p;
     }
 }

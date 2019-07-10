@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import uk.ac.ebi.uniprot.ds.common.DiseaseCommonSpringBootApplication;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.DataSourceTestConfig;
 import uk.ac.ebi.uniprot.ds.rest.RestServiceSpringBootApplication;
@@ -94,13 +95,19 @@ public class ProteinControllerGetDiseasesTest {
         Disease d1 = ModelCreationUtils.createDiseaseObject(uuid + 1);
         Disease d2 = ModelCreationUtils.createDiseaseObject(uuid + 2);
         Disease d3 = ModelCreationUtils.createDiseaseObject(uuid + 3);
-        p1.setDiseases(Arrays.asList(d1, d2, d3));
+
+        DiseaseProtein dp1 = new DiseaseProtein(d1, p1, true);
+        DiseaseProtein dp2 = new DiseaseProtein(d2, p1, true);
+        DiseaseProtein dp3 = new DiseaseProtein(d3, p1, true);
+
+        p1.setDiseaseProteins(new HashSet<>(Arrays.asList(dp1, dp2, dp3)));
 
         Protein p2 = ModelCreationUtils.createProteinObject(uuid + 2);
         String a2 = "ACC2-"+ uuid;
         p2.setAccession(a2);
         Disease d4 = ModelCreationUtils.createDiseaseObject(uuid + 4);
-        p2.setDiseases(Arrays.asList(d4));
+        DiseaseProtein dp4 = new DiseaseProtein(d4, p2, true);
+        p2.setDiseaseProteins(new HashSet<>(Arrays.asList(dp4)));
 
         Protein p3 = ModelCreationUtils.createProteinObject(uuid + 3);
         String a3 = "ACC3-"+ uuid;
@@ -124,10 +131,10 @@ public class ProteinControllerGetDiseasesTest {
                 .andExpect(jsonPath("$.results[*].proteinId", notNullValue()))
                 .andExpect(jsonPath("$.results[*].proteinName", notNullValue()))
                 .andExpect(jsonPath("$.results[*].gene", notNullValue()))
-                .andExpect(jsonPath("$.results[0].diseases.length()", equalTo(p1.getDiseases().size())))
+                .andExpect(jsonPath("$.results[0].diseases.length()", equalTo(p1.getDiseaseProteins().size())))
                 .andExpect(jsonPath("$.results[0].diseases[*].diseaseId", notNullValue()))
                 .andExpect(jsonPath("$.results[0].diseases[*].acronym", notNullValue()))
-                .andExpect(jsonPath("$.results[1].diseases.length()", equalTo(p2.getDiseases().size())))
+                .andExpect(jsonPath("$.results[1].diseases.length()", equalTo(p2.getDiseaseProteins().size())))
                 .andExpect(jsonPath("$.results[2].diseases", nullValue()));
     }
 

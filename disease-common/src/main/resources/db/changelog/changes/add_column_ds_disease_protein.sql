@@ -1,0 +1,1 @@
+ALTER TABLE ds_disease_protein ADD is_mapped bool NOT NULL DEFAULT false;

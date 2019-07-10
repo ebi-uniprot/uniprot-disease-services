@@ -15,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.ac.ebi.uniprot.ds.common.model.*;
@@ -34,10 +32,10 @@ public class DiseaseDAOImplTest {
 
     @Autowired
     private DiseaseDAO diseaseDAO;
-
     private Disease disease;
     private List<Disease> diseases;
     private String uuid;
+    private final long randomId = new Random().nextLong();
 
     @BeforeEach
     void setUp(){
@@ -156,10 +154,10 @@ public class DiseaseDAOImplTest {
 
     @Test
     void testDeleteNonExistentDisease(){
-        final long id = new Random().nextLong();
+
 
         EmptyResultDataAccessException exception = assertThrows(EmptyResultDataAccessException.class,
-                () -> this.diseaseDAO.deleteById(id > 0 ? id : -id));
+                () -> this.diseaseDAO.deleteById(randomId > 0 ? randomId : -randomId));
 
         assertTrue(exception.getMessage().contains("No class uk.ac.ebi.uniprot.ds.common.model.Disease entity with id"));
     }
@@ -171,17 +169,6 @@ public class DiseaseDAOImplTest {
         assertFalse(optDisease.isPresent(), "Disease is found!");
     }
 
-    @Test
-    void testGetDiseasesByProteins(){
-        String uuid = UUID.randomUUID().toString();
-        this.disease = DiseaseTest.createDiseaseObject(uuid);
-        Protein protein = ProteinTest.createProteinObject(uuid);
-        this.disease.setProteins(Arrays.asList(protein));
-        this.diseaseDAO.save(this.disease);
-
-        List<Disease> dbDisease = this.diseaseDAO.findAllByProteinsIs(protein);
-        assertEquals(1, dbDisease.size());
-    }
 
     @Test
     void testCreateDiseaseWithCrossRefs(){

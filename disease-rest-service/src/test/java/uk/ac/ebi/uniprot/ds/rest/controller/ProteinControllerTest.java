@@ -8,6 +8,7 @@
 package uk.ac.ebi.uniprot.ds.rest.controller;
 
 import org.hamcrest.Matchers;
+import org.hamcrest.collection.IsArrayContainingInOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -30,10 +31,7 @@ import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -100,7 +98,11 @@ public class ProteinControllerTest {
 
         Disease d1 = ModelCreationUtils.createDiseaseObject(uuid + 1);
         Disease d2 = ModelCreationUtils.createDiseaseObject(uuid + 2);
-        protein.setDiseases(Arrays.asList(d1, d2));
+
+        DiseaseProtein dp1 = new DiseaseProtein(d1, protein, true);
+        DiseaseProtein dp2 = new DiseaseProtein(d2, protein, true);
+
+        protein.setDiseaseProteins(new HashSet<>(Arrays.asList(dp1, dp2)));
 
         Variant v1 = ModelCreationUtils.createVariantObject(uuid + 1);
         Variant v2 = ModelCreationUtils.createVariantObject(uuid + 2);
@@ -159,7 +161,7 @@ public class ProteinControllerTest {
           //      .andExpect(jsonPath("$.result.pathways.length()", equalTo(protein.getProteinCrossRefs().size())))
                 .andExpect(jsonPath("$.result.interactions.length()", equalTo(protein.getInteractions().size())))
                 .andExpect(jsonPath("$.result.variants.length()", equalTo(protein.getVariants().size())))
-                .andExpect(jsonPath("$.result.diseases.length()", equalTo(protein.getDiseases().size())))
+                .andExpect(jsonPath("$.result.diseases.length()", equalTo(protein.getDiseaseProteins().size())))
                 .andExpect(jsonPath("$.result.geneCoordinates.length()", equalTo(protein.getGeneCoordinates().size())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications.length()", Matchers.equalTo(4)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications[*].type", Matchers.notNullValue()))
@@ -218,7 +220,10 @@ public class ProteinControllerTest {
 
         Disease d1 = ModelCreationUtils.createDiseaseObject(uuid + 1);
         Disease d2 = ModelCreationUtils.createDiseaseObject(uuid + 2);
-        p1.setDiseases(Arrays.asList(d1, d2));
+        DiseaseProtein dp1 = new DiseaseProtein(d1, p1, true);
+        DiseaseProtein dp2 = new DiseaseProtein(d2, p1, true);
+        p1.setDiseaseProteins(new HashSet<>(Arrays.asList(dp1, dp2)));
+        p1.setIsExternallyMapped(true);
 
         Variant v1 = ModelCreationUtils.createVariantObject(uuid + 1);
         Variant v2 = ModelCreationUtils.createVariantObject(uuid + 2);
@@ -273,7 +278,9 @@ public class ProteinControllerTest {
          //       .andExpect(jsonPath("$.results[0].xrefs.length()", equalTo(p1.getProteinCrossRefs().size())))
                 .andExpect(jsonPath("$.results[0].interactions.length()", equalTo(p1.getInteractions().size())))
                 .andExpect(jsonPath("$.results[0].variants.length()", equalTo(p1.getVariants().size())))
-                .andExpect(jsonPath("$.results[0].diseases.length()", equalTo(p1.getDiseases().size())))
+                .andExpect(jsonPath("$.results[0].diseases.length()", equalTo(p1.getDiseaseProteins().size())))
+                .andExpect(jsonPath("$.results[0].diseases[*].note", Matchers.notNullValue()))
+                .andExpect(jsonPath("$.results[0].isExternallyMapped", equalTo(true)))
                 .andExpect(jsonPath("$.results[0].geneCoordinates.length()", equalTo(p1.getGeneCoordinates().size())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].publications.length()", Matchers.equalTo(4)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].publications[*].type", Matchers.notNullValue()))

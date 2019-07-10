@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.Protein;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +26,6 @@ public interface DiseaseDAO extends JpaRepository<Disease, Long> {
 
     Optional<Disease> findDiseaseByDiseaseIdOrNameOrAcronym(String diseaseId, String name, String acronym);
 
-    List<Disease> findAllByProteinsIs(Protein protein);
     List<Disease> findByNameContainingIgnoreCaseOrDescContainingIgnoreCase(String name, String desc, Pageable pageable);
 
     //List<Disease> findAllByNameContaining(String keyword, Pageable pageable);

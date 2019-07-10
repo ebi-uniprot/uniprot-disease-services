@@ -36,6 +36,9 @@ public class ProteinDAOImplTest{
     private ProteinCrossRefDAO proteinCrossRefDAO;
 
     @Autowired
+    private DiseaseProteinDAO diseaseProteinDAO;
+
+    @Autowired
     private DrugDAO drugDAO;
 
     private Protein protein;
@@ -74,15 +77,23 @@ public class ProteinDAOImplTest{
         this.diseases = new ArrayList<>();
         IntStream.range(1, 6).forEach(i -> this.diseases.add(createDisease(new Random().nextInt())));
 
-        this.protein.setDiseases(this.diseases);
+        // create disease protein objects
+        Set<DiseaseProtein> dps = new HashSet<>();
+        for(Disease dis : this.diseases){
+            DiseaseProtein dp = new DiseaseProtein();
+            dp.setMapped(false);
+            dp.setDisease(dis);
+            dp.setProtein(this.protein);
+            dps.add(dp);
+        }
+        // set diseaseProtein objects
+        this.protein.setDiseaseProteins(dps);
         this.proteinDAO.save(this.protein);
         assertNotNull(this.protein.getId(), "unable to create protein");
 
-        // get the disease
-        Optional<Protein> storedProtein = this.proteinDAO.findById(this.protein.getId());
-        assertTrue(storedProtein.isPresent(), "unable to get the protein");
-        verifyProtein(this.protein, storedProtein.get());
-        verifyDiseases(storedProtein.get().getDiseases());
+        // get the diseases by protein
+        List<DiseaseProtein> diseaseProteins = this.diseaseProteinDAO.findAllByProtein(this.protein);
+        assertEquals(5, diseaseProteins.size());
     }
 
     @Test
@@ -190,7 +201,6 @@ public class ProteinDAOImplTest{
         //dis.setProteins(Arrays.asList(this.protein));
         this.diseases.add(dis);
         this.diseaseDAO.saveAll(this.diseases);
-        this.protein.setDiseases(Arrays.asList(dis));
         this.proteinDAO.save(this.protein);
 
         List<Protein> proteins = this.proteinDAO.findAllByDrugName(drug1.getName());

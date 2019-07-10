@@ -24,6 +24,7 @@ public class ModelCreationUtils {
         disease.setName(dn);
         disease.setDesc(desc);
         disease.setAcronym(acr);
+        disease.setNote("Note-" + random);
         return disease;
     }
 
