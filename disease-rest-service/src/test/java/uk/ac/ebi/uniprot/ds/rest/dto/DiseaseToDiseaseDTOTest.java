@@ -67,6 +67,12 @@ public class DiseaseToDiseaseDTOTest {
         Disease pd3 = ModelCreationUtils.createDiseaseObject(this.uuid + 3);
         disease.setParents(Arrays.asList(pd1, pd2, pd3));
 
+        // create few child diseases
+        Disease cd1 = ModelCreationUtils.createDiseaseObject(this.uuid + 4);
+        Disease cd2 = ModelCreationUtils.createDiseaseObject(this.uuid + 5);
+        Disease cd3 = ModelCreationUtils.createDiseaseObject(this.uuid + 6);
+        disease.setChildren(Arrays.asList(cd1, cd2, cd3));
+
         // create few publications
         Publication pb1 = ModelCreationUtils.createPublicationObject(this.uuid + 1);
         Publication pb2 = ModelCreationUtils.createPublicationObject(this.uuid + 2);
@@ -82,6 +88,7 @@ public class DiseaseToDiseaseDTOTest {
         Assert.assertEquals(disease.getSynonyms().size(), dto.getSynonyms().size());
         Assert.assertEquals(disease.getVariants().size(), dto.getVariants().size());
         Assert.assertEquals(disease.getParents().size(), dto.getParents().size());
+        Assert.assertEquals(disease.getChildren().size(), dto.getChildren().size());
         Assert.assertEquals(disease.getPublications().size(), dto.getPublications().size());
     }
 

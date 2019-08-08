@@ -122,6 +122,17 @@ public class DiseaseControllerTest {
         Publication pb4 = ModelCreationUtils.createPublicationObject(this.uuid + 4);
         disease.setPublications(Arrays.asList(pb1, pb2, pb3, pb4));
 
+        // create few parent diseases
+        Disease pd1 = ModelCreationUtils.createDiseaseObject(this.uuid + 1);
+        Disease pd2 = ModelCreationUtils.createDiseaseObject(this.uuid + 2);
+        Disease pd3 = ModelCreationUtils.createDiseaseObject(this.uuid + 3);
+        disease.setParents(Arrays.asList(pd1, pd2, pd3));
+
+        // create few child diseases
+        Disease cd1 = ModelCreationUtils.createDiseaseObject(this.uuid + 4);
+        Disease cd2 = ModelCreationUtils.createDiseaseObject(this.uuid + 5);
+        disease.setChildren(Arrays.asList(cd1, cd2));
+
         Mockito.when(this.diseaseService.findByDiseaseId(diseaseId)).thenReturn(Optional.of(disease));
 
         ResultActions res = this.mockMvc.
@@ -142,6 +153,8 @@ public class DiseaseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.variants.length()", Matchers.equalTo(4)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.synonyms.length()", Matchers.equalTo(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications.length()", Matchers.equalTo(4)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.parents.length()", Matchers.equalTo(disease.getParents().size())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.children.length()", Matchers.equalTo(disease.getChildren().size())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications[*].type", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications[*].id", Matchers.notNullValue()));
     }
@@ -188,6 +201,7 @@ public class DiseaseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].synonyms").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].drugs").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].publications").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].parents").exists());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].parents").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].children").exists());
     }
 }

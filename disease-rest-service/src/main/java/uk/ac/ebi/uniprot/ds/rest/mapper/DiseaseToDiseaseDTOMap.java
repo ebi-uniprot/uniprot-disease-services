@@ -19,7 +19,8 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
         using(new DisProtsToProtAccessions()).map(source.getDiseaseProteins()).setProteins(null);
         using(new SynonymsToNames()).map(source.getSynonyms()).setSynonyms(null);
         using(new VariantsToFeatureIdsConverter()).map(source.getVariants()).setVariants(null);
-        using(new DiseasesToParentDiseaseDTOs()).map(source.getParents()).setParents(null);
+        using(new DiseasesToBasicDiseaseDTOs()).map(source.getParents()).setParents(null);
+        using(new DiseasesToBasicDiseaseDTOs()).map(source.getChildren()).setChildren(null);
         using(new PublicationsToPublicationDTOs()).map(source.getPublications()).setPublications(null);
         using(new DisProtsToDrugs()).map(source.getDiseaseProteins()).setDrugs(null);
     }
@@ -54,18 +55,19 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
         }
     }
 
-    private static class DiseasesToParentDiseaseDTOs implements Converter<List<Disease>, List<DiseaseDTO.ParentDiseaseDTO>>{
+    private static class DiseasesToBasicDiseaseDTOs implements Converter<List<Disease>, List<DiseaseDTO.BasicDiseaseDTO>>{
 
         @Override
-        public List<DiseaseDTO.ParentDiseaseDTO> convert(MappingContext<List<Disease>, List<DiseaseDTO.ParentDiseaseDTO>> context) {
-            List<Disease> children = context.getSource();
-            List<DiseaseDTO.ParentDiseaseDTO> childDiseases = null;
-            if(children != null) {
-                childDiseases = children.stream().map(child -> new DiseaseDTO.ParentDiseaseDTO(child.getDiseaseId(), child.getName()))
+        public List<DiseaseDTO.BasicDiseaseDTO> convert(MappingContext<List<Disease>, List<DiseaseDTO.BasicDiseaseDTO>> context) {
+            List<Disease> relatedDiseases = context.getSource();
+
+            List<DiseaseDTO.BasicDiseaseDTO> basicDiseaseDtos = null;
+            if(relatedDiseases != null) {
+                basicDiseaseDtos = relatedDiseases.stream().map(child -> new DiseaseDTO.BasicDiseaseDTO(child.getDiseaseId(), child.getName()))
                         .collect(Collectors.toList());
             }
 
-            return childDiseases;
+            return basicDiseaseDtos;
         }
     }
 
