@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -49,5 +50,15 @@ public class ProteinDTO {
     public static class DiseaseNameNoteDTO{
     	private String diseaseName;
     	private String note;
+    	public DiseaseNameNoteDTO(String diseaseName, String note){
+    	    this.diseaseName = diseaseName;
+    	    this.note = note;
+        }
+
+        @Override
+        public String toString() {
+            return "{name=" + (this.diseaseName != null ? this.diseaseName : "")
+                    + "," + "note=" + (this.note != null ? this.note : "") + "}";
+        }
     }
 }

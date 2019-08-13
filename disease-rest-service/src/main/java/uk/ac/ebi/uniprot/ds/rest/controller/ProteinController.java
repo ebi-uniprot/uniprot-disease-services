@@ -12,10 +12,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.dto.*;
@@ -25,9 +22,11 @@ import uk.ac.ebi.uniprot.ds.rest.response.SingleEntityResponse;
 import uk.ac.ebi.uniprot.ds.rest.service.DrugService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Size;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
+
 @RestController
 @RequestMapping("/v1/ds")
 @Validated
@@ -80,6 +79,37 @@ public class ProteinController {
 
         return new MultipleEntityResponse<>(requestId, dtoList);
     }
+
+    @GetMapping(value = {"/proteins/{accessions}/download"}, name = "Download proteins by given list of accessions", produces = "text/tsv")
+    public void downloadProteins(
+            @Size(min = 1, max = 200, message = "The total count of accessions passed must be between 1 and 200 both inclusive.")
+            @PathVariable(name = "accessions") List<String> accessions,
+            @RequestParam(value = "fields", required = false) String fields,
+            HttpServletResponse response) throws IOException {
+
+        List<String> headers = getHeaders(fields);
+
+        List<Protein> proteins = this.proteinService.getAllProteinsByAccessions(accessions);
+        response.setContentType("text/tsv; charset=utf-8");
+        response.setHeader("Content-disposition", "attachment; filename=proteins.tsv");
+        // print the header
+        response.getWriter().print(ProteinDownloadHelper.getTabSeparatedStr(headers));
+        // print each protein
+        for (Protein protein : proteins) {
+            Map<String, String> map = ProteinDownloadHelper.getProteinMap(protein);
+            List<String> result = ProteinDownloadHelper.getFieldsValues(headers, map);
+            response.getWriter().print(ProteinDownloadHelper.getTabSeparatedStr(result));
+        }
+    }
+
+    private List<String> getHeaders(String fields) {
+        if(fields == null || fields.isEmpty()){
+            return Arrays.asList(ProteinDownloadHelper.DEFAULT_FIELDS.split(","));
+        } else {
+            return Arrays.asList(fields.split(","));
+        }
+    }
+
 
     private ProteinDTO convertToDTO(Protein protein) {
         ProteinDTO proteinDTO = modelMapper.map(protein, ProteinDTO.class);
