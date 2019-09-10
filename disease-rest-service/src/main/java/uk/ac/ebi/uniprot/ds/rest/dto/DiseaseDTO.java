@@ -9,6 +9,9 @@ package uk.ac.ebi.uniprot.ds.rest.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import uk.ac.ebi.uniprot.ds.common.model.Disease;
 
 import java.util.List;
 
@@ -48,5 +51,9 @@ public class DiseaseDTO {
             this.accession = accession;
             this.isExternallyMapped = isExternallyMapped;
         }
+    }
+
+    public static List<DiseaseDTO> toDiseaseDTOList(List<Disease> from, ModelMapper modelMapper){
+        return modelMapper.map(from, new TypeToken<List<DiseaseDTO>>(){}.getType());
     }
 }

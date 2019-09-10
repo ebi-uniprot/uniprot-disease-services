@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
@@ -100,4 +101,22 @@ public class DiseaseService {
                 .orElse(null);
     }
 
+    public List<Disease> getDiseasesByDrugName(String drugName) {
+        List<Protein> proteins = this.proteinService.getProteinsByDrugName(drugName);
+        List<Disease> diseases = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(proteins)) {
+            // get the diseases from proteins
+            Set<Disease> diseasesSet = proteins
+                    .stream()
+                    .filter(protein -> !CollectionUtils.isEmpty(protein.getDiseaseProteins()))
+                    .map(p -> p.getDiseaseProteins())
+                    .flatMap(Set::stream)
+                    .map(dp -> dp.getDisease())
+                    .collect(Collectors.toSet());
+
+            diseases.addAll(diseasesSet);
+        }
+
+        return diseases;
+    }
 }

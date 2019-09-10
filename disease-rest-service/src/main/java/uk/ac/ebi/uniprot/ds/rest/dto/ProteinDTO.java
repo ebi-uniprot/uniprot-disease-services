@@ -12,6 +12,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import uk.ac.ebi.uniprot.ds.common.model.Protein;
 
 import java.util.List;
 
@@ -60,5 +63,11 @@ public class ProteinDTO {
             return "{name=" + (this.diseaseName != null ? this.diseaseName : "")
                     + "," + "note=" + (this.note != null ? this.note : "") + "}";
         }
+    }
+
+    public static List<ProteinDTO> toProteinDTOList(List<Protein> proteins, ModelMapper modelMapper){
+        List<ProteinDTO> dtoList = modelMapper.map(proteins,
+                new TypeToken<List<ProteinDTO>>(){}.getType());
+        return dtoList;
     }
 }

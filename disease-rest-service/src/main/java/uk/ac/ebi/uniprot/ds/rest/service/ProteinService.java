@@ -104,9 +104,15 @@ public class ProteinService {
 
     }
 
+    public List<Protein> getProteinsByDrugName(String drugName) {
+        return this.proteinDAO.findAllByDrugName(drugName);
+    }
+
     private Protein getProtein(DiseaseProtein dp) {
         Protein p = dp.getProtein();
         p.setIsExternallyMapped(dp.isMapped());
         return p;
     }
+
+
 }
