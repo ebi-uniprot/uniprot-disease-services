@@ -3,11 +3,13 @@ package uk.ac.ebi.uniprot.ds.rest.mapper;
 import org.modelmapper.Converter;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
+import org.springframework.util.CollectionUtils;
 import uk.ac.ebi.uniprot.ds.common.model.*;
 import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,7 +25,20 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 				.setGeneCoordinates(null);
 		using(new PublicationsToPublicationDTOs()).map(source.getPublications()).setPublications(null);
 		using(new ProteinToDrugs()).map(source).setDrugs(null);
+		using(new IsExternallyMappedExtractor()).map(source.getDiseaseProteins()).setIsExternallyMapped(null);
 
+	}
+	private  static class IsExternallyMappedExtractor implements Converter<Set<DiseaseProtein>, Boolean>{
+
+		@Override
+		public Boolean convert(MappingContext<Set<DiseaseProtein>, Boolean> context) {
+			Set<DiseaseProtein> dps = context.getSource();
+			Optional<Boolean> optIsMapped = Optional.empty();
+			if(!CollectionUtils.isEmpty(dps)){
+				optIsMapped = dps.stream().map(dp -> dp.isMapped()).findFirst();
+			}
+			return optIsMapped.orElse(false);
+		}
 	}
 
 	public static class ProteinToDrugs implements Converter<Protein, List<String>> {
