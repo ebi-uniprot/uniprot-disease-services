@@ -7,15 +7,13 @@
 
 package uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology;
 
-import org.springframework.batch.item.ItemReader;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class DiseaseOntologyReader implements ItemReader<List<OBOTerm>> {
+public class DiseaseOntologyReader {
     // Constants
     private static final String TERM_STR = "[Term]";
     private static final String TYPEDEF_STR = "[Typedef]";
@@ -92,25 +90,25 @@ public class DiseaseOntologyReader implements ItemReader<List<OBOTerm>> {
                 String[] lineTokens = line.split(COLON_SPACE);
                 switch (lineTokens[0]) {
                     case ID:
-                        builder.id(lineTokens[1]);
+                        builder.id(lineTokens[1].trim());
                         break;
                     case NAME:
-                        builder.name(lineTokens[1].trim().toLowerCase());
+                        builder.name(lineTokens[1].trim());
                         break;
                     case SYNONYM:
                         synonyms.add(lineTokens[1]);
                         break;
                     case IS_A:
-                        parentIds.add(lineTokens[1].split(SPACE_EXCL)[0]);
+                        parentIds.add(lineTokens[1].split(SPACE_EXCL)[0].split(" ")[0].trim());
                         break;
                     case DEF:
-                        builder.definition(lineTokens[1]);
+                        builder.definition(lineTokens[1].split("\" \\[")[0].substring(1));
                         break;
                     case ALT_ID:
                         altIds.add(lineTokens[1]);
                         break;
                     case XREF:
-                        xrefs.add(lineTokens[1]);
+                        xrefs.add(lineTokens[1].split(" ")[0].trim());
                         break;
                     case IS_OBSOLETE:
                         builder.isObsolete(Boolean.valueOf(lineTokens[1]));
@@ -127,5 +125,11 @@ public class DiseaseOntologyReader implements ItemReader<List<OBOTerm>> {
         builder.xrefs(xrefs);
 
         return builder.build();
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        DiseaseOntologyReader reader = new DiseaseOntologyReader("/Users/sahmad/Documents/mondo.obo");
+        List<OBOTerm> oboTerms = reader.read();
+        System.out.println(oboTerms);
     }
 }

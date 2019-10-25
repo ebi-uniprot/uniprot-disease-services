@@ -21,7 +21,7 @@ public class DOHumToSynonymConverter implements ItemProcessor<Pair<String, Strin
         Optional<Disease> optDisease = this.diseaseDAO.findDiseaseByNameIgnoreCase(item.getRight());
         if(optDisease.isPresent()){
             Synonym.SynonymBuilder bldr = Synonym.builder();
-            bldr.name(item.getLeft()).source(Constants.DISEASE_ONTOLOGY);
+            bldr.name(item.getLeft()).source(Constants.MONDO_STR);
             bldr.disease(optDisease.get());
             synonym = bldr.build();
         }

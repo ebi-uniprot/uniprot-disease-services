@@ -27,10 +27,8 @@ public class MIM2GeneLoader {
 
     private static void storeData(TSVReader reader, String dbUser, String dbPass, String jdbcUrl) throws SQLException {
         MIM2GeneSaver saver = new MIM2GeneSaver(dbUser, dbPass, jdbcUrl);
-
         for(List<List<String>> records = reader.getRecords(BATCH_SIZE);records.size() > 0; records = reader.getRecords(BATCH_SIZE)) {
             saver.persistRecords(records);
         }
     }
-
 }

@@ -55,7 +55,7 @@ public class DOSynonymLoadStep {
 
     @Bean
     public ItemReader<Pair<String, String>> doHumMappingReader() throws FileNotFoundException {
-        ItemReader<Pair<String, String>>  reader = new DOToHumMappingReader(this.doHumMappingFile);
+        ItemReader<Pair<String, String>>  reader = new DOToHumMappingReader();
         return reader;
     }
 

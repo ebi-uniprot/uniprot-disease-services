@@ -13,6 +13,7 @@ import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +36,7 @@ public class HumDiseaseDataLoadStep {
     @Bean
     public Step humDiseaseStep(StepBuilderFactory stepBuilderFactory, StepExecutionListener stepListener,
                                ChunkListener chunkListener,
-                               ItemReader<Disease> humDiseaseReader,
+                               @Qualifier("humDiseaseReader") ItemReader<Disease> humDiseaseReader,
                                ItemWriter<Disease> humDiseaseWriter) throws FileNotFoundException {
         return stepBuilderFactory.get(Constants.DS_HUM_DISEASE_DATA_LOADER_STEP)
                 .<Disease, Disease>chunk(chunkSize)
@@ -46,7 +47,7 @@ public class HumDiseaseDataLoadStep {
                 .build();
     }
 
-    @Bean
+    @Bean(name = "humDiseaseReader")
     ItemReader<Disease> humDiseaseReader() throws FileNotFoundException {
         ItemReader<Disease> reader = new HumDiseaseReader(humDiseaseDataFile);
         return reader;

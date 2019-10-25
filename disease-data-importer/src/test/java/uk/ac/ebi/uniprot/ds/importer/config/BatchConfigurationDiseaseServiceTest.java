@@ -21,7 +21,7 @@ import uk.ac.ebi.uniprot.ds.importer.DataImporterSpringBootApplication;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {DataImporterSpringBootApplication.class, BatchConfigurationDiseaseService.class,
-        HumDiseaseDataLoadStep.class, UniProtDataLoadStep.class, GeneCoordinateDataLoadStep.class})
+        HumDiseaseDataLoadStep.class, UniProtDataLoadStep.class, GeneCoordinateDataLoadStep.class, MondoDiseaseLoadStep.class})
 public class BatchConfigurationDiseaseServiceTest {
 
     @Autowired

@@ -52,7 +52,7 @@ public class AlzheimerProteinLoadStep {
             "'Q13651',     'Q16623',     'Q8WXD2',     'Q9H063',     'Q9H5N1', " +
             "'Q9UPA5',     'Q9Y2J0',     'Q9Y2K9',     'O43157',     'P14867', " +
             "'P41597',     'Q9NX46',     'P19793',     'P26378',     'Q13127', " +
-            "'Q15149',     'Q16643',     'Q8IZY2',     'Q96DC8',     'Q9UQB8', " +
+            "'Q15149',     'Q8IZY2',     'Q96DC8',     'Q9UQB8', " +
             "'Q9Y232',     'O00116',     'O60603',     'O60663',     'O75509', " +
             "'O75920',     'O76096',     'O95153',     'O95206',     'P01024', " +
             "'P01130',     'P01137',     'P01375',     'P01584',     'P02745', " +
@@ -92,7 +92,7 @@ public class AlzheimerProteinLoadStep {
     @Value(("${ds.import.chunk.size}"))
     private Integer chunkSize;
 
-    @Bean(name = "alazheimerProteinLoad")
+    @Bean(name = "alzheimerProteinLoad")
     public Step diseaseProteinStep(StepBuilderFactory stepBuilders, StepExecutionListener stepListener,
                                   ChunkListener chunkListener,
                                   ItemReader<DiseaseProteinReader.DiseaseProteinDTO> reader,

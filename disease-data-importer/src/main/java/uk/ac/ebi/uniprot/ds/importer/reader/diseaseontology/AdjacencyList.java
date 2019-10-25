@@ -20,6 +20,9 @@ public class AdjacencyList {
                     if(parentIds != null && !parentIds.isEmpty()){
                         // update all the parents with this node as a child
                         for(String parenId : parentIds){
+                            if(parenId.contains("MONDO:0004975")){
+                                System.out.println();//TODO
+                            }
                             if (termIdNodeMap.containsKey(parenId)) {
                                 Node parent = termIdNodeMap.get(parenId);
                                 parent.getChildren().add(node);

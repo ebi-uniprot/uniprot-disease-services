@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.importer.processor.DiseaseOntologyProcessor;
+import uk.ac.ebi.uniprot.ds.importer.reader.MondoReader;
 import uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology.DiseaseOntologyReader;
 import uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology.OBOTerm;
 import uk.ac.ebi.uniprot.ds.importer.util.Constants;
@@ -42,7 +43,7 @@ public class DiseaseOntologyDataLoadStep {
                                         ItemReader<List<OBOTerm>> doReader,
                                         ItemProcessor<List<OBOTerm>, List<Disease>> doProcessor,
                                         ItemWriter<List<Disease>> doWriter) throws FileNotFoundException {
-        return stepBuilderFactory.get(Constants.DS_DISEASE_ONTOLOGY_LOADER_STEP)
+        return stepBuilderFactory.get(Constants.DS_DISEASE_PARENT_CHILD_LOADER_STEP)
                 .<List<OBOTerm>, List<Disease>>chunk(chunkSize)
                 .reader(doReader)
                 .processor(doProcessor)
@@ -54,7 +55,7 @@ public class DiseaseOntologyDataLoadStep {
 
     @Bean
     public ItemReader<List<OBOTerm>> doReader() throws FileNotFoundException, JAXBException {
-        ItemReader<List<OBOTerm>> reader = new DiseaseOntologyReader(doDataFile);
+        ItemReader<List<OBOTerm>> reader = new MondoReader();
         return reader;
     }
 
