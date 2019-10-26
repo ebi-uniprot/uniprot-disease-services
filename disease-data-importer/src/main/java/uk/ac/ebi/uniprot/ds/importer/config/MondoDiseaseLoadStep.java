@@ -12,6 +12,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.listener.ExecutionContextPromotionListener;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,15 +20,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.importer.processor.MondoTermToDiseaseConverter;
 import uk.ac.ebi.uniprot.ds.importer.reader.HumDiseaseReader;
 import uk.ac.ebi.uniprot.ds.importer.reader.MondoDiseaseReader;
+import uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology.OBOTerm;
 import uk.ac.ebi.uniprot.ds.importer.util.Constants;
 import uk.ac.ebi.uniprot.ds.importer.writer.HumDiseaseWriter;
 
 import java.io.FileNotFoundException;
 
-import static uk.ac.ebi.uniprot.ds.importer.util.Constants.DISEASE_NAME_OR_OMIM_DISEASE_MAP;
-import static uk.ac.ebi.uniprot.ds.importer.util.Constants.MONDO_OBO_TERMS_LIST;
+import static uk.ac.ebi.uniprot.ds.importer.util.Constants.*;
 
 /**
  * Loads the Mondo Diseases from mondo.obo file. We load only the missing term(it can be disease or disease group name)
@@ -45,13 +47,14 @@ public class MondoDiseaseLoadStep {
     @Bean
     public Step mondoDiseaseStep(StepBuilderFactory stepBuilderFactory, StepExecutionListener stepListener,
                                ChunkListener chunkListener,
-                                 @Qualifier("mondoOBOReader") ItemReader<Disease> mondoDiseaseReader,
-                               ItemWriter<Disease> mondoDiseaseWriter) throws FileNotFoundException {
+                                 @Qualifier("mondoOBOReader") ItemReader<OBOTerm> mondoDiseaseReader,
+                               ItemProcessor<OBOTerm, Disease> oboToDiseaseConverter,
+                               ItemWriter<Disease> diseaseWriter) throws FileNotFoundException {
         return stepBuilderFactory.get(Constants.DS_MONDO_DISEASE_DATA_LOADER_STEP)
-                .<Disease, Disease>chunk(chunkSize)
+                .<OBOTerm, Disease>chunk(chunkSize)
                 .reader(mondoDiseaseReader) // load terms from mondo.obo
-                .writer(mondoDiseaseWriter) // See HumDiseaseWriter. Write the mondo obo term as synonym or a disease
-                                            // through create/update disease.
+                .processor(oboToDiseaseConverter)// convert obo term to disease.
+                .writer(diseaseWriter) // See HumDiseaseWriter. Write the mondo obo term as synonym or a disease through create/update disease.
                 .listener(promotionListener()) // to promote step context as job context to pass data around
                 .listener(stepListener)
                 .listener(chunkListener)
@@ -66,9 +69,15 @@ public class MondoDiseaseLoadStep {
     }
 
     @Bean(name = "mondoOBOReader")
-    ItemReader<Disease> mondoOBOFileReader() throws FileNotFoundException {
-        ItemReader<Disease> reader = new MondoDiseaseReader(this.mondoDiseaseDataFile);
+    ItemReader<OBOTerm> mondoOBOFileReader() throws FileNotFoundException {
+        ItemReader<OBOTerm> reader = new MondoDiseaseReader(this.mondoDiseaseDataFile);
         return reader;
+    }
+
+    @Bean
+    public ItemProcessor<OBOTerm, Disease> oboToDiseaseConverter() {
+        ItemProcessor<OBOTerm, Disease> converter = new MondoTermToDiseaseConverter();
+        return converter;
     }
 
 }

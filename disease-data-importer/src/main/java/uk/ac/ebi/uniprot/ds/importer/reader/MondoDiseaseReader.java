@@ -1,150 +1,120 @@
 package uk.ac.ebi.uniprot.ds.importer.reader;
 
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
-import org.springframework.beans.factory.annotation.Autowired;
-import uk.ac.ebi.uniprot.ds.common.dao.CrossRefDAO;
-import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
-import uk.ac.ebi.uniprot.ds.common.dao.SynonymDAO;
-import uk.ac.ebi.uniprot.ds.common.model.CrossRef;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.Synonym;
-import uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology.DiseaseOntologyReader;
 import uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology.OBOTerm;
-import uk.ac.ebi.uniprot.ds.importer.util.Constants;
-
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.regex.Pattern;
 
-public class MondoDiseaseReader implements ItemReader<Disease> {
-    @Autowired
-    private DiseaseDAO diseaseDAO;
-    @Autowired
-    private SynonymDAO synonymDAO;
-    @Autowired
-    private CrossRefDAO crossRefDAO;
-    private Map<String, Disease> diseaseNameToDiseaseMap; // TODO pass it around
-    private Iterator<OBOTerm> iterator;
-    private List<OBOTerm> mondoDiseases; // TODO pass this around
-    private String file;
-    private StepExecution stepExecution;
+public class MondoDiseaseReader implements ItemReader<OBOTerm> {
 
-    public MondoDiseaseReader(String file) throws FileNotFoundException {
-        this.diseaseNameToDiseaseMap = new HashMap<>();
-        this.file = file;
+    // Constants
+    private static final String TERM_STR = "[Term]";
+    private static final String TYPEDEF_STR = "[Typedef]";
+    private static final Pattern TERM_PATTERN = Pattern.compile("^\\s*$", Pattern.MULTILINE);
+    private static final String NEW_LINE = "\n";
+    private static final String COLON_SPACE = ": ";
+    private static final String SPACE_EXCL = " !";
+    private static final String ID = "id";
+    private static final String NAME = "name";
+    private static final String SYNONYM = "synonym";
+    private static final String IS_A = "is_a";
+    private static final String DEF = "def";
+    private static final String ALT_ID = "alt_id";
+    private static final String XREF = "xref";
+    private static final String IS_OBSOLETE = "is_obsolete";
+
+    private Scanner reader;
+    private boolean termStarted;
+
+    public MondoDiseaseReader(String fileName) throws FileNotFoundException {
+        this.reader = new Scanner(new File(fileName), StandardCharsets.UTF_8.name());
+        this.termStarted = false;
     }
 
-    @BeforeStep
-    // set the stepExecution to pass data from this step to another step. See above executionContext.put() call
-    public void init(final StepExecution stepExecution) throws FileNotFoundException {
-        this.stepExecution = stepExecution;
-        this.mondoDiseases = new DiseaseOntologyReader(this.file).read();
-        this.iterator = this.mondoDiseases.iterator();
-        loadCache();
-        setCacheInStepContext();
-    }
-
-    @Override
-    public Disease read() throws FileNotFoundException {
-        //FIXME better way
-        Disease disease = null;
-        // for each Mondo OBOTerm,
-        //case 1 if mondo disease(oboterm) is there in humdisease and name matches then do nothing
-        //case 2 if mondo disease(oboterm) is there in humdisease and name doesn't match then update synonym (if not already there) and cache
-        //case 3 if mondo disease(oboterm) is not there in humdisease then create a new disease and add in cache
-        if (this.iterator.hasNext()) {
-            OBOTerm mondoDisease = this.iterator.next();
-            // try to get the humdisease by disease name or omim id
-            Disease cachedDisease = this.diseaseNameToDiseaseMap.get(mondoDisease.getName().toLowerCase());
-            // if cache doesn't have disease name, try to find by omim id
-            String mondoOmim = getOMIMId(mondoDisease);
-            if (cachedDisease == null && mondoOmim != null) {
-                cachedDisease = this.diseaseNameToDiseaseMap.get(mondoOmim.toLowerCase());
+    public OBOTerm read() {
+        // skip the un-needed lines
+        while (this.reader.hasNext() && !this.termStarted) {
+            String lines = this.reader.nextLine();
+            if (lines.trim().isEmpty()) {
+                this.termStarted = true;
+                this.reader.useDelimiter(TERM_PATTERN);
             }
-            if (cachedDisease == null) { // case 3 from above, disease or group name from Mondo
-                disease = createDiseaseObject(mondoDisease);
-                this.diseaseNameToDiseaseMap.put(mondoDisease.getName().toLowerCase(), disease);
-            } else {
-                disease = cachedDisease; // case 1
-                if (!cachedDisease.getName().equalsIgnoreCase(mondoDisease.getName())
-                        && !this.diseaseNameToDiseaseMap.containsKey(mondoDisease.getName().toLowerCase())) { // case 2 in above
-                    Synonym synonym = createSynonymObject(disease, mondoDisease.getName());
-                    disease.addSynonym(synonym);
-                    // put this synonym in the map
-                    this.diseaseNameToDiseaseMap.put(synonym.getName().toLowerCase(), disease);
+        }
+
+        OBOTerm oboTerm;
+        // read until non-obsolete term found
+        while ((oboTerm = readNextTerm()) != null && oboTerm.isObsolete()) ;
+        return oboTerm;
+    }
+
+    private OBOTerm readNextTerm() {
+        String termStr = null;
+
+        if (this.reader.hasNext()) {
+            termStr = this.reader.next();
+        }
+
+        if (termStr == null || termStr.trim().startsWith(TYPEDEF_STR)) {
+            return null;
+        }
+
+        OBOTerm oboTerm = convertToOBOTerm(termStr);
+        return oboTerm;
+    }
+
+    private OBOTerm convertToOBOTerm(String termStr) {
+
+        OBOTerm.OBOTermBuilder builder = OBOTerm.builder();
+
+        String[] lines = termStr.split(NEW_LINE);
+
+        List<String> synonyms = new ArrayList<>();
+        List<String> altIds = new ArrayList<>();
+        List<String> xrefs = new ArrayList<>();
+        List<String> parentIds = new ArrayList<>();
+
+        for (String line : lines) {
+            if (!(line.startsWith(TERM_STR) || line.trim().isEmpty())) {
+                String[] lineTokens = line.split(COLON_SPACE);
+                switch (lineTokens[0]) {
+                    case ID:
+                        builder.id(lineTokens[1].trim());
+                        break;
+                    case NAME:
+                        builder.name(lineTokens[1].trim());
+                        break;
+                    case SYNONYM:
+                        synonyms.add(lineTokens[1]);
+                        break;
+                    case IS_A:
+                        parentIds.add(lineTokens[1].split(SPACE_EXCL)[0].split(" ")[0].trim());
+                        break;
+                    case DEF:
+                        builder.definition(lineTokens[1].split("\" \\[")[0].substring(1));
+                        break;
+                    case ALT_ID:
+                        altIds.add(lineTokens[1]);
+                        break;
+                    case XREF:
+                        xrefs.add(lineTokens[1].split(" ")[0].trim());
+                        break;
+                    case IS_OBSOLETE:
+                        builder.isObsolete(Boolean.valueOf(lineTokens[1]));
+                        break;
+                    default:
+                        // do nothing
                 }
             }
         }
-        return disease;
-    }
 
-    private Disease createDiseaseObject(OBOTerm mondoDisease) { // not updating the synonym and xref intentionally.
-        // This is being created just to create disease hierarchy
-        Disease.DiseaseBuilder builder = Disease.builder();
-        builder.diseaseId(mondoDisease.getId());
-        builder.name(mondoDisease.getName());
-        builder.desc(mondoDisease.getDefinition());
-        builder.source(Constants.MONDO_STR);
+        builder.isAs(parentIds);
+        builder.synonyms(synonyms);
+        builder.altIds(altIds);
+        builder.xrefs(xrefs);
+
         return builder.build();
-    }
-
-    private Synonym createSynonymObject(Disease disease, String mondoName) {
-        Synonym.SynonymBuilder bldr = Synonym.builder();
-        bldr.name(mondoName).source(Constants.MONDO_STR);
-        return bldr.build();
-    }
-
-    private String getOMIMId(OBOTerm mondoTerm) {
-        List<String> xrefs = mondoTerm.getXrefs();
-        for (String xref : xrefs) {
-            if (xref.startsWith("OMIM:")) {
-                return xref;
-            }
-        }
-        return null;
-    }
-
-    private void loadCache() throws FileNotFoundException {
-        loadDiseaseNameDiseaseMapFromDisease();
-        loadDiseaseNameDiseaseMapFromSynonym();
-        loadDiseaseNameDiseaseMapFromCrossRef();
-    }
-
-    private void loadDiseaseNameDiseaseMapFromDisease() throws FileNotFoundException {
-        List<Disease> allDiseases = this.diseaseDAO.findAll();
-        for (Disease d : allDiseases) {
-            this.diseaseNameToDiseaseMap.put(d.getName().toLowerCase(), d);
-        }
-    }
-
-    private void loadDiseaseNameDiseaseMapFromSynonym() {
-        List<Synonym> allSyns = this.synonymDAO.findAll();
-        for (Synonym s : allSyns) {
-            if (!this.diseaseNameToDiseaseMap.containsKey(s.getName().toLowerCase())) {
-                this.diseaseNameToDiseaseMap.put(s.getName().toLowerCase(), s.getDisease());
-            }
-        }
-    }
-
-    private void loadDiseaseNameDiseaseMapFromCrossRef() {
-        List<CrossRef> xrefs = this.crossRefDAO.findAllByRefType("MIM");
-        for (CrossRef xref : xrefs) {
-            String omim = "OMIM:" + xref.getRefId();// construct OMIM:<omimid>
-            if (!this.diseaseNameToDiseaseMap.containsKey(omim)) {
-                this.diseaseNameToDiseaseMap.put(omim.toLowerCase(), xref.getDisease());
-            }
-        }
-    }
-
-    private void setCacheInStepContext() {
-        ExecutionContext stepContext = this.stepExecution.getExecutionContext();
-        stepContext.put("diseasemap", this.diseaseNameToDiseaseMap);
-        stepContext.put("oboterms", this.mondoDiseases);
     }
 }

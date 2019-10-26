@@ -55,8 +55,8 @@ public class Disease extends BaseEntity {
     @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CrossRef> crossRefs;
 
-    @JsonIgnore// To keep SpringBatch happy. SpringBatch in data importer uses Jackson to serialize object and recursive object causing StackOverflow
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    @JsonIgnore// To keep SpringBatch happy. SpringBatch in data importer uses Jackson to serialize object and recursive object causing StackOverflow
+    @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(name = "ds_disease_relation", joinColumns = @JoinColumn(name = "ds_disease_parent_id"),
             inverseJoinColumns = @JoinColumn(name = "ds_disease_id"))
     private List<Disease> children;
