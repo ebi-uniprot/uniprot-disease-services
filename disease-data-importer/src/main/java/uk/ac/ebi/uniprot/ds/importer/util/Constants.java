@@ -28,6 +28,8 @@ public class Constants {
     public static final String FORWARD_SLASH = "/";
     public static final String DISEASE_NAME_OR_OMIM_DISEASE_MAP = "Disease name or omim to disease map";
     public static final String MONDO_OBO_TERMS_LIST = "Mondo obo terms list";
+    public static final String MIM_STR = "MIM";
+    public static final String OMIM_COLON_STR = "OMIM:";
 
     private Constants(){}
 }

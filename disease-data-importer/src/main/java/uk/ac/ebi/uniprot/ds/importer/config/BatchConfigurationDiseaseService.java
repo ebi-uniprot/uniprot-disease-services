@@ -33,12 +33,12 @@ public class BatchConfigurationDiseaseService {
         return jobBuilderFactory.get(Constants.DISEASE_SERVICE_DATA_LOADER)
                 .incrementer(new RunIdIncrementer())
                 .start(humDiseaseStep)//Load Diseases From HumDisease file
-//                .next(uniProtStep)// Load Human Protein from curated Protein file
-//                .next(geneCoordsLoad)// load gene co-ordinates
+                .next(uniProtStep)// Load Human Protein from curated Protein file
+                .next(geneCoordsLoad)// load gene co-ordinates
                 .next(mondoDiseaseStep)// load synonyms and/or disease group from Mondo data
                 .next(parentChildLoadStep)// create parents children relationship with mondo data
-//                .next(chDrugLoad)
-//                .next(alzheimerProteinLoad)// Alzheimer disease protein load step
+                .next(chDrugLoad)
+                .next(alzheimerProteinLoad)// Alzheimer disease protein load step
                 .listener(jobExecutionListener)
                 .build();
     }

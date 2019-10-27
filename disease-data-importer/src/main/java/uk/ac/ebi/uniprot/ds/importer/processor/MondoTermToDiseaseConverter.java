@@ -100,9 +100,9 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
     }
 
     private void loadDiseaseNameDiseaseMapFromCrossRef() {
-        List<CrossRef> xrefs = this.crossRefDAO.findAllByRefType("MIM"); //TODO
+        List<CrossRef> xrefs = this.crossRefDAO.findAllByRefType(Constants.MIM_STR);
         for (CrossRef xref : xrefs) {
-            String omim = "OMIM:" + xref.getRefId();// construct OMIM:<omimid> //TODO
+            String omim = Constants.OMIM_COLON_STR + xref.getRefId();// construct OMIM:<omimid>
             if (!this.diseaseNameToDiseaseMap.containsKey(omim)) {
                 this.diseaseNameToDiseaseMap.put(omim.toLowerCase(), xref.getDisease());
             }
@@ -128,7 +128,7 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
     private String getOMIMId(OBOTerm mondoTerm) {
         List<String> xrefs = mondoTerm.getXrefs();
         for (String xref : xrefs) {
-            if (xref.startsWith("OMIM:")) {//TODO
+            if (xref.startsWith(Constants.OMIM_COLON_STR)) {
                 return xref;
             }
         }
