@@ -7,6 +7,7 @@ public class AdjacencyList {
     /*
       create an adjacency list
       [oboTermId -> oboTerm Object with children(list of oboterms)
+      a child can have more than one parent
      */
     public Map<String, Node>  buildAdjacencyList(List<OBOTerm> oboTerms) {
         Map<String, Node> termIdNodeMap = new HashMap<>();

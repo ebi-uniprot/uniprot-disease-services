@@ -7,6 +7,7 @@
 
 package uk.ac.ebi.uniprot.ds.common.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import java.util.*;
@@ -40,19 +41,24 @@ public class Disease extends BaseEntity {
     @Column(name="source_name", nullable = false)
     private String source;
 
+    @JsonIgnore// To keep SpringBatch happy. SpringBatch in data importer uses Jackson to serialize object and recursive object causing StackOverflow
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "disease", cascade=CascadeType.ALL)
     private Set<DiseaseProtein> diseaseProteins = new HashSet<>(0);
 
+    @JsonIgnore// To keep SpringBatch happy. SpringBatch in data importer uses Jackson to serialize object and recursive object causing StackOverflow
     @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Synonym> synonyms;
 
+    @JsonIgnore// To keep SpringBatch happy. SpringBatch in data importer uses Jackson to serialize object and recursive object causing StackOverflow
     @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Variant> variants;
 
+    @JsonIgnore// To keep SpringBatch happy. SpringBatch in data importer uses Jackson to serialize object and recursive object causing StackOverflow
     @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CrossRef> crossRefs;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+
+    @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(name = "ds_disease_relation", joinColumns = @JoinColumn(name = "ds_disease_parent_id"),
             inverseJoinColumns = @JoinColumn(name = "ds_disease_id"))
     private List<Disease> children;
@@ -62,9 +68,11 @@ public class Disease extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "ds_disease_parent_id"))
     private List<Disease> parents;
 
+    @JsonIgnore// To keep SpringBatch happy. SpringBatch in data importer uses Jackson to serialize object and recursive object causing StackOverflow
     @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Keyword> keywords;
 
+    @JsonIgnore// To keep SpringBatch happy. SpringBatch in data importer uses Jackson to serialize object and recursive object causing StackOverflow
     @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Publication> publications;
 

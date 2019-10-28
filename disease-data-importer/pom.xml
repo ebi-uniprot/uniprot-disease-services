@@ -29,12 +29,12 @@
         <dependency>
             <groupId>uk.ac.ebi.uniprot</groupId>
             <artifactId>data-service</artifactId>
-            <version>2019.2-SNAPSHOT</version>
+            <version>${uniprot.version}</version>
         </dependency>
         <dependency>
             <groupId>uk.ac.ebi.uniprot</groupId>
             <artifactId>data-service-common-avro</artifactId>
-            <version>2019.2-SNAPSHOT</version>
+            <version>${uniprot.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.avro</groupId>
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>uk.ac.ebi.uniprot</groupId>
             <artifactId>parser</artifactId>
-            <version>LATEST</version>
+            <version>${uniprot.version}</version>
         </dependency>
         <!-- Junit 5 TODO move them to parent -->
         <dependency>
@@ -143,7 +143,7 @@
         <ojdbc.version>11.2.0.4</ojdbc.version>
         <ojdbc.artifactid>ojdbc6</ojdbc.artifactid>
         <http-uniprot-private-url>http://wwwdev.ebi.ac.uk/uniprot/artifactory</http-uniprot-private-url>
-        
+        <uniprot.version>2019.9</uniprot.version>
     </properties>
     <repositories>
     <repository>
