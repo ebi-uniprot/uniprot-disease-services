@@ -25,20 +25,7 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 				.setGeneCoordinates(null);
 		using(new PublicationsToPublicationDTOs()).map(source.getPublications()).setPublications(null);
 		using(new ProteinToDrugs()).map(source).setDrugs(null);
-		using(new IsExternallyMappedExtractor()).map(source.getDiseaseProteins()).setIsExternallyMapped(null);
-
-	}
-	private  static class IsExternallyMappedExtractor implements Converter<Set<DiseaseProtein>, Boolean>{
-
-		@Override
-		public Boolean convert(MappingContext<Set<DiseaseProtein>, Boolean> context) {
-			Set<DiseaseProtein> dps = context.getSource();
-			Optional<Boolean> optIsMapped = Optional.empty();
-			if(!CollectionUtils.isEmpty(dps)){
-				optIsMapped = dps.stream().map(dp -> dp.isMapped()).findFirst();
-			}
-			return optIsMapped.orElse(false);
-		}
+		map().setIsExternallyMapped(source.getIsExternallyMapped());
 	}
 
 	public static class ProteinToDrugs implements Converter<Protein, List<String>> {
