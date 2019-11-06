@@ -86,7 +86,6 @@ public class ProteinControllerTest {
                 .andExpect(jsonPath("$.result.variants", nullValue()))
                 .andExpect(jsonPath("$.result.interactions", nullValue()))
                 .andExpect(jsonPath("$.result.drugs", nullValue()))
-                .andExpect(jsonPath("$.result.isExternallyMapped", equalTo(false)))
                 .andExpect(jsonPath("$.result.geneCoordinates.length()", equalTo(0)));
     }
 
@@ -159,7 +158,6 @@ public class ProteinControllerTest {
                 .andExpect(jsonPath("$.result.accession", equalTo(protein.getAccession())))
                 .andExpect(jsonPath("$.result.gene", equalTo(protein.getGene())))
                 .andExpect(jsonPath("$.result.description", equalTo(protein.getDesc())))
-                .andExpect(jsonPath("$.result.isExternallyMapped", equalTo(true)))
           //      .andExpect(jsonPath("$.result.pathways.length()", equalTo(protein.getProteinCrossRefs().size())))
                 .andExpect(jsonPath("$.result.interactions.length()", equalTo(protein.getInteractions().size())))
                 .andExpect(jsonPath("$.result.variants.length()", equalTo(protein.getVariants().size())))
