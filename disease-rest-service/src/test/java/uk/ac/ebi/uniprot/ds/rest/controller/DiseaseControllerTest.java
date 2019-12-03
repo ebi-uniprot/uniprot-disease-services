@@ -153,7 +153,6 @@ public class DiseaseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.variants.length()", Matchers.equalTo(4)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.synonyms.length()", Matchers.equalTo(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications.length()", Matchers.equalTo(4)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.result.parents.length()", Matchers.equalTo(disease.getParents().size())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.children.length()", Matchers.equalTo(disease.getChildren().size())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications[*].type", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications[*].id", Matchers.notNullValue()));
@@ -201,7 +200,6 @@ public class DiseaseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].synonyms").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].drugs").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].publications").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].parents").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].children").exists());
     }
 }

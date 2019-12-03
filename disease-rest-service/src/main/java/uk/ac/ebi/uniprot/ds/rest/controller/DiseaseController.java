@@ -69,7 +69,7 @@ public class DiseaseController {
 
     }
 
-    @GetMapping(value={"/protein/{accession}/diseases"}, name = "Get the diseases for a given accession")
+    @GetMapping(value={"/protein/{accession}/diseases"}, name = "Get the diseases for a given protein accession")
     public MultipleEntityResponse<DiseaseDTO> getProteinDiseases(@PathVariable(name = "accession") String accession) {
         String requestId = RequestCorrelation.getCorrelationId();
 

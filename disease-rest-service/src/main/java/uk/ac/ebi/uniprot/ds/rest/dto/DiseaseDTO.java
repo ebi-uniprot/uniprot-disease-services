@@ -23,24 +23,12 @@ public class DiseaseDTO {
     private String acronym;
     private String description;
     private String note;
-    private List<BasicDiseaseDTO> parents;
-    private List<BasicDiseaseDTO> children;
+    private List<DiseaseDTO> children;
     private List<String> synonyms;
     private List<BasicProtein> proteins;
     private List<String> variants;
     private List<PublicationDTO> publications;
     private List<String> drugs;
-
-    @Getter
-    @Setter
-    public static class BasicDiseaseDTO {
-        String diseaseId;
-        String diseaseName;
-        public BasicDiseaseDTO(String diseaseId, String diseaseName){
-            this.diseaseId = diseaseId;
-            this.diseaseName = diseaseName;
-        }
-    }
 
     @Getter
     @Setter

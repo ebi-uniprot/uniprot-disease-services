@@ -3,7 +3,10 @@ package uk.ac.ebi.uniprot.ds.rest.mapper;
 import org.modelmapper.Converter;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
-import uk.ac.ebi.uniprot.ds.common.model.*;
+import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
+import uk.ac.ebi.uniprot.ds.common.model.Drug;
+import uk.ac.ebi.uniprot.ds.common.model.Synonym;
 import uk.ac.ebi.uniprot.ds.rest.dto.DiseaseDTO;
 
 import java.util.List;
@@ -16,11 +19,10 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
         map().setDescription(source.getDesc());
         map().setDiseaseName(source.getName());
         map().setNote(source.getNote());
+        map().setChildren(mapAll(source.getChildren()));
         using(new DisProtsToProtAccessions()).map(source.getDiseaseProteins()).setProteins(null);
         using(new SynonymsToNames()).map(source.getSynonyms()).setSynonyms(null);
         using(new VariantsToFeatureIdsConverter()).map(source.getVariants()).setVariants(null);
-        using(new DiseasesToBasicDiseaseDTOs()).map(source.getParents()).setParents(null);
-        using(new DiseasesToBasicDiseaseDTOs()).map(source.getChildren()).setChildren(null);
         using(new PublicationsToPublicationDTOs()).map(source.getPublications()).setPublications(null);
         using(new DisProtsToDrugs()).map(source.getDiseaseProteins()).setDrugs(null);
     }
@@ -55,22 +57,6 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
         }
     }
 
-    private static class DiseasesToBasicDiseaseDTOs implements Converter<List<Disease>, List<DiseaseDTO.BasicDiseaseDTO>>{
-
-        @Override
-        public List<DiseaseDTO.BasicDiseaseDTO> convert(MappingContext<List<Disease>, List<DiseaseDTO.BasicDiseaseDTO>> context) {
-            List<Disease> relatedDiseases = context.getSource();
-
-            List<DiseaseDTO.BasicDiseaseDTO> basicDiseaseDtos = null;
-            if(relatedDiseases != null) {
-                basicDiseaseDtos = relatedDiseases.stream().map(child -> new DiseaseDTO.BasicDiseaseDTO(child.getDiseaseId(), child.getName()))
-                        .collect(Collectors.toList());
-            }
-
-            return basicDiseaseDtos;
-        }
-    }
-
     private static class SynonymsToNames implements Converter<List<Synonym>, List<String>> {
         @Override
         public List<String> convert(MappingContext<List<Synonym>, List<String>> ctx) {
@@ -94,5 +80,20 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
                     .collect(Collectors.toList())
                     : null;
         }
+    }
+
+    public static List<DiseaseDTO> mapAll(final List<Disease> entityList) {
+        List<DiseaseDTO> result = null;
+        if(entityList != null) {
+            result = entityList.stream()
+                    .map(entity -> map(entity, DiseaseDTO.class))
+                    .collect(Collectors.toList());
+        }
+
+        return result;
+    }
+
+    public static DiseaseDTO map(Disease entity, Class<DiseaseDTO> outClass) {
+        return map(entity, outClass);
     }
 }

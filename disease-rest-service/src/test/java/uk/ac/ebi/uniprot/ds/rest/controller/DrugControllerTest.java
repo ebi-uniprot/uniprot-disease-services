@@ -148,7 +148,6 @@ public class DrugControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].synonyms").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].drugs").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].publications").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].parents").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].children").exists());
     }
 }

@@ -87,7 +87,6 @@ public class DiseaseToDiseaseDTOTest {
         Assert.assertEquals(disease.getDiseaseProteins().size(),  dto.getProteins().size());
         Assert.assertEquals(disease.getSynonyms().size(), dto.getSynonyms().size());
         Assert.assertEquals(disease.getVariants().size(), dto.getVariants().size());
-        Assert.assertEquals(disease.getParents().size(), dto.getParents().size());
         Assert.assertEquals(disease.getChildren().size(), dto.getChildren().size());
         Assert.assertEquals(disease.getPublications().size(), dto.getPublications().size());
     }
