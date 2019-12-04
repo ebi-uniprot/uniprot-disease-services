@@ -82,10 +82,7 @@ public class DiseaseController {
     @GetMapping(value={"/disease/{diseaseId}/drugs"}, name = "Get the drugs for a given diseaseId")
     public MultipleEntityResponse<DrugDTO> getDrugsByDiseaseId(@PathVariable(name = "diseaseId") String diseaseId) {
         String requestId = RequestCorrelation.getCorrelationId();
-
-        List<Drug> drugs = this.drugService.getDrugsByDiseaseId(diseaseId);
-        List<DrugDTO> dtoList = toDrugDTOList(drugs);
-
+        List<DrugDTO>  dtoList = this.drugService.getDrugDTOsByDiseaseId(diseaseId);
         return new MultipleEntityResponse<>(requestId, dtoList);
     }
 

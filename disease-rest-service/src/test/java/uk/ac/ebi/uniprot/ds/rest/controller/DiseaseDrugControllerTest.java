@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import uk.ac.ebi.uniprot.ds.common.model.*;
 import uk.ac.ebi.uniprot.ds.rest.DataSourceTestConfig;
+import uk.ac.ebi.uniprot.ds.rest.dto.DrugDTO;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
 import uk.ac.ebi.uniprot.ds.rest.service.DrugService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
@@ -30,6 +31,7 @@ import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(DiseaseController.class)
@@ -72,11 +74,21 @@ public class DiseaseDrugControllerTest {
         drug2.setProteins(accessions);
         drug3.setDiseases(diseases);
         drug3.setProteins(accessions);
-
         List<Drug> drugs = Arrays.asList(drug1, drug2, drug3);
+        List<DrugDTO> drugDTOs = new ArrayList<>();
+        for(Drug drug : drugs){
+            DrugDTO.DrugDTOBuilder bldr = DrugDTO.builder();
+            bldr.name(drug.getName()).sourceType(drug.getSourceType());
+            bldr.sourceId(drug.getSourceId()).moleculeType(drug.getMoleculeType());
+            bldr.clinicalTrialLink(drug.getClinicalTrialLink());
+            bldr.evidences(drug.getDrugEvidences().stream().map(e -> e.getRefUrl()).collect(Collectors.toSet()));
+            bldr.proteins(drug.getProteins());
+            bldr.diseases(drug.getDiseases());
+            drugDTOs.add(bldr.build());
+        }
 
 
-        Mockito.when(this.drugService.getDrugsByDiseaseId(diseaseId)).thenReturn(drugs);
+        Mockito.when(this.drugService.getDrugDTOsByDiseaseId(diseaseId)).thenReturn(drugDTOs);
 
         ResultActions res = this.mockMvc.perform
                 (

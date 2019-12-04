@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import uk.ac.ebi.uniprot.ds.common.model.Drug;
 
 @Repository
-public interface DrugDAO extends JpaRepository<Drug, Long> {
+public interface DrugDAO extends JpaRepository<Drug, Long>, DrugDAOCustom {
 }

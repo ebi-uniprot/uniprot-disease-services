@@ -6,6 +6,7 @@ import org.modelmapper.spi.MappingContext;
 import uk.ac.ebi.uniprot.ds.common.model.*;
 import uk.ac.ebi.uniprot.ds.rest.dto.DrugDTO;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DrugToDrugDTOMap extends PropertyMap<Drug, DrugDTO> {
@@ -16,19 +17,20 @@ public class DrugToDrugDTOMap extends PropertyMap<Drug, DrugDTO> {
 
     }
 
-    private static class DrugEvidencesToEvidences implements Converter<List<DrugEvidence>, List<String>> {
+    private static class DrugEvidencesToEvidences implements Converter<List<DrugEvidence>, Set<String>> {
         @Override
-        public List<String> convert(MappingContext<List<DrugEvidence>, List<String>> context) {
+        public Set<String> convert(MappingContext<List<DrugEvidence>, Set<String>> context) {
 
             List<DrugEvidence> drugEvidences = context.getSource();
-            List<String> urls = null;
+            Set<String> urls = null;
 
             if (drugEvidences != null) {
-                urls = drugEvidences.stream().map(de -> de.getRefUrl()).collect(Collectors.toList());
+                urls = drugEvidences.stream().map(de -> de.getRefUrl()).collect(Collectors.toSet());
             }
 
             return urls;
         }
+
     }
 
 }
