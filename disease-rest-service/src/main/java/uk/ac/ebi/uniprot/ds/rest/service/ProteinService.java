@@ -93,15 +93,12 @@ public class ProteinService {
     }
 
     public List<Protein> getProteinsByDiseaseId(String diseaseId) {
-
-        return this.diseaseService.findByDiseaseId(diseaseId)
-                .map(dis -> dis.getDiseaseProteins()
-                        .stream()
-                        .map(dp -> getProtein(dp))
-                        .collect(Collectors.toList())
-                )
-                .orElse(null);
-
+        return this.diseaseService.getDiseaseAndItsChildren(diseaseId)
+                .stream()
+                .map(dis -> dis.getDiseaseProteins())
+                .flatMap(Set::stream)
+                .map(dp -> getProtein(dp))
+                .collect(Collectors.toList());
     }
 
     public List<Protein> getProteinsByDrugName(String drugName) {

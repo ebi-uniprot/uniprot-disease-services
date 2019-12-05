@@ -16,11 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -117,6 +119,11 @@ public class DiseaseService {
             diseases.addAll(diseasesSet);
         }
 
+        return diseases;
+    }
+
+    public List<Disease> getDiseaseAndItsChildren(String diseaseId){
+        List<Disease> diseases = this.diseaseDAO.getDiseaseAndItsChildren(diseaseId);
         return diseases;
     }
 }

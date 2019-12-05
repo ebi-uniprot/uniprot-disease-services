@@ -15,7 +15,7 @@ import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import java.util.List;
 import java.util.Optional;
 
-public interface DiseaseDAO extends JpaRepository<Disease, Long> {
+public interface DiseaseDAO extends JpaRepository<Disease, Long>, DiseaseDAOCustom {
     @Transactional
     Optional<Disease> findByDiseaseId(String diseaseId);
 
