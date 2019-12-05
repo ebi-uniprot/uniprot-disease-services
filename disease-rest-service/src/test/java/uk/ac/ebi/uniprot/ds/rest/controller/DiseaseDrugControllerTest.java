@@ -83,7 +83,8 @@ public class DiseaseDrugControllerTest {
             bldr.clinicalTrialLink(drug.getClinicalTrialLink());
             bldr.evidences(drug.getDrugEvidences().stream().map(e -> e.getRefUrl()).collect(Collectors.toSet()));
             bldr.proteins(drug.getProteins());
-            bldr.diseases(drug.getDiseases());
+            Set<DrugDTO.BasicDiseaseDTO> bDiseases = drug.getDiseases().stream().map(d -> DrugDTO.BasicDiseaseDTO.builder().diseaseName(d).diseaseId(d).build()).collect(Collectors.toSet());
+            bldr.diseases(bDiseases);
             drugDTOs.add(bldr.build());
         }
 

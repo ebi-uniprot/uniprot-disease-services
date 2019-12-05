@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import uk.ac.ebi.uniprot.ds.common.dao.DrugDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.ProteinDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
 import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.rest.dto.DrugDTO;
@@ -108,9 +109,10 @@ public class DrugService {
             builder.proteins(proteins);
 
             // diseases
-            Set<String> diseases = builder.build().getDiseases() != null ? builder.build().getDiseases() : new HashSet<>();
-            if(drug[9] != null) {
-                diseases.add((String) drug[9]);
+            Set<DrugDTO.BasicDiseaseDTO> diseases = builder.build().getDiseases() != null ? builder.build().getDiseases() : new HashSet<>();
+            if(drug[9] != null && drug[10] != null) {
+                DrugDTO.BasicDiseaseDTO disease = DrugDTO.BasicDiseaseDTO.builder().diseaseName((String) drug[9]).diseaseId((String) drug[10]).build();
+                diseases.add(disease);
             }
             builder.diseases(diseases);
             // put in the map
@@ -138,18 +140,25 @@ public class DrugService {
             entry.getValue().proteins(allAccessions);
 
             // get all diseases for a given drug
-            Set<String> diseaseNames = proteins
+            Set<DrugDTO.BasicDiseaseDTO> diseaseNames = proteins
                     .stream()
                     .filter(protein -> protein.getDiseaseProteins() != null && !protein.getDiseaseProteins().isEmpty())
                     .map(p -> p.getDiseaseProteins())
                     .flatMap(Set::stream)
-                    .map(dp -> dp.getDisease().getName())
+                    .map(dp -> getBasicDiseaseDTO(dp))
                     .collect(Collectors.toSet());
 
-            Set<String> allDiseases = entry.getValue().build().getDiseases() != null ? entry.getValue().build().getDiseases() : new HashSet<>();
+            Set<DrugDTO.BasicDiseaseDTO> allDiseases = entry.getValue().build().getDiseases() != null ? entry.getValue().build().getDiseases() : new HashSet<>();
             allDiseases.addAll(diseaseNames);
             entry.getValue().diseases(allDiseases);
         }
+    }
+
+    private DrugDTO.BasicDiseaseDTO getBasicDiseaseDTO(DiseaseProtein dp){
+        DrugDTO.BasicDiseaseDTO bDisease = DrugDTO.BasicDiseaseDTO.builder()
+                .diseaseId(dp.getDisease().getDiseaseId())
+                .diseaseName(dp.getDisease().getName()).build();
+        return bDisease;
     }
 
     private void populateProteinsAndDiseases(List<Drug> drugList) {

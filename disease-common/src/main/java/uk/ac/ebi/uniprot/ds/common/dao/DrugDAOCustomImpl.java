@@ -14,7 +14,7 @@ public class DrugDAOCustomImpl implements DrugDAOCustom {
             "select dr.name as name, dr.source_type as sourceType, dr.source_id as sourceId,\n" +
             "dr.molecule_type as moleculeType, dr.clinical_trial_phase as clinicalTrialPhase, \n" +
             "dr.mechanism_of_action as mechanismOfAction, dr.clinical_trial_link as clinicalTrialLink, dre.ref_url as evidences, p.accession as proteins, \n" +
-            "d.disease_name as diseases from (WITH RECURSIVE cd AS (\n" +
+            "d.disease_name as diseaseName, d.disease_id as diseaseId from (WITH RECURSIVE cd AS (\n" +
             "   SELECT id from ds_disease where disease_id = ? \n" +
             "   UNION ALL\n" +
             "   SELECT dr.ds_disease_id\n" +

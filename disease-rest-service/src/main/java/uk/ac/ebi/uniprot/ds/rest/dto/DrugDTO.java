@@ -20,5 +20,16 @@ public class DrugDTO {
     private String clinicalTrialLink;
     private Set<String> evidences;
     private Set<String> proteins;
-    private Set<String> diseases;
+    private Set<BasicDiseaseDTO> diseases;
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @EqualsAndHashCode
+    public static class BasicDiseaseDTO{
+        private String diseaseId;
+        private String diseaseName;
+    }
 }

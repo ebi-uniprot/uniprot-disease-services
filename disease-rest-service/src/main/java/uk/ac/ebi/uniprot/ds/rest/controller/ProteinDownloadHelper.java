@@ -35,7 +35,7 @@ public class ProteinDownloadHelper {
         String diseases = "";
         if (disProts != null && !disProts.isEmpty()) {
             diseases = disProts.stream()
-                    .map(dp -> new ProteinDTO.DiseaseNameNoteDTO(dp.getDisease().getName(), dp.getDisease().getNote()))
+                    .map(dp -> new ProteinDTO.DiseaseNameNoteDTO(dp.getDisease().getDiseaseId(), dp.getDisease().getName(), dp.getDisease().getNote()))
                     .map(disease -> disease.toString())
                     .collect(Collectors.joining(";"));
         }

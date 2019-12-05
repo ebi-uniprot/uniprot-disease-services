@@ -22,6 +22,7 @@ import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -48,8 +49,11 @@ public class VariantService {
     }
 
     public List<Variant> getVariantsByDiseaseId(String diseaseId) {
-        Optional<Disease> optDisease = this.diseaseService.findByDiseaseId(diseaseId);
-        List<Variant> variants = optDisease.get().getVariants();
+        List<Disease> diseaseAndItsChildren = this.diseaseService.getDiseaseAndItsChildren(diseaseId);
+        List<Variant> variants = diseaseAndItsChildren.stream()
+                .map(d -> d.getVariants())
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
         return variants;
     }
 }

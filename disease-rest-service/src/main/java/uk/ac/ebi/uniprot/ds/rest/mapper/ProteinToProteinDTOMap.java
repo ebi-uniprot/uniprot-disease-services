@@ -79,7 +79,8 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 					ProteinDTO.DiseaseNameNoteDTO.DiseaseNameNoteDTOBuilder builder = ProteinDTO.DiseaseNameNoteDTO
 							.builder();
 					return builder
-							.diseaseName(dp.getDisease().getDiseaseId())
+							.diseaseName(dp.getDisease().getName())
+							.diseaseId(dp.getDisease().getDiseaseId())
 							.note(dp.getDisease().getNote())
 							.build();
 

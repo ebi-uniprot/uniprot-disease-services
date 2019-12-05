@@ -52,15 +52,18 @@ public class ProteinDTO {
     @Builder
     public static class DiseaseNameNoteDTO{
     	private String diseaseName;
+    	private String diseaseId;
     	private String note;
-    	public DiseaseNameNoteDTO(String diseaseName, String note){
+    	public DiseaseNameNoteDTO(String diseaseId, String diseaseName, String note){
+    	    this.diseaseId = diseaseId;
     	    this.diseaseName = diseaseName;
     	    this.note = note;
         }
 
         @Override
         public String toString() {
-            return "{name=" + (this.diseaseName != null ? this.diseaseName : "")
+            return "{diseaseId=" + (this.diseaseId != null ? this.diseaseId : "")
+                    + "," + "name=" + (this.diseaseName != null ? this.diseaseName : "")
                     + "," + "note=" + (this.note != null ? this.note : "") + "}";
         }
     }
