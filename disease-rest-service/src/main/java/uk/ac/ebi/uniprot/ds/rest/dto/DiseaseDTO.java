@@ -29,6 +29,7 @@ public class DiseaseDTO {
     private List<String> variants;
     private List<PublicationDTO> publications;
     private List<String> drugs;
+    private Boolean isGroup;
 
     @Getter
     @Setter

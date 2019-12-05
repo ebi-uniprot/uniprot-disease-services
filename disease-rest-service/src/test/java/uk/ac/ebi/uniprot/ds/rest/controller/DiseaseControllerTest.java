@@ -7,7 +7,6 @@
 
 package uk.ac.ebi.uniprot.ds.rest.controller;
 
-import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -82,7 +81,9 @@ public class DiseaseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.description", Matchers.startsWith("DESC")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.proteins", Matchers.nullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.variants", Matchers.nullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.result.synonyms", Matchers.nullValue()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.synonyms", Matchers.nullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.isGroup").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.isGroup", Matchers.equalTo(false)));
         Assert.assertNotNull(res);
     }
 
@@ -155,7 +156,9 @@ public class DiseaseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications.length()", Matchers.equalTo(4)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.children.length()", Matchers.equalTo(disease.getChildren().size())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications[*].type", Matchers.notNullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications[*].id", Matchers.notNullValue()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.publications[*].id", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.isGroup").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.isGroup", Matchers.equalTo(false)));
     }
 
     @Test
@@ -200,6 +203,7 @@ public class DiseaseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].synonyms").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].drugs").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].publications").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].children").exists());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].children").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].isGroup").exists());
     }
 }
