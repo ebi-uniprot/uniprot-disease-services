@@ -36,7 +36,7 @@ public class DiseaseProtein  implements Serializable {
     private Protein protein;
 
     @Column(name = "is_mapped", nullable = false)
-    private boolean isMapped;
+    private Boolean isMapped;
 
     @Override
     public boolean equals(Object obj) {

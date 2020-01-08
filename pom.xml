@@ -12,6 +12,7 @@
         <module>disease-data-importer</module>
         <module>disease-rest-service</module>
         <module>disease-common</module>
+        <module>disease-graphql-service</module>
     </modules>
 
     <parent>

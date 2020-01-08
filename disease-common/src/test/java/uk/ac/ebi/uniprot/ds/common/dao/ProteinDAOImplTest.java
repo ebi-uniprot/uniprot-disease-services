@@ -81,7 +81,7 @@ public class ProteinDAOImplTest{
         Set<DiseaseProtein> dps = new HashSet<>();
         for(Disease dis : this.diseases){
             DiseaseProtein dp = new DiseaseProtein();
-            dp.setMapped(false);
+            dp.setIsMapped(false);
             dp.setDisease(dis);
             dp.setProtein(this.protein);
             dps.add(dp);

@@ -1,0 +1,33 @@
+schema {
+    query: Query
+}
+
+type Query {
+    disease(diseaseId: String): Disease
+    protein(accession: String): Protein
+}
+
+type Disease {
+    diseaseId: String
+    name: String
+    desc: String
+    acronym: String
+    source: String
+    note: String
+    diseaseProteins: [DiseaseProtein]
+}
+
+type Protein {
+    proteinId: String
+    name: String
+    accession: String
+    gene: String
+    desc: String
+    diseaseProteins: [DiseaseProtein]
+}
+
+type DiseaseProtein {
+    disease: Disease
+    protein: Protein
+    isMapped: Boolean
+}

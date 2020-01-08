@@ -9,6 +9,7 @@ package uk.ac.ebi.uniprot.ds.common.dao;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 

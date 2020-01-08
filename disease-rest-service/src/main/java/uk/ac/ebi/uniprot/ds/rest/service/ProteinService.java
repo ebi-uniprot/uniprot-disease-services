@@ -107,7 +107,7 @@ public class ProteinService {
 
     private Protein getProtein(DiseaseProtein dp) {
         Protein p = dp.getProtein();
-        p.setIsExternallyMapped(dp.isMapped());
+        p.setIsExternallyMapped(dp.getIsMapped());
         return p;
     }
 

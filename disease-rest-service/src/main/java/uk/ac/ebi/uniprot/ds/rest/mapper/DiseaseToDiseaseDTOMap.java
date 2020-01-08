@@ -77,7 +77,7 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
             Set<DiseaseProtein> disProts = context.getSource();
             return disProts != null && !disProts.isEmpty() ? disProts
                     .stream()
-                    .map(dp -> new DiseaseDTO.BasicProtein(dp.getProtein().getAccession(), dp.isMapped()))
+                    .map(dp -> new DiseaseDTO.BasicProtein(dp.getProtein().getAccession(), dp.getIsMapped()))
                     .collect(Collectors.toList())
                     : null;
         }

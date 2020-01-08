@@ -80,7 +80,7 @@ public class DiseaseProteinDAOTest {
         DiseaseProtein diseaseProtein = new DiseaseProtein();
         diseaseProtein.setProtein(this.protein);
         diseaseProtein.setDisease(this.disease);
-        diseaseProtein.setMapped(true);
+        diseaseProtein.setIsMapped(true);
 
         this.protein.getDiseaseProteins().add(diseaseProtein);
         this.proteinDAO.save(this.protein);
