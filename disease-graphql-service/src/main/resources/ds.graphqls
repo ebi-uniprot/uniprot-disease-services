@@ -14,7 +14,10 @@ type Disease {
     acronym: String
     source: String
     note: String
-    diseaseProteins: [DiseaseProtein]
+    synonyms: [Synonym!]
+    variants: [Variant!]
+    diseaseProteins: [DiseaseProtein!]
+    publications: [Publication!]
 }
 
 type Protein {
@@ -23,7 +26,84 @@ type Protein {
     accession: String
     gene: String
     desc: String
-    diseaseProteins: [DiseaseProtein]
+    variants: [Variant!]
+    proteinCrossRefs: [ProteinCrossRef!]
+    interactions: [Interaction!]
+    geneCoordinates: [GeneCoordinate!]
+    publications: [Publication!]
+    diseaseProteins: [DiseaseProtein!]
+}
+
+type ProteinCrossRef{
+    primaryId: String
+    description: String
+    dbType: String
+    isoformId: String
+    drugs: [Drug!]
+}
+
+type Drug {
+    name: String
+    sourceType: String
+    sourceId: String
+    moleculeType: String
+    clinicalTrialPhase: Int
+    mechanismOfAction: String
+    clinicalTrialLink: String
+}
+
+type Interaction{
+    type: String
+    accession: String
+    gene: String
+    experimentCount: Int
+    firstInteractor: String
+    secondInteractor: String
+}
+
+type GeneCoordinate{
+    chromosomeNumber: String
+    startPos: Int
+    endPos: Int
+    enGeneId: String
+    enTranscriptId: String
+    enTranslationId: String
+}
+
+type Variant {
+    featureId: String
+    origSeq: String
+    altSeq: String
+    report: String
+    featureStatus: String
+    featureLocation: FeatureLocation
+    evidences: [Evidence!]
+}
+
+type Evidence {
+    evidenceId: String
+    type: String
+    attribute: String
+    code: String
+    useECOCode: Boolean
+    typeValue: String
+    hasTypeValue: Boolean
+}
+type FeatureLocation{
+    startModifier: String
+    endModifier: String
+    startId: Int
+    endId: Int
+}
+
+type Synonym{
+    name: String
+    source: String
+}
+
+type Publication {
+    pubType: String
+    pubId: String
 }
 
 type DiseaseProtein {
