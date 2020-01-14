@@ -15,7 +15,7 @@ type Disease {
     source: String
     note: String
     synonyms: [Synonym!]
-    variants: [Variant!]
+    variations: [Variation]
     diseaseProteins: [DiseaseProtein!]
     publications: [Publication!]
 }
@@ -26,12 +26,63 @@ type Protein {
     accession: String
     gene: String
     desc: String
-    variants: [Variant!]
+    variations: [Variation]
     proteinCrossRefs: [ProteinCrossRef!]
     interactions: [Interaction!]
     geneCoordinates: [GeneCoordinate!]
     publications: [Publication!]
     diseaseProteins: [DiseaseProtein!]
+}
+type Variation {
+    type: String
+    cvId: String
+    ftId: String
+    description: String
+    alternativeSequence: String
+    begin: String
+    end: String
+    molecule: String
+    xrefs: [DbReferenceObject!]
+    evidences: [VariationEvidence!]
+    wildType: String
+    frequency: Float
+    polyphenPrediction: String
+    polyphenScore: Float
+    siftPrediction: String
+    siftScore: Float
+    somaticStatus: Int
+    cytogeneticBand: String
+    consequenceType: String
+    genomicLocation: String
+    association: [VariantAssociation!]
+    clinicalSignificances: String
+    sourceType: VariantSourceTypeEnum
+}
+
+type DbReferenceObject{
+    name: String
+    id: String
+    url: String
+    alternativeUrl: String
+    reviewed: Boolean
+}
+
+type VariationEvidence {
+    code: String
+    label: String
+    source: DbReferenceObject
+}
+
+type VariantAssociation {
+    name: String
+    description: String
+    xrefs: [DbReferenceObject!]
+    evidences: [VariationEvidence!]
+    disease: Boolean
+}
+
+enum VariantSourceTypeEnum{
+    large_scale_study uniprot, mixed
 }
 
 type ProteinCrossRef{
