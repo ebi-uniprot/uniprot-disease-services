@@ -3,31 +3,31 @@ schema {
 }
 
 type Query {
-    disease(diseaseId: String): Disease
-    protein(accession: String): Protein
+    disease(diseaseId: String!): Disease
+    protein(accession: String!): Protein
 }
 
 type Disease {
-    diseaseId: String
-    name: String
+    diseaseId: String!
+    name: String!
     desc: String
     acronym: String
     source: String
     note: String
     synonyms: [Synonym!]
-    variations: [Variation]
+    variations: [Variation!]
     diseaseProteins: [DiseaseProtein!]
     publications: [Publication!]
     children: [Disease!]
 }
 
 type Protein {
-    proteinId: String
-    name: String
-    accession: String
+    proteinId: String!
+    name: String!
+    accession: String!
     gene: String
     desc: String
-    variations: [Variation]
+    variations: [Variation!]
     proteinCrossRefs: [ProteinCrossRef!]
     interactions: [Interaction!]
     geneCoordinates: [GeneCoordinate!]
@@ -60,7 +60,7 @@ type Variation {
     sourceType: VariantSourceTypeEnum
 }
 
-type DbReferenceObject{
+type DbReferenceObject {
     name: String
     id: String
     url: String
@@ -86,7 +86,7 @@ enum VariantSourceTypeEnum{
     large_scale_study uniprot, mixed
 }
 
-type ProteinCrossRef{
+type ProteinCrossRef {
     primaryId: String
     description: String
     dbType: String
@@ -104,7 +104,7 @@ type Drug {
     clinicalTrialLink: String
 }
 
-type Interaction{
+type Interaction {
     type: String
     accession: String
     gene: String
@@ -113,7 +113,7 @@ type Interaction{
     secondInteractor: String
 }
 
-type GeneCoordinate{
+type GeneCoordinate {
     chromosomeNumber: String
     startPos: Int
     endPos: Int
