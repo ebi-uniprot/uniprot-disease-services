@@ -18,6 +18,7 @@ type Disease {
     variations: [Variation]
     diseaseProteins: [DiseaseProtein!]
     publications: [Publication!]
+    children: [Disease!]
 }
 
 type Protein {
@@ -119,32 +120,6 @@ type GeneCoordinate{
     enGeneId: String
     enTranscriptId: String
     enTranslationId: String
-}
-
-type Variant {
-    featureId: String
-    origSeq: String
-    altSeq: String
-    report: String
-    featureStatus: String
-    featureLocation: FeatureLocation
-    evidences: [Evidence!]
-}
-
-type Evidence {
-    evidenceId: String
-    type: String
-    attribute: String
-    code: String
-    useECOCode: Boolean
-    typeValue: String
-    hasTypeValue: Boolean
-}
-type FeatureLocation{
-    startModifier: String
-    endModifier: String
-    startId: Int
-    endId: Int
 }
 
 type Synonym{

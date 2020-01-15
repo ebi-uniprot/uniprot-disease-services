@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.ds.graphql.resolver;
+package uk.ac.ebi.uniprot.ds.graphql.model;
 
 import lombok.Data;
 import uk.ac.ebi.uniprot.ds.common.model.dataservice.Variation;
