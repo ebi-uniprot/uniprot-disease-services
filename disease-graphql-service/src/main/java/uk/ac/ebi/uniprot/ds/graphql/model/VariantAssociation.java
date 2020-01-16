@@ -1,16 +1,10 @@
-package uk.ac.ebi.uniprot.ds.common.model.dataservice;
+package uk.ac.ebi.uniprot.ds.graphql.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class VariantAssociation {
     private String name;
     private String description;

@@ -1,16 +1,10 @@
-package uk.ac.ebi.uniprot.ds.common.model.dataservice;
+package uk.ac.ebi.uniprot.ds.graphql.model;
 
-import lombok.*;
-import uk.ac.ebi.uniprot.ds.common.model.Evidence;
+import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class Variation {
     private String type;
     private String cvId;

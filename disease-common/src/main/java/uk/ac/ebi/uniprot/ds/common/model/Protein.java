@@ -8,7 +8,6 @@
 package uk.ac.ebi.uniprot.ds.common.model;
 
 import lombok.*;
-import uk.ac.ebi.uniprot.ds.common.model.dataservice.Variation;
 
 import javax.persistence.*;
 import java.util.*;
@@ -55,9 +54,6 @@ public class Protein extends BaseEntity {
 
     @OneToMany(mappedBy = "protein", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Publication> publications;
-
-    @Transient
-    private List<Variation> variations;
 
     @Transient
     private Boolean isExternallyMapped; // to keep manually mapped protein flag

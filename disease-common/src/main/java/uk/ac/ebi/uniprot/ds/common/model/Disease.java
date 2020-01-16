@@ -9,7 +9,6 @@ package uk.ac.ebi.uniprot.ds.common.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import uk.ac.ebi.uniprot.ds.common.model.dataservice.Variation;
 
 import javax.persistence.*;
 import java.util.*;
@@ -77,9 +76,6 @@ public class Disease extends BaseEntity {
     @JsonIgnore// To keep SpringBatch happy. SpringBatch in data importer uses Jackson to serialize object and recursive object causing StackOverflow
     @OneToMany(mappedBy = "disease", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Publication> publications;
-
-    @Transient
-    private List<Variation> variations;
 
     public void addSynonym(Synonym synonym){
         if(this.synonyms == null){

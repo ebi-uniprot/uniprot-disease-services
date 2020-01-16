@@ -6,19 +6,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilder;
-import uk.ac.ebi.uniprot.ds.common.model.dataservice.Variation;
-import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.graphql.model.DataServiceProtein;
+import uk.ac.ebi.uniprot.ds.graphql.model.ProteinType;
+import uk.ac.ebi.uniprot.ds.graphql.model.Variation;
 
 import java.util.List;
 
 @Service
-public class ProteinResolver implements GraphQLResolver<Protein> {
+public class ProteinResolver implements GraphQLResolver<ProteinType> {
 
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<Variation> variations(Protein protein){
+    public List<Variation> variations(ProteinType protein){
         // get protein variants
         DefaultUriBuilderFactory handler = (DefaultUriBuilderFactory) this.restTemplate.getUriTemplateHandler();
         UriBuilder uriBuilder = handler.builder().path(protein.getAccession());

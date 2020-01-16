@@ -3,36 +3,36 @@ schema {
 }
 
 type Query {
-    disease(diseaseId: String!): Disease
-    protein(accession: String!): Protein
+    disease(diseaseId: String!): DiseaseType
+    protein(accession: String!): ProteinType
 }
 
-type Disease {
+type DiseaseType {
     diseaseId: String!
     name: String!
     desc: String
     acronym: String
     source: String
     note: String
-    synonyms: [Synonym!]
+    proteins: [ProteinType!]
+    synonyms: [SynonymType!]
     variations: [Variation!]
-    diseaseProteins: [DiseaseProtein!]
-    publications: [Publication!]
-    children: [Disease!]
+    publications: [PublicationType!]
+    children: [DiseaseType!]
 }
 
-type Protein {
-    proteinId: String!
-    name: String!
-    accession: String!
+type ProteinType {
+    proteinId: String
+    name: String
+    accession: String
     gene: String
     desc: String
     variations: [Variation!]
-    proteinCrossRefs: [ProteinCrossRef!]
-    interactions: [Interaction!]
-    geneCoordinates: [GeneCoordinate!]
-    publications: [Publication!]
-    diseaseProteins: [DiseaseProtein!]
+    proteinCrossRefs: [ProteinCrossRefType!]
+    interactions: [InteractionType!]
+    geneCoordinates: [GeneCoordinateType!]
+    publications: [PublicationType!]
+    diseases: [DiseaseType!]
 }
 type Variation {
     type: String
@@ -86,15 +86,15 @@ enum VariantSourceTypeEnum{
     large_scale_study uniprot, mixed
 }
 
-type ProteinCrossRef {
+type ProteinCrossRefType {
     primaryId: String
     description: String
     dbType: String
     isoformId: String
-    drugs: [Drug!]
+    drugs: [DrugType!]
 }
 
-type Drug {
+type DrugType {
     name: String
     sourceType: String
     sourceId: String
@@ -102,9 +102,15 @@ type Drug {
     clinicalTrialPhase: Int
     mechanismOfAction: String
     clinicalTrialLink: String
+    drugEvidences: [DrugEvidenceType!]
 }
 
-type Interaction {
+type DrugEvidenceType {
+    refType: String
+    refUrl: String
+}
+
+type InteractionType {
     type: String
     accession: String
     gene: String
@@ -113,7 +119,7 @@ type Interaction {
     secondInteractor: String
 }
 
-type GeneCoordinate {
+type GeneCoordinateType {
     chromosomeNumber: String
     startPos: Int
     endPos: Int
@@ -122,18 +128,13 @@ type GeneCoordinate {
     enTranslationId: String
 }
 
-type Synonym{
+type SynonymType{
     name: String
     source: String
 }
 
-type Publication {
+
+type PublicationType {
     pubType: String
     pubId: String
-}
-
-type DiseaseProtein {
-    disease: Disease
-    protein: Protein
-    isMapped: Boolean
 }

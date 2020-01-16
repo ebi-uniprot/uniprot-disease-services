@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.ds.common.model.dataservice;
+package uk.ac.ebi.uniprot.ds.graphql.model;
 
 public enum VariantSourceTypeEnum {
     large_scale_study("large scale study"), uniprot("uniprot"), mixed("mixed");
