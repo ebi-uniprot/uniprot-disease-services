@@ -9,30 +9,32 @@ type Query {
 
 type DiseaseType {
     diseaseId: String!
-    name: String!
-    desc: String
+    diseaseName: String!
+    description: String
     acronym: String
     source: String
     note: String
+    children: [DiseaseType!]
     proteins: [ProteinType!]
     synonyms: [SynonymType!]
-    variations: [Variation!]
+    variants: [Variation!]
     publications: [PublicationType!]
-    children: [DiseaseType!]
+    isGroup: Boolean!
 }
 
 type ProteinType {
-    proteinId: String
-    name: String
-    accession: String
+    proteinId: String!
+    proteinName: String!
+    accession: String!
     gene: String
-    desc: String
-    variations: [Variation!]
-    proteinCrossRefs: [ProteinCrossRefType!]
+    description: String
+    pathways: [ProteinCrossRefType!]
     interactions: [InteractionType!]
+    variants: [Variation!]
+    diseases: [DiseaseType!]
     geneCoordinates: [GeneCoordinateType!]
     publications: [PublicationType!]
-    diseases: [DiseaseType!]
+    isExternallyMapped: Boolean!
 }
 type Variation {
     type: String

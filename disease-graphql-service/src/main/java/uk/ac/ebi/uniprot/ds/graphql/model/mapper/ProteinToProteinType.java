@@ -3,10 +3,12 @@ package uk.ac.ebi.uniprot.ds.graphql.model.mapper;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.modelmapper.TypeToken;
 import org.modelmapper.spi.MappingContext;
 import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.graphql.model.DiseaseType;
+import uk.ac.ebi.uniprot.ds.graphql.model.ProteinCrossRefType;
 import uk.ac.ebi.uniprot.ds.graphql.model.ProteinType;
 
 import java.util.List;
@@ -16,6 +18,9 @@ import java.util.stream.Collectors;
 public class ProteinToProteinType extends PropertyMap<Protein, ProteinType> {
     @Override
     protected void configure() {
+        map().setDescription(source.getDesc());
+        map().setProteinName(source.getName());
+        map(source.getProteinCrossRefs(), destination.getPathways());
         using(new DiseaseProteinsToDiseases()).map(source.getDiseaseProteins()).setDiseases(null);
     }
 

@@ -20,7 +20,7 @@ public class DiseaseResolver implements GraphQLResolver<DiseaseType> {
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<Variation> variations(DiseaseType disease){
+    public List<Variation> variants(DiseaseType disease){
         // get variations by diseaseId
         DefaultUriBuilderFactory handler = (DefaultUriBuilderFactory) this.restTemplate.getUriTemplateHandler();
         UriBuilder uriBuilder = handler.builder().queryParam("disease", disease.getDiseaseId());

@@ -18,7 +18,7 @@ public class ProteinResolver implements GraphQLResolver<ProteinType> {
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<Variation> variations(ProteinType protein){
+    public List<Variation> variants(ProteinType protein){
         // get protein variants
         DefaultUriBuilderFactory handler = (DefaultUriBuilderFactory) this.restTemplate.getUriTemplateHandler();
         UriBuilder uriBuilder = handler.builder().path(protein.getAccession());

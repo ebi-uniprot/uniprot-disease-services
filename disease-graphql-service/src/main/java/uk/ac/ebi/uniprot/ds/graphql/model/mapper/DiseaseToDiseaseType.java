@@ -14,9 +14,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DiseaseToDiseaseType extends PropertyMap<Disease, DiseaseType> {
+    private static final String MONDO_STR = "MONDO";
+
     @Override
     protected void configure() {
+        map().setDescription(source.getDesc());
+        map().setDiseaseName(source.getName());
         using(new DiseaseProteinsToProteins()).map(source.getDiseaseProteins()).setProteins(null);
+        using(context -> MONDO_STR.equals(context.getSource())).map(source.getSource()).setIsGroup(null);
     }
 
     private class DiseaseProteinsToProteins implements Converter<Set<DiseaseProtein>, List<ProteinType>> {

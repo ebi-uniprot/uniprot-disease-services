@@ -7,15 +7,15 @@ import java.util.List;
 @Data
 public class ProteinType  {
     private String proteinId;
-    private String name;
+    private String proteinName;
     private String accession;
     private String gene;
-    private String desc;
+    private String description;
     private List<DiseaseType> diseases;
-    private List<ProteinCrossRefType> proteinCrossRefs;
+    private List<ProteinCrossRefType> pathways;
     private List<InteractionType> interactions;
+    private List<Variation> variants;
     private List<GeneCoordinateType> geneCoordinates;
     private List<PublicationType> publications;
-    private List<Variation> variations;
-    private Boolean isExternallyMapped; // to keep manually mapped protein flag
+    private Boolean isExternallyMapped;
 }
