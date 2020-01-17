@@ -1,8 +1,10 @@
 package uk.ac.ebi.uniprot.ds.graphql.model;
 
+import graphql.annotations.GraphQLName;
 import lombok.Data;
 
 @Data
+@GraphQLName("GeneCoordinate")
 public class GeneCoordinateType {
     private String chromosomeNumber;
     private Long startPos;

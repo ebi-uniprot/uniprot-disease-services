@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class ProteinToProteinType extends PropertyMap<Protein, ProteinType> {
     @Override
     protected void configure() {
+        map().setIsExternallyMapped(source.getIsExternallyMapped());
         map().setDescription(source.getDesc());
         map().setProteinName(source.getName());
         map(source.getProteinCrossRefs(), destination.getPathways());

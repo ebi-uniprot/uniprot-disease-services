@@ -1,10 +1,12 @@
 package uk.ac.ebi.uniprot.ds.graphql.model;
 
+import graphql.annotations.GraphQLName;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@GraphQLName("Variant")
 public class Variation {
     private String type;
     private String cvId;

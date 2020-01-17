@@ -1,11 +1,12 @@
 package uk.ac.ebi.uniprot.ds.graphql.model;
 
-import graphql.annotations.GraphQLType;
+import graphql.annotations.GraphQLName;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@GraphQLName("Disease")
 public class DiseaseType {
     private String diseaseId;
     private String diseaseName;

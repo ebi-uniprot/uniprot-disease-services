@@ -1,10 +1,12 @@
 package uk.ac.ebi.uniprot.ds.graphql.model;
 
+import graphql.annotations.GraphQLName;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@GraphQLName(("Protein"))
 public class ProteinType  {
     private String proteinId;
     private String proteinName;
