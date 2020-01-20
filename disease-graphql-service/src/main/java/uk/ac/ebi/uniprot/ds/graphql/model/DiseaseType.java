@@ -1,6 +1,6 @@
 package uk.ac.ebi.uniprot.ds.graphql.model;
 
-import graphql.annotations.GraphQLName;
+import graphql.annotations.annotationTypes.GraphQLName;
 import lombok.Data;
 
 import java.util.List;
