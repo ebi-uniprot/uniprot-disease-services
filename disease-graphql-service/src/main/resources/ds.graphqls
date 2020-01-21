@@ -5,6 +5,7 @@ schema {
 type Query {
     disease(diseaseId: String!): Disease
     protein(accession: String!): Protein
+    diseases(filter: DiseaseFilter, page: Int = 0, size: Int = 25): [Disease!]
 }
 
 type Disease {
@@ -139,4 +140,9 @@ type Synonym{
 type Publication {
     pubType: String
     pubId: String
+}
+
+input DiseaseFilter{
+    nameContains: String
+    descriptionContains: String
 }

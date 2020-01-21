@@ -20,4 +20,6 @@ public class DiseaseType {
     private List<PublicationType> publications;
     private List<Variation> variants;
     private Boolean isGroup;
+
+
 }

@@ -28,4 +28,6 @@ public interface DiseaseDAO extends JpaRepository<Disease, Long>, DiseaseDAOCust
     Optional<Disease> findDiseaseByDiseaseIdOrNameOrAcronym(String diseaseId, String name, String acronym);
 
     List<Disease> findByNameContainingIgnoreCaseOrDescContainingIgnoreCase(String name, String desc, Pageable pageable);
+    List<Disease> findByNameContainingIgnoreCase(String name, Pageable pageable);
+    List<Disease> findByDescContainingIgnoreCase(String desc, Pageable pageable);
 }
