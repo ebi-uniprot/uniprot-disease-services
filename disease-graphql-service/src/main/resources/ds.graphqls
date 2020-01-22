@@ -1,10 +1,10 @@
-schema {
-    query: Query
-}
-
+# List of operations supported
 type Query {
+    # Get a disease by diseaseId
     disease(diseaseId: String!): Disease
+    # Get a protein by accession
     protein(accession: String!): Protein
+    # Search diseases by part of the name or description
     diseases(filter: DiseaseFilter, page: Int = 0, size: Int = 25): [Disease!]
 }
 

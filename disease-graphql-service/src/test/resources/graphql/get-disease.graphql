@@ -1,0 +1,26 @@
+query GetDisease($diseaseId: String!) {
+    disease(diseaseId: $diseaseId) {
+        diseaseId
+        diseaseName
+        description
+        acronym
+        note
+        isGroup
+        synonyms {
+            name
+            source
+        }
+        publications {
+            pubId
+            pubType
+        }
+        variants {
+            type
+            cvId
+            ftId
+            description
+            alternativeSequence
+            sourceType
+        }
+    }
+}
