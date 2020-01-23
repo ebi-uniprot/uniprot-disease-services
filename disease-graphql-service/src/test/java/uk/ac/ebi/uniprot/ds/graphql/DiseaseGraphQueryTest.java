@@ -10,6 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -19,11 +23,14 @@ import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Publication;
 import uk.ac.ebi.uniprot.ds.common.model.Synonym;
 import uk.ac.ebi.uniprot.ds.graphql.model.DataServiceProtein;
+import uk.ac.ebi.uniprot.ds.graphql.model.DiseaseType;
 import uk.ac.ebi.uniprot.ds.graphql.model.Variation;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -78,5 +85,28 @@ public class DiseaseGraphQueryTest extends BaseGraphQueryTest{
 		assertNotNull(variants);
 		assertFalse(variants.isEmpty());
 		assertEquals(dataServiceProteins[0].getFeatures().size(), variants.size());
+	}
+
+
+	@Test
+	void testGetDiseases() throws IOException {
+		List<Disease> diseases = IntStream.range(1, 5).mapToObj(i -> createDiseaseObject(TEST_DISEASE_ID + i)).collect(Collectors.toList());
+		// mock disease api call
+		Sort sortAsc = new Sort(Sort.Direction.ASC, "id");
+		PageRequest pageRequest = PageRequest.of(0, 25, sortAsc);
+		Page<Disease> pageDiseases = new PageImpl<>(diseases);
+		Mockito.when(this.diseaseDAO.findAll(pageRequest)).thenReturn(pageDiseases);
+		GraphQLResponse response = this.graphQLTestTemplate.postForResource("graphql/get-diseases.graphql");
+		assertNotNull(response);
+		assertTrue(response.isOk());
+		List<DiseaseType> diseaseTypes = response.get("$.data.diseases", List.class);
+		assertEquals(diseases.size(), diseaseTypes.size());
+		assertNotNull(response.get("$.data.diseases[0].diseaseId"));
+		assertNotNull(response.get("$.data.diseases[0].diseaseName"));
+		assertNotNull(response.get("$.data.diseases[0].description"));
+		assertNotNull(response.get("$.data.diseases[0].acronym"));
+		assertNull(response.get("$.data.diseases[0].source"));
+		assertNotNull(response.get("$.data.diseases[0].note"));
+		assertFalse(response.get("$.data.diseases[0].isGroup", Boolean.class));
 	}
 }

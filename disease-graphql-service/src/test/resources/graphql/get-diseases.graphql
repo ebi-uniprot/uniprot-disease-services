@@ -1,0 +1,11 @@
+{
+    diseases {
+        diseaseId
+        diseaseName
+        description
+        acronym
+        source
+        note
+        isGroup
+    }
+}
