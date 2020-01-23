@@ -1,0 +1,66 @@
+query GetProtein($accession: String!){
+    protein(accession: $accession) {
+        proteinId
+        proteinName
+        accession
+        gene
+        description
+        isExternallyMapped
+        geneCoordinates {
+            chromosomeNumber
+            startPos
+            endPos
+            enGeneId
+            enTranscriptId
+            enTranslationId
+        }
+        publications {
+            pubId
+            pubType
+        }
+        diseases {
+            diseaseId
+            diseaseName
+            description
+            acronym
+            source
+            note
+            isGroup
+        }
+        variants {
+            type
+            cvId
+            ftId
+            description
+            alternativeSequence
+            sourceType
+        }
+        pathways {
+            primaryId
+            description
+            dbType
+            isoformId
+            drugs {
+                name
+                sourceType
+                sourceType
+                moleculeType
+                clinicalTrialPhase
+                clinicalTrialLink
+                mechanismOfAction
+                drugEvidences {
+                    refUrl
+                    refType
+                }
+            }
+        }
+        interactions {
+            type
+            accession
+            gene
+            experimentCount
+            firstInteractor
+            secondInteractor
+        }
+    }
+}

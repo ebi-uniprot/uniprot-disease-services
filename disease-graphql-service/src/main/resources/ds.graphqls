@@ -20,7 +20,7 @@ type Disease {
     synonyms: [Synonym!]
     variants: [Variant!]
     publications: [Publication!]
-    isGroup: Boolean!
+    isGroup: Boolean
 }
 
 type Protein {
