@@ -20,11 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilder;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.Publication;
-import uk.ac.ebi.uniprot.ds.common.model.Synonym;
-import uk.ac.ebi.uniprot.ds.graphql.model.DataServiceProtein;
-import uk.ac.ebi.uniprot.ds.graphql.model.DiseaseType;
-import uk.ac.ebi.uniprot.ds.graphql.model.Variation;
+import uk.ac.ebi.uniprot.ds.graphql.model.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -70,12 +66,12 @@ public class DiseaseGraphQueryTest extends BaseGraphQueryTest{
 		assertNotNull(response.get("$.data.disease.acronym"));
 		assertNotNull(response.get("$.data.disease.note"));
 		assertFalse(response.get("$.data.disease.isGroup", Boolean.class));
-		List<Synonym> syns = response.get("$.data.disease.synonyms", List.class);
+		List<SynonymType> syns = response.get("$.data.disease.synonyms", List.class);
 		assertNotNull(syns);
 		assertFalse(syns.isEmpty());
 		assertEquals(disease.getSynonyms().size(), syns.size());
 		// publication
-		List<Publication> pubs = response.get("$.data.disease.publications", List.class);
+		List<PublicationType> pubs = response.get("$.data.disease.publications", List.class);
 		assertNotNull(pubs);
 		assertFalse(pubs.isEmpty());
 		assertEquals(disease.getPublications().size(), pubs.size());

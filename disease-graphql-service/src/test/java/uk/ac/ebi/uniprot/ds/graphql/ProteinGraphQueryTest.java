@@ -14,8 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilder;
 import uk.ac.ebi.uniprot.ds.common.model.*;
-import uk.ac.ebi.uniprot.ds.graphql.model.DataServiceProtein;
-import uk.ac.ebi.uniprot.ds.graphql.model.Variation;
+import uk.ac.ebi.uniprot.ds.graphql.model.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -95,24 +94,24 @@ public class ProteinGraphQueryTest extends BaseGraphQueryTest {
         assertNotNull(response.get("$.data.protein.gene"));
         assertNotNull(response.get("$.data.protein.description"));
         assertFalse(response.get("$.data.protein.isExternallyMapped", Boolean.class));
-        List<GeneCoordinate> gcs = response.get("$.data.protein.geneCoordinates", List.class);
+        List<GeneCoordinateType> gcs = response.get("$.data.protein.geneCoordinates", List.class);
         verifyGeneCoord(protein, gcs);
-        List<Publication> pubs = response.get("$.data.protein.publications", List.class);
+        List<PublicationType> pubs = response.get("$.data.protein.publications", List.class);
         verifyPub(protein, pubs);
-        List<Disease> diseases = response.get("$.data.protein.diseases", List.class);
+        List<DiseaseType> diseases = response.get("$.data.protein.diseases", List.class);
         verifyDiseases(protein, diseases);
 
         List<Variation> variants = response.get("$.data.protein.variants", List.class);
         verifyVariations(dataServiceProtein, variants);
 
-        List<ProteinCrossRef> pathways = response.get("$.data.protein.pathways", List.class);
+        List<ProteinCrossRefType> pathways = response.get("$.data.protein.pathways", List.class);
         verifyPathways(protein, pathways);
 
-        List<Interaction> interactions = response.get("$.data.protein.interactions", List.class);
+        List<InteractionType> interactions = response.get("$.data.protein.interactions", List.class);
         verifyInteractions(protein, interactions);
     }
 
-    private void verifyPathways(Protein protein, List<ProteinCrossRef> pathways) {
+    private void verifyPathways(Protein protein, List<ProteinCrossRefType> pathways) {
         assertNotNull(pathways);
         assertFalse(pathways.isEmpty());
         assertEquals(protein.getProteinCrossRefs().size(), pathways.size());
@@ -124,25 +123,25 @@ public class ProteinGraphQueryTest extends BaseGraphQueryTest {
         assertEquals(dataServiceProtein.getFeatures().size(), variants.size());
     }
 
-    private void verifyInteractions(Protein protein, List<Interaction> interactions) {
+    private void verifyInteractions(Protein protein, List<InteractionType> interactions) {
         assertNotNull(interactions);
         assertFalse(interactions.isEmpty());
         assertEquals(protein.getInteractions().size(), interactions.size());
     }
 
-    private void verifyDiseases(Protein protein, List<Disease> diseases) {
+    private void verifyDiseases(Protein protein, List<DiseaseType> diseases) {
         assertNotNull(diseases);
         assertFalse(diseases.isEmpty());
         assertEquals(protein.getDiseaseProteins().size(), diseases.size());
     }
 
-    private void verifyPub(Protein protein, List<Publication> pubs) {
+    private void verifyPub(Protein protein, List<PublicationType> pubs) {
         assertNotNull(pubs);
         assertFalse(pubs.isEmpty());
         assertEquals(protein.getPublications().size(), pubs.size());
     }
 
-    private void verifyGeneCoord(Protein protein, List<GeneCoordinate> gcs) {
+    private void verifyGeneCoord(Protein protein, List<GeneCoordinateType> gcs) {
         assertNotNull(gcs);
         assertFalse(gcs.isEmpty());
         assertEquals(protein.getGeneCoordinates().size(), gcs.size());
