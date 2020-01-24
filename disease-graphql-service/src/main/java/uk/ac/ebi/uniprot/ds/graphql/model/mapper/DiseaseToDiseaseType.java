@@ -30,7 +30,7 @@ public class DiseaseToDiseaseType extends PropertyMap<Disease, DiseaseType> {
             Set<DiseaseProtein> diseaseProteins = context.getSource();
             return diseaseProteins != null && !diseaseProteins.isEmpty() ? diseaseProteins
                     .stream()
-                    .map(dp -> dp.getProtein())
+                    .map(DiseaseProtein::getProtein)
                     .map(p -> new ModelMapper().map(p, ProteinType.class))
                     .collect(Collectors.toList())
                     : null;
