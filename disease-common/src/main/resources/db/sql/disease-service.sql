@@ -1299,15 +1299,6 @@ ALTER TABLE ONLY disease_service.ds_protein
 ALTER TABLE ONLY disease_service.ds_publication
     ADD CONSTRAINT ds_pub_pk PRIMARY KEY (id);
 
-
---
--- Name: ds_synonym ds_synonym_un; Type: CONSTRAINT; Schema: disease_service; Owner: variant
---
-
-ALTER TABLE ONLY disease_service.ds_synonym
-    ADD CONSTRAINT ds_synonym_un UNIQUE (disease_name, ds_disease_id);
-
-
 --
 -- Name: ds_synonym ds_synonyms_pk; Type: CONSTRAINT; Schema: disease_service; Owner: variant
 --
