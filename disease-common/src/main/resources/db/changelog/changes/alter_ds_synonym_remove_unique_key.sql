@@ -1,1 +1,1 @@
-ALTER TABLE disease_service.ds_synonym DROP CONSTRAINT ds_synonym_un;
+ALTER TABLE disease_service.ds_synonym DROP CONSTRAINT IF EXISTS ds_synonym_un;

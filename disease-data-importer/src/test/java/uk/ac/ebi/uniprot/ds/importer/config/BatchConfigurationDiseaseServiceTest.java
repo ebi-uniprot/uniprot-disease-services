@@ -33,14 +33,14 @@ public class BatchConfigurationDiseaseServiceTest {
 
     @After
     public void cleanUp(){
-//        this.synonymDAO.deleteAll();
-//        this.variantDAO.deleteAll();
-//        this.proteinCrossRefDAO.deleteAll();
-//        this.interactionDAO.deleteAll();
-//        this.featureLocationDAO.deleteAll();
-//        this.evidenceDAO.deleteAll();
-//        this.diseaseDAO.deleteAll();
-//        this.proteinDAO.deleteAll();
+        this.synonymDAO.deleteAll();
+        this.variantDAO.deleteAll();
+        this.proteinCrossRefDAO.deleteAll();
+        this.interactionDAO.deleteAll();
+        this.featureLocationDAO.deleteAll();
+        this.evidenceDAO.deleteAll();
+        this.diseaseDAO.deleteAll();
+        this.proteinDAO.deleteAll();
     }
 
     @Test
