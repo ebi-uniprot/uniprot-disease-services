@@ -14,6 +14,7 @@ import uk.ac.ebi.uniprot.ds.common.model.Interaction;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -35,7 +36,14 @@ public class InteractionHelper {
                                           uk.ac.ebi.kraken.interfaces.uniprot.comments.Interaction commentInteraction) {
         Interaction.InteractionBuilder builder = Interaction.builder();
         builder.type(commentInteraction.getInteractionType().name());
-        builder.accession(commentInteraction.getInteractorUniProtAccession().getValue());
+
+        if(Objects.nonNull(commentInteraction.getSecondInteractantParent()) &&
+                Objects.nonNull(commentInteraction.getSecondInteractantParent().getValue())){
+            builder.accession(commentInteraction.getSecondInteractantParent().getValue());
+        } else if(Objects.nonNull(commentInteraction.getSecondInteractant())){
+            builder.accession(commentInteraction.getSecondInteractant().getValue());
+        }
+
         builder.gene(commentInteraction.getInteractionGeneName().getValue());
         builder.experimentCount(commentInteraction.getNumberOfExperiments());
         builder.firstInteractor(commentInteraction.getFirstInteractor().getValue());
