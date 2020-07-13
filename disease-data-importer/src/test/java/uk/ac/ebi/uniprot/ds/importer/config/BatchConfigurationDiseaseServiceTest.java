@@ -17,7 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.uniprot.ds.common.dao.*;
+import uk.ac.ebi.uniprot.ds.common.model.*;
 import uk.ac.ebi.uniprot.ds.importer.DataImporterSpringBootApplication;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {DataImporterSpringBootApplication.class, BatchConfigurationDiseaseService.class,
@@ -51,61 +55,69 @@ public class BatchConfigurationDiseaseServiceTest {
         BatchStatus status = jobExecution.getStatus();
         Assert.assertEquals(status, BatchStatus.COMPLETED);
 
-        // verify the data
-        // hum disease first
-        /*List<Disease> hds = this.diseaseDAO.findAll();
-        Assert.assertTrue(hds.size() > 5000);
-        List<Synonym> hsn = this.synonymDAO.findAll();
-        Assert.assertTrue(hsn.size() > 9000);
-        // protein
-        Optional<Protein> optPr = this.proteinDAO.findProteinByAccession("P22607");
-        Assert.assertTrue(optPr.isPresent());
-        Protein pr = optPr.get();
-        Assert.assertNotNull(pr.getId());
-        Assert.assertEquals("FGFR3_HUMAN", pr.getProteinId());
-        Assert.assertEquals("Fibroblast growth factor receptor 3", pr.getName());
-        Assert.assertEquals("FGFR3", pr.getGene());
-
-        //get the diseases by protein
-        Set<Disease> diseases = new HashSet<>(this.diseaseDAO.findAllByProteinsIs(pr));
-        Assert.assertEquals(15, diseases.size());
-
-        // get synonyms
-        List<Synonym> syns = new ArrayList<>();
-        for(Disease d : diseases) {
-            syns.addAll(this.synonymDAO.findAllByDisease(d));
-        }
-        Assert.assertEquals(30, syns.size());
-
-        // get interaction
-        List<Interaction> ints = this.interactionDAO.findAllByProtein(pr);
-        Assert.assertEquals(3, ints.size());
-
-        // get protein cross ref
-        List<ProteinCrossRef> paths = this.proteinCrossRefDAO.findAllByProtein(pr);
-        Assert.assertEquals(17, paths.size());
-
-        // get protein variants
-        List<Variant> prVars = this.variantDAO.findAllByProtein(pr);
-        Assert.assertEquals(28, prVars.size());
-
-        // get all disease variants
-        List<Variant> disVars = new ArrayList<>();
-        for(Disease dis : diseases){
-            disVars.addAll(this.variantDAO.findAllByDisease(dis));
-        }
-        Assert.assertEquals(5, disVars.size());
-
-        // Get evidence for each variant
-        List<Evidence> prEvidences = new ArrayList<>();
-        for(Variant v : prVars){
-            prEvidences.addAll(this.evidenceDAO.findAllByVariant(v));
-        }
-        Assert.assertEquals(78, prEvidences.size());
-
-        // verify cross refs
-        List<CrossRef> crossRefs = this.crossRefDAO.findAll();
-        Assert.assertTrue(!crossRefs.isEmpty());*/
+//        // verify the data
+//        // hum disease first
+//        List<Disease> hds = this.diseaseDAO.findAll();
+//        Assert.assertTrue(hds.size() > 5000);
+//        List<Synonym> hsn = this.synonymDAO.findAll();
+//        Assert.assertTrue(hsn.size() > 9000);
+//        // protein
+//        Optional<Protein> optPr = this.proteinDAO.findProteinByAccession("P22607");
+//        Assert.assertTrue(optPr.isPresent());
+//        Protein pr = optPr.get();
+//        Assert.assertNotNull(pr.getId());
+//        Assert.assertEquals("FGFR3_HUMAN", pr.getProteinId());
+//        Assert.assertEquals("Fibroblast growth factor receptor 3", pr.getName());
+//        Assert.assertEquals("FGFR3", pr.getGene());
+//
+//        //get the diseases by protein
+//        Set<Disease> diseases = this.proteinDAO.findProteinByAccession(pr.getAccession())
+//                .map(
+//                        prot -> prot.getDiseaseProteins()
+//                                .stream()
+//                                .map(dp -> dp.getDisease())
+//                                .collect(Collectors.toSet())
+//                )
+//                .orElse(null);
+//        Assert.assertNotNull(diseases);
+//        Assert.assertEquals(15, diseases.size());
+//
+//        // get synonyms
+//        List<Synonym> syns = new ArrayList<>();
+//        for(Disease d : diseases) {
+//            syns.addAll(this.synonymDAO.findAllByDisease(d));
+//        }
+//        Assert.assertEquals(30, syns.size());
+//
+//        // get interaction
+//        List<Interaction> ints = this.interactionDAO.findAllByProtein(pr);
+//        Assert.assertEquals(3, ints.size());
+//
+//        // get protein cross ref
+//        List<ProteinCrossRef> paths = this.proteinCrossRefDAO.findAllByProtein(pr);
+//        Assert.assertEquals(17, paths.size());
+//
+//        // get protein variants
+//        List<Variant> prVars = this.variantDAO.findAllByProtein(pr);
+//        Assert.assertEquals(28, prVars.size());
+//
+//        // get all disease variants
+//        List<Variant> disVars = new ArrayList<>();
+//        for(Disease dis : diseases){
+//            disVars.addAll(this.variantDAO.findAllByDisease(dis));
+//        }
+//        Assert.assertEquals(5, disVars.size());
+//
+//        // Get evidence for each variant
+//        List<Evidence> prEvidences = new ArrayList<>();
+//        for(Variant v : prVars){
+//            prEvidences.addAll(this.evidenceDAO.findAllByVariant(v));
+//        }
+//        Assert.assertEquals(78, prEvidences.size());
+//
+//        // verify cross refs
+//        List<CrossRef> crossRefs = this.crossRefDAO.findAll();
+//        Assert.assertTrue(!crossRefs.isEmpty());
 
     }
 
