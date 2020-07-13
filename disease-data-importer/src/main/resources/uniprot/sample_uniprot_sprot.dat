@@ -2,7 +2,7 @@ ID   FGFR3_HUMAN             Reviewed;         806 AA.
 AC   P22607; D3DVP9; D3DVQ0; Q14308; Q16294; Q16608; Q59FL9;
 DT   01-AUG-1991, integrated into UniProtKB/Swiss-Prot.
 DT   01-AUG-1991, sequence version 1.
-DT   26-FEB-2020, entry version 242.
+DT   17-JUN-2020, entry version 244.
 DE   RecName: Full=Fibroblast growth factor receptor 3;
 DE            Short=FGFR-3;
 DE            EC=2.7.10.1;
@@ -642,9 +642,9 @@ CC       ECO:0000269|PubMed:16410555, ECO:0000269|PubMed:16597617,
 CC       ECO:0000269|PubMed:17561467, ECO:0000269|PubMed:17623664,
 CC       ECO:0000269|PubMed:19286672, ECO:0000269|PubMed:8663044}.
 CC   -!- INTERACTION:
-CC       Self; NbExp=4; IntAct=EBI-348399, EBI-348399;
-CC       P05230:FGF1; NbExp=3; IntAct=EBI-348399, EBI-698068;
-CC       P08238:HSP90AB1; NbExp=2; IntAct=EBI-348399, EBI-352572;
+CC       P22607; P05230: FGF1; NbExp=3; IntAct=EBI-348399, EBI-698068;
+CC       P22607; P22607: FGFR3; NbExp=4; IntAct=EBI-348399, EBI-348399;
+CC       P22607; P08238: HSP90AB1; NbExp=2; IntAct=EBI-348399, EBI-352572;
 CC   -!- SUBCELLULAR LOCATION: [Isoform 1]: Cell membrane; Single-pass type I
 CC       membrane protein. Cytoplasmic vesicle. Endoplasmic reticulum. Note=The
 CC       activated receptor is rapidly internalized and degraded. Detected in
@@ -890,13 +890,15 @@ DR   RefSeq; NP_075254.1; NM_022965.3. [P22607-3]
 DR   PDB; 1RY7; X-ray; 3.20 A; B=33-365.
 DR   PDB; 2LZL; NMR; -; A/B=357-399.
 DR   PDB; 4K33; X-ray; 2.34 A; A=449-759.
+DR   PDB; 6PNX; X-ray; 2.20 A; A/B=451-759.
 DR   PDBsum; 1RY7; -.
 DR   PDBsum; 2LZL; -.
 DR   PDBsum; 4K33; -.
+DR   PDBsum; 6PNX; -.
 DR   SMR; P22607; -.
-DR   BioGrid; 108552; 66.
+DR   BioGRID; 108552; 67.
 DR   DIP; DIP-4016N; -.
-DR   IntAct; P22607; 34.
+DR   IntAct; P22607; 54.
 DR   MINT; P22607; -.
 DR   STRING; 9606.ENSP00000339824; -.
 DR   BindingDB; P22607; -.
@@ -924,7 +926,8 @@ DR   ProteomicsDB; 54005; -. [P22607-1]
 DR   ProteomicsDB; 54006; -. [P22607-2]
 DR   ProteomicsDB; 54007; -. [P22607-3]
 DR   ProteomicsDB; 54008; -. [P22607-4]
-DR   ABCD; P22607; -.
+DR   ABCD; P22607; 3 sequenced antibodies.
+DR   Antibodypedia; 3787; 681 antibodies.
 DR   DNASU; 2261; -.
 DR   Ensembl; ENST00000340107; ENSP00000339824; ENSG00000068078. [P22607-2]
 DR   Ensembl; ENST00000352904; ENSP00000231803; ENSG00000068078. [P22607-3]
@@ -935,11 +938,11 @@ DR   KEGG; hsa:2261; -.
 DR   UCSC; uc003gdr.3; human. [P22607-1]
 DR   CTD; 2261; -.
 DR   DisGeNET; 2261; -.
+DR   EuPathDB; HostDB:ENSG00000068078.17; -.
 DR   GeneCards; FGFR3; -.
 DR   GeneReviews; FGFR3; -.
 DR   HGNC; HGNC:3690; FGFR3.
-DR   HPA; CAB004231; -.
-DR   HPA; HPA067204; -.
+DR   HPA; ENSG00000068078; Tissue enriched (skin).
 DR   MalaCards; FGFR3; -.
 DR   MIM; 100800; phenotype.
 DR   MIM; 109800; phenotype.
@@ -980,7 +983,7 @@ DR   GeneTree; ENSGT00940000159880; -.
 DR   HOGENOM; CLU_000288_74_3_1; -.
 DR   InParanoid; P22607; -.
 DR   KO; K05094; -.
-DR   OMA; QDTHSTC; -.
+DR   OMA; YSPACQD; -.
 DR   OrthoDB; 220433at2759; -.
 DR   PhylomeDB; P22607; -.
 DR   TreeFam; TF316307; -.
@@ -1004,6 +1007,7 @@ DR   Reactome; R-HSA-8853334; Signaling by FGFR3 fusions in cancer.
 DR   Reactome; R-HSA-8853338; Signaling by FGFR3 point mutants in cancer.
 DR   SignaLink; P22607; -.
 DR   SIGNOR; P22607; -.
+DR   BioGRID-ORCS; 2261; 6 hits in 816 CRISPR screens.
 DR   ChiTaRS; FGFR3; human.
 DR   EvolutionaryTrace; P22607; -.
 DR   GeneWiki; Fibroblast_growth_factor_receptor_3; -.
@@ -1417,49 +1421,51 @@ FT                   /evidence="ECO:0000244|PDB:2LZL"
 FT   HELIX           374..398
 FT                   /evidence="ECO:0000244|PDB:2LZL"
 FT   TURN            463..465
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   HELIX           469..471
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   STRAND          472..480
-FT                   /evidence="ECO:0000244|PDB:4K33"
-FT   STRAND          482..496
-FT                   /evidence="ECO:0000244|PDB:4K33"
-FT   STRAND          503..510
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
+FT   STRAND          485..493
+FT                   /evidence="ECO:0000244|PDB:6PNX"
+FT   STRAND          502..509
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   HELIX           516..532
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   STRAND          541..545
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   STRAND          547..550
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   STRAND          552..556
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   HELIX           563..568
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   HELIX           591..610
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   HELIX           620..622
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   STRAND          623..625
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   STRAND          631..633
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   STRAND          646..649
 FT                   /evidence="ECO:0000244|PDB:4K33"
 FT   HELIX           658..660
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   HELIX           663..668
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   HELIX           673..688
-FT                   /evidence="ECO:0000244|PDB:4K33"
-FT   HELIX           700..708
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
+FT   HELIX           700..702
+FT                   /evidence="ECO:0000244|PDB:6PNX"
+FT   HELIX           703..708
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   HELIX           721..730
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   HELIX           735..737
-FT                   /evidence="ECO:0000244|PDB:4K33"
-FT   HELIX           741..753
-FT                   /evidence="ECO:0000244|PDB:4K33"
+FT                   /evidence="ECO:0000244|PDB:6PNX"
+FT   HELIX           741..754
+FT                   /evidence="ECO:0000244|PDB:6PNX"
 SQ   SEQUENCE   806 AA;  87710 MW;  BC5EA75EA46F447E CRC64;
      MGAPACALAL CVAVAIVAGA SSESLGTEQR VVGRAAEVPG PEPGQQEQLV FGSGDAVELS
      CPPPGGGPMG PTVWVKDGTG LVPSERVLVG PQRLQVLNAS HEDSGAYSCR QRLTQRVLCH
