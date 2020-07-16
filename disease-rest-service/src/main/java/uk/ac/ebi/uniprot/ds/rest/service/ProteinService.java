@@ -93,12 +93,13 @@ public class ProteinService {
     }
 
     public List<Protein> getProteinsByDiseaseId(String diseaseId) {
-        return this.diseaseService.getDiseaseAndItsChildren(diseaseId)
+        Set<Protein> proteins = this.diseaseService.getDiseaseAndItsChildren(diseaseId)
                 .stream()
                 .map(dis -> dis.getDiseaseProteins())
                 .flatMap(Set::stream)
                 .map(dp -> getProtein(dp))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
+        return new ArrayList<>(proteins);
     }
 
     public List<Protein> getProteinsByDrugName(String drugName) {
