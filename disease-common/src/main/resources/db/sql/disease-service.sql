@@ -18,14 +18,9 @@ SET row_security = off;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_variant DROP CONSTRAINT IF EXISTS variant_protein_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_variant DROP CONSTRAINT IF EXISTS variant_feature_location_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_variant DROP CONSTRAINT IF EXISTS variant_disease_fk;
-ALTER TABLE IF EXISTS ONLY disease_service.batch_step_execution_context DROP CONSTRAINT IF EXISTS step_exec_ctx_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_publication DROP CONSTRAINT IF EXISTS pub_protein_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_publication DROP CONSTRAINT IF EXISTS pub_disease_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_protein_cross_ref DROP CONSTRAINT IF EXISTS pathway_protein_fk;
-ALTER TABLE IF EXISTS ONLY disease_service.batch_job_execution DROP CONSTRAINT IF EXISTS job_inst_exec_fk;
-ALTER TABLE IF EXISTS ONLY disease_service.batch_step_execution DROP CONSTRAINT IF EXISTS job_exec_step_fk;
-ALTER TABLE IF EXISTS ONLY disease_service.batch_job_execution_params DROP CONSTRAINT IF EXISTS job_exec_params_fk;
-ALTER TABLE IF EXISTS ONLY disease_service.batch_job_execution_context DROP CONSTRAINT IF EXISTS job_exec_ctx_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_interaction DROP CONSTRAINT IF EXISTS interaction_protein_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_synonym DROP CONSTRAINT IF EXISTS ds_synonyms_ds_disease_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_keyword DROP CONSTRAINT IF EXISTS ds_keyword_ds_disease_fk;
@@ -39,8 +34,6 @@ ALTER TABLE IF EXISTS ONLY disease_service.ds_disease_protein DROP CONSTRAINT IF
 ALTER TABLE IF EXISTS ONLY disease_service.ds_cross_ref DROP CONSTRAINT IF EXISTS ds_cross_ref_ds_disease_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_drug DROP CONSTRAINT IF EXISTS drug_prot_cross_ref_fk;
 DROP INDEX IF EXISTS disease_service.ds_keyword_key_value_idx;
-ALTER TABLE IF EXISTS ONLY disease_service.databasechangeloglock DROP CONSTRAINT IF EXISTS pk_databasechangeloglock;
-ALTER TABLE IF EXISTS ONLY disease_service.batch_job_instance DROP CONSTRAINT IF EXISTS job_inst_un;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_variant DROP CONSTRAINT IF EXISTS ds_variant_pk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_synonym DROP CONSTRAINT IF EXISTS ds_synonyms_pk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_synonym DROP CONSTRAINT IF EXISTS ds_synonym_un;
@@ -61,11 +54,6 @@ ALTER TABLE IF EXISTS ONLY disease_service.ds_disease_protein DROP CONSTRAINT IF
 ALTER TABLE IF EXISTS ONLY disease_service.ds_disease DROP CONSTRAINT IF EXISTS ds_disease_pk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_cross_ref DROP CONSTRAINT IF EXISTS ds_cross_ref_un;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_cross_ref DROP CONSTRAINT IF EXISTS ds_cross_ref_pk;
-ALTER TABLE IF EXISTS ONLY disease_service.batch_step_execution DROP CONSTRAINT IF EXISTS batch_step_execution_pkey;
-ALTER TABLE IF EXISTS ONLY disease_service.batch_step_execution_context DROP CONSTRAINT IF EXISTS batch_step_execution_context_pkey;
-ALTER TABLE IF EXISTS ONLY disease_service.batch_job_instance DROP CONSTRAINT IF EXISTS batch_job_instance_pkey;
-ALTER TABLE IF EXISTS ONLY disease_service.batch_job_execution DROP CONSTRAINT IF EXISTS batch_job_execution_pkey;
-ALTER TABLE IF EXISTS ONLY disease_service.batch_job_execution_context DROP CONSTRAINT IF EXISTS batch_job_execution_context_pkey;
 ALTER TABLE IF EXISTS disease_service.ds_variant ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS disease_service.ds_synonym ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS disease_service.ds_publication ALTER COLUMN id DROP DEFAULT;
@@ -118,17 +106,6 @@ DROP SEQUENCE IF EXISTS disease_service.ds_disease_id_seq;
 DROP TABLE IF EXISTS disease_service.ds_disease;
 DROP SEQUENCE IF EXISTS disease_service.ds_cross_ref_id_seq;
 DROP TABLE IF EXISTS disease_service.ds_cross_ref;
-DROP TABLE IF EXISTS disease_service.databasechangeloglock;
-DROP TABLE IF EXISTS disease_service.databasechangelog;
-DROP SEQUENCE IF EXISTS disease_service.batch_step_execution_seq;
-DROP TABLE IF EXISTS disease_service.batch_step_execution_context;
-DROP TABLE IF EXISTS disease_service.batch_step_execution;
-DROP SEQUENCE IF EXISTS disease_service.batch_job_seq;
-DROP TABLE IF EXISTS disease_service.batch_job_instance;
-DROP SEQUENCE IF EXISTS disease_service.batch_job_execution_seq;
-DROP TABLE IF EXISTS disease_service.batch_job_execution_params;
-DROP TABLE IF EXISTS disease_service.batch_job_execution_context;
-DROP TABLE IF EXISTS disease_service.batch_job_execution;
 DROP SCHEMA IF EXISTS disease_service;
 --
 -- Name: disease_service; Type: SCHEMA; Schema: -; Owner: variant
@@ -143,191 +120,6 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
---
--- Name: batch_job_execution; Type: TABLE; Schema: disease_service; Owner: variant
---
-
-CREATE TABLE disease_service.batch_job_execution (
-                                                     job_execution_id bigint NOT NULL,
-                                                     version bigint,
-                                                     job_instance_id bigint NOT NULL,
-                                                     create_time timestamp without time zone NOT NULL,
-                                                     start_time timestamp without time zone,
-                                                     end_time timestamp without time zone,
-                                                     status character varying(10),
-                                                     exit_code character varying(2500),
-                                                     exit_message character varying(2500),
-                                                     last_updated timestamp without time zone,
-                                                     job_configuration_location character varying(2500)
-);
-
-
-ALTER TABLE disease_service.batch_job_execution OWNER TO variant;
-
---
--- Name: batch_job_execution_context; Type: TABLE; Schema: disease_service; Owner: variant
---
-
-CREATE TABLE disease_service.batch_job_execution_context (
-                                                             job_execution_id bigint NOT NULL,
-                                                             short_context character varying(2500) NOT NULL,
-                                                             serialized_context text
-);
-
-
-ALTER TABLE disease_service.batch_job_execution_context OWNER TO variant;
-
---
--- Name: batch_job_execution_params; Type: TABLE; Schema: disease_service; Owner: variant
---
-
-CREATE TABLE disease_service.batch_job_execution_params (
-                                                            job_execution_id bigint NOT NULL,
-                                                            type_cd character varying(6) NOT NULL,
-                                                            key_name character varying(100) NOT NULL,
-                                                            string_val character varying(250),
-                                                            date_val timestamp without time zone,
-                                                            long_val bigint,
-                                                            double_val double precision,
-                                                            identifying character(1) NOT NULL
-);
-
-
-ALTER TABLE disease_service.batch_job_execution_params OWNER TO variant;
-
---
--- Name: batch_job_execution_seq; Type: SEQUENCE; Schema: disease_service; Owner: variant
---
-
-CREATE SEQUENCE disease_service.batch_job_execution_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE disease_service.batch_job_execution_seq OWNER TO variant;
-
---
--- Name: batch_job_instance; Type: TABLE; Schema: disease_service; Owner: variant
---
-
-CREATE TABLE disease_service.batch_job_instance (
-                                                    job_instance_id bigint NOT NULL,
-                                                    version bigint,
-                                                    job_name character varying(100) NOT NULL,
-                                                    job_key character varying(32) NOT NULL
-);
-
-
-ALTER TABLE disease_service.batch_job_instance OWNER TO variant;
-
---
--- Name: batch_job_seq; Type: SEQUENCE; Schema: disease_service; Owner: variant
---
-
-CREATE SEQUENCE disease_service.batch_job_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE disease_service.batch_job_seq OWNER TO variant;
-
---
--- Name: batch_step_execution; Type: TABLE; Schema: disease_service; Owner: variant
---
-
-CREATE TABLE disease_service.batch_step_execution (
-                                                      step_execution_id bigint NOT NULL,
-                                                      version bigint NOT NULL,
-                                                      step_name character varying(100) NOT NULL,
-                                                      job_execution_id bigint NOT NULL,
-                                                      start_time timestamp without time zone NOT NULL,
-                                                      end_time timestamp without time zone,
-                                                      status character varying(10),
-                                                      commit_count bigint,
-                                                      read_count bigint,
-                                                      filter_count bigint,
-                                                      write_count bigint,
-                                                      read_skip_count bigint,
-                                                      write_skip_count bigint,
-                                                      process_skip_count bigint,
-                                                      rollback_count bigint,
-                                                      exit_code character varying(2500),
-                                                      exit_message character varying(2500),
-                                                      last_updated timestamp without time zone
-);
-
-
-ALTER TABLE disease_service.batch_step_execution OWNER TO variant;
-
---
--- Name: batch_step_execution_context; Type: TABLE; Schema: disease_service; Owner: variant
---
-
-CREATE TABLE disease_service.batch_step_execution_context (
-                                                              step_execution_id bigint NOT NULL,
-                                                              short_context character varying(2500) NOT NULL,
-                                                              serialized_context text
-);
-
-
-ALTER TABLE disease_service.batch_step_execution_context OWNER TO variant;
-
---
--- Name: batch_step_execution_seq; Type: SEQUENCE; Schema: disease_service; Owner: variant
---
-
-CREATE SEQUENCE disease_service.batch_step_execution_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE disease_service.batch_step_execution_seq OWNER TO variant;
-
---
--- Name: databasechangelog; Type: TABLE; Schema: disease_service; Owner: variant
---
-
-CREATE TABLE disease_service.databasechangelog (
-                                                   id character varying(255) NOT NULL,
-                                                   author character varying(255) NOT NULL,
-                                                   filename character varying(255) NOT NULL,
-                                                   dateexecuted timestamp without time zone NOT NULL,
-                                                   orderexecuted integer NOT NULL,
-                                                   exectype character varying(10) NOT NULL,
-                                                   md5sum character varying(35),
-                                                   description character varying(255),
-                                                   comments character varying(255),
-                                                   tag character varying(255),
-                                                   liquibase character varying(20),
-                                                   contexts character varying(255),
-                                                   labels character varying(255)
-);
-
-
-ALTER TABLE disease_service.databasechangelog OWNER TO variant;
-
---
--- Name: databasechangeloglock; Type: TABLE; Schema: disease_service; Owner: variant
---
-
-CREATE TABLE disease_service.databasechangeloglock (
-                                                       id integer NOT NULL,
-                                                       locked boolean NOT NULL,
-                                                       lockgranted timestamp without time zone,
-                                                       lockedby character varying(255)
-);
-
-
-ALTER TABLE disease_service.databasechangeloglock OWNER TO variant;
 
 --
 -- Name: ds_cross_ref; Type: TABLE; Schema: disease_service; Owner: variant
@@ -1123,47 +915,6 @@ ALTER TABLE ONLY disease_service.ds_synonym ALTER COLUMN id SET DEFAULT nextval(
 
 ALTER TABLE ONLY disease_service.ds_variant ALTER COLUMN id SET DEFAULT nextval('disease_service.ds_variant_id_seq1'::regclass);
 
-
---
--- Name: batch_job_execution_context batch_job_execution_context_pkey; Type: CONSTRAINT; Schema: disease_service; Owner: variant
---
-
-ALTER TABLE ONLY disease_service.batch_job_execution_context
-    ADD CONSTRAINT batch_job_execution_context_pkey PRIMARY KEY (job_execution_id);
-
-
---
--- Name: batch_job_execution batch_job_execution_pkey; Type: CONSTRAINT; Schema: disease_service; Owner: variant
---
-
-ALTER TABLE ONLY disease_service.batch_job_execution
-    ADD CONSTRAINT batch_job_execution_pkey PRIMARY KEY (job_execution_id);
-
-
---
--- Name: batch_job_instance batch_job_instance_pkey; Type: CONSTRAINT; Schema: disease_service; Owner: variant
---
-
-ALTER TABLE ONLY disease_service.batch_job_instance
-    ADD CONSTRAINT batch_job_instance_pkey PRIMARY KEY (job_instance_id);
-
-
---
--- Name: batch_step_execution_context batch_step_execution_context_pkey; Type: CONSTRAINT; Schema: disease_service; Owner: variant
---
-
-ALTER TABLE ONLY disease_service.batch_step_execution_context
-    ADD CONSTRAINT batch_step_execution_context_pkey PRIMARY KEY (step_execution_id);
-
-
---
--- Name: batch_step_execution batch_step_execution_pkey; Type: CONSTRAINT; Schema: disease_service; Owner: variant
---
-
-ALTER TABLE ONLY disease_service.batch_step_execution
-    ADD CONSTRAINT batch_step_execution_pkey PRIMARY KEY (step_execution_id);
-
-
 --
 -- Name: ds_cross_ref ds_cross_ref_pk; Type: CONSTRAINT; Schema: disease_service; Owner: variant
 --
@@ -1316,22 +1067,6 @@ ALTER TABLE ONLY disease_service.ds_variant
 
 
 --
--- Name: batch_job_instance job_inst_un; Type: CONSTRAINT; Schema: disease_service; Owner: variant
---
-
-ALTER TABLE ONLY disease_service.batch_job_instance
-    ADD CONSTRAINT job_inst_un UNIQUE (job_name, job_key);
-
-
---
--- Name: databasechangeloglock pk_databasechangeloglock; Type: CONSTRAINT; Schema: disease_service; Owner: variant
---
-
-ALTER TABLE ONLY disease_service.databasechangeloglock
-    ADD CONSTRAINT pk_databasechangeloglock PRIMARY KEY (id);
-
-
---
 -- Name: ds_keyword_key_value_idx; Type: INDEX; Schema: disease_service; Owner: variant
 --
 
@@ -1434,37 +1169,6 @@ ALTER TABLE ONLY disease_service.ds_interaction
     ADD CONSTRAINT interaction_protein_fk FOREIGN KEY (ds_protein_id) REFERENCES disease_service.ds_protein(id);
 
 
---
--- Name: batch_job_execution_context job_exec_ctx_fk; Type: FK CONSTRAINT; Schema: disease_service; Owner: variant
---
-
-ALTER TABLE ONLY disease_service.batch_job_execution_context
-    ADD CONSTRAINT job_exec_ctx_fk FOREIGN KEY (job_execution_id) REFERENCES disease_service.batch_job_execution(job_execution_id);
-
-
---
--- Name: batch_job_execution_params job_exec_params_fk; Type: FK CONSTRAINT; Schema: disease_service; Owner: variant
---
-
-ALTER TABLE ONLY disease_service.batch_job_execution_params
-    ADD CONSTRAINT job_exec_params_fk FOREIGN KEY (job_execution_id) REFERENCES disease_service.batch_job_execution(job_execution_id);
-
-
---
--- Name: batch_step_execution job_exec_step_fk; Type: FK CONSTRAINT; Schema: disease_service; Owner: variant
---
-
-ALTER TABLE ONLY disease_service.batch_step_execution
-    ADD CONSTRAINT job_exec_step_fk FOREIGN KEY (job_execution_id) REFERENCES disease_service.batch_job_execution(job_execution_id);
-
-
---
--- Name: batch_job_execution job_inst_exec_fk; Type: FK CONSTRAINT; Schema: disease_service; Owner: variant
---
-
-ALTER TABLE ONLY disease_service.batch_job_execution
-    ADD CONSTRAINT job_inst_exec_fk FOREIGN KEY (job_instance_id) REFERENCES disease_service.batch_job_instance(job_instance_id);
-
 
 --
 -- Name: ds_protein_cross_ref pathway_protein_fk; Type: FK CONSTRAINT; Schema: disease_service; Owner: variant
@@ -1488,14 +1192,6 @@ ALTER TABLE ONLY disease_service.ds_publication
 
 ALTER TABLE ONLY disease_service.ds_publication
     ADD CONSTRAINT pub_protein_fk FOREIGN KEY (ds_protein_id) REFERENCES disease_service.ds_protein(id);
-
-
---
--- Name: batch_step_execution_context step_exec_ctx_fk; Type: FK CONSTRAINT; Schema: disease_service; Owner: variant
---
-
-ALTER TABLE ONLY disease_service.batch_step_execution_context
-    ADD CONSTRAINT step_exec_ctx_fk FOREIGN KEY (step_execution_id) REFERENCES disease_service.batch_step_execution(step_execution_id);
 
 
 --
