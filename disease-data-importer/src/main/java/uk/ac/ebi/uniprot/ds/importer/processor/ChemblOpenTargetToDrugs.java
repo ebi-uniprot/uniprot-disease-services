@@ -44,10 +44,7 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblOpenTarget, 
                     .collect(Collectors.toList());
             // add the drug in set to avoid duplicate insertion
             this.drugsStored.addAll(drugs);
-        } else {
-            System.out.println("######################### Target ChemblId not found in UniProt: " + targetChemblId + "  ###########################");
         }
-
 
         return drugs;
     }

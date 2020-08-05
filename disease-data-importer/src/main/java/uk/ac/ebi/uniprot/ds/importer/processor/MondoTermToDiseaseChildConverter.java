@@ -25,10 +25,14 @@ public class MondoTermToDiseaseChildConverter implements ItemProcessor<OBOTerm, 
         String monoDiseaseName = diseaseNode.getTerm().getName();
         // get the Disease object for parent node aka obo term from cache
         Disease disease = this.diseaseNameToDiseaseMap.get(monoDiseaseName.toLowerCase());
-        // get children nodes of term aka parent node
-        List<Node> childDiseaseNodes = diseaseNode.getChildren();
-        List<DiseaseRelationDTO> parentChildren = getDiseaseRelationDTO(disease, childDiseaseNodes);
-        return parentChildren;
+        if(Objects.nonNull(disease)) {
+            // get children nodes of term aka parent node
+            List<Node> childDiseaseNodes = diseaseNode.getChildren();
+            List<DiseaseRelationDTO> parentChildren = getDiseaseRelationDTO(disease, childDiseaseNodes);
+            return parentChildren;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     @BeforeStep
@@ -49,14 +53,16 @@ public class MondoTermToDiseaseChildConverter implements ItemProcessor<OBOTerm, 
         for(Node child : childDiseaseNodes){
             String childName = child.getTerm().getName();
             Disease childDisease = this.diseaseNameToDiseaseMap.get(childName.toLowerCase());
-            DiseaseRelationDTO parentChild = new DiseaseRelationDTO(parentDisease.getId(), childDisease.getId());
-            // add if it is not already saved and parent child are not same because of bad data
-            if(!this.relations.contains(parentChild) &&
-                    !parentDisease.getId().equals(childDisease.getId())) {
+            if(Objects.nonNull(childDisease)) {
+                DiseaseRelationDTO parentChild = new DiseaseRelationDTO(parentDisease.getId(), childDisease.getId());
+                // add if it is not already saved and parent child are not same because of bad data
+                if (!this.relations.contains(parentChild) &&
+                        !parentDisease.getId().equals(childDisease.getId())) {
 
-                parentChildren.add(parentChild);
-                this.relations.add(parentChild);
+                    parentChildren.add(parentChild);
+                    this.relations.add(parentChild);
 
+                }
             }
         }
         return parentChildren;
