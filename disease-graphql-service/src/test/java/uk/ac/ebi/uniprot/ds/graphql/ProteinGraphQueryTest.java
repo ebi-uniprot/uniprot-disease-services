@@ -56,15 +56,15 @@ public class ProteinGraphQueryTest extends BaseGraphQueryTest {
         Publication pub2 = createPublication("2");
         protein.setPublications(Arrays.asList(pub1, pub2));
 
-        // create pathways
-        ProteinCrossRef pt1 = createProteinPathways("1");
+        // create protein cross ref
+        ProteinCrossRef pt1 = createProteinCrossRef("1");
         Drug d1 = createDrugObject("1");
         Drug d2 = createDrugObject("2");
         Drug d3 = createDrugObject("3");
         pt1.setDrugs(Arrays.asList(d1, d2));
-        ProteinCrossRef pt2 = createProteinPathways("2");
+        ProteinCrossRef pt2 = createProteinCrossRef("2");
         pt2.setDrugs(Arrays.asList(d3, d2));
-        ProteinCrossRef pt3 = createProteinPathways("3");
+        ProteinCrossRef pt3 = createProteinCrossRef("3");
         pt3.setDrugs(Arrays.asList(d1, d3));
         protein.setProteinCrossRefs(Arrays.asList(pt1, pt2, pt3));
 
@@ -104,17 +104,17 @@ public class ProteinGraphQueryTest extends BaseGraphQueryTest {
         List<Variation> variants = response.get("$.data.protein.variants", List.class);
         verifyVariations(dataServiceProtein, variants);
 
-        List<ProteinCrossRefType> pathways = response.get("$.data.protein.pathways", List.class);
-        verifyPathways(protein, pathways);
+        List<ProteinCrossRefType> proteinCrossRefs = response.get("$.data.protein.proteinCrossRefs", List.class);
+        verifyProteinCrossRefs(protein, proteinCrossRefs);
 
         List<InteractionType> interactions = response.get("$.data.protein.interactions", List.class);
         verifyInteractions(protein, interactions);
     }
 
-    private void verifyPathways(Protein protein, List<ProteinCrossRefType> pathways) {
-        assertNotNull(pathways);
-        assertFalse(pathways.isEmpty());
-        assertEquals(protein.getProteinCrossRefs().size(), pathways.size());
+    private void verifyProteinCrossRefs(Protein protein, List<ProteinCrossRefType> proteinCrossRefs) {
+        assertNotNull(proteinCrossRefs);
+        assertFalse(proteinCrossRefs.isEmpty());
+        assertEquals(protein.getProteinCrossRefs().size(), proteinCrossRefs.size());
     }
 
     private void verifyVariations(DataServiceProtein dataServiceProtein, List<Variation> variants) {

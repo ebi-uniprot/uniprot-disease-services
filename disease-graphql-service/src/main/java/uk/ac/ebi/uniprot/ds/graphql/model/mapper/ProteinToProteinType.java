@@ -19,7 +19,7 @@ public class ProteinToProteinType extends PropertyMap<Protein, ProteinType> {
         map().setIsExternallyMapped(source.getIsExternallyMapped());
         map().setDescription(source.getDesc());
         map().setProteinName(source.getName());
-        map(source.getProteinCrossRefs(), destination.getPathways());
+        map(source.getProteinCrossRefs(), destination.getProteinCrossRefs());
         using(new DiseaseProteinsToDiseases()).map(source.getDiseaseProteins()).setDiseases(null);
     }
 

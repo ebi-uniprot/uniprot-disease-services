@@ -111,7 +111,7 @@ public class BaseGraphQueryTest {
         return bl.build();
     }
 
-    protected ProteinCrossRef createProteinPathways(String uuid) {
+    protected ProteinCrossRef createProteinCrossRef(String uuid) {
         ProteinCrossRef crossRef = new ProteinCrossRef();
         String pId = "PID-" + uuid;
         String desc = "DESC-" + uuid;

@@ -29,7 +29,7 @@ type Protein {
     accession: String!
     gene: String
     description: String
-    pathways: [ProteinCrossRef!]
+    proteinCrossRefs: [ProteinCrossRef!]
     interactions: [Interaction!]
     variants: [Variant!]
     diseases: [Disease!]

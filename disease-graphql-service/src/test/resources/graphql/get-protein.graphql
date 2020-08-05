@@ -35,7 +35,7 @@ query GetProtein($accession: String!){
             alternativeSequence
             sourceType
         }
-        pathways {
+        proteinCrossRefs {
             primaryId
             description
             dbType

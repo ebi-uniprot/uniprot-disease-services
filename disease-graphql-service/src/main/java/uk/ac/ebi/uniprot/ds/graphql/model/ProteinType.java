@@ -14,7 +14,7 @@ public class ProteinType  {
     private String gene;
     private String description;
     private List<DiseaseType> diseases;
-    private List<ProteinCrossRefType> pathways;
+    private List<ProteinCrossRefType> proteinCrossRefs;
     private List<InteractionType> interactions;
     private List<Variation> variants;
     private List<GeneCoordinateType> geneCoordinates;
