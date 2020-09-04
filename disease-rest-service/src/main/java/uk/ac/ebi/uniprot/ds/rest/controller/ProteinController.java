@@ -82,7 +82,7 @@ public class ProteinController {
 
     @GetMapping(value = {"/proteins/{accessions}/download"}, name = "Download proteins by given list of accessions", produces = "text/tsv")
     public void downloadProteins(
-            @Size(min = 1, max = 200, message = "The total count of accessions passed must be between 1 and 200 both inclusive.")
+            @Size(min = 1, max = 300, message = "The total count of accessions passed must be between 1 and 300 both inclusive.")
             @PathVariable(name = "accessions") List<String> accessions,
             @RequestParam(value = "fields", required = false) String fields,
             HttpServletResponse response) throws IOException {
