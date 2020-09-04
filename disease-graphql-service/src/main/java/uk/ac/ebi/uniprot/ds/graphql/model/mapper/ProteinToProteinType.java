@@ -30,7 +30,11 @@ public class ProteinToProteinType extends PropertyMap<Protein, ProteinType> {
             return diseaseProteins != null && !diseaseProteins.isEmpty() ? diseaseProteins
                     .stream()
                     .map(DiseaseProtein::getDisease)
-                    .map(d -> new ModelMapper().map(d, DiseaseType.class))
+                    .map(d -> {
+                        ModelMapper modelMapper = new ModelMapper();
+                        modelMapper.addMappings(new DiseaseToDiseaseType());
+                        return modelMapper.map(d, DiseaseType.class);
+                    })
                     .collect(Collectors.toList())
                     : null;
         }
