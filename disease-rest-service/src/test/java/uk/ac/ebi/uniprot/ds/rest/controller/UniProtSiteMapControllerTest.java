@@ -79,7 +79,7 @@ public class UniProtSiteMapControllerTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/sitemap/" + accession).
+                                get("/v1/ds/sitemaps/" + accession).
                                 param("accession", accession)
                 );
 
