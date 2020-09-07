@@ -13,7 +13,6 @@
         <module>disease-rest-service</module>
         <module>disease-common</module>
         <module>disease-graphql-service</module>
-         <module>site-mapping</module>
     </modules>
 
     <parent>

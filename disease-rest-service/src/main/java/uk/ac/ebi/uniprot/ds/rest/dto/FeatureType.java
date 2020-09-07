@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.sitemapping.model;
+package uk.ac.ebi.uniprot.ds.rest.dto;
 
 /**
  *
@@ -18,6 +18,7 @@ public enum FeatureType {
 	public String getName() {
 		return name;
 	}
+
 	public static FeatureType type(String name) {
 		for(FeatureType type: FeatureType.values()) {
 			if(type.getName().equals(name))

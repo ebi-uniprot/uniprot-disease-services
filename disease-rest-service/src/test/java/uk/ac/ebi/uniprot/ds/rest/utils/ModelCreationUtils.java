@@ -8,10 +8,12 @@
 package uk.ac.ebi.uniprot.ds.rest.utils;
 
 import uk.ac.ebi.uniprot.ds.common.model.*;
+import uk.ac.ebi.uniprot.ds.rest.dto.FeatureType;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ModelCreationUtils {
     public static Disease createDiseaseObject(String random) {
@@ -172,5 +174,21 @@ public class ModelCreationUtils {
         bl.clinicalTrialPhase(clinicalTrialPhase).clinicalTrialLink(trialLink).moleculeType(moa);
         bl.drugEvidences(evidences);
         return bl.build();
+    }
+
+    public static SiteMapping createSiteMappingObject(String uuid) {
+        SiteMapping.SiteMappingBuilder builder = SiteMapping.builder();
+        builder.accession("accession-" + uuid);
+        builder.proteinId("pid-" + uuid);
+        long l1 = ThreadLocalRandom.current().nextLong(1, 10000);
+        long l2 = ThreadLocalRandom.current().nextLong(1, 10000);
+        builder.sitePosition(l1);
+        builder.positionInAlignment(l2);
+        String ft = "rs397507523;Natural variant;Mutagenesis";
+        builder.siteType(ft);
+        builder.unirefId("uid-" + uuid);
+        String mappedSites = "P35235-1|PTN11_MOUSE:507*;P35235|PTN11_MOUSE:503*;P41499-1|PTN11_RAT:507*;Q06124-1|PTN11_HUMAN:507;P41499|PTN11_RAT:503*";
+        builder.mappedSite(mappedSites);
+        return builder.build();
     }
 }
