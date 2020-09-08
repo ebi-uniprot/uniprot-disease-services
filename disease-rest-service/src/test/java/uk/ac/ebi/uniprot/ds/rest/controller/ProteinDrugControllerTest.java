@@ -101,7 +101,8 @@ public class ProteinDrugControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].evidences.length()", Matchers.equalTo(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].diseases", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].proteins", Matchers.notNullValue()))
-//FIXME//                .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].diseases.length()", Matchers.equalTo(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].diseases.length()", Matchers.equalTo(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].diseases[*].diseaseName", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].proteins.length()", Matchers.equalTo(3)));
     }
 }

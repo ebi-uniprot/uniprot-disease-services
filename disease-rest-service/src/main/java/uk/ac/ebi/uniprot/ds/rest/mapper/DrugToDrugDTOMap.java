@@ -14,7 +14,7 @@ public class DrugToDrugDTOMap extends PropertyMap<Drug, DrugDTO> {
     @Override
     protected void configure() {
         using(new DrugEvidencesToEvidences()).map(source.getDrugEvidences()).setEvidences(null);
-
+        using(new DiseaseNameToBasicDiseaseDTO()).map(source.getDiseases()).setDiseases(null);
     }
 
     private static class DrugEvidencesToEvidences implements Converter<List<DrugEvidence>, Set<String>> {
@@ -33,4 +33,16 @@ public class DrugToDrugDTOMap extends PropertyMap<Drug, DrugDTO> {
 
     }
 
+    private class DiseaseNameToBasicDiseaseDTO implements Converter<Set<String>, Set<DrugDTO.BasicDiseaseDTO>> {
+        @Override
+        public Set<DrugDTO.BasicDiseaseDTO> convert(MappingContext<Set<String>, Set<DrugDTO.BasicDiseaseDTO>> context) {
+            Set<String> names = context.getSource();
+            Set<DrugDTO.BasicDiseaseDTO> diseases = null;
+            if(names != null && !names.isEmpty()){
+                diseases = names.stream().map(name -> DrugDTO.BasicDiseaseDTO.builder().diseaseName(name).build())
+                        .collect(Collectors.toSet());
+            }
+            return diseases;
+        }
+    }
 }
