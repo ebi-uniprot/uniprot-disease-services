@@ -9,14 +9,6 @@ package uk.ac.ebi.uniprot.ds.importer.reader;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.NonTransientResourceException;
-import org.springframework.batch.item.ParseException;
-import org.springframework.batch.item.UnexpectedInputException;
-import uk.ac.ebi.uniprot.ds.common.common.SourceType;
-import uk.ac.ebi.uniprot.ds.common.model.CrossRef;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.Keyword;
-import uk.ac.ebi.uniprot.ds.common.model.Synonym;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,6 +16,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import uk.ac.ebi.uniprot.ds.common.common.SourceType;
+import uk.ac.ebi.uniprot.ds.common.model.CrossRef;
+import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.common.model.Keyword;
+import uk.ac.ebi.uniprot.ds.common.model.Synonym;
 
 
 public class HumDiseaseReader implements ItemReader<Disease> {
@@ -44,8 +42,9 @@ public class HumDiseaseReader implements ItemReader<Disease> {
     private static final String KW_STR = "KW";
     private static final String FULL_STOP = ".";
     private static final String EMPTY_STR = "";
-    private static final String SEMI_COLON =";";
+    private static final String SEMI_COLON = ";";
     private final static String COLON = ":";
+    private static final String SPACE = " ";
 
     public HumDiseaseReader(String fileName) throws FileNotFoundException {
         reader = new Scanner(new File(fileName), StandardCharsets.UTF_8.name());
@@ -101,7 +100,7 @@ public class HumDiseaseReader implements ItemReader<Disease> {
                         builder.acronym(acronym);
                         break;
                     case DE_STR:
-                        desc.append(keyVal[1]);
+                        desc.append(keyVal[1] + SPACE);
                         break;
                     case SY_STR:
                         Synonym synonym = new Synonym(getSynonym(keyVal[1]), SourceType.UniProt_HUM.name());
@@ -109,7 +108,7 @@ public class HumDiseaseReader implements ItemReader<Disease> {
                         break;
                     case DR_STR:
                         CrossRef xRef = getCrossRef(keyVal[1]);
-                        if(xRef != null) {
+                        if (xRef != null) {
                             crossRefs.add(xRef);
                         }
                         break;
@@ -122,7 +121,7 @@ public class HumDiseaseReader implements ItemReader<Disease> {
             }
         }
 
-        builder.desc(desc.toString());
+        builder.desc(desc.toString().trim());
         builder.source(SourceType.UniProt_HUM.name());
         Disease disease = builder.build();
         disease.setSynonyms(synonyms);
@@ -146,7 +145,7 @@ public class HumDiseaseReader implements ItemReader<Disease> {
     private CrossRef getCrossRef(String diseaseRef) {
         String[] tokens = diseaseRef.split(SEMI_COLON);
         CrossRef cr = null;
-        if(tokens.length >= 2) {
+        if (tokens.length >= 2) {
             cr = new CrossRef();
             cr.setRefType(tokens[0].trim());
             cr.setRefId(tokens[1].trim().replace(FULL_STOP, EMPTY_STR));
