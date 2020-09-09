@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {DataImporterSpringBootApplication.class, BatchConfigurationDiseaseService.class,
         HumDiseaseDataLoadStep.class, UniProtDataLoadStep.class, GeneCoordinateDataLoadStep.class, MondoDiseaseLoadStep.class,
-        DiseaseParentChildLoadStep.class})
+        DiseaseParentChildLoadStep.class, ChEMBLDrugLoadStep.class})
 public class BatchConfigurationDiseaseServiceTest {
 
     @Autowired
