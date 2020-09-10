@@ -1,8 +1,11 @@
 package uk.ac.ebi.uniprot.ds.importer.processor;
 
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.ac.ebi.uniprot.ds.common.dao.ProteinCrossRefDAO;
+import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.common.model.DrugEvidence;
 import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
@@ -19,10 +22,23 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblOpenTarget, 
 
     @Autowired
     private ProteinCrossRefDAO proteinCrossRefDAO;
+    private Map<String, Disease> diseaseNameToDiseaseMap;
 
     public ChemblOpenTargetToDrugs(){
         this.drugsStored = new HashSet<>();
         this.targetChemblToXRefsMap = new HashMap<>();
+        this.diseaseNameToDiseaseMap = new HashMap<>();
+    }
+
+    @BeforeStep
+    public void init(final StepExecution stepExecution) { //get the cached data from previous step
+        this.diseaseNameToDiseaseMap = (Map<String, Disease>) stepExecution.getJobExecution()
+                .getExecutionContext().get(Constants.DISEASE_NAME_OR_OMIM_DISEASE_MAP);
+        if(Objects.nonNull(this.diseaseNameToDiseaseMap)) {
+            System.out.println("******************** total diseaseNameToDiseaseMap cache size:" + this.diseaseNameToDiseaseMap.size());
+        } else {
+            System.out.println("******************** total diseaseNameToDiseaseMap cache size: null");
+        }
     }
 
     @Override
@@ -74,6 +90,7 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblOpenTarget, 
         drugBuilder.clinicalTrialPhase(item.getClinicalTrialPhase()).proteinCrossRef(xref);
         drugBuilder.moleculeType(item.getMoleculeType()).name(item.getMoleculeName()).sourceId(srcChemblId);
         drugBuilder.sourceType(Constants.ChEMBL_STR);
+        drugBuilder.chemblDiseaseId(item.getDiseaseId());
         Drug drug = drugBuilder.build();
         List<DrugEvidence> drugEvidences = getDrugEvidences(item.getDrugEvidences(), drug);
         drug.setDrugEvidences(drugEvidences);

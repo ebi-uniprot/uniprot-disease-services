@@ -26,7 +26,7 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
     private SynonymDAO synonymDAO;
     @Autowired
     private CrossRefDAO crossRefDAO;
-
+    // key can be name, synonym(mondo name), omim, efo id, mondo id
     private Map<String, Disease> diseaseNameToDiseaseMap; // cache to quick look up for disease by name, synonym or omim id
     // one synonym can belong to more than 1 disease
     private Map<String, Set<Disease>> synonymToDiseasesMap; // cache to quick look up for diseases by synonym
@@ -58,7 +58,7 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
         //case 1 if mondo disease(oboterm) is there in humdisease and name matches then do nothing
         //case 2 if mondo disease(oboterm) is there in humdisease and name doesn't match then update synonym
         // (if not already there) and cache
-        //case 3 if mondo disease(oboterm) is not there in humdisease and no ambiguouity about mapping with hum disease
+        //case 3 if mondo disease(oboterm) is not there in humdisease and no ambiguity about mapping with hum disease
         // then create a new disease and add in cache
 
         // try to get the humdisease by disease name
@@ -66,14 +66,14 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
         Disease cachedDisease = this.diseaseNameToDiseaseMap.get(mondoName);
 
         // if cache doesn't have disease name, try to find by omim id or synonym
-        String mondoOmim = getOMIMId(oboTerm);
+        String mondoOmim = getXREFByType(oboTerm, Constants.OMIM_COLON_STR);
         if (Objects.isNull(cachedDisease)) {
            cachedDisease = getByOmimOrSynonym(mondoName, mondoOmim);
         }
-        // case 3 from above, disease or group name from Mondo
+        // case 3 from above, disease or group name from Mondo and no ambiguity
         if (cachedDisease == null && !this.ambiguousOboTerms.contains(mondoName)) {
             disease = createDiseaseObject(oboTerm);
-            this.diseaseNameToDiseaseMap.put(mondoName, disease);
+            updateDiseaseNameToDiseaseMap(oboTerm, disease);
         } else if(Objects.nonNull(cachedDisease)){
             disease = cachedDisease; // case 1
             if (!cachedDisease.getName().equalsIgnoreCase(oboTerm.getName())
@@ -82,6 +82,12 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
                 disease.addSynonym(synonym);
                 // put this synonym in the map
                 this.diseaseNameToDiseaseMap.put(synonym.getName().toLowerCase(), disease);
+            } else { // update cache for look-up during drug to disease mapping
+                this.diseaseNameToDiseaseMap.put(oboTerm.getId().trim().toLowerCase(), cachedDisease);// mondo id
+                String mondoEFO = getXREFByType(oboTerm, Constants.EFO_COLON_STR);
+                if(Objects.nonNull(mondoEFO)) {// [key --> value] = [EFO:1001434 --> disease]
+                    this.diseaseNameToDiseaseMap.put(mondoEFO, cachedDisease);// efo id if there
+                }
             }
         }
         return disease;
@@ -158,16 +164,6 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
         return bldr.build();
     }
 
-    private String getOMIMId(OBOTerm mondoTerm) {
-        List<String> xrefs = mondoTerm.getXrefs();
-        for (String xref : xrefs) {
-            if (xref.startsWith(Constants.OMIM_COLON_STR)) {
-                return xref;
-            }
-        }
-        return null;
-    }
-
     private Disease getByOmimOrSynonym(String mondoName, String mondoOmim) {
         Disease cachedDisease;
         resolveOboTerm(mondoName, mondoOmim);
@@ -208,5 +204,28 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
                 this.diseaseNameToDiseaseMap.put(mondoName, cachedDisease);
             }
         }
+    }
+
+    private void updateDiseaseNameToDiseaseMap(OBOTerm oboTerm, Disease disease) {
+        this.diseaseNameToDiseaseMap.put(oboTerm.getName().trim().toLowerCase(), disease);// mondo name
+        this.diseaseNameToDiseaseMap.put(oboTerm.getId().trim().toLowerCase(), disease);// mondo id
+        String mondoOmim = getXREFByType(oboTerm, Constants.OMIM_COLON_STR);
+        if(Objects.nonNull(mondoOmim)) {
+            this.diseaseNameToDiseaseMap.put(mondoOmim, disease);// omim id if there
+        }
+        String mondoEFO = getXREFByType(oboTerm, Constants.EFO_COLON_STR);
+        if(Objects.nonNull(mondoEFO)) {
+            this.diseaseNameToDiseaseMap.put(mondoEFO, disease);// efo id if there
+        }
+    }
+
+    private String getXREFByType(OBOTerm mondoTerm, String xrefType) {
+        List<String> xrefs = mondoTerm.getXrefs();
+        for (String xref : xrefs) {
+            if (xref.startsWith(xrefType)) {
+                return xref;
+            }
+        }
+        return null;
     }
 }

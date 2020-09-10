@@ -34,6 +34,11 @@ public class Drug extends BaseEntity {
     private String clinicalTrialLink;
     @OneToMany(mappedBy = "drug", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DrugEvidence> drugEvidences;
+    @ManyToOne
+    @JoinColumn(name = "ds_disease_id")
+    private Disease disease;
+    @Column(name="chembl_disease_id")
+    private String chemblDiseaseId;// efo url or mondo id
     @Transient
     private Set<String> diseases;// to hold names of diseases those use this drug
     @Transient
@@ -51,18 +56,19 @@ public class Drug extends BaseEntity {
             return false;
         }
 
-        Drug crossRef = (Drug) obj;
-        return Objects.equals(getName(), crossRef.getName())
-                && Objects.equals(getSourceType(), crossRef.getSourceType())
-                && Objects.equals(getSourceId(), crossRef.getSourceId())
-                && Objects.equals(getMoleculeType(), crossRef.getMoleculeType())
+        Drug drug = (Drug) obj;
+        return Objects.equals(getName(), drug.getName())
+                && Objects.equals(getSourceType(), drug.getSourceType())
+                && Objects.equals(getSourceId(), drug.getSourceId())
+                && Objects.equals(getMoleculeType(), drug.getMoleculeType())
+                && Objects.equals(getChemblDiseaseId(), drug.getChemblDiseaseId())
                 ;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getName(), getSourceType(),
-                getSourceId(), getMoleculeType());
+                getSourceId(), getMoleculeType(), getChemblDiseaseId());
     }
 
 }

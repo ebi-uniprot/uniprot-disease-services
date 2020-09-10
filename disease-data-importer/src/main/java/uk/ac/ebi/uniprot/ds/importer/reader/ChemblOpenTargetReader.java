@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 // Json Schema for open target json dump https://raw.githubusercontent.com/opentargets/json_schema/1.5.0/opentargets.json
 
 public class ChemblOpenTargetReader implements ItemReader<ChemblOpenTarget> {
-    //TODO write a test case for this class read method with sample data
     private ObjectMapper objectMapper;
     private JsonParser jsonParser;
     private static final String DRUG = "drug";
@@ -88,12 +87,17 @@ public class ChemblOpenTargetReader implements ItemReader<ChemblOpenTarget> {
         String clinicalTrialLink = getClinicalTrialLink(openTargetObj);
 
         List<String> drugEvidences = getDrugEvidences(openTargetObj);
+        // generally it is EFO url "http://www.ebi.ac.uk/efo/EFO_1002014"
+        // but sometimes it can be Mondo id as well e.g. "/MONDO_0000396"
+        String chemblDiseaseId = (String) ((Map) openTargetObj.get("unique_association_fields")).get("disease_id");
 
-        ChemblOpenTarget.ChemblOpenTargetBuilder openTargetBuilder = ChemblOpenTarget.builder();
+                ChemblOpenTarget.ChemblOpenTargetBuilder openTargetBuilder = ChemblOpenTarget.builder();
         openTargetBuilder.chemblSourceUrl(chemblSourceUrl).chemblTargetUrl(chemblTargetUrl);
         openTargetBuilder.clinicalTrialPhase(clinicalTrialPhase).clinicalTrialLink(clinicalTrialLink);
         openTargetBuilder.drugEvidences(drugEvidences).mechOfAction(mechOfAction);
         openTargetBuilder.moleculeName(moleculeName).moleculeType(moleculeType);
+        openTargetBuilder.diseaseId(chemblDiseaseId);
+
 
         return openTargetBuilder.build();
 
