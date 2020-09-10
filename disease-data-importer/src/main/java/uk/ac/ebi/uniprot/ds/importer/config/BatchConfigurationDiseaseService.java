@@ -11,7 +11,6 @@ import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.ac.ebi.uniprot.ds.importer.listener.LogChunkListener;
@@ -28,7 +27,8 @@ public class BatchConfigurationDiseaseService {
                                     Step mondoDiseaseStep,
                                     Step parentChildLoadStep,
                                     Step chDrugLoad,
-                                   Step alzheimerProteinLoad) {
+                                   Step alzheimerProteinLoad,
+                                   Step siteMappingStep) {
 
         return jobBuilderFactory.get(Constants.DISEASE_SERVICE_DATA_LOADER)
                 .incrementer(new RunIdIncrementer())
@@ -39,6 +39,7 @@ public class BatchConfigurationDiseaseService {
                 .next(parentChildLoadStep)// create parents children relationship with mondo data
                 .next(chDrugLoad)
                 .next(alzheimerProteinLoad)// Alzheimer disease protein load step
+                .next(siteMappingStep)// Site mapping load step
                 .listener(jobExecutionListener)
                 .build();
     }

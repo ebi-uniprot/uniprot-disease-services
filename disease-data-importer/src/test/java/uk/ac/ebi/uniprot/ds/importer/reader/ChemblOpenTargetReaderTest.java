@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.ds.importer.config;
+package uk.ac.ebi.uniprot.ds.importer.reader;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ChembleOpenTargetReaderTest {
+class ChemblOpenTargetReaderTest {
 
     private static final String SAMPLE_CHEMBL_FILE = "src/main/resources/uniprot/sample_chembl_opentarget.json";
     private static ChemblOpenTargetReader READER;

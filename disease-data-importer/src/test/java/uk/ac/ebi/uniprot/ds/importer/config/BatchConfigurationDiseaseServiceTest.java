@@ -10,6 +10,7 @@ package uk.ac.ebi.uniprot.ds.importer.config;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {DataImporterSpringBootApplication.class, BatchConfigurationDiseaseService.class,
         HumDiseaseDataLoadStep.class, UniProtDataLoadStep.class, GeneCoordinateDataLoadStep.class, MondoDiseaseLoadStep.class,
-        DiseaseParentChildLoadStep.class, ChEMBLDrugLoadStep.class})
+        DiseaseParentChildLoadStep.class, ChEMBLDrugLoadStep.class, SiteMappingLoadStep.class})
 public class BatchConfigurationDiseaseServiceTest {
 
     @Autowired
@@ -45,6 +46,9 @@ public class BatchConfigurationDiseaseServiceTest {
         this.evidenceDAO.deleteAll();
         this.diseaseDAO.deleteAll();
         this.proteinDAO.deleteAll();
+        this.siteMappingDAO.deleteAll();
+        this.geneCoordinateDAO.deleteAll();
+        this.crossRefDAO.deleteAll();
     }
 
     @Test
@@ -53,7 +57,7 @@ public class BatchConfigurationDiseaseServiceTest {
 
         JobExecution jobExecution = jobLauncher.run(importUniProtDataJob, jobParameters);
         BatchStatus status = jobExecution.getStatus();
-        Assert.assertEquals(status, BatchStatus.COMPLETED);
+        Assertions.assertEquals(BatchStatus.COMPLETED, status);
 
 //        // verify the data
 //        // hum disease first
@@ -151,4 +155,7 @@ public class BatchConfigurationDiseaseServiceTest {
 
     @Autowired
     private ProteinDAO proteinDAO;
+
+    @Autowired
+    private SiteMappingDAO siteMappingDAO;
 }
