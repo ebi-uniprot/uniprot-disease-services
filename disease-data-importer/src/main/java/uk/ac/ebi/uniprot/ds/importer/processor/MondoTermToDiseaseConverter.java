@@ -1,11 +1,20 @@
 package uk.ac.ebi.uniprot.ds.importer.processor;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+import lombok.extern.slf4j.Slf4j;
 import uk.ac.ebi.uniprot.ds.common.dao.CrossRefDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.SynonymDAO;
@@ -14,9 +23,6 @@ import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Synonym;
 import uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology.OBOTerm;
 import uk.ac.ebi.uniprot.ds.importer.util.Constants;
-
-import java.io.FileNotFoundException;
-import java.util.*;
 
 @Slf4j
 public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disease> {
@@ -39,7 +45,7 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
     private StepExecution stepExecution;
 
     @BeforeStep //initialisation like load cache and set cache in step context to be used in next step
-    public void init(final StepExecution stepExecution) throws FileNotFoundException {
+    public void init(final StepExecution stepExecution) {
         this.stepExecution = stepExecution;
         this.mondoOboTerms = new ArrayList<>();
         this.diseaseNameToDiseaseMap = new HashMap<>();
@@ -83,7 +89,7 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
                 // put this synonym in the map
                 this.diseaseNameToDiseaseMap.put(synonym.getName().toLowerCase(), disease);
             } else { // update cache for look-up during drug to disease mapping
-                this.diseaseNameToDiseaseMap.put(oboTerm.getId().trim().toLowerCase(), cachedDisease);// mondo id
+                this.diseaseNameToDiseaseMap.put(oboTerm.getId().trim(), cachedDisease);// mondo id
                 String mondoEFO = getXREFByType(oboTerm, Constants.EFO_COLON_STR);
                 if(Objects.nonNull(mondoEFO)) {// [key --> value] = [EFO:1001434 --> disease]
                     this.diseaseNameToDiseaseMap.put(mondoEFO, cachedDisease);// efo id if there
@@ -208,7 +214,7 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
 
     private void updateDiseaseNameToDiseaseMap(OBOTerm oboTerm, Disease disease) {
         this.diseaseNameToDiseaseMap.put(oboTerm.getName().trim().toLowerCase(), disease);// mondo name
-        this.diseaseNameToDiseaseMap.put(oboTerm.getId().trim().toLowerCase(), disease);// mondo id
+        this.diseaseNameToDiseaseMap.put(oboTerm.getId().trim(), disease);// mondo id
         String mondoOmim = getXREFByType(oboTerm, Constants.OMIM_COLON_STR);
         if(Objects.nonNull(mondoOmim)) {
             this.diseaseNameToDiseaseMap.put(mondoOmim, disease);// omim id if there

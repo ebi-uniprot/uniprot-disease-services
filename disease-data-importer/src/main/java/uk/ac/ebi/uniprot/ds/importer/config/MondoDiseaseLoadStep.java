@@ -19,17 +19,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.importer.processor.MondoTermToDiseaseConverter;
-import uk.ac.ebi.uniprot.ds.importer.reader.HumDiseaseReader;
-import uk.ac.ebi.uniprot.ds.importer.reader.MondoDiseaseReader;
-import uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology.OBOTerm;
-import uk.ac.ebi.uniprot.ds.importer.util.Constants;
-import uk.ac.ebi.uniprot.ds.importer.writer.HumDiseaseWriter;
 
 import java.io.FileNotFoundException;
 
-import static uk.ac.ebi.uniprot.ds.importer.util.Constants.*;
+import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.importer.processor.MondoTermToDiseaseConverter;
+import uk.ac.ebi.uniprot.ds.importer.reader.MondoDiseaseReader;
+import uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology.OBOTerm;
+import uk.ac.ebi.uniprot.ds.importer.util.Constants;
+
+import static uk.ac.ebi.uniprot.ds.importer.util.Constants.DISEASE_NAME_OR_OMIM_DISEASE_MAP;
+import static uk.ac.ebi.uniprot.ds.importer.util.Constants.MONDO_OBO_TERMS_LIST;
 
 /**
  * Loads the Mondo Diseases from mondo.obo file. We load only the missing term(it can be disease or disease group name)

@@ -4,6 +4,8 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.extern.slf4j.Slf4j;
 import uk.ac.ebi.uniprot.ds.common.dao.ProteinCrossRefDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Drug;
@@ -12,9 +14,12 @@ import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
 import uk.ac.ebi.uniprot.ds.importer.model.ChemblOpenTarget;
 import uk.ac.ebi.uniprot.ds.importer.util.Constants;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblOpenTarget, List<Drug>> {
     // a local cache to get a list of the cross refs by primary_id during the drug data load
     private Map<String, List<ProteinCrossRef>> targetChemblToXRefsMap;
@@ -23,46 +28,47 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblOpenTarget, 
     @Autowired
     private ProteinCrossRefDAO proteinCrossRefDAO;
     private Map<String, Disease> diseaseNameToDiseaseMap;
-
-    public ChemblOpenTargetToDrugs(){
+    // a map to keep efo to omim mapping.. an efo id can be mapped to multiple omim ids
+    private Map<String, Set<String>> efo2OmimsMap;
+    private String omim2EfoFile;
+    public ChemblOpenTargetToDrugs(String omim2EfoFile){
         this.drugsStored = new HashSet<>();
         this.targetChemblToXRefsMap = new HashMap<>();
         this.diseaseNameToDiseaseMap = new HashMap<>();
+        assert omim2EfoFile != null;
+        this.omim2EfoFile = omim2EfoFile;
+        this.efo2OmimsMap = new HashMap<>();
     }
 
     @BeforeStep
     public void init(final StepExecution stepExecution) { //get the cached data from previous step
         this.diseaseNameToDiseaseMap = (Map<String, Disease>) stepExecution.getJobExecution()
                 .getExecutionContext().get(Constants.DISEASE_NAME_OR_OMIM_DISEASE_MAP);
-        if(Objects.nonNull(this.diseaseNameToDiseaseMap)) {
-            System.out.println("******************** total diseaseNameToDiseaseMap cache size:" + this.diseaseNameToDiseaseMap.size());
-        } else {
-            System.out.println("******************** total diseaseNameToDiseaseMap cache size: null");
-        }
     }
 
     @Override
     public List<Drug> process(ChemblOpenTarget item) throws Exception {
         // load the cache once to avoid hitting the db multiple times
         loadProteinCrossRefsCache();
+        loadEfo2OmimsMap(this.omim2EfoFile);
 
         String targetChemblUrl = item.getChemblTargetUrl();
         String targetChemblId = targetChemblUrl.substring(targetChemblUrl.lastIndexOf(Constants.FORWARD_SLASH) + 1);
 
         List<ProteinCrossRef> xrefs = this.targetChemblToXRefsMap.get(targetChemblId.toUpperCase());
 
-        List<Drug> drugs = new ArrayList<>();
+        Set<Drug> drugs = new HashSet<>();
 
         if (xrefs != null) {
             drugs = xrefs.stream()
                     .map(xref -> getDrug(xref, item))
                     .filter(drug -> !this.drugsStored.contains(drug))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
             // add the drug in set to avoid duplicate insertion
             this.drugsStored.addAll(drugs);
         }
 
-        return drugs;
+        return new ArrayList<>(drugs);
     }
 
     private void loadProteinCrossRefsCache() {
@@ -84,18 +90,44 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblOpenTarget, 
     private Drug getDrug(ProteinCrossRef xref, ChemblOpenTarget item) {
         String srcChemblUrl = item.getChemblSourceUrl();
         String srcChemblId = srcChemblUrl.substring(srcChemblUrl.lastIndexOf(Constants.FORWARD_SLASH) + 1);
-
+        Disease disease = getDiseaseByEFO(item.getDiseaseId());
         Drug.DrugBuilder drugBuilder = Drug.builder();
         drugBuilder.mechanismOfAction(item.getMechOfAction()).clinicalTrialLink(item.getClinicalTrialLink());
         drugBuilder.clinicalTrialPhase(item.getClinicalTrialPhase()).proteinCrossRef(xref);
         drugBuilder.moleculeType(item.getMoleculeType()).name(item.getMoleculeName()).sourceId(srcChemblId);
         drugBuilder.sourceType(Constants.ChEMBL_STR);
         drugBuilder.chemblDiseaseId(item.getDiseaseId());
+        drugBuilder.disease(disease);
         Drug drug = drugBuilder.build();
         List<DrugEvidence> drugEvidences = getDrugEvidences(item.getDrugEvidences(), drug);
         drug.setDrugEvidences(drugEvidences);
-
         return drug;
+    }
+
+
+
+    private Disease getDiseaseByEFO(String diseaseId) {
+        String efoId = extractEfoId(diseaseId);
+        // get from the diseaseName to disease cache
+        Disease disease = this.diseaseNameToDiseaseMap.get(efoId);
+        if(Objects.isNull(disease)){
+            // get the omims from efo 2 omim cache
+            Set<String> omims = this.efo2OmimsMap.get(efoId);
+            if(Objects.nonNull(omims)){ // exact one match to avoid mismatch
+                if(omims.size() == 1) {
+                    disease = this.diseaseNameToDiseaseMap.get(new ArrayList<>(omims).get(0));
+                    if (disease != null) {
+                        this.diseaseNameToDiseaseMap.put(efoId, disease);
+                        log.info("Found disease in cache for efoId {}", efoId);
+                    } else {
+                        log.info("No disease found in cache for efoId {}", efoId);
+                    }
+                } else {
+                    log.info("EFO {} has more than one OMIM mapping. Ignoring it..", efoId);
+                }
+            }
+        }
+        return disease;
     }
 
     private List<DrugEvidence> getDrugEvidences(List<String> drugEvidences, Drug drug) {
@@ -106,7 +138,43 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblOpenTarget, 
                     .collect(Collectors.toList());
         }
 
-        return null;
+        return Collections.emptyList();
+    }
 
+    private void loadEfo2OmimsMap(String omim2EfoFile) {
+        if(this.efo2OmimsMap.isEmpty()) {
+            Scanner scanner = null;
+            try {
+                scanner = new Scanner(this.getClass().getClassLoader().getResourceAsStream(omim2EfoFile));
+                if(Objects.isNull(scanner)){
+                    throw new IllegalArgumentException("Cannot read file " + omim2EfoFile);
+                }
+
+                while (scanner.hasNextLine()) {
+                    String[] row = scanner.nextLine().split("\t");
+                    assert row.length == 2;
+                    String efoId = extractEfoId(row[1]);
+                    if (this.efo2OmimsMap.containsKey(efoId)) {
+                        this.efo2OmimsMap.get(efoId).add(row[0]);
+                    } else {
+                        Set<String> omims = new HashSet<>();
+                        omims.add(row[0]);
+                        this.efo2OmimsMap.put(efoId, omims);
+                    }
+                }
+            } finally {
+                if (scanner != null) {
+                    scanner.close();
+                }
+            }
+        }
+    }
+
+    private String extractEfoId(String efoUrl){
+        // get in form EFO_1000890
+        String efo_ = efoUrl.substring(efoUrl.lastIndexOf("/")+1);
+        String[] efoId = efo_.split("_");
+        assert efoId.length == 2;
+        return efoId[0] + ":" + efoId[1];
     }
 }

@@ -1,7 +1,9 @@
 package uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
@@ -10,6 +12,8 @@ import java.util.List;
 @Setter
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class OBOTerm {
     @NotNull
     private String id;

@@ -18,5 +18,5 @@ public class ChemblOpenTarget { // Class to represent chembl open target json ob
     private String clinicalTrialLink;// evidence.drug2clinic.urls["nice_name"== "Clinical Trials Information].url
     private List<String> drugEvidences;//evidence.target2drug.provenance_type.literature.references[].lit_id
     private String mechOfAction;//evidence.target2drug.mechanism_of_action
-    private String diseaseId;//unique_association_fields.disease_id
+    private String diseaseId;//unique_association_fields.disease_id. it stores the efo url
 }
