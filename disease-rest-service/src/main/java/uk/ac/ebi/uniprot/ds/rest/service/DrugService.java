@@ -66,7 +66,7 @@ public class DrugService {
             throw new AssetNotFoundException("Unable to find the accession '" + accession + "'.");
         }
 
-        List<Drug> drugs = this.drugDAO.getDrugsByProtein(optProtein.get().getAccession());
+        List<Drug> drugs = this.drugDAO.getDrugsByProtein(accession);
 
         // [drugName --> [diseaseName1, diseaseName2]]
         Map<String, Set<String>> drugToDiseases = drugs.stream()
