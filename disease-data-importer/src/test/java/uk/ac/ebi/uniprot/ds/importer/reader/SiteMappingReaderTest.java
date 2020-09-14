@@ -56,7 +56,6 @@ class SiteMappingReaderTest {
 
     private void verifySiteMappingObj(SiteMapping siteMapping) {
         assertNotNull(siteMapping, "Site Mapping is null");
-        assertNotNull(siteMapping.getSiteType(), "Site Type is null");
         assertNotNull(siteMapping.getAccession(), "accession is null");
         assertNotNull(siteMapping.getProteinId(), "Protein id is null");
         assertNotNull(siteMapping.getPositionInAlignment(), "Position in Alignment is null");

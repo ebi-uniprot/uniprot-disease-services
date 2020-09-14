@@ -25,11 +25,20 @@ public class SiteMappingReader extends TSVReader implements ItemReader<SiteMappi
         List<String> record =  getRecord();
         if(Objects.nonNull(record) && !record.isEmpty()){
             SiteMapping.SiteMappingBuilder builder = SiteMapping.builder();
-            builder.siteType(record.get(0));
-            parseProteinData(record.get(1), builder);
-            builder.positionInAlignment(Long.valueOf(record.get(2)));
-            builder.unirefId(record.get(3));
-            builder.mappedSite(record.get(4));
+            if(record.size() == 4){ // site type can be null in input file
+                parseProteinData(record.get(0), builder);
+                builder.positionInAlignment(Long.valueOf(record.get(1)));
+                builder.unirefId(record.get(2));
+                builder.mappedSite(record.get(3));
+            } else if(record.size() == 5){
+                builder.siteType(record.get(0));
+                parseProteinData(record.get(1), builder);
+                builder.positionInAlignment(Long.valueOf(record.get(2)));
+                builder.unirefId(record.get(3));
+                builder.mappedSite(record.get(4));
+            } else {
+                throw new IllegalArgumentException("Illegal record " + record);
+            }
             return builder.build();
         } else {
             return null;
