@@ -130,6 +130,27 @@ public class DrugDAOTest {
         assertEquals(this.drug.getDisease().getId(), optDrug.get().getDisease().getId());
     }
 
+    @Test
+    void testGetDrugsByProtein(){
+        // create protein with protein xref
+        this.protein = ProteinTest.createProteinObject(this.uuid);
+        ProteinCrossRef xref = ProteinCrossRefTest.createProteinCrossRefObject(this.uuid);
+        xref.setProtein(protein);
+        protein.setProteinCrossRefs(Arrays.asList(xref));
+        this.proteinDAO.save(protein);
+        this.disease = DiseaseTest.createDiseaseObject(this.uuid);
+        this.diseaseDAO.save(disease);
+        // create a drug with protein xref
+        this.drug = createDrugObject(this.uuid, xref);
+        this.drug.setDisease(this.disease);
+        this.drugDAO.save(this.drug);
+
+        List<Drug> drugs = this.drugDAO.getDrugsByProtein(this.protein.getAccession());
+        assertFalse(drugs.isEmpty());
+        assertEquals(1, drugs.size());
+        assertEquals(this.protein.getAccession(), drugs.get(0).getProteinCrossRef().getProtein().getAccession());
+    }
+
 
 
     private void verifyDrug(Drug actual, Drug expected) {
