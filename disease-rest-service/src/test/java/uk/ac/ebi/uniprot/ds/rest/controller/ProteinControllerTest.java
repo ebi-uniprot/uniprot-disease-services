@@ -28,6 +28,7 @@ import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
 import uk.ac.ebi.uniprot.ds.rest.service.DrugService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
+import uk.ac.ebi.uniprot.ds.rest.service.UniProtSiteMapService;
 import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
@@ -56,6 +57,9 @@ public class ProteinControllerTest {
 
     @MockBean
     private DrugService drugService;
+
+    @MockBean
+    private UniProtSiteMapService uniProtSiteMapService;
 
     @Test
     public void testGetProtein() throws Exception {

@@ -10,6 +10,7 @@ package uk.ac.ebi.uniprot.ds.importer.util;
 public class Constants {
     public static final String DISEASE_SERVICE_DATA_LOADER = "DISEASE_SERVICE_DATA_LOADER";
     public static final String DS_HUM_DISEASE_DATA_LOADER_STEP = "DS_HUM_DISEASE_DATA_LOADER_STEP";
+    public static final String DS_SITE_MAPPING_DATA_LOADER_STEP = "Site Mapping Data Loader Step";
     public static final String DS_MONDO_DISEASE_DATA_LOADER_STEP = "Mondo Disease Data Loader Step";
     public static final String DS_DISEASE_PARENT_CHILD_LOADER_STEP = "Load Disease Parent Child Relationship Step";
     public static final String DS_UNIPROT_DATA_LOADER_STEP = "DS_UNIPROT_DATA_LOADER_STEP";

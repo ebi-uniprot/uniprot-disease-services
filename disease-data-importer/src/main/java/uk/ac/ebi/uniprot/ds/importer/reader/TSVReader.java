@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,12 +17,13 @@ import java.util.Scanner;
  */
 @Slf4j
 public abstract class TSVReader implements Closeable {
-    private Scanner tsvReader;
+    private final Scanner tsvReader;
     private String peekRecord;
-    private boolean isHeader = true; // flag to skip the first line/header in tsv file
+    private boolean isHeader; // flag to skip the first line/header in tsv file
 
-    public TSVReader(String fileName) throws FileNotFoundException {
+    public TSVReader(String fileName, boolean readFirstLine) throws FileNotFoundException {
         this.tsvReader = new Scanner(new File(fileName), StandardCharsets.UTF_8.name());
+        this.isHeader = readFirstLine;
         this.peekRecord = null;
     }
 
@@ -32,7 +34,7 @@ public abstract class TSVReader implements Closeable {
             this.peekRecord = null;
             return tokens;
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -62,9 +64,7 @@ public abstract class TSVReader implements Closeable {
 
     private List<String> getTokens(String[] tokensArray) {
         List<String> tokens = new ArrayList<>();
-        for (String token : tokensArray) {
-            tokens.add(token);
-        }
+        Collections.addAll(tokens, tokensArray);
         return tokens;
     }
 }
