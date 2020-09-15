@@ -1,5 +1,7 @@
 package uk.ac.ebi.uniprot.ds.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 
 import lombok.Getter;
@@ -17,8 +19,9 @@ public class UniProtSiteMapDTO {
     private Long sitePosition;
     private Long positionInAlignment;
     private List<FeatureType> featureTypes;
-//    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> dbSnps;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<UniProtSite> mappedSites;
     private String unirefId;
 }
