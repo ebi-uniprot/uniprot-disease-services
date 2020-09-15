@@ -125,7 +125,7 @@ public class UniProtSiteMapControllerTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/sitemaps/" + accession).
+                                get("/v1/ds/ortholog-mappings/" + accession).
                                 param("accession", accession)
                 );
 
@@ -147,7 +147,7 @@ public class UniProtSiteMapControllerTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/sitemaps/" + accession).
+                                get("/v1/ds/ortholog-mappings/" + accession).
                                 param("accession", accession)
                 );
 
