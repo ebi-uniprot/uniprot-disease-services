@@ -32,7 +32,7 @@ public class UniProtSiteMapController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping(value = {"/sitemaps/{accession}"}, name = "Get the UniProt site mappings for a given accession")
+    @GetMapping(value = {"/ortholog-mappings/{accession}"}, name = "Get the UniProt site mappings for a given accession")
     public MultipleEntityResponse<UniProtSiteMapDTO> getSiteMappings(@PathVariable(name = "accession") String accession) {
         String requestId = RequestCorrelation.getCorrelationId();
         List<SiteMapping> siteMaps = this.siteMapService.getSiteMappings(accession);
