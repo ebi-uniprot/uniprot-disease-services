@@ -12,12 +12,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 // Json Schema for open target json dump https://raw.githubusercontent.com/opentargets/json_schema/1.5.0/opentargets.json
 
 public class ChemblOpenTargetReader implements ItemReader<ChemblOpenTarget> {
-    //TODO write a test case for this class read method with sample data
     private ObjectMapper objectMapper;
     private JsonParser jsonParser;
     private static final String DRUG = "drug";
@@ -88,12 +88,22 @@ public class ChemblOpenTargetReader implements ItemReader<ChemblOpenTarget> {
         String clinicalTrialLink = getClinicalTrialLink(openTargetObj);
 
         List<String> drugEvidences = getDrugEvidences(openTargetObj);
+        // generally it is EFO url "http://www.ebi.ac.uk/efo/EFO_1002014"
+        // but sometimes it can be Mondo id as well e.g. "/MONDO_0000396"
+        String chemblDiseaseId = (String) ((Map) openTargetObj.get("unique_association_fields")).get("disease_id");
+
+        if(Objects.nonNull(chemblDiseaseId) && chemblDiseaseId.startsWith("/MONDO_")){
+            chemblDiseaseId = "http://purl.obolibrary.org/obo" + chemblDiseaseId;
+        }
+
 
         ChemblOpenTarget.ChemblOpenTargetBuilder openTargetBuilder = ChemblOpenTarget.builder();
         openTargetBuilder.chemblSourceUrl(chemblSourceUrl).chemblTargetUrl(chemblTargetUrl);
         openTargetBuilder.clinicalTrialPhase(clinicalTrialPhase).clinicalTrialLink(clinicalTrialLink);
         openTargetBuilder.drugEvidences(drugEvidences).mechOfAction(mechOfAction);
         openTargetBuilder.moleculeName(moleculeName).moleculeType(moleculeType);
+        openTargetBuilder.diseaseId(chemblDiseaseId);
+
 
         return openTargetBuilder.build();
 
@@ -117,13 +127,11 @@ public class ChemblOpenTargetReader implements ItemReader<ChemblOpenTarget> {
     private String getClinicalTrialLink(Map<String, Object> openTargetObj) {
 
         List<Map<String, String>> urls = (List<Map<String, String>>)
-                ((Map) ((Map) ((Map) openTargetObj).get(EVIDENCE)).get(DRUG_2_CLINIC)).get(URLS);
+                ((Map) ((Map) openTargetObj.get(EVIDENCE)).get(DRUG_2_CLINIC)).get(URLS);
 
-        String url = urls.stream()
+        return urls.stream()
                 .filter(nameUrlMap -> CLINICAL_TRIALS_INFORMATION.equals(nameUrlMap.get(NICE_NAME)))
                 .map(nameUrlMap -> nameUrlMap.get(URL)).findFirst().orElse(null);
-
-        return url;
     }
 
     //evidence.target2drug.urls[(nice_name="ChEMBL target information")].url
@@ -133,10 +141,8 @@ public class ChemblOpenTargetReader implements ItemReader<ChemblOpenTarget> {
         List<Map<String, String>> urls = (List<Map<String, String>>)
                 ((Map) ((Map) ((Map) obj).get(EVIDENCE)).get(TARGET_2_DRUG)).get(URLS);
 
-        String url = urls.stream()
+        return urls.stream()
                 .filter(nameUrlMap -> CHEMBL_TARGET_INFORMATION.equals(nameUrlMap.get(NICE_NAME)))
                 .map(nameUrlMap -> nameUrlMap.get(URL)).findFirst().orElse(null);
-
-        return url;
     }
 }

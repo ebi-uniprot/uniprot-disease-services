@@ -3,15 +3,18 @@ package uk.ac.ebi.uniprot.ds.rest.mapper;
 import org.modelmapper.Converter;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
-import org.springframework.util.CollectionUtils;
-import uk.ac.ebi.uniprot.ds.common.model.*;
-import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDTO;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
+import uk.ac.ebi.uniprot.ds.common.model.GeneCoordinate;
+import uk.ac.ebi.uniprot.ds.common.model.Interaction;
+import uk.ac.ebi.uniprot.ds.common.model.Protein;
+import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
+import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDTO;
 
 public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 	@Override
@@ -37,18 +40,17 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 
 			if(protein != null && protein.getProteinCrossRefs() != null){
 
-				Set<Drug> drugs = protein.getProteinCrossRefs()
+				Set<String> drugs = protein.getProteinCrossRefs()
 						.stream()
 						.filter(xref -> xref.getDrugs() != null && !xref.getDrugs().isEmpty())
 						.map(xref -> xref.getDrugs())
 						.flatMap(List::stream)
+                        .map(drug -> drug.getName())
 						.collect(Collectors.toSet());
 
-				if(drugs != null && !drugs.isEmpty()) { // drug --> name
-					// get just the name
-					drugNames = drugs.stream().map(d -> d.getName()).collect(Collectors.toList());
-				}
-
+                if(drugs != null && !drugs.isEmpty()) {
+                    drugNames = new ArrayList<>(drugs);
+                }
 			}
 
 			return drugNames;

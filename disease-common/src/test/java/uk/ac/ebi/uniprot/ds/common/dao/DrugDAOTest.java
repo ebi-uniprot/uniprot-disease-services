@@ -30,8 +30,13 @@ public class DrugDAOTest {
     private DrugDAO drugDAO;
     @Autowired
     private ProteinDAO proteinDAO;
+
+    @Autowired
+    private DiseaseDAO diseaseDAO;
+
     private Drug drug;
     private Protein protein;
+    private Disease disease;
     private String uuid;
 
     @BeforeEach
@@ -49,6 +54,10 @@ public class DrugDAOTest {
         if(this.protein != null){
             this.proteinDAO.deleteById(this.protein.getId());
             this.protein = null;
+        }
+        if(this.disease != null){
+            this.diseaseDAO.deleteById(this.disease.getId());
+            this.disease = null;
         }
     }
 
@@ -105,6 +114,43 @@ public class DrugDAOTest {
         assertEquals(this.drug.getProteinCrossRef().getId(), optDrug.get().getProteinCrossRef().getId());
     }
 
+    @Test
+    void testCreateDrugWithDisease(){
+        this.disease = DiseaseTest.createDiseaseObject(this.uuid);
+        this.diseaseDAO.save(disease);
+
+        // create a drug with disease
+        this.drug = createDrugObject(this.uuid, null);
+        this.drug.setDisease(this.disease);
+        this.drugDAO.save(this.drug);
+        // get the drug
+        Optional<Drug> optDrug = this.drugDAO.findById(this.drug.getId());
+        assertTrue(optDrug.isPresent());
+        verifyDrug(this.drug, optDrug.get());
+        assertEquals(this.drug.getDisease().getId(), optDrug.get().getDisease().getId());
+    }
+
+    @Test
+    void testGetDrugsByProtein(){
+        // create protein with protein xref
+        this.protein = ProteinTest.createProteinObject(this.uuid);
+        ProteinCrossRef xref = ProteinCrossRefTest.createProteinCrossRefObject(this.uuid);
+        xref.setProtein(protein);
+        protein.setProteinCrossRefs(Arrays.asList(xref));
+        this.proteinDAO.save(protein);
+        this.disease = DiseaseTest.createDiseaseObject(this.uuid);
+        this.diseaseDAO.save(disease);
+        // create a drug with protein xref
+        this.drug = createDrugObject(this.uuid, xref);
+        this.drug.setDisease(this.disease);
+        this.drugDAO.save(this.drug);
+
+        List<Drug> drugs = this.drugDAO.getDrugsByProtein(this.protein.getAccession());
+        assertFalse(drugs.isEmpty());
+        assertEquals(1, drugs.size());
+        assertEquals(this.protein.getAccession(), drugs.get(0).getProteinCrossRef().getProtein().getAccession());
+    }
+
 
 
     private void verifyDrug(Drug actual, Drug expected) {
@@ -118,6 +164,7 @@ public class DrugDAOTest {
         assertEquals(actual.getClinicalTrialPhase(), expected.getClinicalTrialPhase());
         assertEquals(actual.getClinicalTrialLink(), expected.getClinicalTrialLink());
         assertEquals(actual.getMechanismOfAction(), expected.getMechanismOfAction());
+        assertEquals(actual.getChemblDiseaseId(), expected.getChemblDiseaseId());
         // verify the drug evidence
         if(actual.getDrugEvidences() != null){
             assertEquals(actual.getDrugEvidences().size(), expected.getDrugEvidences().size());
@@ -135,9 +182,11 @@ public class DrugDAOTest {
         Integer phase = 3;
         String link = "https://www.example.com/something1234";
         String mechnismOfAction = "this is a sample message";
+        String efoDiseaseId = "http://www.example.com/EFO_0002345";
         bl.name(name).sourceType(sourceType).sourceId(sourceid);
         bl.moleculeType(moleculeType).proteinCrossRef(xref);
         bl.clinicalTrialPhase(phase).clinicalTrialLink(link).mechanismOfAction(mechnismOfAction);
+        bl.chemblDiseaseId(efoDiseaseId);
         return bl.build();
     }
 

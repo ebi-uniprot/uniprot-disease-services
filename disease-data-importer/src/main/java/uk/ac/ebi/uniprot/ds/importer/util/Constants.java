@@ -31,6 +31,7 @@ public class Constants {
     public static final String MONDO_OBO_TERMS_LIST = "Mondo obo terms list";
     public static final String MIM_STR = "MIM";
     public static final String OMIM_COLON_STR = "OMIM:";
+    public static final String EFO_COLON_STR = "EFO:";
 
     private Constants(){}
 }
