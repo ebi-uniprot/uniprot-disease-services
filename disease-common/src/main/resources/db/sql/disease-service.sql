@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.12
+-- Dumped from database version 11.1
 -- Dumped by pg_dump version 11.1
 
 SET statement_timeout = 0;
@@ -32,18 +32,21 @@ ALTER TABLE IF EXISTS ONLY disease_service.ds_keyword DROP CONSTRAINT IF EXISTS 
 ALTER TABLE IF EXISTS ONLY disease_service.ds_gene_coordinate DROP CONSTRAINT IF EXISTS ds_gene_coordinate_ds_protein_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_evidence DROP CONSTRAINT IF EXISTS ds_evidence_ds_variant_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_drug_evidence DROP CONSTRAINT IF EXISTS ds_evidence_drug_fk;
+ALTER TABLE IF EXISTS ONLY disease_service.ds_drug DROP CONSTRAINT IF EXISTS ds_drug_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_disease_relation DROP CONSTRAINT IF EXISTS ds_disease_relation_ds_disease_fk2;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_disease_relation DROP CONSTRAINT IF EXISTS ds_disease_relation_ds_disease_fk1;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_disease_protein DROP CONSTRAINT IF EXISTS ds_disease_protein_ds_protein_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_disease_protein DROP CONSTRAINT IF EXISTS ds_disease_protein_ds_disease_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_cross_ref DROP CONSTRAINT IF EXISTS ds_cross_ref_ds_disease_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_drug DROP CONSTRAINT IF EXISTS drug_prot_cross_ref_fk;
+DROP INDEX IF EXISTS disease_service.ds_site_mapping_accession_idx;
 DROP INDEX IF EXISTS disease_service.ds_keyword_key_value_idx;
 ALTER TABLE IF EXISTS ONLY disease_service.databasechangeloglock DROP CONSTRAINT IF EXISTS pk_databasechangeloglock;
 ALTER TABLE IF EXISTS ONLY disease_service.batch_job_instance DROP CONSTRAINT IF EXISTS job_inst_un;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_variant DROP CONSTRAINT IF EXISTS ds_variant_pk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_synonym DROP CONSTRAINT IF EXISTS ds_synonyms_pk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_synonym DROP CONSTRAINT IF EXISTS ds_synonym_un;
+ALTER TABLE IF EXISTS ONLY disease_service.ds_site_mapping DROP CONSTRAINT IF EXISTS ds_site_mapping_pk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_publication DROP CONSTRAINT IF EXISTS ds_pub_pk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_protein DROP CONSTRAINT IF EXISTS ds_protein_un2;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_protein DROP CONSTRAINT IF EXISTS ds_protein_un1;
@@ -68,6 +71,7 @@ ALTER TABLE IF EXISTS ONLY disease_service.batch_job_execution DROP CONSTRAINT I
 ALTER TABLE IF EXISTS ONLY disease_service.batch_job_execution_context DROP CONSTRAINT IF EXISTS batch_job_execution_context_pkey;
 ALTER TABLE IF EXISTS disease_service.ds_variant ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS disease_service.ds_synonym ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE IF EXISTS disease_service.ds_site_mapping ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS disease_service.ds_publication ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS disease_service.ds_protein_cross_ref ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS disease_service.ds_protein ALTER COLUMN id DROP DEFAULT;
@@ -86,6 +90,8 @@ DROP TABLE IF EXISTS disease_service.ds_variant;
 DROP SEQUENCE IF EXISTS disease_service.ds_synonym_id_seq1;
 DROP SEQUENCE IF EXISTS disease_service.ds_synonym_id_seq;
 DROP TABLE IF EXISTS disease_service.ds_synonym;
+DROP SEQUENCE IF EXISTS disease_service.ds_site_mapping_id_seq;
+DROP TABLE IF EXISTS disease_service.ds_site_mapping;
 DROP SEQUENCE IF EXISTS disease_service.ds_publication_id_seq;
 DROP TABLE IF EXISTS disease_service.ds_publication;
 DROP SEQUENCE IF EXISTS disease_service.ds_protein_id_seq1;
@@ -461,7 +467,9 @@ CREATE TABLE disease_service.ds_drug (
                                          updated_at timestamp without time zone NOT NULL,
                                          clinical_trial_phase smallint,
                                          mechanism_of_action character varying(255),
-                                         clinical_trial_link character varying(255)
+                                         clinical_trial_link character varying(255),
+                                         chembl_disease_id character varying(255) NOT NULL,
+                                         ds_disease_id bigint
 );
 
 
@@ -920,6 +928,47 @@ ALTER SEQUENCE disease_service.ds_publication_id_seq OWNED BY disease_service.ds
 
 
 --
+-- Name: ds_site_mapping; Type: TABLE; Schema: disease_service; Owner: variant
+--
+
+CREATE TABLE disease_service.ds_site_mapping (
+                                                 id bigint NOT NULL,
+                                                 accession character varying NOT NULL,
+                                                 protein_id character varying NOT NULL,
+                                                 site_position bigint NOT NULL,
+                                                 position_in_alignment bigint NOT NULL,
+                                                 site_type character varying,
+                                                 uniref_id character varying NOT NULL,
+                                                 mapped_site text,
+                                                 created_at timestamp without time zone NOT NULL,
+                                                 updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE disease_service.ds_site_mapping OWNER TO variant;
+
+--
+-- Name: ds_site_mapping_id_seq; Type: SEQUENCE; Schema: disease_service; Owner: variant
+--
+
+CREATE SEQUENCE disease_service.ds_site_mapping_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE disease_service.ds_site_mapping_id_seq OWNER TO variant;
+
+--
+-- Name: ds_site_mapping_id_seq; Type: SEQUENCE OWNED BY; Schema: disease_service; Owner: variant
+--
+
+ALTER SEQUENCE disease_service.ds_site_mapping_id_seq OWNED BY disease_service.ds_site_mapping.id;
+
+
+--
 -- Name: ds_synonym; Type: TABLE; Schema: disease_service; Owner: variant
 --
 
@@ -1111,6 +1160,13 @@ ALTER TABLE ONLY disease_service.ds_publication ALTER COLUMN id SET DEFAULT next
 
 
 --
+-- Name: ds_site_mapping id; Type: DEFAULT; Schema: disease_service; Owner: variant
+--
+
+ALTER TABLE ONLY disease_service.ds_site_mapping ALTER COLUMN id SET DEFAULT nextval('disease_service.ds_site_mapping_id_seq'::regclass);
+
+
+--
 -- Name: ds_synonym id; Type: DEFAULT; Schema: disease_service; Owner: variant
 --
 
@@ -1299,6 +1355,15 @@ ALTER TABLE ONLY disease_service.ds_protein
 ALTER TABLE ONLY disease_service.ds_publication
     ADD CONSTRAINT ds_pub_pk PRIMARY KEY (id);
 
+
+--
+-- Name: ds_site_mapping ds_site_mapping_pk; Type: CONSTRAINT; Schema: disease_service; Owner: variant
+--
+
+ALTER TABLE ONLY disease_service.ds_site_mapping
+    ADD CONSTRAINT ds_site_mapping_pk PRIMARY KEY (id);
+
+
 --
 -- Name: ds_synonym ds_synonyms_pk; Type: CONSTRAINT; Schema: disease_service; Owner: variant
 --
@@ -1336,6 +1401,13 @@ ALTER TABLE ONLY disease_service.databasechangeloglock
 --
 
 CREATE INDEX ds_keyword_key_value_idx ON disease_service.ds_keyword USING btree (key_value);
+
+
+--
+-- Name: ds_site_mapping_accession_idx; Type: INDEX; Schema: disease_service; Owner: variant
+--
+
+CREATE INDEX ds_site_mapping_accession_idx ON disease_service.ds_site_mapping USING btree (accession);
 
 
 --
@@ -1384,6 +1456,14 @@ ALTER TABLE ONLY disease_service.ds_disease_relation
 
 ALTER TABLE ONLY disease_service.ds_disease_relation
     ADD CONSTRAINT ds_disease_relation_ds_disease_fk2 FOREIGN KEY (ds_disease_parent_id) REFERENCES disease_service.ds_disease(id);
+
+
+--
+-- Name: ds_drug ds_drug_fk; Type: FK CONSTRAINT; Schema: disease_service; Owner: variant
+--
+
+ALTER TABLE ONLY disease_service.ds_drug
+    ADD CONSTRAINT ds_drug_fk FOREIGN KEY (ds_disease_id) REFERENCES disease_service.ds_disease(id);
 
 
 --
