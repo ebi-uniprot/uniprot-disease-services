@@ -1,6 +1,8 @@
 package uk.ac.ebi.uniprot.ds.rest.service;
 
 import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.uniprot.ds.common.dao.DrugDAO;
@@ -13,6 +15,7 @@ import uk.ac.ebi.uniprot.ds.rest.dto.DrugDTO;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.mapping;
@@ -67,11 +70,14 @@ public class DrugService {
         }
 
         List<Drug> drugs = this.drugDAO.getDrugsByProtein(accession);
+        // [disease1, disease2]
+        Set<Disease> diseases = drugs.stream().filter(drug -> Objects.nonNull(drug.getDisease())).map(Drug::getDisease)
+                .collect(Collectors.toSet());
+        Map<String, Disease> nameToDisease = diseases.stream().collect(Collectors.toMap(Disease::getName, Function.identity()));
 
         // [drugName --> [diseaseName1, diseaseName2]]
         Map<String, Set<String>> drugToDiseases = drugs.stream()
-                .filter(drug -> Objects.nonNull(drug.getDisease()))
-                .collect(Collectors.groupingBy(drug -> drug.getName(), mapping(drug -> drug.getDisease().getName(), toSet())));
+                .collect(Collectors.groupingBy(drug -> drug.getName(), mapping(drug -> extractDiseaseName(drug), toSet())));
 
         // [drugName --> [proteinAccession1, proteinAccession2]]
         Map<String, Set<String>> drugToProteins = drugs.stream()
@@ -84,8 +90,9 @@ public class DrugService {
         for(Drug drug : drugs){
             // drug without disease id and cross ref id
             Drug slimDrug = createDrugWithoutCrossRefAndDisease(drug);
-            // fill the disease names
-            slimDrug.setDiseases(drugToDiseases.get(slimDrug.getName()));
+            Set<Pair<String, Integer>> diseaseProteinCount = getDiseaseProteinCount(drug.getName(), drugToDiseases, nameToDisease);
+            // fill the disease names with protein counts
+            slimDrug.setDiseaseProteinCount(diseaseProteinCount);
             // fill the protein accessions
             slimDrug.setProteins(drugToProteins.get(slimDrug.getName()));
             resultDrugs.add(slimDrug);
@@ -189,15 +196,38 @@ public class DrugService {
                 drug.setProteins(accessions);
 
                 // get and set the disease names
-                Set<String> diseaseNames = proteins
+                Set<Pair<String, Integer>> diseaseNames = proteins
                         .stream()
                         .filter(protein -> protein.getDiseaseProteins() != null && !protein.getDiseaseProteins().isEmpty())
                         .map(p -> p.getDiseaseProteins())
                         .flatMap(Set::stream)
                         .map(dp -> dp.getDisease().getName())
+                        .map(name -> Pair.of(name, 0))
                         .collect(toSet());
-                drug.setDiseases(diseaseNames);
+                drug.setDiseaseProteinCount(diseaseNames);
             }
         }
+    }
+
+    private String extractDiseaseName(Drug drug) {
+        if(Objects.nonNull(drug.getDisease())) {
+            return  drug.getDisease().getName();
+        } else {
+            return drug.getChemblDiseaseId();
+        }
+    }
+
+    private Set<Pair<String, Integer>> getDiseaseProteinCount(String drugName, Map<String, Set<String>> drugToDiseases,
+                                                              Map<String, Disease> nameToDisease) {
+        Set<Pair<String, Integer>> dpPair = new HashSet<>();
+        for(String diseaseName : drugToDiseases.get(drugName)){
+            if(nameToDisease.containsKey(diseaseName)){
+                Disease disease = nameToDisease.get(diseaseName);
+                dpPair.add(Pair.of(diseaseName, disease.getDiseaseProteins().size()));
+            } else {
+                dpPair.add(Pair.of(diseaseName, 0));
+            }
+        }
+        return dpPair;
     }
 }

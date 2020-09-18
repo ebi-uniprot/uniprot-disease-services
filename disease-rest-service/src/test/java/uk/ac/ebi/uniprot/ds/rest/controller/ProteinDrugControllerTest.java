@@ -7,6 +7,7 @@
 
 package uk.ac.ebi.uniprot.ds.rest.controller;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +22,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import uk.ac.ebi.uniprot.ds.common.dao.DrugDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.rest.DataSourceTestConfig;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
@@ -57,6 +60,9 @@ public class ProteinDrugControllerTest {
     @MockBean
     private UniProtSiteMapService uniProtSiteMapService;
 
+    @MockBean
+    private DrugDAO drugDAO;
+
     @Test
     public void testGetDrugsByProteinAccession() throws Exception {
         String accession = "AC12345";
@@ -67,14 +73,16 @@ public class ProteinDrugControllerTest {
 
         Set<String> accessions = new HashSet<>();
         accessions.add("AC1");accessions.add("AC2");accessions.add("AC3");
-        Set<String> diseases = new HashSet<>();
-        diseases.add("DIS1"); diseases.add("DIS2"); diseases.add("DIS3");
+        Set<Pair<String, Integer>> diseases = new HashSet<>();
+        diseases.add(Pair.of("DIS1", 0));
+        diseases.add(Pair.of("DIS2", 1));
+        diseases.add(Pair.of("DIS3", 2));
         // set disease names and accessions to each drug object
-        drug1.setDiseases(diseases);
+        drug1.setDiseaseProteinCount(diseases);
         drug1.setProteins(accessions);
-        drug2.setDiseases(diseases);
+        drug2.setDiseaseProteinCount(diseases);
         drug2.setProteins(accessions);
-        drug3.setDiseases(diseases);
+        drug3.setDiseaseProteinCount(diseases);
         drug3.setProteins(accessions);
 
         List<Drug> drugs = Arrays.asList(drug1, drug2, drug3);
@@ -107,6 +115,7 @@ public class ProteinDrugControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].proteins", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].diseases.length()", Matchers.equalTo(3)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].diseases[*].diseaseName", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].diseases[*].proteinCount", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].proteins.length()", Matchers.equalTo(3)));
     }
 }

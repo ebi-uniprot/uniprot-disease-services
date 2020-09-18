@@ -1,5 +1,6 @@
 package uk.ac.ebi.uniprot.ds.rest.mapper;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.modelmapper.Converter;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
@@ -14,7 +15,7 @@ public class DrugToDrugDTOMap extends PropertyMap<Drug, DrugDTO> {
     @Override
     protected void configure() {
         using(new DrugEvidencesToEvidences()).map(source.getDrugEvidences()).setEvidences(null);
-        using(new DiseaseNameToBasicDiseaseDTO()).map(source.getDiseases()).setDiseases(null);
+        using(new DiseaseNameToBasicDiseaseDTO()).map(source.getDiseaseProteinCount()).setDiseases(null);
     }
 
     private static class DrugEvidencesToEvidences implements Converter<List<DrugEvidence>, Set<String>> {
@@ -33,13 +34,14 @@ public class DrugToDrugDTOMap extends PropertyMap<Drug, DrugDTO> {
 
     }
 
-    private class DiseaseNameToBasicDiseaseDTO implements Converter<Set<String>, Set<DrugDTO.BasicDiseaseDTO>> {
+    private class DiseaseNameToBasicDiseaseDTO implements Converter<Set<Pair<String, Integer>>, Set<DrugDTO.BasicDiseaseDTO>> {
         @Override
-        public Set<DrugDTO.BasicDiseaseDTO> convert(MappingContext<Set<String>, Set<DrugDTO.BasicDiseaseDTO>> context) {
-            Set<String> names = context.getSource();
+        public Set<DrugDTO.BasicDiseaseDTO> convert(MappingContext<Set<Pair<String, Integer>>, Set<DrugDTO.BasicDiseaseDTO>> context) {
+            Set<Pair<String, Integer>> names = context.getSource();
             Set<DrugDTO.BasicDiseaseDTO> diseases = null;
             if(names != null && !names.isEmpty()){
-                diseases = names.stream().map(name -> DrugDTO.BasicDiseaseDTO.builder().diseaseName(name).build())
+                diseases = names.stream().map(name -> DrugDTO.BasicDiseaseDTO.builder()
+                        .diseaseName(name.getLeft()).proteinCount(name.getRight()).build())
                         .collect(Collectors.toSet());
             }
             return diseases;

@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import uk.ac.ebi.uniprot.ds.common.dao.DrugDAO;
 import uk.ac.ebi.uniprot.ds.common.model.SiteMapping;
 import uk.ac.ebi.uniprot.ds.rest.RestServiceSpringBootApplication;
 import uk.ac.ebi.uniprot.ds.rest.dto.FeatureType;
@@ -67,6 +68,9 @@ public class UniProtSiteMapControllerTest {
 
     @MockBean
     private DrugService drugService;
+
+    @MockBean
+    private DrugDAO drugDAO;
 
     @Test
     public void testGetByAccession() throws Exception {

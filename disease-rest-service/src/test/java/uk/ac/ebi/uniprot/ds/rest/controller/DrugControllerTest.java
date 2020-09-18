@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import uk.ac.ebi.uniprot.ds.common.dao.DrugDAO;
 import uk.ac.ebi.uniprot.ds.common.model.*;
 import uk.ac.ebi.uniprot.ds.rest.DataSourceTestConfig;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
@@ -59,6 +61,9 @@ public class DrugControllerTest {
 
     @MockBean
     private UniProtSiteMapService uniProtSiteMapService;
+
+    @MockBean
+    private DrugDAO drugDAO;
 
     @Test
     public void testGetProteinsByDrugName() throws Exception {

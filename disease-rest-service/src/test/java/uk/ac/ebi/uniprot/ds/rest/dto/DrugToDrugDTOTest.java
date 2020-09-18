@@ -1,5 +1,6 @@
 package uk.ac.ebi.uniprot.ds.rest.dto;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +14,7 @@ import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
 
 import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -32,9 +34,11 @@ public class DrugToDrugDTOTest {
     @Test
     public void testDrugToDrugDTOWithDiseasesAndProteins(){
         Drug drug = ModelCreationUtils.createDrugObject(this.uuid);
-        HashSet<String> dNames = new HashSet<>(); dNames.add("D-" + this.uuid + 1);dNames.add("D-" + this.uuid + 2);
+        Set<Pair<String, Integer>> dNames = new HashSet<>();
+        dNames.add(Pair.of("D-" + this.uuid + 1, 1));
+        dNames.add(Pair.of("D-" + this.uuid + 2, 2));
         HashSet<String> accessions = new HashSet<>(); accessions.add("A-" + this.uuid);
-        drug.setDiseases(dNames);
+        drug.setDiseaseProteinCount(dNames);
         drug.setProteins(accessions);
         DrugDTO drugDTO = modelMapper.map(drug, DrugDTO.class);
         verifyDrug(drug, drugDTO);

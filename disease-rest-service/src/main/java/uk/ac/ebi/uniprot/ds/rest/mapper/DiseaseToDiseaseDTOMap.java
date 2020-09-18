@@ -3,17 +3,25 @@ package uk.ac.ebi.uniprot.ds.rest.mapper;
 import org.modelmapper.Converter;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
-import uk.ac.ebi.uniprot.ds.common.model.Drug;
-import uk.ac.ebi.uniprot.ds.common.model.Synonym;
-import uk.ac.ebi.uniprot.ds.rest.dto.DiseaseDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import uk.ac.ebi.uniprot.ds.common.dao.DrugDAO;
+import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
+import uk.ac.ebi.uniprot.ds.common.model.Synonym;
+import uk.ac.ebi.uniprot.ds.rest.dto.DiseaseDTO;
+
 public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
+    private DrugDAO drugDAO;
+
+    public DiseaseToDiseaseDTOMap(DrugDAO drugDAO){
+        this.drugDAO = drugDAO;
+    }
+
     @Override
     protected void configure() {
         map().setDescription(source.getDesc());
@@ -25,36 +33,20 @@ public class DiseaseToDiseaseDTOMap extends PropertyMap<Disease, DiseaseDTO> {
         using(new SynonymsToNames()).map(source.getSynonyms()).setSynonyms(null);
         using(new VariantsToFeatureIdsConverter()).map(source.getVariants()).setVariants(null);
         using(new PublicationsToPublicationDTOs()).map(source.getPublications()).setPublications(null);
-        using(new DisProtsToDrugs()).map(source.getDiseaseProteins()).setDrugs(null);
+        using(new DiseaseIdToDrugs(this.drugDAO)).map(source).setDrugs(null);
     }
 
-    private static class DisProtsToDrugs implements Converter<Set<DiseaseProtein>, List<String>> {
+    private static class DiseaseIdToDrugs implements Converter<Disease, List<String>>{
+        private DrugDAO drugDAO;
+        DiseaseIdToDrugs(DrugDAO drugDAO){
+            this.drugDAO = drugDAO;
+        }
 
         @Override
-        public List<String> convert(MappingContext<Set<DiseaseProtein>, List<String>> context) {
-            Set<DiseaseProtein> disProts = context.getSource();
-            List<String> drugNames = null;
-
-            if(disProts != null && !disProts.isEmpty()){
-                // get the drugs from protein --> protein xref --> drug
-                Set<Drug> drugs = disProts
-                        .stream()
-                        .filter(dp -> dp.getProtein().getProteinCrossRefs() != null && !dp.getProtein().getProteinCrossRefs().isEmpty())
-                        .map(dp -> dp.getProtein().getProteinCrossRefs())
-                        .flatMap(List::stream)
-                        .filter(xref -> xref.getDrugs() != null && !xref.getDrugs().isEmpty())
-                        .map(xref -> xref.getDrugs())
-                        .flatMap(List::stream)
-                        .collect(Collectors.toSet());
-
-                if(drugs != null && !drugs.isEmpty()) { // drug --> name
-                    // get just the name
-                    drugNames = drugs.stream().map(d -> d.getName()).collect(Collectors.toList());
-                }
-
-            }
-
-            return drugNames;
+        public List<String> convert(MappingContext<Disease, List<String>> context) {
+            Disease disease = context.getSource();
+            Set<String> uniqueNames = this.drugDAO.findAllByDisease(disease).stream().map(d -> d.getName()).collect(Collectors.toSet());
+            return uniqueNames.isEmpty() ? null : new ArrayList<>(uniqueNames);
         }
     }
 

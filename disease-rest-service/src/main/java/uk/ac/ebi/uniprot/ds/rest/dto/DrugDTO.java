@@ -31,5 +31,6 @@ public class DrugDTO {
     public static class BasicDiseaseDTO{
         private String diseaseId;
         private String diseaseName;
+        private Integer proteinCount;
     }
 }

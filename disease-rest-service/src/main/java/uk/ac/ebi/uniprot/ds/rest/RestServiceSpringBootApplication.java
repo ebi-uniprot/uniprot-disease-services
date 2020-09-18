@@ -8,6 +8,7 @@
 package uk.ac.ebi.uniprot.ds.rest;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -15,6 +16,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import uk.ac.ebi.uniprot.ds.common.dao.DrugDAO;
 import uk.ac.ebi.uniprot.ds.rest.filter.CorrelationHeaderFilter;
 import uk.ac.ebi.uniprot.ds.rest.mapper.*;
 
@@ -30,14 +33,19 @@ import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN;
 @ComponentScan(basePackages = {"uk.ac.ebi.uniprot.ds.common", "uk.ac.ebi.uniprot.ds.rest"})
 public class RestServiceSpringBootApplication {
 
+    public RestServiceSpringBootApplication(DrugDAO drugDAO) {
+        this.drugDAO = drugDAO;
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(RestServiceSpringBootApplication.class, args);
     }
 
+    private final DrugDAO drugDAO;
     @Bean
     ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.addMappings(new DiseaseToDiseaseDTOMap());
+        modelMapper.addMappings(new DiseaseToDiseaseDTOMap(drugDAO));
         modelMapper.addMappings(new ProteinToProteinDTOMap());
         modelMapper.addMappings(new ProteinToProteinWithCrossRefsDTOMap());
         modelMapper.addMappings(new ProteinToProteinDiseasesDTOMap());

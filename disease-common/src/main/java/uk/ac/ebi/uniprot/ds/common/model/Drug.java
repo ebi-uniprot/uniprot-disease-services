@@ -1,5 +1,7 @@
 package uk.ac.ebi.uniprot.ds.common.model;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import lombok.*;
 
 import javax.persistence.*;
@@ -40,7 +42,7 @@ public class Drug extends BaseEntity {
     @Column(name="chembl_disease_id")
     private String chemblDiseaseId;// efo url or mondo id
     @Transient
-    private Set<String> diseases;// to hold names of diseases those use this drug
+    private Set<Pair<String, Integer>> diseaseProteinCount;// to hold names of diseases and their protein count those use this drug
     @Transient
     private Set<String> proteins;// to hold accessions of proteins those use this drug
 

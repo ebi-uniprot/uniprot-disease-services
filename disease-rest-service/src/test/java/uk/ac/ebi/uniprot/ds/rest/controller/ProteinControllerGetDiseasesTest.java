@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import uk.ac.ebi.uniprot.ds.common.DiseaseCommonSpringBootApplication;
+import uk.ac.ebi.uniprot.ds.common.dao.DrugDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
@@ -69,6 +70,9 @@ public class ProteinControllerGetDiseasesTest {
 
     @MockBean
     private UniProtSiteMapService uniProtSiteMapService;
+
+    @MockBean
+    private DrugDAO drugDAO;
 
     @Test
     public void testNonExistentAccessions() throws Exception {
