@@ -20,7 +20,8 @@ public class DrugDAOCustomImpl implements DrugDAOCustom {
             "dd.mechanism_of_action as mechanismOfAction, dd.clinical_trial_link as clinicalTrialLink,\n" +
             "dre.ref_url as evidences, dp.accession as proteins, \n" +
             "coalesce(dis.disease_name, dd.chembl_disease_id) as diseaseName, \n" +
-            "coalesce(dis.disease_id , dd.chembl_disease_id) as diseaseId\n" +
+            "coalesce(dis.disease_id , dd.chembl_disease_id) as diseaseId, \n" +
+            "dd.ds_disease_id as did\n" +
             "from ds_drug dd\n" +
             "join (\n" +
             "select dr.\"name\", d.disease_id, d.id \n" +

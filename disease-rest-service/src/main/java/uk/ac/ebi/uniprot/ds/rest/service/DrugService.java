@@ -57,7 +57,7 @@ public class DrugService {
         List<Drug> drugList = new ArrayList<>(drugs);
 
         // get the proteins for each drug and get the diseases for each drug
-        populateProteinsAndDiseases(drugList);
+        populateProteins(drugList);
 
         return drugList;
     }
@@ -103,6 +103,7 @@ public class DrugService {
 
     public List<DrugDTO> getDrugDTOsByDiseaseId(String diseaseId) {
         List<Object[]> drugs = this.drugDAO.getDrugsByDiseaseId(diseaseId);
+        Map<Long, Integer> diseaseIdProteinCount = new HashMap<>();
         // drug name is unique so using as key
         Map<String, DrugDTO.DrugDTOBuilder> drugNameBuilder = new HashMap<>();
         for(Object[] drug : drugs){
@@ -131,7 +132,10 @@ public class DrugService {
             // diseases
             Set<DrugDTO.BasicDiseaseDTO> diseases = builder.build().getDiseases() != null ? builder.build().getDiseases() : new HashSet<>();
             if(drug[9] != null && drug[10] != null) {
-                DrugDTO.BasicDiseaseDTO disease = DrugDTO.BasicDiseaseDTO.builder().diseaseName((String) drug[9]).diseaseId((String) drug[10]).build();
+                Long did = (Long) drug[11];
+                Integer proteinCount = did == null ? 0 : getProteinCount((Long) drug[11], diseaseIdProteinCount);
+                DrugDTO.BasicDiseaseDTO disease = DrugDTO.BasicDiseaseDTO.builder().diseaseName((String) drug[9])
+                        .diseaseId((String) drug[10]).proteinCount(proteinCount).build();
                 diseases.add(disease);
             }
             builder.diseases(diseases);
@@ -139,7 +143,7 @@ public class DrugService {
             drugNameBuilder.put((String) drug[0], builder);
         }
 
-        populateProteinsAndDiseases(drugNameBuilder);
+        populateProteins(drugNameBuilder);
 
         List<DrugDTO> drugDTOs = drugNameBuilder
                 .values()
@@ -156,7 +160,7 @@ public class DrugService {
         builder.sourceId(drug.getSourceId()).moleculeType(drug.getMoleculeType());
         return builder.build();
     }
-    private void populateProteinsAndDiseases(Map<String, DrugDTO.DrugDTOBuilder> drugNameBuilder) {
+    private void populateProteins(Map<String, DrugDTO.DrugDTOBuilder> drugNameBuilder) {
         for(Map.Entry<String, DrugDTO.DrugDTOBuilder> entry : drugNameBuilder.entrySet()){
             // get all proteins for a given drug
             List<Protein> proteins = this.proteinDAO.findAllByDrugName(entry.getKey());
@@ -164,30 +168,10 @@ public class DrugService {
             Set<String> allAccessions = entry.getValue().build().getProteins() != null ? entry.getValue().build().getProteins() : new HashSet<>();
             allAccessions.addAll(accessions);
             entry.getValue().proteins(allAccessions);
-
-            // get all diseases for a given drug
-            Set<DrugDTO.BasicDiseaseDTO> diseaseNames = proteins
-                    .stream()
-                    .filter(protein -> protein.getDiseaseProteins() != null && !protein.getDiseaseProteins().isEmpty())
-                    .map(p -> p.getDiseaseProteins())
-                    .flatMap(Set::stream)
-                    .map(dp -> getBasicDiseaseDTO(dp))
-                    .collect(toSet());
-
-            Set<DrugDTO.BasicDiseaseDTO> allDiseases = entry.getValue().build().getDiseases() != null ? entry.getValue().build().getDiseases() : new HashSet<>();
-            allDiseases.addAll(diseaseNames);
-            entry.getValue().diseases(allDiseases);
         }
     }
 
-    private DrugDTO.BasicDiseaseDTO getBasicDiseaseDTO(DiseaseProtein dp){
-        DrugDTO.BasicDiseaseDTO bDisease = DrugDTO.BasicDiseaseDTO.builder()
-                .diseaseId(dp.getDisease().getDiseaseId())
-                .diseaseName(dp.getDisease().getName()).build();
-        return bDisease;
-    }
-
-    private void populateProteinsAndDiseases(List<Drug> drugList) {
+    private void populateProteins(List<Drug> drugList) {
         if (!drugList.isEmpty()) {
             for (Drug drug : drugList) {
                 List<Protein> proteins = this.proteinDAO.findAllByDrugName(drug.getName());
@@ -229,5 +213,16 @@ public class DrugService {
             }
         }
         return dpPair;
+    }
+
+    private Integer getProteinCount(Long diseaseId, Map<Long, Integer> map){
+        if(!map.containsKey(diseaseId)) {
+            Optional<Disease> optDisease = this.diseaseService.findById(diseaseId);
+            if(!optDisease.isPresent()){
+                throw new AssetNotFoundException("Disease id " + diseaseId + " not found");
+            }
+            map.put(diseaseId, optDisease.get().getDiseaseProteins().size());
+        }
+        return map.get(diseaseId);
     }
 }
