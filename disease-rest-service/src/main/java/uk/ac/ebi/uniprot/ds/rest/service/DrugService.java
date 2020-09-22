@@ -158,6 +158,10 @@ public class DrugService {
         Drug.DrugBuilder builder = Drug.builder();
         builder.name(drug.getName()).sourceType(drug.getSourceType());
         builder.sourceId(drug.getSourceId()).moleculeType(drug.getMoleculeType());
+        builder.clinicalTrialLink(drug.getClinicalTrialLink());
+        builder.clinicalTrialPhase(drug.getClinicalTrialPhase());
+        builder.mechanismOfAction(drug.getMechanismOfAction());
+        builder.drugEvidences(drug.getDrugEvidences());
         return builder.build();
     }
     private void populateProteins(Map<String, DrugDTO.DrugDTOBuilder> drugNameBuilder) {
