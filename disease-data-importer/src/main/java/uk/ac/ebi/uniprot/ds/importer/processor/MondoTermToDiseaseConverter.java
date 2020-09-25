@@ -71,6 +71,13 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
         String mondoName = oboTerm.getName().toLowerCase();
         Disease cachedDisease = this.diseaseNameToDiseaseMap.get(mondoName);
 
+        // Hard Coded - FIXME when Mondo and Hum disease have strong mapping
+        if("MONDO:0007088".equalsIgnoreCase(oboTerm.getId())){
+            cachedDisease = this.diseaseDAO.findByDiseaseId("Alzheimer disease 1").get();
+        } else if("MONDO:0012153".equalsIgnoreCase(oboTerm.getId())){
+            cachedDisease = this.diseaseDAO.findByDiseaseId("Alzheimer disease 9").get();
+        } // Hard code ends
+
         // if cache doesn't have disease name, try to find by omim id or synonym
         String mondoOmim = getXREFByType(oboTerm, Constants.OMIM_COLON_STR);
         if (Objects.isNull(cachedDisease)) {
@@ -87,14 +94,16 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
                 Synonym synonym = createSynonymObject(oboTerm.getName());
                 disease.addSynonym(synonym);
                 // put this synonym in the map
-                this.diseaseNameToDiseaseMap.put(synonym.getName().toLowerCase(), disease);
-            } else { // update cache for look-up during drug to disease mapping
-                this.diseaseNameToDiseaseMap.put(oboTerm.getId().trim(), cachedDisease);// mondo id
-                String mondoEFO = getXREFByType(oboTerm, Constants.EFO_COLON_STR);
-                if(Objects.nonNull(mondoEFO)) {// [key --> value] = [EFO:1001434 --> disease]
-                    this.diseaseNameToDiseaseMap.put(mondoEFO, cachedDisease);// efo id if there
-                }
+                this.diseaseNameToDiseaseMap.put(oboTerm.getName().toLowerCase(), disease);
             }
+            //update cache for look-up during drug to disease mapping
+            this.diseaseNameToDiseaseMap.put(oboTerm.getId().trim(), disease);// mondo id
+            String mondoEFO = getXREFByType(oboTerm, Constants.EFO_COLON_STR);
+            if (Objects.nonNull(mondoEFO)) {// [key --> value] = [EFO:1001434 --> disease]
+                this.diseaseNameToDiseaseMap.put(mondoEFO, disease);// efo id if there
+            }
+
+
         }
         return disease;
     }
@@ -141,15 +150,22 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
     private void loadDiseaseNameDiseaseMapFromCrossRef() {
         List<CrossRef> xrefs = this.crossRefDAO.findAllByRefType(Constants.MIM_STR);
         for (CrossRef xref : xrefs) {
-            String omim = Constants.OMIM_COLON_STR + xref.getRefId();// construct OMIM:<omimid>
-            if (!this.omimToDiseasesMap.containsKey(omim)) {
-                Set<Disease> diseases = new HashSet<>();
-                diseases.add(xref.getDisease());
-                this.omimToDiseasesMap.put(omim, diseases);
-            } else {
-                Set<Disease> diseases = this.omimToDiseasesMap.get(omim);
-                diseases.add(xref.getDisease());
-                log.warn("The Omim id {} is already associated with disease", omim);
+            // Hard Code to skip to avoid loop.
+            // As per hum disease via omim, Frontotemporal dementia and semantic dementia are same disease
+            // but as per mondo semantic dementia is grand child of Frontotemporal dementia, hence loop is being created
+            // Frontotemporal dementia is parent of behvaioural variant  which is parent of semantic dementia.
+            // but semantic dementia is same as Frontotemporal dementia, hence a loop.
+            if(!"Frontotemporal dementia".equalsIgnoreCase(xref.getDisease().getName())) {
+                String omim = Constants.OMIM_COLON_STR + xref.getRefId();// construct OMIM:<omimid>
+                if (!this.omimToDiseasesMap.containsKey(omim)) {
+                    Set<Disease> diseases = new HashSet<>();
+                    diseases.add(xref.getDisease());
+                    this.omimToDiseasesMap.put(omim, diseases);
+                } else {
+                    Set<Disease> diseases = this.omimToDiseasesMap.get(omim);
+                    diseases.add(xref.getDisease());
+                    log.warn("The Omim id {} is already associated with disease", omim);
+                }
             }
         }
     }

@@ -1,6 +1,8 @@
 package uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AdjacencyList {
 
@@ -18,6 +20,10 @@ public class AdjacencyList {
         termIdNodeMap.values().forEach(node ->
                 {
                     List<String> parentIds = node.getTerm().getIsAs();
+                    // FIXME Hard Code - add Alzheimer Disease 9(MONDO:0012153) as a child of Alzheimer disease(id: MONDO:0004975)
+                    if("MONDO:0012153".equalsIgnoreCase(node.getTerm().getId())){
+                        parentIds.add("MONDO:0004975");
+                    }
                     if(parentIds != null && !parentIds.isEmpty()){
                         // update all the parents with this node as a child
                         for(String parenId : parentIds){

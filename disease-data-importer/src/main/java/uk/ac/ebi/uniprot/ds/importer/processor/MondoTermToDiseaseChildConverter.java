@@ -18,19 +18,27 @@ public class MondoTermToDiseaseChildConverter implements ItemProcessor<OBOTerm, 
     private Map<String, Disease> diseaseNameToDiseaseMap;
     private Map<String, Node> adjList;
     private Set<DiseaseRelationDTO> relations;// cache to avoid duplicate insert
+
     @Override
     public List<DiseaseRelationDTO> process(OBOTerm oboTerm) {
         // get the parent node by mondo id
         Node diseaseNode = this.adjList.get(oboTerm.getId());
-        String monoDiseaseName = diseaseNode.getTerm().getName();
+        String monoDiseaseName = diseaseNode.getTerm().getName().trim();
         // get the Disease object for parent node aka obo term from cache
         Disease disease = this.diseaseNameToDiseaseMap.get(monoDiseaseName.toLowerCase());
-        if(Objects.nonNull(disease)) {
+        List<Long> path = new ArrayList<>();
+        // ignore the whole path if it has cycle. We can improve it to only ignore those disease within cycle. FIXME
+        // e.g. with cycle
+        // 1 --> 2 --> 3 --> 4 --> 5 --> 3, we are ignoring this whole tree.
+        // ideally we should skip from 3 --> 4 --> 5 --> 3 TODO
+        if(Objects.nonNull(disease) && !isCycleDetected(diseaseNode, path)) {
             // get children nodes of term aka parent node
             List<Node> childDiseaseNodes = diseaseNode.getChildren();
             List<DiseaseRelationDTO> parentChildren = getDiseaseRelationDTO(disease, childDiseaseNodes);
             return parentChildren;
         } else {
+                log.warn("Cycle Detected! Ignoring the parent child relationships..");
+                log.warn("Path {}", path);
             return new ArrayList<>();
         }
     }
@@ -66,5 +74,29 @@ public class MondoTermToDiseaseChildConverter implements ItemProcessor<OBOTerm, 
             }
         }
         return parentChildren;
+    }
+
+    private boolean isCycleDetected(Node current, List<Long> path){
+        Set<Long> visitedId = new HashSet<>();
+        boolean isCycle = dfs(current, visitedId, path);
+        return isCycle;
+    }
+
+    private boolean dfs(Node current, Set<Long> visitedId, List<Long> path) {
+        Disease disease = this.diseaseNameToDiseaseMap.get(current.getTerm().getName().toLowerCase());
+        if(disease != null) {
+            path.add(disease.getId());
+            if(visitedId.contains(disease.getId())){
+                return true;
+            }
+            visitedId.add(disease.getId());
+            for(Node child : current.getChildren()){
+                boolean isCycle = dfs(child, visitedId, path);
+                if(isCycle){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
