@@ -93,11 +93,17 @@ public class ProteinService {
     }
 
     public List<Protein> getProteinsByDiseaseId(String diseaseId) {
-        Set<Protein> proteins = this.diseaseService.getDiseaseAndItsChildren(diseaseId)
+        // check if a protein is mapped by any of the child then that Protein is called internally mapped
+        // and isExternallyMapped will be set to false
+        Map<String, Boolean> accessionIsMapped = new HashMap<>();
+        Set<DiseaseProtein> dps = this.diseaseService.getDiseaseAndItsChildren(diseaseId)
                 .stream()
                 .map(dis -> dis.getDiseaseProteins())
-                .flatMap(Set::stream)
-                .map(dp -> getProtein(dp))
+                .flatMap(Set::stream).collect(Collectors.toSet());
+
+        populateAccessionIsMappedByUniProt(dps, accessionIsMapped);
+
+        Set<Protein> proteins = dps.stream().map(dp -> getProtein(dp, accessionIsMapped))
                 .collect(Collectors.toSet());
         return new ArrayList<>(proteins);
     }
@@ -106,11 +112,21 @@ public class ProteinService {
         return this.proteinDAO.findAllByDrugName(drugName);
     }
 
-    private Protein getProtein(DiseaseProtein dp) {
+    private Protein getProtein(DiseaseProtein dp, Map<String, Boolean> accessionIsMapped) {
         Protein p = dp.getProtein();
-        p.setIsExternallyMapped(dp.getIsMapped());
+        p.setIsExternallyMapped(accessionIsMapped.getOrDefault(p.getAccession(), Boolean.FALSE));
         return p;
     }
 
-
+    private void populateAccessionIsMappedByUniProt(Set<DiseaseProtein> dps, Map<String, Boolean> accessionIsMapped) {
+        for(DiseaseProtein dp : dps){
+            Boolean isMapped = Objects.isNull(dp.getIsMapped()) ? Boolean.FALSE : dp.getIsMapped();
+            String accession = dp.getProtein().getAccession();
+            if(accessionIsMapped.containsKey(accession)){
+                accessionIsMapped.put(accession, isMapped && accessionIsMapped.get(accession));
+            } else {
+                accessionIsMapped.put(accession, isMapped);
+            }
+        }
+    }
 }
