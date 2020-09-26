@@ -66,6 +66,12 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblOpenTarget, 
                     .collect(Collectors.toSet());
             // add the drug in set to avoid duplicate insertion
             this.drugsStored.addAll(drugs);
+        } else { // else add drug with or without disease
+            Drug drug = getDrug(null, item);
+            if(!this.drugsStored.contains(drug)){
+                drugs.add(drug);
+                this.drugsStored.add(drug);
+            }
         }
 
         return new ArrayList<>(drugs);

@@ -65,13 +65,12 @@ public class Drug extends BaseEntity {
                 && Objects.equals(getMoleculeType(), drug.getMoleculeType())
                 && Objects.equals(getChemblDiseaseId(), drug.getChemblDiseaseId())
                 && Objects.equals(getDisease(), drug.getDisease())
-                ;
+                && Objects.equals(getProteinCrossRef(), drug.getProteinCrossRef());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getSourceType(),
-                getSourceId(), getMoleculeType(), getChemblDiseaseId(), getDisease());
+        return Objects.hash(getName(), getSourceType(), getSourceId(), getMoleculeType(), getChemblDiseaseId(),
+                getDisease(), getProteinCrossRef());
     }
-
 }
