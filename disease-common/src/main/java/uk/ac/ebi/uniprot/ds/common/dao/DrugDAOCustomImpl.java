@@ -38,8 +38,8 @@ public class DrugDAOCustomImpl implements DrugDAOCustom {
             "on dr.ds_disease_id = d.id) tmp \n" +
             "on dd.\"name\"=tmp.\"name\" \n" +
             "left join ds_disease dis on dis.id=dd.ds_disease_id\n" +
-            "join ds_protein_cross_ref dpc on dpc.id = dd.ds_protein_cross_ref_id \n" +
-            "join ds_protein dp on dp.id = dpc.ds_protein_id\n" +
+            "left join ds_protein_cross_ref dpc on dpc.id = dd.ds_protein_cross_ref_id \n" +
+            "left join ds_protein dp on dp.id = dpc.ds_protein_id\n" +
             "left join ds_drug_evidence dre on dre.ds_drug_id = dd.id\n" +
             "order by 1";
 
