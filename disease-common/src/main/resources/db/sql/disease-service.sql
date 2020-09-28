@@ -468,7 +468,7 @@ CREATE TABLE disease_service.ds_drug (
                                          clinical_trial_phase smallint,
                                          mechanism_of_action character varying(255),
                                          clinical_trial_link character varying(255),
-                                         chembl_disease_id character varying(255) NOT NULL,
+                                         chembl_disease_id character varying(255),
                                          ds_disease_id bigint
 );
 

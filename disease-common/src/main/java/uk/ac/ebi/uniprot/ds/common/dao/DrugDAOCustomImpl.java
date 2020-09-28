@@ -21,7 +21,7 @@ public class DrugDAOCustomImpl implements DrugDAOCustom {
             "dre.ref_url as evidences, dp.accession as proteins, \n" +
             "coalesce(dis.disease_name, dd.chembl_disease_id) as diseaseName, \n" +
             "coalesce(dis.disease_id , dd.chembl_disease_id) as diseaseId, \n" +
-            "dd.ds_disease_id as did\n" +
+            "dd.ds_disease_id as did, dd.id as drugId\n" +
             "from ds_drug dd\n" +
             "join (\n" +
             "select dr.\"name\", d.disease_id, d.id \n" +
@@ -40,8 +40,7 @@ public class DrugDAOCustomImpl implements DrugDAOCustom {
             "left join ds_disease dis on dis.id=dd.ds_disease_id\n" +
             "left join ds_protein_cross_ref dpc on dpc.id = dd.ds_protein_cross_ref_id \n" +
             "left join ds_protein dp on dp.id = dpc.ds_protein_id\n" +
-            "left join ds_drug_evidence dre on dre.ds_drug_id = dd.id\n" +
-            "order by 1";
+            "left join ds_drug_evidence dre on dre.ds_drug_id = dd.id";
 
     private static final String QUERY_DRUGS_BY_PROTEIN_ACCESSION = "\n" +
             "select dd3.* from (\n" +
@@ -58,7 +57,7 @@ public class DrugDAOCustomImpl implements DrugDAOCustom {
             "join ds_drug dd \n" +
             "on dd.ds_protein_cross_ref_id = dpc.id \n" +
             "join ds_drug dd1 on dd.\"name\" = dd1.\"name\" \n" +
-            "where dp.accession = ?) dd3 order by 2";
+            "where dp.accession = ?) dd3 ";
 
 
     @PersistenceContext

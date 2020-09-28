@@ -86,7 +86,7 @@ public class ProteinService {
         return getProteinByAccession(accession)
                 .map(protein -> protein.getInteractions()
                         .stream()
-                        .filter(intrxn -> !intrxn.getType().equals("SELF"))
+                        .filter(intrxn -> !intrxn.getType().equals("SELF") && !intrxn.getType().equals("XENO"))
                         .collect(Collectors.toList())
                 )
                 .orElse(null);

@@ -5,6 +5,17 @@ import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
 import uk.ac.ebi.uniprot.ds.common.dao.ProteinCrossRefDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
@@ -13,11 +24,6 @@ import uk.ac.ebi.uniprot.ds.common.model.DrugEvidence;
 import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
 import uk.ac.ebi.uniprot.ds.importer.model.ChemblOpenTarget;
 import uk.ac.ebi.uniprot.ds.importer.util.Constants;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblOpenTarget, List<Drug>> {
@@ -96,7 +102,7 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblOpenTarget, 
     private Drug getDrug(ProteinCrossRef xref, ChemblOpenTarget item) {
         String srcChemblUrl = item.getChemblSourceUrl();
         String srcChemblId = srcChemblUrl.substring(srcChemblUrl.lastIndexOf(Constants.FORWARD_SLASH) + 1);
-        Disease disease = getDiseaseByEFO(item.getDiseaseId());
+        Disease disease = Objects.nonNull(item.getDiseaseId()) ? getDiseaseByEFO(item.getDiseaseId()) : null;
         Drug.DrugBuilder drugBuilder = Drug.builder();
         drugBuilder.mechanismOfAction(item.getMechOfAction()).clinicalTrialLink(item.getClinicalTrialLink());
         drugBuilder.clinicalTrialPhase(item.getClinicalTrialPhase()).proteinCrossRef(xref);

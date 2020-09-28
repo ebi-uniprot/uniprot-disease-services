@@ -96,7 +96,6 @@ public class ChemblOpenTargetReader implements ItemReader<ChemblOpenTarget> {
             chemblDiseaseId = "http://purl.obolibrary.org/obo" + chemblDiseaseId;
         }
 
-
         ChemblOpenTarget.ChemblOpenTargetBuilder openTargetBuilder = ChemblOpenTarget.builder();
         openTargetBuilder.chemblSourceUrl(chemblSourceUrl).chemblTargetUrl(chemblTargetUrl);
         openTargetBuilder.clinicalTrialPhase(clinicalTrialPhase).clinicalTrialLink(clinicalTrialLink);
@@ -104,9 +103,7 @@ public class ChemblOpenTargetReader implements ItemReader<ChemblOpenTarget> {
         openTargetBuilder.moleculeName(moleculeName).moleculeType(moleculeType);
         openTargetBuilder.diseaseId(chemblDiseaseId);
 
-
         return openTargetBuilder.build();
-
     }
 
     //evidence.target2drug.provenance_type.literature.references[].lit_id
