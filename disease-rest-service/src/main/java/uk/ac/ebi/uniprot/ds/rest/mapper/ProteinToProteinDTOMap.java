@@ -63,7 +63,8 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 			List<Interaction> ints = context.getSource();
 			List<String> intsStr = null;
 			if (ints != null) {
-				intsStr = ints.stream().map(in -> in.getAccession()).collect(Collectors.toList());
+				intsStr = ints.stream().filter(intrxn -> !intrxn.getType().equals("SELF") && !intrxn.getType().equals("XENO"))
+                        .map(in -> in.getAccession()).collect(Collectors.toList());
 			}
 			return intsStr;
 		}
