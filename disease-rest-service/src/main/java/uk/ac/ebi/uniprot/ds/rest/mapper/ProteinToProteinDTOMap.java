@@ -5,6 +5,7 @@ import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -63,7 +64,16 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 			List<Interaction> ints = context.getSource();
 			List<String> intsStr = null;
 			if (ints != null) {
-				intsStr = ints.stream().filter(intrxn -> !intrxn.getType().equals("SELF") && !intrxn.getType().equals("XENO"))
+			    Set<String> secondInteractor = new HashSet<>();
+				intsStr = ints.stream()
+                        .filter(intrxn -> {
+                            if(secondInteractor.contains(intrxn.getSecondInteractor())){
+                                return false;
+                            } else {
+                                secondInteractor.add(intrxn.getSecondInteractor());
+                                return true;
+                            }
+                        })
                         .map(in -> in.getAccession()).collect(Collectors.toList());
 			}
 			return intsStr;
