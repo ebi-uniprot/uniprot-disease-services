@@ -97,8 +97,10 @@ public class DrugService {
             if(proteinCrossRefs.contains(crossRefId)){
                 Drug oldDrug = nameDrugMap.getOrDefault(drug.getName(), new Drug());
                 Integer oldTrialPhase = oldDrug.getClinicalTrialPhase();
+                String oldLink = oldDrug.getClinicalTrialLink();
                 Integer newTrialPhase = drug.getClinicalTrialPhase();
-                if(Objects.isNull(oldTrialPhase) || newTrialPhase > oldTrialPhase){
+                String newLink = drug.getClinicalTrialLink();
+                if(updateClinicalTrialPhase(oldTrialPhase, newTrialPhase, oldLink, newLink)){
                     // drug without disease id and cross ref id
                     Drug slimDrug = createDrugWithoutCrossRefAndDisease(drug);
                     Set<Pair<String, Integer>> diseaseProteinCount = getDiseaseProteinCount(drug.getName(), drugToDiseases, nameToDisease);
@@ -127,14 +129,17 @@ public class DrugService {
             builder.sourceType((String) drug[1]);
             builder.sourceId((String) drug[2]);
             builder.moleculeType((String) drug[3]);
-            Integer oldTrialPhase = builder.build().getClinicalTrialPhase();
+            DrugDTO temp = builder.build();
+            Integer oldTrialPhase = temp.getClinicalTrialPhase();
             Integer newTrialPhase = (Integer) drug[4];
+            String oldLink = temp.getClinicalTrialLink();
+            String newLink = (String) drug[6];
 
-            if(Objects.isNull(oldTrialPhase) || newTrialPhase > oldTrialPhase) {// update few fields in case of maximum phase
+            if(updateClinicalTrialPhase(oldTrialPhase, newTrialPhase, oldLink, newLink)) {
                 builder.drugId(drugId);
-                builder.clinicalTrialPhase((Integer) drug[4]);
+                builder.clinicalTrialPhase(newTrialPhase);
                 builder.mechanismOfAction((String) drug[5]);
-                builder.clinicalTrialLink((String) drug[6]);
+                builder.clinicalTrialLink(newLink);
             }
 
             // evidences map to set later for the maximum phase
@@ -175,6 +180,13 @@ public class DrugService {
                 .collect(Collectors.toList());
 
         return drugDTOs;
+    }
+
+    private boolean updateClinicalTrialPhase(Integer oldTrialPhase, Integer newTrialPhase, String oldLink, String newLink){
+       return  Objects.isNull(oldTrialPhase) || // case 1. set the phase if it is first time
+               newTrialPhase > oldTrialPhase ||// case 2. update phase if it is greater than previous one
+               (oldTrialPhase.equals(newTrialPhase) && // case 3. update link for the same phase if oldllink is null and new link is not null
+                       Objects.isNull(oldLink) && Objects.nonNull(newLink));
     }
 
     private Drug createDrugWithoutCrossRefAndDisease(Drug drug){
