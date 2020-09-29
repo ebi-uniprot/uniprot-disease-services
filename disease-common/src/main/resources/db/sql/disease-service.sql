@@ -39,6 +39,7 @@ ALTER TABLE IF EXISTS ONLY disease_service.ds_disease_protein DROP CONSTRAINT IF
 ALTER TABLE IF EXISTS ONLY disease_service.ds_disease_protein DROP CONSTRAINT IF EXISTS ds_disease_protein_ds_disease_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_cross_ref DROP CONSTRAINT IF EXISTS ds_cross_ref_ds_disease_fk;
 ALTER TABLE IF EXISTS ONLY disease_service.ds_drug DROP CONSTRAINT IF EXISTS drug_prot_cross_ref_fk;
+DROP TRIGGER IF EXISTS detect_cycle_after_insert_update ON disease_service.ds_disease_relation;
 DROP INDEX IF EXISTS disease_service.ds_site_mapping_accession_idx;
 DROP INDEX IF EXISTS disease_service.ds_keyword_key_value_idx;
 ALTER TABLE IF EXISTS ONLY disease_service.databasechangeloglock DROP CONSTRAINT IF EXISTS pk_databasechangeloglock;
@@ -135,6 +136,7 @@ DROP SEQUENCE IF EXISTS disease_service.batch_job_execution_seq;
 DROP TABLE IF EXISTS disease_service.batch_job_execution_params;
 DROP TABLE IF EXISTS disease_service.batch_job_execution_context;
 DROP TABLE IF EXISTS disease_service.batch_job_execution;
+DROP FUNCTION IF EXISTS disease_service.detect_cycle();
 DROP SCHEMA IF EXISTS disease_service;
 --
 -- Name: disease_service; Type: SCHEMA; Schema: -; Owner: variant
@@ -144,6 +146,40 @@ CREATE SCHEMA disease_service;
 
 
 ALTER SCHEMA disease_service OWNER TO variant;
+
+--
+-- Name: detect_cycle(); Type: FUNCTION; Schema: disease_service; Owner: variant
+--
+
+CREATE FUNCTION disease_service.detect_cycle() RETURNS trigger
+    LANGUAGE plpgsql
+AS $$
+DECLARE
+    loops INTEGER;
+BEGIN
+    EXECUTE 'WITH RECURSIVE search_graph(ds_disease_id, ds_disease_parent_id, depth, path, cycle) AS (
+        SELECT dr.ds_disease_id, dr.ds_disease_parent_id, 1,
+          ARRAY[dr.ds_disease_id],
+          false
+        FROM ds_disease_relation dr
+      UNION ALL
+        SELECT dr.ds_disease_id, dr.ds_disease_parent_id, sg.depth + 1,
+          path || dr.ds_disease_id,
+          dr.ds_disease_id = ANY(path)
+        FROM ds_disease_relation dr, search_graph sg
+        WHERE dr.ds_disease_id = sg.ds_disease_parent_id AND NOT cycle
+)
+select count(*) FROM search_graph where cycle = TRUE' INTO loops;
+    IF loops > 0 THEN
+        RAISE EXCEPTION 'Error - Cycle detected in ds_disease_relation table! Fix it and then retry.';
+    ELSE
+        RETURN NEW;
+    END IF;
+END
+$$;
+
+
+ALTER FUNCTION disease_service.detect_cycle() OWNER TO variant;
 
 SET default_tablespace = '';
 
@@ -1602,6 +1638,11 @@ ALTER TABLE ONLY disease_service.ds_variant
     ADD CONSTRAINT variant_protein_fk FOREIGN KEY (ds_protein_id) REFERENCES disease_service.ds_protein(id);
 
 
+--
+-- Name: ds_disease_relation detect_cycle_after_insert_update; Type: TRIGGER; Schema: disease_service; Owner: variant
+--
+
+CREATE TRIGGER detect_cycle_after_insert_update AFTER INSERT OR UPDATE ON disease_service.ds_disease_relation FOR EACH ROW EXECUTE PROCEDURE disease_service.detect_cycle();
 --
 -- PostgreSQL database dump complete
 --

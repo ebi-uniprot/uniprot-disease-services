@@ -24,4 +24,5 @@
     <include file="src/main/resources/db/changelog/changes/alter_ds_synonym_remove_unique_key.sql"/>
     <include file="src/main/resources/db/changelog/changes/create_table_ds_site_mapping.sql"/>
     <include file="src/main/resources/db/changelog/changes/add_columns_drug_table_disease_id.sql"/>
+    <include file="src/main/resources/db/changelog/changes/add_trigger_detect_cycle_disease_relation.sql"/>
 </databaseChangeLog>
