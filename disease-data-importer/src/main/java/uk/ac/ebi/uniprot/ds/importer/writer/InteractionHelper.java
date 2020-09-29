@@ -7,6 +7,8 @@
 
 package uk.ac.ebi.uniprot.ds.importer.writer;
 
+import org.apache.commons.lang3.StringUtils;
+
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.CommentType;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.InteractionComment;
@@ -38,7 +40,7 @@ public class InteractionHelper {
         builder.type(commentInteraction.getInteractionType().name());
 
         if(Objects.nonNull(commentInteraction.getSecondInteractantParent()) &&
-                Objects.nonNull(commentInteraction.getSecondInteractantParent().getValue())){
+                StringUtils.isNotBlank(commentInteraction.getSecondInteractantParent().getValue())){
             builder.accession(commentInteraction.getSecondInteractantParent().getValue());
         } else if(Objects.nonNull(commentInteraction.getSecondInteractant())){
             builder.accession(commentInteraction.getSecondInteractant().getValue());

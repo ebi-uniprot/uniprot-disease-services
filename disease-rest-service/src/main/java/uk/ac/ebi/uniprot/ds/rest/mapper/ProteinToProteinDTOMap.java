@@ -64,13 +64,13 @@ public class ProteinToProteinDTOMap extends PropertyMap<Protein, ProteinDTO> {
 			List<Interaction> ints = context.getSource();
 			List<String> intsStr = null;
 			if (ints != null) {
-			    Set<String> secondInteractor = new HashSet<>();
+			    Set<String> accessions = new HashSet<>();
 				intsStr = ints.stream()
                         .filter(intrxn -> {
-                            if(secondInteractor.contains(intrxn.getSecondInteractor())){
+                            if(accessions.contains(intrxn.getAccession())){
                                 return false;
                             } else {
-                                secondInteractor.add(intrxn.getSecondInteractor());
+                                accessions.add(intrxn.getAccession());
                                 return true;
                             }
                         })

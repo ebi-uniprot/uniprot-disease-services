@@ -83,15 +83,15 @@ public class ProteinService {
     }
 
     public List<Interaction> getProteinInteractions(String accession){
-        Set<String> secondInteractor = new HashSet<>();
+        Set<String> accessions = new HashSet<>();
         return getProteinByAccession(accession)
                 .map(protein -> protein.getInteractions()
                         .stream()
                         .filter(intrxn -> {
-                            if(secondInteractor.contains(intrxn.getSecondInteractor())){
+                            if(accessions.contains(intrxn.getAccession())){
                                 return false;
                             } else {
-                                secondInteractor.add(intrxn.getSecondInteractor());
+                                accessions.add(intrxn.getAccession());
                                 return true;
                             }
                         })
