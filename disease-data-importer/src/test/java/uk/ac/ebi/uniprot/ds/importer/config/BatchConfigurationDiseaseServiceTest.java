@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {DataImporterSpringBootApplication.class, BatchConfigurationDiseaseService.class,
         HumDiseaseDataLoadStep.class, UniProtDataLoadStep.class, GeneCoordinateDataLoadStep.class, MondoDiseaseLoadStep.class,
-        DiseaseParentChildLoadStep.class, ChEMBLDrugLoadStep.class, SiteMappingLoadStep.class})
+        DiseaseParentChildLoadStep.class, ChEMBLDrugLoadStep.class, SiteMappingLoadStep.class, DiseaseDescendentsLoadStep.class})
 public class BatchConfigurationDiseaseServiceTest {
 
     @Autowired
@@ -38,17 +38,17 @@ public class BatchConfigurationDiseaseServiceTest {
 
     @After
     public void cleanUp(){
-        this.synonymDAO.deleteAll();
-        this.variantDAO.deleteAll();
-        this.proteinCrossRefDAO.deleteAll();
-        this.interactionDAO.deleteAll();
-        this.featureLocationDAO.deleteAll();
-        this.evidenceDAO.deleteAll();
-        this.diseaseDAO.deleteAll();
-        this.proteinDAO.deleteAll();
-        this.siteMappingDAO.deleteAll();
-        this.geneCoordinateDAO.deleteAll();
-        this.crossRefDAO.deleteAll();
+            this.synonymDAO.deleteAll();
+            this.variantDAO.deleteAll();
+            this.proteinCrossRefDAO.deleteAll();
+            this.interactionDAO.deleteAll();
+            this.featureLocationDAO.deleteAll();
+            this.evidenceDAO.deleteAll();
+            this.diseaseDAO.deleteAll();
+            this.proteinDAO.deleteAll();
+            this.siteMappingDAO.deleteAll();
+            this.geneCoordinateDAO.deleteAll();
+            this.crossRefDAO.deleteAll();
     }
 
     @Test

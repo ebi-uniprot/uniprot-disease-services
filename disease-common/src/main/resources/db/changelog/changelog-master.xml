@@ -25,4 +25,6 @@
     <include file="src/main/resources/db/changelog/changes/create_table_ds_site_mapping.sql"/>
     <include file="src/main/resources/db/changelog/changes/add_columns_drug_table_disease_id.sql"/>
     <include file="src/main/resources/db/changelog/changes/add_trigger_detect_cycle_disease_relation.sql"/>
+    <include file="src/main/resources/db/changelog/changes/create_table_ds_disease_descendent.sql"/>
+    <include file="src/main/resources/db/changelog/changes/alter_table_add_index_ds_drug.sql"/>
 </databaseChangeLog>
