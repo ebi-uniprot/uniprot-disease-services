@@ -111,7 +111,6 @@ public class ProteinService {
 
         Set<Protein> proteins = proteinsWithMapped.stream().map(protein -> setIsExternallyMapped(protein, accessionIsMapped))
                 .collect(Collectors.toSet());
-        List<String> names = proteins.stream().map(p -> p.getAccession()).collect(Collectors.toList());
         return new ArrayList<>(proteins);
     }
 
