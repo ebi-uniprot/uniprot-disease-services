@@ -21,7 +21,7 @@
         <version>2.0.5.RELEASE</version>
     </parent>
     <properties>
-        <jcommander.version>1.72</jcommander.version>
+        <jcommander.version>1.78</jcommander.version>
         <http-uniprot-private-url>http://wwwdev.ebi.ac.uk/uniprot/artifactory</http-uniprot-private-url>
         <jacoco.version>0.7.8</jacoco.version>
         <jacoco.outputDir>${project.build.directory}</jacoco.outputDir>
