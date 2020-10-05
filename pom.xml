@@ -13,6 +13,7 @@
         <module>disease-rest-service</module>
         <module>disease-common</module>
         <module>disease-graphql-service</module>
+        <module>jacoco-aggregate-report</module>
     </modules>
 
     <parent>
@@ -21,9 +22,11 @@
         <version>2.0.5.RELEASE</version>
     </parent>
     <properties>
+        <disease-service.version>${project.version}</disease-service.version>
+        <disease-graphql-service.version>0.0.1-SNAPSHOT</disease-graphql-service.version>
         <jcommander.version>1.78</jcommander.version>
         <http-uniprot-private-url>http://wwwdev.ebi.ac.uk/uniprot/artifactory</http-uniprot-private-url>
-        <jacoco.version>0.7.8</jacoco.version>
+        <jacoco.version>0.8.5</jacoco.version>
         <jacoco.outputDir>${project.build.directory}</jacoco.outputDir>
         <jacoco.out.ut.file>jacoco-ut.exec</jacoco.out.ut.file>
         <jacoco.reportPath>${jacoco.outputDir}/${jacoco.out.ut.file}</jacoco.reportPath>
@@ -35,7 +38,7 @@
         <skipITs>false</skipITs>
         <skipUTs>false</skipUTs>
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.modelmapper</groupId>
@@ -145,68 +148,16 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <!-- Exclude integration tests from unit test run-->
-                    <excludes>
-                        <skipITs>${skipUTs}</skipITs>
-                        <exclude>**/*IT.java</exclude>
-                        <exclude>**/IT*.java</exclude>
-                    </excludes>
-                    <argLine>${jacoco.agent.ut.arg}</argLine>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <configuration>
-                    <forkCount>1</forkCount>
-                    <reuseForks>false</reuseForks>
-                    <skipITs>${skipITs}</skipITs>
-                    <argLine>${jacoco.agent.it.arg}</argLine>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.maven.version}</version>
+                <version>${jacoco.version}</version>
                 <executions>
-                    <!-- Sets up jacaco for unit test coverage analysis (jacoco.agent.ut.arg) -->
                     <execution>
-                        <id>prepare-ut-agent</id>
-                        <phase>process-test-classes</phase>
+                        <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                        <configuration>
-                            <destFile>${jacoco.reportPath}</destFile>
-                            <propertyName>jacoco.agent.ut.arg</propertyName>
-                        </configuration>
-                    </execution>
-                    <!-- Sets up jacaco for integration test coverage analysis (jacoco.agent.it.arg) -->
-                    <execution>
-                        <id>prepare-it-agent</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <configuration>
-                            <destFile>${jacoco.itReportPath}</destFile>
-                            <propertyName>jacoco.agent.it.arg</propertyName>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>uniprot-disease-services</artifactId>
+		<groupId>uk.ac.ebi.uniprot</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>jacoco-aggregate-report</artifactId>
+	<name>Aggregate Report</name>
+	<dependencies>
+		<dependency>
+			<groupId>uk.ac.ebi.uniprot</groupId>
+			<artifactId>disease-common</artifactId>
+			<version>${disease-service.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>uk.ac.ebi.uniprot</groupId>
+			<artifactId>disease-data-importer</artifactId>
+			<version>${disease-service.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>uk.ac.ebi.uniprot</groupId>
+			<artifactId>disease-graphql-service</artifactId>
+			<version>${disease-graphql-service.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>uk.ac.ebi.uniprot</groupId>
+			<artifactId>disease-rest-service</artifactId>
+			<version>${disease-service.version}</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<executions>
+					<execution>
+						<id>report-aggregate</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report-aggregate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
