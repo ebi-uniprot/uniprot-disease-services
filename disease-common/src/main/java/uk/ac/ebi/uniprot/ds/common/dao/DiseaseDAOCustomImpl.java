@@ -10,15 +10,15 @@ import java.util.List;
 
 @Repository
 public class DiseaseDAOCustomImpl implements DiseaseDAOCustom {
-    private static final String QUERY_DISEASE_CHILDREN_BY_DISEASE_ID = "select d.* from (WITH RECURSIVE cd AS ( " +
-            "   SELECT id from ds_disease where disease_id = ? " +
-            "   UNION ALL " +
-            "   SELECT dr.ds_disease_id " +
-            "   FROM ds_disease_relation AS dr " +
-            "     JOIN cd ON cd.id = dr.ds_disease_parent_id " +
-            ") " +
-            "SELECT cd.id FROM cd ) ch " +
-            "join ds_disease d on d.id = ch.id ";
+    private static final String QUERY_DISEASE_CHILDREN_BY_DISEASE_ID = "" +
+            "select dd2.* from ds_disease dd2 " +
+            "join (" +
+            "select ddd.ds_descendent_id " +
+            "from ds_disease dd " +
+            "join ds_disease_descendent ddd on " +
+            "dd.id = ddd.ds_disease_id " +
+            "where dd.disease_id=?) disease_descendents " +
+            "on dd2.id = disease_descendents.ds_descendent_id";
 
     @PersistenceContext
     EntityManager entityManager;
@@ -27,7 +27,6 @@ public class DiseaseDAOCustomImpl implements DiseaseDAOCustom {
     public List<Disease> getDiseaseAndItsChildren(String diseaseId) {
         Query query = this.entityManager.createNativeQuery(QUERY_DISEASE_CHILDREN_BY_DISEASE_ID, Disease.class);
         query.setParameter(1, diseaseId);
-        List<Disease> result = query.getResultList();
-        return result;
+        return query.getResultList();
     }
 }

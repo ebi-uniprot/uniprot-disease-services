@@ -84,7 +84,7 @@ public class DiseaseParentChildLoadStep {
                 };
         jdbcBatchItemWriter.setItemPreparedStatementSetter(itemPreparedStatementSetter);
 
-        ListJDBCBatchItemWriter listJDBCBatchItemWriter = new ListJDBCBatchItemWriter();
+        ListJDBCBatchItemWriter<DiseaseRelationDTO> listJDBCBatchItemWriter = new ListJDBCBatchItemWriter<>();
         listJDBCBatchItemWriter.setDelegate(jdbcBatchItemWriter);
 
         return listJDBCBatchItemWriter;

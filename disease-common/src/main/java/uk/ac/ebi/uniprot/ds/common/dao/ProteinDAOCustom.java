@@ -13,4 +13,5 @@ import java.util.List;
 
 public interface ProteinDAOCustom {
     List<Protein> getProteinsByAccessions(List<String> accessions);
+    List<Protein> getProteinsByDiseaseId(String diseaseId);
 }

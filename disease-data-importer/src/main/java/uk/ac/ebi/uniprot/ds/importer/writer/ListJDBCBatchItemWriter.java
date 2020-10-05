@@ -5,20 +5,19 @@ import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
-import uk.ac.ebi.uniprot.ds.importer.model.DiseaseRelationDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListJDBCBatchItemWriter implements ItemWriter<List<DiseaseRelationDTO>>,
+public class ListJDBCBatchItemWriter<T> implements ItemWriter<List<T>>,
         ItemStream, InitializingBean {
 
-    private ItemWriter<DiseaseRelationDTO> delegate;
+    private ItemWriter<T> delegate;
 
     @Override
-    public void write(final List<? extends List<DiseaseRelationDTO>> lists) throws Exception {
-        final List<DiseaseRelationDTO> consolidatedList = new ArrayList<>();
-        for (final List<DiseaseRelationDTO> list : lists) {
+    public void write(final List<? extends List<T>> lists) throws Exception {
+        final List<T> consolidatedList = new ArrayList<>();
+        for (final List<T> list : lists) {
             consolidatedList.addAll(list);
         }
 
@@ -51,7 +50,7 @@ public class ListJDBCBatchItemWriter implements ItemWriter<List<DiseaseRelationD
         }
     }
 
-    public void setDelegate(ItemWriter<DiseaseRelationDTO> delegate) {
+    public void setDelegate(ItemWriter<T> delegate) {
         this.delegate = delegate;
     }
 }

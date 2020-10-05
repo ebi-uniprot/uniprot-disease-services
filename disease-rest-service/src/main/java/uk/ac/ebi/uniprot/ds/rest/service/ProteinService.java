@@ -104,14 +104,12 @@ public class ProteinService {
         // check if a protein is mapped by any of the child then that Protein is called internally mapped
         // and isExternallyMapped will be set to false
         Map<String, Boolean> accessionIsMapped = new HashMap<>();
-        Set<DiseaseProtein> dps = this.diseaseService.getDiseaseAndItsChildren(diseaseId)
-                .stream()
-                .map(dis -> dis.getDiseaseProteins())
+        List<Protein> proteinsWithMapped = this.proteinDAO.getProteinsByDiseaseId(diseaseId);
+        Set<DiseaseProtein> diseaseProteins = proteinsWithMapped.stream().map(protein -> protein.getDiseaseProteins())
                 .flatMap(Set::stream).collect(Collectors.toSet());
+        populateAccessionIsMappedByUniProt(diseaseProteins, accessionIsMapped);
 
-        populateAccessionIsMappedByUniProt(dps, accessionIsMapped);
-
-        Set<Protein> proteins = dps.stream().map(dp -> getProtein(dp, accessionIsMapped))
+        Set<Protein> proteins = proteinsWithMapped.stream().map(protein -> setIsExternallyMapped(protein, accessionIsMapped))
                 .collect(Collectors.toSet());
         return new ArrayList<>(proteins);
     }
@@ -120,10 +118,9 @@ public class ProteinService {
         return this.proteinDAO.findAllByDrugName(drugName);
     }
 
-    private Protein getProtein(DiseaseProtein dp, Map<String, Boolean> accessionIsMapped) {
-        Protein p = dp.getProtein();
-        p.setIsExternallyMapped(accessionIsMapped.getOrDefault(p.getAccession(), Boolean.FALSE));
-        return p;
+    private Protein setIsExternallyMapped(Protein protein, Map<String, Boolean> accessionIsMapped) {
+        protein.setIsExternallyMapped(accessionIsMapped.getOrDefault(protein.getAccession(), Boolean.FALSE));
+        return protein;
     }
 
     private void populateAccessionIsMappedByUniProt(Set<DiseaseProtein> dps, Map<String, Boolean> accessionIsMapped) {
