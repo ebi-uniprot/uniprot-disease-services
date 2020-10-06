@@ -75,5 +75,4 @@ public class DiseaseDAOCustomImpl implements DiseaseDAOCustom {
         Query query = this.entityManager.createNativeQuery("truncate table ds_disease_descendent");
         query.executeUpdate();
     }
-
 }

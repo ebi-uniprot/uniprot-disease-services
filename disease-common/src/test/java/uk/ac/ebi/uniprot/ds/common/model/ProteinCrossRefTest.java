@@ -27,13 +27,13 @@ public class ProteinCrossRefTest extends BaseTest {
     private Protein pr;
 
     @AfterEach
-    void cleanUp(){
+    void cleanUp() {
         em.remove(pcr);
         em.remove(pr);
     }
 
     @Test
-    void testCreateProteinCrossRef(){
+    void testCreateProteinCrossRef() {
         pr = createProtein();
         pcr = createProteinCrossRefObject(BaseTest.random);
         pcr.setProtein(pr);
@@ -69,7 +69,7 @@ public class ProteinCrossRefTest extends BaseTest {
         return protein;
     }
 
-    public  static ProteinCrossRef createProteinCrossRefObject(String uuid) {
+    public static ProteinCrossRef createProteinCrossRefObject(String uuid) {
         ProteinCrossRef proteinCrossRef = new ProteinCrossRef();
         String pId = "PID-" + uuid;
         String desc = "DESC-" + uuid;
@@ -84,5 +84,9 @@ public class ProteinCrossRefTest extends BaseTest {
         proteinCrossRef.setThird(t);
         proteinCrossRef.setFourth(f);
         return proteinCrossRef;
+    }
+
+    public static ProteinCrossRef createProteinCrossRefObject() {
+        return createProteinCrossRefObject(String.valueOf(BaseTest.random));
     }
 }

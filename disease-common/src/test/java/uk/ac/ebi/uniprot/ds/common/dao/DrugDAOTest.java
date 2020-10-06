@@ -151,8 +151,6 @@ public class DrugDAOTest {
         assertEquals(this.protein.getAccession(), drugs.get(0).getProteinCrossRef().getProtein().getAccession());
     }
 
-
-
     private void verifyDrug(Drug actual, Drug expected) {
         assertEquals(actual.getId(), expected.getId());
         assertEquals(actual.getName(), expected.getName());
