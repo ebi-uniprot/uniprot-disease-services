@@ -1,12 +1,14 @@
 package uk.ac.ebi.uniprot.ds.common.dao;
 
 import org.springframework.stereotype.Repository;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
+
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.List;
+
+import uk.ac.ebi.uniprot.ds.common.model.Disease;
 
 @Repository
 public class DiseaseDAOCustomImpl implements DiseaseDAOCustom {
@@ -29,4 +31,49 @@ public class DiseaseDAOCustomImpl implements DiseaseDAOCustom {
         query.setParameter(1, diseaseId);
         return query.getResultList();
     }
+
+    private static final String QUERY_TO_FLATTEN_HIERARCHY = "" +
+            "WITH RECURSIVE cd AS ( " +
+            "SELECT id from ds_disease where id=? " +
+            "UNION " +
+            "SELECT dr.ds_disease_id " +
+            "FROM ds_disease_relation AS dr " +
+            "JOIN cd ON cd.id = dr.ds_disease_parent_id " +
+            ") " +
+            "SELECT ? as parentId, cd.id as childId FROM cd order by 2 ";
+    // Performance is not good. Use table ds_disease_descendent instead
+    @Override
+    public List<Object[]> getParentAndItsDescendents(Long id) {
+        Query query = this.entityManager.createNativeQuery(QUERY_TO_FLATTEN_HIERARCHY);
+        query.setParameter(1, id);
+        query.setParameter(2, id);
+        return query.getResultList();
+    }
+
+    private static final String INSERT_DESCENDENTS = "" +
+            "INSERT INTO ds_disease_descendent" +
+            "(ds_disease_id, ds_descendent_id) " +
+            "VALUES(?, ?) ";
+
+    @Override
+    public int insertDiseaseIdAndDescendentId(Long id, Long descendentId) {
+        Query query = this.entityManager.createNativeQuery(INSERT_DESCENDENTS);
+        query.setParameter(1, id);
+        query.setParameter(2, descendentId);
+        return query.executeUpdate();
+    }
+
+    @Override
+    public void truncateDiseaseRelation() {
+        Query query = this.entityManager.createNativeQuery("truncate table ds_disease_relation");
+        query.executeUpdate();
+
+    }
+
+    @Override
+    public void truncateDiseaseDescendent() {
+        Query query = this.entityManager.createNativeQuery("truncate table ds_disease_descendent");
+        query.executeUpdate();
+    }
+
 }
