@@ -62,5 +62,4 @@ public class DrugDAOCustomImpl implements DrugDAOCustom {
         query.setParameter(1, accession);
         return query.getResultList();
     }
-
 }
