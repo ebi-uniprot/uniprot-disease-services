@@ -22,15 +22,16 @@ import uk.ac.ebi.uniprot.ds.common.model.Protein;
 
 @Repository
 public class ProteinDAOCustomImpl implements ProteinDAOCustom {
+    // get proteins for the given disease id and its descendents
     private static final String QUERY_GET_PROTEINS_BY_DISEASE_ID = "" +
-            "select dp.*\n" +
-            "from ds_disease dd \n" +
-            "join ds_disease_descendent ddd on \n" +
-            "dd.id = ddd.ds_disease_id \n" +
-            "join ds_disease_protein ddp \n" +
-            "on ddp.ds_disease_id = ddd.ds_descendent_id \n" +
-            "join ds_protein dp \n" +
-            "on dp.id = ddp.ds_protein_id \n" +
+            "select dp.* " +
+            "from ds_disease dd " +
+            "join ds_disease_descendent ddd on " +
+            "dd.id = ddd.ds_disease_id " +
+            "join ds_disease_protein ddp " +
+            "on ddp.ds_disease_id = ddd.ds_descendent_id " +
+            "join ds_protein dp " +
+            "on dp.id = ddp.ds_protein_id " +
             "where dd.disease_id=? group by 1";
 
     @PersistenceContext
