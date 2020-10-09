@@ -143,7 +143,7 @@
         <ojdbc.version>11.2.0.4</ojdbc.version>
         <ojdbc.artifactid>ojdbc6</ojdbc.artifactid>
         <http-uniprot-private-url>http://wwwdev.ebi.ac.uk/uniprot/artifactory</http-uniprot-private-url>
-        <uniprot.version>2020.4</uniprot.version>
+        <uniprot.version>2020.5.1</uniprot.version>
     </properties>
     <repositories>
     <repository>

@@ -2,7 +2,7 @@ ID   FGFR3_HUMAN             Reviewed;         806 AA.
 AC   P22607; D3DVP9; D3DVQ0; Q14308; Q16294; Q16608; Q59FL9;
 DT   01-AUG-1991, integrated into UniProtKB/Swiss-Prot.
 DT   01-AUG-1991, sequence version 1.
-DT   17-JUN-2020, entry version 244.
+DT   07-OCT-2020, entry version 246.
 DE   RecName: Full=Fibroblast growth factor receptor 3;
 DE            Short=FGFR-3;
 DE            EC=2.7.10.1;
@@ -890,11 +890,15 @@ DR   RefSeq; NP_075254.1; NM_022965.3. [P22607-3]
 DR   PDB; 1RY7; X-ray; 3.20 A; B=33-365.
 DR   PDB; 2LZL; NMR; -; A/B=357-399.
 DR   PDB; 4K33; X-ray; 2.34 A; A=449-759.
+DR   PDB; 6LVM; X-ray; 2.53 A; A=472-759.
 DR   PDB; 6PNX; X-ray; 2.20 A; A/B=451-759.
 DR   PDBsum; 1RY7; -.
 DR   PDBsum; 2LZL; -.
 DR   PDBsum; 4K33; -.
+DR   PDBsum; 6LVM; -.
 DR   PDBsum; 6PNX; -.
+DR   BMRB; P22607; -.
+DR   SASBDB; P22607; -.
 DR   SMR; P22607; -.
 DR   BioGRID; 108552; 67.
 DR   DIP; DIP-4016N; -.
@@ -913,6 +917,7 @@ DR   DrugBank; DB08901; Ponatinib.
 DR   DrugBank; DB05014; XL999.
 DR   DrugCentral; P22607; -.
 DR   GuidetoPHARMACOLOGY; 1810; -.
+DR   GlyGen; P22607; 6 sites.
 DR   iPTMnet; P22607; -.
 DR   PhosphoSitePlus; P22607; -.
 DR   BioMuta; FGFR3; -.
@@ -927,7 +932,7 @@ DR   ProteomicsDB; 54006; -. [P22607-2]
 DR   ProteomicsDB; 54007; -. [P22607-3]
 DR   ProteomicsDB; 54008; -. [P22607-4]
 DR   ABCD; P22607; 3 sequenced antibodies.
-DR   Antibodypedia; 3787; 681 antibodies.
+DR   Antibodypedia; 3787; 690 antibodies.
 DR   DNASU; 2261; -.
 DR   Ensembl; ENST00000340107; ENSP00000339824; ENSG00000068078. [P22607-2]
 DR   Ensembl; ENST00000352904; ENSP00000231803; ENSG00000068078. [P22607-3]
@@ -978,7 +983,6 @@ DR   Orphanet; 1860; Thanatophoric dysplasia type 1.
 DR   Orphanet; 93274; Thanatophoric dysplasia type 2.
 DR   PharmGKB; PA28129; -.
 DR   eggNOG; KOG0200; Eukaryota.
-DR   eggNOG; COG0515; LUCA.
 DR   GeneTree; ENSGT00940000159880; -.
 DR   HOGENOM; CLU_000288_74_3_1; -.
 DR   InParanoid; P22607; -.
@@ -988,6 +992,7 @@ DR   OrthoDB; 220433at2759; -.
 DR   PhylomeDB; P22607; -.
 DR   TreeFam; TF316307; -.
 DR   BRENDA; 2.7.10.1; 2681.
+DR   PathwayCommons; P22607; -.
 DR   Reactome; R-HSA-109704; PI3K Cascade.
 DR   Reactome; R-HSA-1257604; PIP3 activates AKT signaling.
 DR   Reactome; R-HSA-1839130; Signaling by activated point mutants of FGFR3.
@@ -1007,7 +1012,7 @@ DR   Reactome; R-HSA-8853334; Signaling by FGFR3 fusions in cancer.
 DR   Reactome; R-HSA-8853338; Signaling by FGFR3 point mutants in cancer.
 DR   SignaLink; P22607; -.
 DR   SIGNOR; P22607; -.
-DR   BioGRID-ORCS; 2261; 6 hits in 816 CRISPR screens.
+DR   BioGRID-ORCS; 2261; 10 hits in 903 CRISPR screens.
 DR   ChiTaRS; FGFR3; human.
 DR   EvolutionaryTrace; P22607; -.
 DR   GeneWiki; Fibroblast_growth_factor_receptor_3; -.
@@ -1016,7 +1021,7 @@ DR   Pharos; P22607; Tclin.
 DR   PRO; PR:P22607; -.
 DR   Proteomes; UP000005640; Chromosome 4.
 DR   RNAct; P22607; protein.
-DR   Bgee; ENSG00000068078; Expressed in vagina and 197 other tissues.
+DR   Bgee; ENSG00000068078; Expressed in vagina and 210 other tissues.
 DR   ExpressionAtlas; P22607; baseline and differential.
 DR   Genevisible; P22607; HS.
 DR   GO; GO:0009986; C:cell surface; IEA:Ensembl.
@@ -1076,7 +1081,7 @@ DR   InterPro; IPR008266; Tyr_kinase_AS.
 DR   InterPro; IPR020635; Tyr_kinase_cat_dom.
 DR   Pfam; PF18123; FGFR3_TM; 1.
 DR   Pfam; PF07679; I-set; 1.
-DR   Pfam; PF07714; Pkinase_Tyr; 1.
+DR   Pfam; PF07714; PK_Tyr_Ser-Thr; 1.
 DR   PIRSF; PIRSF000628; FGFR; 1.
 DR   PRINTS; PR00109; TYRKINASE.
 DR   SMART; SM00409; IG; 3.
@@ -1448,6 +1453,8 @@ FT   STRAND          623..625
 FT                   /evidence="ECO:0000244|PDB:6PNX"
 FT   STRAND          631..633
 FT                   /evidence="ECO:0000244|PDB:6PNX"
+FT   TURN            643..645
+FT                   /evidence="ECO:0000244|PDB:6LVM"
 FT   STRAND          646..649
 FT                   /evidence="ECO:0000244|PDB:4K33"
 FT   HELIX           658..660
