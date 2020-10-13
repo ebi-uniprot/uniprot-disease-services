@@ -44,7 +44,7 @@ import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInA
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {DataImporterSpringBootApplication.class, BatchConfigurationDiseaseService.class, HumDiseaseDataLoadStep.class})
-class HumDiseaseDataLoadStepTest {
+class HumDiseaseDataLoadStepTest extends AbstractBaseStepTest{
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
@@ -89,6 +89,7 @@ class HumDiseaseDataLoadStepTest {
     }
 
     private void verifyDiseases() {
+        // populare a map to keep disease id and its description to verify
         Map<String, String> disDesc = new HashMap<>();
         populateMap(disDesc);
         List<Disease> diseases = this.diseaseDAO.findAll();
@@ -161,14 +162,5 @@ class HumDiseaseDataLoadStepTest {
         Assertions.assertEquals("mental retardation", kws.get(0).getKeyValue());
         Assertions.assertNotNull(kws.get(0).getDisease());
         verifyCommonFields(kws);
-    }
-
-    private void verifyCommonFields(List<? extends BaseEntity> entities) {
-        // verify ids
-        entities.stream().map(BaseEntity::getId).forEach(id -> assertThat(id, notNullValue()));
-        // verify created at
-        entities.stream().map(BaseEntity::getCreatedAt).forEach(id -> assertThat(id, notNullValue()));
-        // verify updated at
-        entities.stream().map(BaseEntity::getCreatedAt).forEach(id -> assertThat(id, notNullValue()));
     }
 }
