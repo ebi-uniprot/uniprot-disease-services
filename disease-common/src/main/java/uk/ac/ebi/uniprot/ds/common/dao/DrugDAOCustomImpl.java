@@ -14,7 +14,7 @@ import uk.ac.ebi.uniprot.ds.common.model.Drug;
 public class DrugDAOCustomImpl implements DrugDAOCustom {
     /* do not change the order of the field. See method getDrugDTOsByDiseaseId in DrugService*/
     private static final String QUERY_DRUGS_BY_DISEASE_ID = "\n" +
-           "select " +
+            "select " +
             "drug1.name as name, drug1.source_type as sourceType, drug1.source_id as sourceId, " +
             "drug1.molecule_type as moleculeType, drug1.clinical_trial_phase as clinicalTrialPhase, " +
             "drug1.mechanism_of_action as mechanismOfAction, drug1.clinical_trial_link as clinicalTrialLink, " +
