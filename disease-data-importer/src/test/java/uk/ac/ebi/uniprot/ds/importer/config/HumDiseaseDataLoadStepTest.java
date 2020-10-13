@@ -28,7 +28,6 @@ import uk.ac.ebi.uniprot.ds.common.dao.CrossRefDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.KeywordDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.SynonymDAO;
-import uk.ac.ebi.uniprot.ds.common.model.BaseEntity;
 import uk.ac.ebi.uniprot.ds.common.model.CrossRef;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Keyword;
@@ -89,7 +88,7 @@ class HumDiseaseDataLoadStepTest extends AbstractBaseStepTest{
     }
 
     private void verifyDiseases() {
-        // populare a map to keep disease id and its description to verify
+        // populate a map to keep disease id and its description to verify
         Map<String, String> disDesc = new HashMap<>();
         populateMap(disDesc);
         List<Disease> diseases = this.diseaseDAO.findAll();
