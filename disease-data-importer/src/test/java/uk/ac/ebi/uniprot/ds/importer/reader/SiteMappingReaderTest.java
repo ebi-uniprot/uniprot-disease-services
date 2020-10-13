@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class SiteMappingReaderTest {
 
-    private static final String SAMPLE_SITE_MAPPING_FILE = "src/main/resources/uniprot/sample_site_mapping.dat";
-    private static final String SAMPLE_SITE_MAPPING_INVALID_FILE = "src/main/resources/uniprot/sample_site_mapping_invalid.dat";
+    private static final String SAMPLE_SITE_MAPPING_FILE = "src/test/resources/sample_site_mapping.dat";
+    private static final String SAMPLE_SITE_MAPPING_INVALID_FILE = "src/test/resources/sample_site_mapping_invalid.dat";
 
     @Test
     void testCanReadAllFile() throws Exception {

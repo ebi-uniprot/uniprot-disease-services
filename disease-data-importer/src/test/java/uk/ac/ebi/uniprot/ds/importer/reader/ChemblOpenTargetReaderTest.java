@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ChemblOpenTargetReaderTest {
 
-    private static final String SAMPLE_CHEMBL_FILE = "uniprot/sample_chembl_opentarget.json";
+    private static final String SAMPLE_CHEMBL_FILE = "src/test/resources/sample_chembl_opentarget.json";
     private static ChemblOpenTargetReader READER;
 
     @BeforeAll

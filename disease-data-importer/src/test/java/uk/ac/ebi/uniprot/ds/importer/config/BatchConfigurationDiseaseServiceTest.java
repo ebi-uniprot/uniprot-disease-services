@@ -7,28 +7,38 @@
 
 package uk.ac.ebi.uniprot.ds.importer.config;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
-import org.springframework.batch.core.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.batch.core.BatchStatus;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import uk.ac.ebi.uniprot.ds.common.dao.*;
-import uk.ac.ebi.uniprot.ds.common.model.*;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import uk.ac.ebi.uniprot.ds.common.dao.CrossRefDAO;
+import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
+import uk.ac.ebi.uniprot.ds.common.dao.EvidenceDAO;
+import uk.ac.ebi.uniprot.ds.common.dao.FeatureLocationDAO;
+import uk.ac.ebi.uniprot.ds.common.dao.GeneCoordinateDAO;
+import uk.ac.ebi.uniprot.ds.common.dao.InteractionDAO;
+import uk.ac.ebi.uniprot.ds.common.dao.ProteinCrossRefDAO;
+import uk.ac.ebi.uniprot.ds.common.dao.ProteinDAO;
+import uk.ac.ebi.uniprot.ds.common.dao.SiteMappingDAO;
+import uk.ac.ebi.uniprot.ds.common.dao.SynonymDAO;
+import uk.ac.ebi.uniprot.ds.common.dao.VariantDAO;
 import uk.ac.ebi.uniprot.ds.importer.DataImporterSpringBootApplication;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {DataImporterSpringBootApplication.class, BatchConfigurationDiseaseService.class,
         HumDiseaseDataLoadStep.class, UniProtDataLoadStep.class, GeneCoordinateDataLoadStep.class, MondoDiseaseLoadStep.class,
         DiseaseParentChildLoadStep.class, ChEMBLDrugLoadStep.class, SiteMappingLoadStep.class, DiseaseDescendentsLoadStep.class})
-public class BatchConfigurationDiseaseServiceTest {
+class BatchConfigurationDiseaseServiceTest {
 
     @Autowired
     private Job importUniProtDataJob;
@@ -36,8 +46,8 @@ public class BatchConfigurationDiseaseServiceTest {
     @Autowired
     private JobLauncher jobLauncher;
 
-    @After
-    public void cleanUp(){
+    @AfterEach
+    void cleanUp(){
             this.synonymDAO.deleteAll();
             this.variantDAO.deleteAll();
             this.proteinCrossRefDAO.deleteAll();
@@ -52,7 +62,7 @@ public class BatchConfigurationDiseaseServiceTest {
     }
 
     @Test
-    public void testDiseaseServiceJob() throws Exception {
+    void testDiseaseServiceJob() throws Exception {
         JobParameters jobParameters = new JobParametersBuilder().addLong("time",System.currentTimeMillis()).toJobParameters();
 
         JobExecution jobExecution = jobLauncher.run(importUniProtDataJob, jobParameters);
