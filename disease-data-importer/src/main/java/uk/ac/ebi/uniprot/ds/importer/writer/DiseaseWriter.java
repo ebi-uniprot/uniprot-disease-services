@@ -26,13 +26,13 @@ import uk.ac.ebi.uniprot.ds.common.model.*;
 public class DiseaseWriter implements ItemWriter<UniProtEntry> {
 
     private final Map<String, Protein> proteinIdProteinMap;
-    @Autowired
     private DiseaseDAO diseaseDAO;
-    @Autowired
     private VariantDAO variantDAO;
 
-    public DiseaseWriter(Map<String, Protein> proteinIdProteinMap){
+    public DiseaseWriter(Map<String, Protein> proteinIdProteinMap, DiseaseDAO diseaseDAO, VariantDAO variantDAO){
         this.proteinIdProteinMap = proteinIdProteinMap;
+        this.diseaseDAO = diseaseDAO;
+        this.variantDAO = variantDAO;
     }
     @Override
     public void write(List<? extends UniProtEntry> entries){
@@ -87,7 +87,7 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
         return variants;
     }
 
-    private List<Disease> getDiseasesFromUniProtEntry(UniProtEntry entry) {
+    public List<Disease> getDiseasesFromUniProtEntry(UniProtEntry entry) {
         List<DiseaseCommentStructured> dcs = entry.getComments(CommentType.DISEASE);
 
         List<Disease> diseases = dcs
@@ -100,6 +100,7 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
     }
 
     protected Disease getDisease(DiseaseCommentStructured dcs){
+
         uk.ac.ebi.kraken.interfaces.uniprot.comments.Disease upDisease = dcs.getDisease();
         String diseaseId = upDisease.getDiseaseId().getValue();
         String desc = upDisease.getDescription().getValue();

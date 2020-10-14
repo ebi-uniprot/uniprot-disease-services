@@ -11,20 +11,21 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
+
+import java.io.File;
+import java.util.List;
+
 import uk.ac.ebi.kraken.interfaces.uniprot.NcbiTaxonomyId;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.kraken.model.factories.DefaultUniProtFactory;
 import uk.ac.ebi.kraken.parser.EntryIterator;
 import uk.ac.ebi.kraken.parser.UniProtParser;
 
-import java.io.File;
-import java.util.List;
-
 public class UniProtReader implements ItemReader<UniProtEntry> {
     private static final String HUMAX_TAXANOMY_ID = "9606";
     private EntryIterator iterator;
 
-    public UniProtReader(String filePath){
+    public UniProtReader(String filePath) {
         iterator = UniProtParser.parseEntriesAll(new File(filePath), DefaultUniProtFactory.getInstance());
     }
 
@@ -32,17 +33,13 @@ public class UniProtReader implements ItemReader<UniProtEntry> {
     public UniProtEntry read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
         UniProtEntry entry = null;
         // get only human protein
-        while(entry == null && iterator.hasNext()){
+        while (entry == null && iterator.hasNext()) {
             UniProtEntry tmpEntry = iterator.next();
             List<NcbiTaxonomyId> taxonomyIds = tmpEntry.getNcbiTaxonomyIds();
-            if(taxonomyIds != null && !taxonomyIds.isEmpty() && HUMAX_TAXANOMY_ID.equals(taxonomyIds.get(0).getValue())){
+            if (taxonomyIds != null && !taxonomyIds.isEmpty() && HUMAX_TAXANOMY_ID.equals(taxonomyIds.get(0).getValue())) {
                 entry = tmpEntry;
             }
         }
-
-//        if(iterator.hasNext()){
-//            entry = iterator.next();
-//        }
         return entry;
     }
 }

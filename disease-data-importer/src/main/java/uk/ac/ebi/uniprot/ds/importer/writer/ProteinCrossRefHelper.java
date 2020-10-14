@@ -38,8 +38,6 @@ public class ProteinCrossRefHelper {
     }
 
     protected List<DatabaseCrossReference> getUniProtProteinCrossRefs(UniProtEntry entry) {
-
-
         List<DatabaseCrossReference> reactXrefs = entry.getDatabaseCrossReferences(DatabaseType.REACTOME);
         List<DatabaseCrossReference> chemblXRefs = entry.getDatabaseCrossReferences(DatabaseType.CHEMBL);
         List<DatabaseCrossReference> openTargetsXRefs = entry.getDatabaseCrossReferences(DatabaseType.OPENTARGETS);
@@ -49,7 +47,6 @@ public class ProteinCrossRefHelper {
         dbXRefs.addAll(chemblXRefs);
         dbXRefs.addAll(openTargetsXRefs);
         dbXRefs.addAll(disgenetXRefs);
-
         return dbXRefs;
     }
 }

@@ -27,8 +27,10 @@ public class ParserTest {
         Assertions.assertNotNull(entries);
         List<GnEntry> gnEntryList = entries.getGnEntry();
         Assertions.assertNotNull(gnEntryList);
-        Assertions.assertEquals(1, gnEntryList.size());
+        Assertions.assertEquals(2, gnEntryList.size());
         Assertions.assertNotNull(gnEntryList.get(0).getGnCoordinate());
         Assertions.assertEquals(1, gnEntryList.get(0).getGnCoordinate().size());
+        Assertions.assertNotNull(gnEntryList.get(1).getGnCoordinate());
+        Assertions.assertEquals(1, gnEntryList.get(1).getGnCoordinate().size());
     }
 }

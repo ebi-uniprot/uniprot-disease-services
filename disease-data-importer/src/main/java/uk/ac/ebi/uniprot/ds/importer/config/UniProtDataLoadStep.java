@@ -18,6 +18,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
+import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
+import uk.ac.ebi.uniprot.ds.common.dao.ProteinDAO;
+import uk.ac.ebi.uniprot.ds.common.dao.VariantDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.importer.util.Constants;
 import uk.ac.ebi.uniprot.ds.importer.writer.*;
@@ -59,10 +62,10 @@ public class UniProtDataLoadStep {
     }
 
     @Bean
-    public CompositeItemWriter<UniProtEntry> uniProtCompositeWriter(){
+    public CompositeItemWriter<UniProtEntry> uniProtCompositeWriter(ProteinDAO proteinDAO, DiseaseDAO diseaseDAO, VariantDAO variantDAO){
         CompositeItemWriter compositeWriter = new CompositeItemWriter();
-        ProteinWriter writer1 = proteinWriter();
-        DiseaseWriter writer2 = diseaseWriter();
+        ProteinWriter writer1 = proteinWriter(proteinDAO);
+        DiseaseWriter writer2 = diseaseWriter(diseaseDAO, variantDAO);
         List<ItemWriter> writers = new ArrayList<>();
         writers.add(writer1);
         writers.add(writer2);
@@ -71,12 +74,12 @@ public class UniProtDataLoadStep {
     }
 
     @Bean
-    public ProteinWriter proteinWriter() {
-        return new ProteinWriter(proteinIdProteinMap);
+    public ProteinWriter proteinWriter(ProteinDAO proteinDAO) {
+        return new ProteinWriter(proteinIdProteinMap, proteinDAO);
     }
 
     @Bean
-    public DiseaseWriter diseaseWriter() {
-        return new DiseaseWriter(proteinIdProteinMap);
+    public DiseaseWriter diseaseWriter(DiseaseDAO diseaseDAO, VariantDAO variantDAO) {
+        return new DiseaseWriter(proteinIdProteinMap, diseaseDAO, variantDAO);
     }
 }

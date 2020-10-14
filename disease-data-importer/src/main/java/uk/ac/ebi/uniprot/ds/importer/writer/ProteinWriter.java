@@ -27,18 +27,18 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ProteinWriter implements ItemWriter<UniProtEntry> {
 
-    @Autowired
     private ProteinDAO proteinDAO;
     private Map<String, Protein> proteinIdProteinMap;
     private VariantHelper variantHelper;
     private ProteinCrossRefHelper proteinCrossRefHelper;
     private InteractionHelper interactionHelper;
 
-    public ProteinWriter(Map<String, Protein> proteinIdProteinMap) {
+    public ProteinWriter(Map<String, Protein> proteinIdProteinMap, ProteinDAO proteinDAO) {
         this.proteinIdProteinMap = proteinIdProteinMap;
         this.variantHelper = new VariantHelper();
         this.proteinCrossRefHelper = new ProteinCrossRefHelper();
         this.interactionHelper = new InteractionHelper();
+        this.proteinDAO = proteinDAO;
     }
 
     @Override
