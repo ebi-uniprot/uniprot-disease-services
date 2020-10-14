@@ -4,7 +4,9 @@
         <accession>P22607</accession>
         <name>FGFR3_HUMAN</name>
         <taxid>9606</taxid>
-        <sequence>MGAPACALALCVAVAIVAGASSESLGTEQRVVGRAAEVPGPEPGQQEQLVFGSGDAVELSCPPPGGGPMGPTVWVKDGTGLVPSERVLVGPQRLQVLNASHEDSGAYSCRQRLTQRVLCHFSVRVTDAPSSGDDEDGEDEAEDTGVDTGAPYWTRPERMDKKLLAVPAANTVRFRCPAAGNPTPSISWLKNGREFRGEHRIGGIKLRHQQWSLVMESVVPSDRGNYTCVVENKFGSIRQTYTLDVLERSPHRPILQAGLPANQTAVLGSDVEFHCKVYSDAQPHIQWLKHVEVNGSKVGPDGTPYVTVLKTAGANTTDKELEVLSLHNVTFEDAGEYTCLAGNSIGFSHHSAWLVVLPAEEELVEADEAGSVYAGILSYGVGFFLFILVVAAVTLCRLRSPPKKGLGSPTVHKISRFPLKRQVSLESNASMSSNTPLVRIARLSSGEGPTLANVSELELPADPKWELSRARLTLGKPLGEGCFGQVVMAEAIGIDKDRAAKPVTVAVKMLKDDATDKDLSDLVSEMEMMKMIGKHKNIINLLGACTQGGPLYVLVEYAAKGNLREFLRARRPPGLDYSFDTCKPPEEQLTFKDLVSCAYQVARGMEYLASQKCIHRDLAARNVLVTEDNVMKIADFGLARDVHNLDYYKKTTNGRLPVKWMAPEALFDRVYTHQSDVWSFGVLLWEIFTLGGSPYPGIPVEELFKLLKEGHRMDKPANCTHDLYMIMRECWHAAPSQRPTFKQLVEDLDRVLTVTSTDEYLDLSAPFEQYSPGGQDTPSSSSSGDDSVFAHDLLPPAPPSSGGSRT</sequence>
+        <sequence>
+            MGAPACALALCVAVAIVAGASSESLGTEQRVVGRAAEVPGPEPGQQEQLVFGSGDAVELSCPPPGGGPMGPTVWVKDGTGLVPSERVLVGPQRLQVLNASHEDSGAYSCRQRLTQRVLCHFSVRVTDAPSSGDDEDGEDEAEDTGVDTGAPYWTRPERMDKKLLAVPAANTVRFRCPAAGNPTPSISWLKNGREFRGEHRIGGIKLRHQQWSLVMESVVPSDRGNYTCVVENKFGSIRQTYTLDVLERSPHRPILQAGLPANQTAVLGSDVEFHCKVYSDAQPHIQWLKHVEVNGSKVGPDGTPYVTVLKTAGANTTDKELEVLSLHNVTFEDAGEYTCLAGNSIGFSHHSAWLVVLPAEEELVEADEAGSVYAGILSYGVGFFLFILVVAAVTLCRLRSPPKKGLGSPTVHKISRFPLKRQVSLESNASMSSNTPLVRIARLSSGEGPTLANVSELELPADPKWELSRARLTLGKPLGEGCFGQVVMAEAIGIDKDRAAKPVTVAVKMLKDDATDKDLSDLVSEMEMMKMIGKHKNIINLLGACTQGGPLYVLVEYAAKGNLREFLRARRPPGLDYSFDTCKPPEEQLTFKDLVSCAYQVARGMEYLASQKCIHRDLAARNVLVTEDNVMKIADFGLARDVHNLDYYKKTTNGRLPVKWMAPEALFDRVYTHQSDVWSFGVLLWEIFTLGGSPYPGIPVEELFKLLKEGHRMDKPANCTHDLYMIMRECWHAAPSQRPTFKQLVEDLDRVLTVTSTDEYLDLSAPFEQYSPGGQDTPSSSSSGDDSVFAHDLLPPAPPSSGGSRT
+        </sequence>
         <protein>
             <recommendedName>
                 <fullName>Fibroblast growth factor receptor 3</fullName>
@@ -13,7 +15,8 @@
         </protein>
         <gene type="primary">FGFR3</gene>
         <gene type="synonym">JTK4</gene>
-        <gnCoordinate ensembl_gene_id="ENSG00000068078" ensembl_transcript_id="ENST00000440486" ensembl_translation_id="ENSP00000414914">
+        <gnCoordinate ensembl_gene_id="ENSG00000068078" ensembl_transcript_id="ENST00000440486"
+                      ensembl_translation_id="ENSP00000414914">
             <genomicLocation chromosome="4" start="1793935" end="1807259" reverse_strand="false">
                 <exon id="ENSE00001596390">
                     <proteinLocation>
@@ -353,7 +356,8 @@
                 <ns2:location>
                     <ns2:position position="370"/>
                 </ns2:location>
-                <ns2:description>in KERSEB, BLC, keratinocytic non-epidermolytic nevus and TD1; dbSNP:rs121913479.</ns2:description>
+                <ns2:description>in KERSEB, BLC, keratinocytic non-epidermolytic nevus and TD1; dbSNP:rs121913479.
+                </ns2:description>
                 <ns2:evidence code="ECO:0000269">
                     <ns2:dbReference id="9790257" type="PubMed"/>
                 </ns2:evidence>
@@ -422,7 +426,10 @@
                 <ns2:location>
                     <ns2:position position="248"/>
                 </ns2:location>
-                <ns2:description>in KERSEB, BLC, keratinocytic non-epidermolytic nevus and TD1; severe and lethal; also found as somatic mutation in one patient with multiple myeloma; constitutive dimerization and kinase activation; dbSNP:rs121913482.</ns2:description>
+                <ns2:description>in KERSEB, BLC, keratinocytic non-epidermolytic nevus and TD1; severe and lethal; also
+                    found as somatic mutation in one patient with multiple myeloma; constitutive dimerization and kinase
+                    activation; dbSNP:rs121913482.
+                </ns2:description>
                 <ns2:evidence code="ECO:0000269">
                     <ns2:dbReference id="10471491" type="PubMed"/>
                 </ns2:evidence>
@@ -675,7 +682,10 @@
                 <ns2:location>
                     <ns2:position position="380"/>
                 </ns2:location>
-                <ns2:description>in keratinocytic non-epidermolytic nevus and ACH; very common mutation; constitutively activated kinase with impaired internalization and degradation, resulting in prolonged FGFR3 signaling; dbSNP:rs28931614.</ns2:description>
+                <ns2:description>in keratinocytic non-epidermolytic nevus and ACH; very common mutation; constitutively
+                    activated kinase with impaired internalization and degradation, resulting in prolonged FGFR3
+                    signaling; dbSNP:rs28931614.
+                </ns2:description>
                 <ns2:evidence code="ECO:0000269">
                     <ns2:dbReference id="17561467" type="PubMed"/>
                 </ns2:evidence>
@@ -721,7 +731,9 @@
                 <ns2:location>
                     <ns2:position position="650"/>
                 </ns2:location>
-                <ns2:description>in KERSEB, ACH, TD1 and SADDAN; constitutively activated kinase with impaired internalization and degradation, resulting in prolonged FGFR3 signaling; dbSNP:rs121913105.</ns2:description>
+                <ns2:description>in KERSEB, ACH, TD1 and SADDAN; constitutively activated kinase with impaired
+                    internalization and degradation, resulting in prolonged FGFR3 signaling; dbSNP:rs121913105.
+                </ns2:description>
                 <ns2:evidence code="ECO:0000269">
                     <ns2:dbReference id="15772091" type="PubMed"/>
                 </ns2:evidence>
@@ -780,7 +792,10 @@
                 <ns2:location>
                     <ns2:position position="650"/>
                 </ns2:location>
-                <ns2:description>in KERSEB, TD2, TGCT and BLC; bladder transitional cell carcinoma; somatic mutation; constitutively activated kinase with impaired internalization and degradation, resulting in prolonged FGFR3 signaling; dbSNP:rs78311289.</ns2:description>
+                <ns2:description>in KERSEB, TD2, TGCT and BLC; bladder transitional cell carcinoma; somatic mutation;
+                    constitutively activated kinase with impaired internalization and degradation, resulting in
+                    prolonged FGFR3 signaling; dbSNP:rs78311289.
+                </ns2:description>
                 <ns2:evidence code="ECO:0000269">
                     <ns2:dbReference id="7773297" type="PubMed"/>
                 </ns2:evidence>
@@ -1240,7 +1255,9 @@
                 <ns2:location>
                     <ns2:position position="250"/>
                 </ns2:location>
-                <ns2:description>in MNKS; also some individuals with autosomal dominant congenital sensorineural deafness without craniosynostosis; dbSNP:rs4647924.</ns2:description>
+                <ns2:description>in MNKS; also some individuals with autosomal dominant congenital sensorineural
+                    deafness without craniosynostosis; dbSNP:rs4647924.
+                </ns2:description>
                 <ns2:evidence code="ECO:0000269">
                     <ns2:dbReference id="9525367" type="PubMed"/>
                 </ns2:evidence>
@@ -1274,8 +1291,12 @@
                 </genomeLocation>
             </feature>
             <feature type="splice variant" id="VSP_040945">
-                <ns2:original>GRLPVKWMAPEALFDRVYTHQSDVWSFGVLLWEIFTLGGSPYPGIPVEELFKLLKEGHRMDKPANCTHDLYMIMRECWHAAPSQRPTFKQLVEDLDRVLTVTSTDEYLDLSAPFEQYSPGGQDTPSSSSSGDDSVFAHDLLPPAPPSSGGSRT</ns2:original>
-                <ns2:variation>LVLWGPALGDLHAGGLPVPRHPCGGALQAAEGGPPHGQARQLHTRPVHDHAGVLACRALPEAHLQAAGGGPGPCPYRDVHRRVPGPVGAFRAVLPGWPGHPQLQLLRGRLRVCPRPAAPGPTQQWGLADVKGHWSPTM</ns2:variation>
+                <ns2:original>
+                    GRLPVKWMAPEALFDRVYTHQSDVWSFGVLLWEIFTLGGSPYPGIPVEELFKLLKEGHRMDKPANCTHDLYMIMRECWHAAPSQRPTFKQLVEDLDRVLTVTSTDEYLDLSAPFEQYSPGGQDTPSSSSSGDDSVFAHDLLPPAPPSSGGSRT
+                </ns2:original>
+                <ns2:variation>
+                    LVLWGPALGDLHAGGLPVPRHPCGGALQAAEGGPPHGQARQLHTRPVHDHAGVLACRALPEAHLQAAGGGPGPCPYRDVHRRVPGPVGAFRAVLPGWPGHPQLQLLRGRLRVCPRPAAPGPTQQWGLADVKGHWSPTM
+                </ns2:variation>
                 <ns2:location>
                     <ns2:begin position="654"/>
                     <ns2:end position="806"/>
@@ -1370,7 +1391,9 @@
                 <ns2:location>
                     <ns2:position position="373"/>
                 </ns2:location>
-                <ns2:description>in KERSEB and TD1; disulfide-linked dimer with constitutive kinase activation; dbSNP:rs121913485.</ns2:description>
+                <ns2:description>in KERSEB and TD1; disulfide-linked dimer with constitutive kinase activation;
+                    dbSNP:rs121913485.
+                </ns2:description>
                 <ns2:evidence code="ECO:0000269">
                     <ns2:dbReference id="15772091" type="PubMed"/>
                 </ns2:evidence>
@@ -1554,7 +1577,9 @@
                 <ns2:location>
                     <ns2:position position="650"/>
                 </ns2:location>
-                <ns2:description>in hypochondroplasia and BLC; in hypochondroplasia the form is milder than that seen in individuals with the K-540 or M-650 mutations; constitutively activated kinase; dbSNP:rs78311289.</ns2:description>
+                <ns2:description>in hypochondroplasia and BLC; in hypochondroplasia the form is milder than that seen in
+                    individuals with the K-540 or M-650 mutations; constitutively activated kinase; dbSNP:rs78311289.
+                </ns2:description>
                 <ns2:evidence code="ECO:0000269">
                     <ns2:dbReference id="11314002" type="PubMed"/>
                 </ns2:evidence>
@@ -1756,6 +1781,37 @@
                     <ns2:end position="1801700"/>
                 </genomeLocation>
             </feature>
+        </gnCoordinate>
+    </gnEntry>
+    <gnEntry xmlns:ns2="http://www.ebi.ac.uk/proteins/api/doc/xsd/feature">
+        <accession>A0A024QYW1</accession>
+        <name>A0A024QYW1_HUMAN</name>
+        <taxid>9606</taxid>
+        <sequence>
+            MVNNTDFLMLNNLWNKLCLVSMDFCFPLDFVSNVFWIFASKFIIVTGQIKADFKRTSWEAKAEGSLEPGRLKLQLASIVPLYSSLVTAGPASKIIILKRTSLPTVSPSNERAYLPPVSFTDLAHVFYLSYFSINAKSNSFSLDIIIALGIPHNTQAHFNH
+        </sequence>
+        <protein>
+            <submittedName>
+                <fullName>Transmembrane protein 191C</fullName>
+            </submittedName>
+        </protein>
+        <gene type="ORF">hCG_1994861</gene>
+        <gene type="primary">TMEM191C</gene>
+        <gene type="synonym">DKFZp434N035</gene>
+        <gnCoordinate ensembl_gene_id="ENSG00000206140" ensembl_transcript_id="ENST00000545656"
+                      ensembl_translation_id="ENSP00000490356">
+            <genomicLocation chromosome="22" start="21466494" end="21466973" reverse_strand="false">
+                <exon id="ENSE00002248307">
+                    <proteinLocation>
+                        <ns2:begin position="1"/>
+                        <ns2:end position="160"/>
+                    </proteinLocation>
+                    <genomeLocation>
+                        <ns2:begin position="21466494"/>
+                        <ns2:end position="21466973"/>
+                    </genomeLocation>
+                </exon>
+            </genomicLocation>
         </gnCoordinate>
     </gnEntry>
 </gnEntries>

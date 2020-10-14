@@ -91,8 +91,8 @@ class GeneCoordinateDataLoadStepTest extends AbstractBaseStepTest {
         Assertions.assertEquals("COMPLETED", actualJobExitStatus.getExitCode());
         StepExecution step = actualStepExecutions.stream().collect(Collectors.toList()).get(0);
         Assertions.assertNotNull(step);
-        Assertions.assertEquals(1, step.getReadCount());
-        Assertions.assertEquals(1, step.getWriteCount());
+        Assertions.assertEquals(2, step.getReadCount());
+        Assertions.assertEquals(2, step.getWriteCount());
         // and verify data
         verifyGeneCoords();
     }
