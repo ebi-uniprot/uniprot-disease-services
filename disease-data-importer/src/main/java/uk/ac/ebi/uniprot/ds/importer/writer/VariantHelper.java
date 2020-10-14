@@ -60,7 +60,11 @@ public class VariantHelper {
             eBuilder.code(eId.getEvidenceCode().getDisplayName());
             eBuilder.useECOCode(eId.useECOCode());
             eBuilder.typeValue(eId.getTypeValue());
-
+            if(Objects.isNull(eId.getTypeValue()) || eId.getTypeValue().trim().isEmpty()){
+                eBuilder.hasTypeValue(false);
+            } else {
+                eBuilder.hasTypeValue(true);
+            }
             Evidence evidence = eBuilder.build();
             evidence.setVariant(variant);
             evidences.add(evidence);
