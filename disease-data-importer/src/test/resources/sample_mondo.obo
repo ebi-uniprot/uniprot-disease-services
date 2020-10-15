@@ -292,3 +292,58 @@ name: exostoses, multiple
 comment: Editor note: consider merge with parent
 xref: DC:0000143 {source="MONDO:equivalentTo"}
 is_a: MONDO:0005508 {source="DC:0000143"} ! hereditary multiple osteochondromas
+
+[Term]
+id: MONDO:0005575
+name: colorectal cancer
+alt_id: MONDO:0003576
+alt_id: MONDO:0021307
+def: "A primary or metastatic malignant neoplasm that affects the colon or rectum. Representative examples include carcinoma, lymphoma, and sarcoma." [NCIT:C4978]
+comment: Editor note: some sources make distinct classes for colorectal vs large intestine. We follow NCIT and make these equivalent
+subset: clingen
+synonym: "cancer of colorectum" EXACT [MONDO:patterns/cancer]
+synonym: "cancer of large bowel" EXACT [NCIT:C2955]
+synonym: "cancer of large intestine" EXACT [NCIT:C2955]
+synonym: "cancer of the large bowel" EXACT [NCIT:C2955]
+synonym: "colon cancer" RELATED [OMIM:114500]
+synonym: "colorectal cancer" EXACT [MONDO:Lexical, OMIM:114500]
+synonym: "colorectal cancer; CRC" RELATED [OMIM:114500]
+synonym: "colorectum cancer" EXACT [MONDO:patterns/location]
+synonym: "CRC" RELATED [MONDO:Lexical, OMIM:114500]
+synonym: "large intestine cancer" RELATED [DOID:5672]
+synonym: "malignant colorectal neoplasm" EXACT [NCIT:C4978]
+synonym: "malignant colorectal tumor" EXACT [NCIT:C4978]
+synonym: "malignant colorectum neoplasm" EXACT [MONDO:patterns/cancer]
+synonym: "malignant large bowel neoplasm" EXACT [NCIT:C4978]
+synonym: "malignant large bowel tumor" EXACT [NCIT:C4978]
+synonym: "malignant large intestine neoplasm" EXACT [NCIT:C4978]
+synonym: "malignant large intestine tumor" EXACT [NCIT:C4978]
+synonym: "malignant neoplasm of colorectum" EXACT [MONDO:patterns/cancer]
+synonym: "malignant neoplasm of large bowel" EXACT [NCIT:C4978]
+synonym: "malignant neoplasm of large intestine" EXACT [NCIT:C4978]
+synonym: "malignant neoplasm of the large bowel" EXACT [NCIT:C4978]
+synonym: "malignant neoplasm of the large intestine" EXACT [NCIT:C4978]
+synonym: "malignant tumor of large bowel" EXACT [NCIT:C4978]
+synonym: "malignant tumor of large intestine" EXACT [NCIT:C4978]
+synonym: "malignant tumor of the large bowel" EXACT [NCIT:C4978]
+synonym: "malignant tumor of the large intestine" EXACT [NCIT:C4978]
+xref: DOID:5672 {source="MONDO:equivalentTo"}
+xref: DOID:9256 {source="EFO:0005842", source="MONDO:equivalentTo"}
+xref: EFO:0005842 {source="MONDO:equivalentTo"}
+xref: ICD10:C18.9 {source="DOID:5672"}
+xref: KEGG:05210 {source="MONDO:equivalentTo", source="DOID:9256"}
+xref: NCIT:C4978 {source="EFO:0005842", source="MONDO:equivalentTo", source="DOID:5672"}
+xref: OMIM:114500 {source="MONDO:equivalentTo", source="DOID:9256"}
+xref: SCTID:363510005 {source="MONDO:kboom-pr-0.84/0.67/0.08", source="MONDO:equivalentTo", source="DOID:5672"}
+xref: UMLS:C1527249 {source="MONDO:equivalentTo", source="OMIM:114500", source="DOID:9256"}
+is_a: MONDO:0005335 {source="MONDO:Redundant", source="MONDOLEX:0005575", source="NCIT:C4978"} ! colorectal neoplasm
+is_a: MONDO:0005814 {source="DOID:5672", source="DOID:9256/inferred", source="MONDO:Redundant", source="MONDOLEX:0005575", source="NCIT:C4978", source="linkedlifedata"} ! intestinal cancer
+property_value: closeMatch http://identifiers.org/snomedct/93854002
+property_value: closeMatch http://linkedlifedata.com/resource/umls/id/C0009402
+property_value: closeMatch http://linkedlifedata.com/resource/umls/id/C0346629
+property_value: exactMatch DOID:5672
+property_value: exactMatch DOID:9256
+property_value: exactMatch http://identifiers.org/omim/114500
+property_value: exactMatch http://identifiers.org/snomedct/363510005
+property_value: exactMatch http://linkedlifedata.com/resource/umls/id/C1527249
+property_value: exactMatch NCIT:C4978

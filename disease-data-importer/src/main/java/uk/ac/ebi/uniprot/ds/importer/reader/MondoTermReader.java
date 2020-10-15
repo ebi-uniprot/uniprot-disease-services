@@ -10,7 +10,7 @@ package uk.ac.ebi.uniprot.ds.importer.reader;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.ItemReader;
-import uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology.OBOTerm;
+import uk.ac.ebi.uniprot.ds.importer.reader.graph.OBOTerm;
 import uk.ac.ebi.uniprot.ds.importer.util.Constants;
 
 import java.util.*;

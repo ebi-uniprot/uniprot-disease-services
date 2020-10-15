@@ -24,7 +24,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import uk.ac.ebi.uniprot.ds.importer.model.DiseaseRelationDTO;
 import uk.ac.ebi.uniprot.ds.importer.processor.MondoTermToDiseaseChildConverter;
 import uk.ac.ebi.uniprot.ds.importer.reader.MondoTermReader;
-import uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology.OBOTerm;
+import uk.ac.ebi.uniprot.ds.importer.reader.graph.OBOTerm;
 import uk.ac.ebi.uniprot.ds.importer.util.Constants;
 import uk.ac.ebi.uniprot.ds.importer.writer.ListJDBCBatchItemWriter;
 

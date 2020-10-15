@@ -22,10 +22,13 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.FileNotFoundException;
 
+import uk.ac.ebi.uniprot.ds.common.dao.CrossRefDAO;
+import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
+import uk.ac.ebi.uniprot.ds.common.dao.SynonymDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.importer.processor.MondoTermToDiseaseConverter;
 import uk.ac.ebi.uniprot.ds.importer.reader.MondoDiseaseReader;
-import uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology.OBOTerm;
+import uk.ac.ebi.uniprot.ds.importer.reader.graph.OBOTerm;
 import uk.ac.ebi.uniprot.ds.importer.util.Constants;
 
 import static uk.ac.ebi.uniprot.ds.importer.util.Constants.DISEASE_NAME_OR_OMIM_DISEASE_MAP;
@@ -75,9 +78,8 @@ public class MondoDiseaseLoadStep {
     }
 
     @Bean
-    public ItemProcessor<OBOTerm, Disease> oboToDiseaseConverter() {
-        ItemProcessor<OBOTerm, Disease> converter = new MondoTermToDiseaseConverter();
+    public ItemProcessor<OBOTerm, Disease> oboToDiseaseConverter(DiseaseDAO diseaseDAO, SynonymDAO synonymDAO, CrossRefDAO crossRefDAO) {
+        ItemProcessor<OBOTerm, Disease> converter = new MondoTermToDiseaseConverter(diseaseDAO, synonymDAO, crossRefDAO);
         return converter;
     }
-
 }

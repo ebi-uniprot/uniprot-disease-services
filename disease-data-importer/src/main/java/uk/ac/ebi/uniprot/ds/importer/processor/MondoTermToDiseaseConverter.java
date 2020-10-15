@@ -4,7 +4,6 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,22 +14,20 @@ import java.util.Objects;
 import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
+import uk.ac.ebi.uniprot.ds.common.common.SourceType;
 import uk.ac.ebi.uniprot.ds.common.dao.CrossRefDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.SynonymDAO;
 import uk.ac.ebi.uniprot.ds.common.model.CrossRef;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Synonym;
-import uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology.OBOTerm;
+import uk.ac.ebi.uniprot.ds.importer.reader.graph.OBOTerm;
 import uk.ac.ebi.uniprot.ds.importer.util.Constants;
 
 @Slf4j
 public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disease> {
-    @Autowired
     private DiseaseDAO diseaseDAO;
-    @Autowired
     private SynonymDAO synonymDAO;
-    @Autowired
     private CrossRefDAO crossRefDAO;
     // key can be name, synonym(mondo name), omim, efo id, mondo id
     private Map<String, Disease> diseaseNameToDiseaseMap; // cache to quick look up for disease by name, synonym or omim id
@@ -44,14 +41,16 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
     private Set<String> ambiguousOboTerms;
     private StepExecution stepExecution;
 
+    public MondoTermToDiseaseConverter(DiseaseDAO diseaseDAO, SynonymDAO synonymDAO, CrossRefDAO crossRefDAO){
+        this.diseaseDAO = diseaseDAO;
+        this.synonymDAO = synonymDAO;
+        this.crossRefDAO = crossRefDAO;
+    }
+
     @BeforeStep //initialisation like load cache and set cache in step context to be used in next step
     public void init(final StepExecution stepExecution) {
         this.stepExecution = stepExecution;
-        this.mondoOboTerms = new ArrayList<>();
-        this.diseaseNameToDiseaseMap = new HashMap<>();
-        this.synonymToDiseasesMap = new HashMap<>();
-        this.omimToDiseasesMap = new HashMap<>();
-        this.ambiguousOboTerms = new HashSet<>();
+        initialize();
         loadCache();
         setCacheInStepContext();
     }
@@ -108,7 +107,15 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
         return disease;
     }
 
-    private void loadCache() {
+    public void initialize(){
+        this.mondoOboTerms = new ArrayList<>();
+        this.diseaseNameToDiseaseMap = new HashMap<>();
+        this.synonymToDiseasesMap = new HashMap<>();
+        this.omimToDiseasesMap = new HashMap<>();
+        this.ambiguousOboTerms = new HashSet<>();
+    }
+
+    public void loadCache() {
         loadDiseaseNameDiseaseMapFromDisease();
         loadDiseaseNameDiseaseMapFromSynonym();
         loadDiseaseNameDiseaseMapFromCrossRef();
@@ -176,13 +183,13 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
         builder.diseaseId(mondoDisease.getId());
         builder.name(mondoDisease.getName());
         builder.desc(mondoDisease.getDefinition());
-        builder.source(Constants.MONDO_STR);
+        builder.source(SourceType.MONDO.name());
         return builder.build();
     }
 
     private Synonym createSynonymObject(String mondoName) {
         Synonym.SynonymBuilder bldr = Synonym.builder();
-        bldr.name(mondoName).source(Constants.MONDO_STR);
+        bldr.name(mondoName).source(SourceType.MONDO.name());
         return bldr.build();
     }
 
