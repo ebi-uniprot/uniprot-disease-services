@@ -24,7 +24,6 @@ public class Constants {
     public static final String NAME_STR = "name";
     public static final String SOURCE_ID_STR = "source_id";
     public static final String MOLECULE_TYPE_STR = "molecule_type";
-    public static final String ChEMBL_STR = "ChEMBL";
     public static final String PUBMED_STR = "pubmed";
     public static final String FORWARD_SLASH = "/";
     public static final String DISEASE_NAME_OR_OMIM_DISEASE_MAP = "Disease name or omim to disease map";
