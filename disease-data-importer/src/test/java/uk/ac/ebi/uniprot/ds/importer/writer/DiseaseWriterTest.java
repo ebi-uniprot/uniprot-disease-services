@@ -72,7 +72,6 @@ public class DiseaseWriterTest {
     String acronym = "acr-" + uuid;// this acronym should be there in Protein
     Map<String, Protein> proteinIdProteinMap = new HashMap<>();
 
-    @BeforeEach
     @AfterEach
     void cleanUp() {
         this.evidenceDAO.deleteAll();
