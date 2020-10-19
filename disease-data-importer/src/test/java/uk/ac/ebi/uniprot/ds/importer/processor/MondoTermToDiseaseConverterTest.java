@@ -4,6 +4,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -33,6 +37,8 @@ import uk.ac.ebi.uniprot.ds.importer.writer.DiseaseWriterTest;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class MondoTermToDiseaseConverterTest {
+    @Mock
+    private StepExecution stepExecution;
     @Autowired
     private DiseaseDAO diseaseDAO;
     @Autowired
@@ -183,7 +189,7 @@ class MondoTermToDiseaseConverterTest {
     // case 5 - Test ambiguous case - when same omim of mondo term is mapped to more than one hum disease,
     // ignore such mondo term
     @Test
-    void testAmbiguousOMIMIds(){
+    void testAmbiguousOMIMIds() {
         // given
         String uuid = UUID.randomUUID().toString();
         String name = "DISEASE-OMIM-MATCH-" + uuid;
@@ -225,7 +231,7 @@ class MondoTermToDiseaseConverterTest {
     // case 6 - Test ambiguous case - when same name of mondo term is mapped to more than one hum disease's through synonym,
     // ignore such mondo term
     @Test
-    void testAmbiguousSynonyms(){
+    void testAmbiguousSynonyms() {
         // given
         String uuid = UUID.randomUUID().toString();
         String name = "DISEASE-OMIM-MATCH-" + uuid;
@@ -261,8 +267,9 @@ class MondoTermToDiseaseConverterTest {
     }
 
     private void initialize() {
+        ExecutionContext context = new ExecutionContext();
+        Mockito.when(this.stepExecution.getExecutionContext()).thenReturn(context);
         this.converter = new MondoTermToDiseaseConverter(diseaseDAO, synonymDAO, crossRefDAO);
-        this.converter.initialize();
-        this.converter.loadCache();
+        this.converter.init(this.stepExecution);
     }
 }

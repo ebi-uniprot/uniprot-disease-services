@@ -107,7 +107,7 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
         return disease;
     }
 
-    public void initialize(){
+    private void initialize(){
         this.mondoOboTerms = new ArrayList<>();
         this.diseaseNameToDiseaseMap = new HashMap<>();
         this.synonymToDiseasesMap = new HashMap<>();
@@ -115,7 +115,7 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
         this.ambiguousOboTerms = new HashSet<>();
     }
 
-    public void loadCache() {
+    private void loadCache() {
         loadDiseaseNameDiseaseMapFromDisease();
         loadDiseaseNameDiseaseMapFromSynonym();
         loadDiseaseNameDiseaseMapFromCrossRef();
