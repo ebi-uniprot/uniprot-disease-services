@@ -2,13 +2,10 @@ package uk.ac.ebi.uniprot.ds.importer.writer;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
@@ -37,6 +34,7 @@ import uk.ac.ebi.uniprot.ds.common.dao.PublicationDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.VariantDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
+import uk.ac.ebi.uniprot.ds.importer.DataImporterSpringBootApplication;
 import uk.ac.ebi.uniprot.ds.importer.reader.UniProtReader;
 
 /**
@@ -44,8 +42,7 @@ import uk.ac.ebi.uniprot.ds.importer.reader.UniProtReader;
  * @created 14/10/2020
  */
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@SpringBootTest(classes = {DataImporterSpringBootApplication.class})
 public class DiseaseWriterTest {
     @Autowired
     private DiseaseDAO diseaseDAO;
