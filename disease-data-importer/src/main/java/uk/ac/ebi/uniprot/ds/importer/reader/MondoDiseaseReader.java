@@ -1,7 +1,7 @@
 package uk.ac.ebi.uniprot.ds.importer.reader;
 
 import org.springframework.batch.item.ItemReader;
-import uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology.OBOTerm;
+import uk.ac.ebi.uniprot.ds.importer.reader.graph.OBOTerm;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
@@ -46,7 +46,7 @@ public class MondoDiseaseReader implements ItemReader<OBOTerm> {
 
         OBOTerm oboTerm;
         // read until non-obsolete term found
-        while ((oboTerm = readNextTerm()) != null && oboTerm.isObsolete()) ;
+        while ((oboTerm = readNextTerm()) != null && oboTerm.isObsolete());
         return oboTerm;
     }
 

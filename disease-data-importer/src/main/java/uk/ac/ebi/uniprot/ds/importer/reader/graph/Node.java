@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology;
+package uk.ac.ebi.uniprot.ds.importer.reader.graph;
 
 import lombok.Getter;
 import lombok.Setter;

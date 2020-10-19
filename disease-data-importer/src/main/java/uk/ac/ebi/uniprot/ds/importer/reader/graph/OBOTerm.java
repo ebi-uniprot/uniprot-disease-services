@@ -1,4 +1,4 @@
-package uk.ac.ebi.uniprot.ds.importer.reader.diseaseontology;
+package uk.ac.ebi.uniprot.ds.importer.reader.graph;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,4 +25,10 @@ public class OBOTerm {
     private List<String> xrefs;
     private List<String> isAs; // parent ids
     private boolean isObsolete;
+
+    public OBOTerm(String id, String name, List<String> parentIds){
+        this.id = id;
+        this.name = name;
+        this.isAs = parentIds;
+    }
 }

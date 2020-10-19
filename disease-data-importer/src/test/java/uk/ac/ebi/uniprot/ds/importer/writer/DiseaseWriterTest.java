@@ -46,7 +46,7 @@ import uk.ac.ebi.uniprot.ds.importer.reader.UniProtReader;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class DiseaseWriterTest {
+public class DiseaseWriterTest {
     @Autowired
     private DiseaseDAO diseaseDAO;
     @Autowired
@@ -142,25 +142,25 @@ class DiseaseWriterTest {
         Assertions.assertEquals(15, dcs.size());
     }
 
-    private Disease createDiseaseByDiseaseId(String diseaseId) {
+    public static Disease createDiseaseByDiseaseId(String diseaseId) {
         Disease.DiseaseBuilder builder = createDisease();
         builder.diseaseId(diseaseId);
         return builder.build();
     }
 
-    private Disease createDiseaseByDiseaseName(String name) {
+    public static Disease createDiseaseByDiseaseName(String name) {
         Disease.DiseaseBuilder builder = createDisease();
         builder.name(name);
         return builder.build();
     }
 
-    private Disease createDiseaseByAcronym(String acr) {
+    private static Disease createDiseaseByAcronym(String acr) {
         Disease.DiseaseBuilder builder = createDisease();
         builder.acronym(acr);
         return builder.build();
     }
 
-    private Disease.DiseaseBuilder createDisease() {
+    private static Disease.DiseaseBuilder createDisease() {
         String uuid = UUID.randomUUID().toString();
         Disease.DiseaseBuilder builder = Disease.builder();
         builder.diseaseId("DID" + uuid).name("NAME" + uuid).acronym("ACR" + uuid);
