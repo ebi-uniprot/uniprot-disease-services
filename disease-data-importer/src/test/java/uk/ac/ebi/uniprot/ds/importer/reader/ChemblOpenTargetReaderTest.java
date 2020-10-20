@@ -10,7 +10,6 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ChemblOpenTargetReaderTest {
-
     private static final String SAMPLE_CHEMBL_FILE = "src/test/resources/sample_chembl_opentarget.json";
     private static ChemblOpenTargetReader READER;
 
@@ -26,7 +25,6 @@ class ChemblOpenTargetReaderTest {
             verifyOpenTargetObj(openTargetObj);
             count++;
         }
-
         assertEquals(10, count);
     }
 
@@ -53,5 +51,4 @@ class ChemblOpenTargetReaderTest {
             assertNotNull(openTarget.getDrugEvidences(), "Drug evidences is null");
         }
     }
-
 }

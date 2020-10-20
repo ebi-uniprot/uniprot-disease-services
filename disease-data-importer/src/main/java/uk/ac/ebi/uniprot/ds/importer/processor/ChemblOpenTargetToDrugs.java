@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
+import uk.ac.ebi.uniprot.ds.common.common.SourceType;
 import uk.ac.ebi.uniprot.ds.common.dao.ProteinCrossRefDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.Drug;
@@ -65,7 +66,7 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblOpenTarget, 
 
         Set<Drug> drugs = new HashSet<>();
 
-        if (xrefs != null) {
+        if (Objects.nonNull(xrefs)) {
             drugs = xrefs.stream()
                     .map(xref -> getDrug(xref, item))
                     .filter(drug -> !this.drugsStored.contains(drug))
@@ -85,7 +86,7 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblOpenTarget, 
 
     private void loadProteinCrossRefsCache() {
         if(this.targetChemblToXRefsMap.isEmpty()){
-            List<ProteinCrossRef> xrefs = this.proteinCrossRefDAO.findAllByDbType(Constants.ChEMBL_STR);
+            List<ProteinCrossRef> xrefs = this.proteinCrossRefDAO.findAllByDbType(SourceType.ChEMBL.name());
 
             xrefs.stream().forEach(xref -> {
                 List<ProteinCrossRef> primaryIdXRefs = new ArrayList<>();
@@ -107,7 +108,7 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblOpenTarget, 
         drugBuilder.mechanismOfAction(item.getMechOfAction()).clinicalTrialLink(item.getClinicalTrialLink());
         drugBuilder.clinicalTrialPhase(item.getClinicalTrialPhase()).proteinCrossRef(xref);
         drugBuilder.moleculeType(item.getMoleculeType()).name(item.getMoleculeName()).sourceId(srcChemblId);
-        drugBuilder.sourceType(Constants.ChEMBL_STR);
+        drugBuilder.sourceType(SourceType.ChEMBL.name());
         drugBuilder.chemblDiseaseId(item.getDiseaseId());
         drugBuilder.disease(disease);
         Drug drug = drugBuilder.build();
@@ -186,7 +187,15 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblOpenTarget, 
         // get in form EFO_1000890
         String efo_ = efoUrl.substring(efoUrl.lastIndexOf("/")+1);
         String[] efoId = efo_.split("_");
-        assert efoId.length == 2;
-        return efoId[0] + ":" + efoId[1];
+        return efoId.length == 2 ? efoId[0] + ":" + efoId[1] : "";
+    }
+
+    // for tests
+    void setProteinCrossRefDAO(ProteinCrossRefDAO proteinCrossRefDAO){
+        this.proteinCrossRefDAO = proteinCrossRefDAO;
+    }
+
+    void setDiseaseNameToDiseaseMap(Map<String, Disease> diseaseNameToDiseaseMap){
+        this.diseaseNameToDiseaseMap = diseaseNameToDiseaseMap;
     }
 }

@@ -39,7 +39,7 @@ public class BatchConfigurationDiseaseService {
                 .next(mondoDiseaseStep)// load synonyms and/or disease group from Mondo data
                 .next(parentChildLoadStep)// create parents children relationship with mondo data
                 .next(descendentsLoadStep)// add all the descendents of each disease in falttened manner
-                .next(chDrugLoad)
+                .next(chDrugLoad)// load drugs
                 .next(alzheimerProteinLoad)// Alzheimer disease protein load step
                 .next(siteMappingStep)// Site mapping load step
                 .listener(jobExecutionListener)
