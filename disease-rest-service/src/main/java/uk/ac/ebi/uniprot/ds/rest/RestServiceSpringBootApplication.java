@@ -8,7 +8,6 @@
 package uk.ac.ebi.uniprot.ds.rest;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -17,16 +16,24 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import uk.ac.ebi.uniprot.ds.common.dao.DrugDAO;
-import uk.ac.ebi.uniprot.ds.rest.filter.CorrelationHeaderFilter;
-import uk.ac.ebi.uniprot.ds.rest.mapper.*;
+import java.io.IOException;
+import java.util.Arrays;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Arrays;
+
+import uk.ac.ebi.uniprot.ds.common.dao.DrugDAO;
+import uk.ac.ebi.uniprot.ds.rest.filter.CorrelationHeaderFilter;
+import uk.ac.ebi.uniprot.ds.rest.mapper.DiseaseToDiseaseDTOMap;
+import uk.ac.ebi.uniprot.ds.rest.mapper.DrugToDrugDTOMap;
+import uk.ac.ebi.uniprot.ds.rest.mapper.ProteinToProteinDTOMap;
+import uk.ac.ebi.uniprot.ds.rest.mapper.ProteinToProteinDiseasesDTOMap;
+import uk.ac.ebi.uniprot.ds.rest.mapper.ProteinToProteinWithCrossRefsDTOMap;
+import uk.ac.ebi.uniprot.ds.rest.mapper.SiteMapToUniProtSiteMapDTOMap;
+import uk.ac.ebi.uniprot.ds.rest.mapper.VariantToVariantDTOMap;
+
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN;
 
 @SpringBootApplication
@@ -59,7 +66,7 @@ public class RestServiceSpringBootApplication {
     public FilterRegistrationBean correlationHeaderFilter() {
         FilterRegistrationBean filterRegBean = new FilterRegistrationBean();
         filterRegBean.setFilter(new CorrelationHeaderFilter());
-        filterRegBean.setUrlPatterns(Arrays.asList("/*"));
+        filterRegBean.setUrlPatterns(Arrays.asList("/v1/ds/*"));
 
         return filterRegBean;
     }

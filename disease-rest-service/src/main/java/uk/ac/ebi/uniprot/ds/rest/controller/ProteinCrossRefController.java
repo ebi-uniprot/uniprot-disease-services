@@ -7,7 +7,6 @@
 
 package uk.ac.ebi.uniprot.ds.rest.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+import javax.validation.constraints.Size;
+
+import lombok.extern.slf4j.Slf4j;
+import springfox.documentation.annotations.ApiIgnore;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
 import uk.ac.ebi.uniprot.ds.rest.dto.ProteinCrossRefDTO;
@@ -23,21 +29,21 @@ import uk.ac.ebi.uniprot.ds.rest.dto.ProteinWithCrossRefsDTO;
 import uk.ac.ebi.uniprot.ds.rest.filter.RequestCorrelation;
 import uk.ac.ebi.uniprot.ds.rest.response.MultipleEntityResponse;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
-
-import javax.validation.constraints.Size;
-import java.util.List;
-
+@ApiIgnore
 @RestController
 @RequestMapping("/v1/ds")
 @Validated
 @Slf4j
 public class ProteinCrossRefController {
 
-    @Autowired
-    private ProteinService proteinService;
+    private final ProteinService proteinService;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+
+    public ProteinCrossRefController(ProteinService proteinService, ModelMapper modelMapper) {
+        this.proteinService = proteinService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping(value={"/proteins/{accessions}/xrefs"}, name = "Get the cross refs for the given list of accession")
     public MultipleEntityResponse<ProteinWithCrossRefsDTO> getProteinsXRefs(
