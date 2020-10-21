@@ -1,13 +1,14 @@
 package uk.ac.ebi.uniprot.ds.rest.controller;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,15 +23,13 @@ import uk.ac.ebi.uniprot.ds.rest.response.MultipleEntityResponse;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 
-import java.util.List;
-
 /**
  * @author sahmad
  * Controller for drug related endpoints
  */
 @Api(tags = {"drugs"})
 @RestController
-@RequestMapping("/v1/ds")
+@RequestMapping("diseaseservice/api")
 @Validated
 public class DrugController {
     private final ProteinService proteinService;

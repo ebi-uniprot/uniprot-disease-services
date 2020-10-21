@@ -81,7 +81,7 @@ public class ProteinControllerGetDiseasesTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/proteins/" + accessions +"/diseases").
+                                get("/diseaseservice/api/proteins/" + accessions +"/diseases").
                                 param("accessions", accessions)
                 );
 
@@ -127,7 +127,7 @@ public class ProteinControllerGetDiseasesTest {
         String accessions = a1 + "," + a2 + "," + a3;
 
         ResultActions res = this.mockMvc.
-                perform(MockMvcRequestBuilders.get("/v1/ds/proteins/" + accessions + "/diseases").param("accessions", accessions));
+                perform(MockMvcRequestBuilders.get("/diseaseservice/api/proteins/" + accessions + "/diseases").param("accessions", accessions));
 
         res.andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.requestId", notNullValue()))
@@ -164,7 +164,7 @@ public class ProteinControllerGetDiseasesTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/proteins/" + accessions +"/diseases").
+                                get("/diseaseservice/api/proteins/" + accessions +"/diseases").
                                 param("accessions", accessions)
                 );
 

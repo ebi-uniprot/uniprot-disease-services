@@ -28,7 +28,7 @@ public class HttpRequestTest {
 
     @Test
     public void greetingShouldReturnDefaultMessage() throws Exception {
-        SingleEntityResponse result = this.restTemplate.getForObject("http://localhost:" + port + "/v1/ds/diseases/1233",
+        SingleEntityResponse result = this.restTemplate.getForObject("http://localhost:" + port + "/diseaseservice/api/diseases/1233",
                 SingleEntityResponse.class);
     }
 }

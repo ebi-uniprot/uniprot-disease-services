@@ -88,7 +88,7 @@ public class DrugControllerTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/drug/" + drugName + "/proteins").
+                                get("/diseaseservice/api/drug/" + drugName + "/proteins").
                                 param("drugName", drugName)
                 );
 
@@ -138,7 +138,7 @@ public class DrugControllerTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/drug/" + drugName + "/diseases").
+                                get("/diseaseservice/api/drug/" + drugName + "/diseases").
                                 param("drugName", drugName)
                 );
 

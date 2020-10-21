@@ -77,7 +77,7 @@ public class ProteinControllerTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/proteins/" + accession).
+                                get("/diseaseservice/api/proteins/" + accession).
                                 param("accession", accession)
                 );
 
@@ -155,7 +155,7 @@ public class ProteinControllerTest {
         Mockito.when(this.proteinService.getProteinByAccession(accession)).thenReturn(Optional.of(protein));
 
         ResultActions res = this.mockMvc.
-                perform(MockMvcRequestBuilders.get("/v1/ds/proteins/" + accession).param("accession", accession));
+                perform(MockMvcRequestBuilders.get("/diseaseservice/api/proteins/" + accession).param("accession", accession));
 
         res.andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.requestId", notNullValue()))
@@ -185,7 +185,7 @@ public class ProteinControllerTest {
         Mockito.when(this.proteinService.getProteinByAccession(accession)).thenThrow(new AssetNotFoundException("Unable to find the accession '" + accession + "'."));
 
         ResultActions res = this.mockMvc.
-                perform(MockMvcRequestBuilders.get("/v1/ds/proteins/" + accession).param("accession", accession));
+                perform(MockMvcRequestBuilders.get("/diseaseservice/api/proteins/" + accession).param("accession", accession));
         res.andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.requestId", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.hasError", Matchers.equalTo(true)))
@@ -205,7 +205,7 @@ public class ProteinControllerTest {
         Mockito.when(this.proteinService.getProteinInteractions(a1)).thenReturn(ints);
 
         ResultActions res = this.mockMvc.
-                perform(MockMvcRequestBuilders.get("/v1/ds/protein/" + a1 + "/interactions").param("accession", a1));
+                perform(MockMvcRequestBuilders.get("/diseaseservice/api/protein/" + a1 + "/interactions").param("accession", a1));
 
         res.andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.requestId", notNullValue()))
@@ -271,7 +271,7 @@ public class ProteinControllerTest {
 
         ResultActions res = this.mockMvc
                 .perform(MockMvcRequestBuilders
-                        .get("/v1/ds/disease/" + diseaseId + "/proteins")
+                        .get("/diseaseservice/api/disease/" + diseaseId + "/proteins")
                         .param("diseaseId", diseaseId));
 
         res.andDo(MockMvcResultHandlers.print())

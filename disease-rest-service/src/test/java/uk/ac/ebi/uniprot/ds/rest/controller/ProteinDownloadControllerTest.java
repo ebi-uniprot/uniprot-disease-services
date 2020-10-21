@@ -82,7 +82,7 @@ public class ProteinDownloadControllerTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/proteins/" + accessionsStr + "/download").
+                                get("/diseaseservice/api/proteins/" + accessionsStr + "/download").
                                 param("accessions", accessionsStr)
                 );
 

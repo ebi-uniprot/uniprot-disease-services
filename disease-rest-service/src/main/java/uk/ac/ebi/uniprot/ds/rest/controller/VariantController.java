@@ -7,14 +7,8 @@
 
 package uk.ac.ebi.uniprot.ds.rest.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,18 +16,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import springfox.documentation.annotations.ApiIgnore;
+import java.util.List;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import lombok.extern.slf4j.Slf4j;
 import uk.ac.ebi.uniprot.ds.common.model.Variant;
-import uk.ac.ebi.uniprot.ds.rest.dto.DiseaseDTO;
 import uk.ac.ebi.uniprot.ds.rest.dto.VariantDTO;
 import uk.ac.ebi.uniprot.ds.rest.filter.RequestCorrelation;
 import uk.ac.ebi.uniprot.ds.rest.response.MultipleEntityResponse;
 import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
-
-import java.util.List;
-@Api
+@Api(tags = {"variants"})
 @RestController
-@RequestMapping("/v1/ds")
+@RequestMapping("diseaseservice/api")
 @Validated
 @Slf4j
 public class VariantController {

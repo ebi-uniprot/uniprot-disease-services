@@ -10,10 +10,16 @@ package uk.ac.ebi.uniprot.ds.rest.controller;
 import org.hibernate.validator.constraints.Range;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Optional;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,12 +35,9 @@ import uk.ac.ebi.uniprot.ds.rest.response.SingleEntityResponse;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
 import uk.ac.ebi.uniprot.ds.rest.service.DrugService;
 
-import java.util.List;
-import java.util.Optional;
-
 @Api(tags = {"diseases"})
 @RestController
-@RequestMapping("/v1/ds")
+@RequestMapping("diseaseservice/api")
 @Validated
 public class DiseaseController {
 
@@ -101,7 +104,7 @@ public class DiseaseController {
     }
 
     @ApiResponse(code = 200, message = "The drugs retrieved", response = DrugDTO.class, responseContainer = "List")
-    @ApiOperation(value = "Get the drugs for a given disease name.")
+    @ApiOperation(tags = {"drugs"}, value = "Get the drugs for a given disease name.")
     @GetMapping(value={"/disease/{diseaseId}/drugs"}, name = "Get the drugs for a given diseaseId",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public MultipleEntityResponse<DrugDTO> getDrugsByDiseaseId(

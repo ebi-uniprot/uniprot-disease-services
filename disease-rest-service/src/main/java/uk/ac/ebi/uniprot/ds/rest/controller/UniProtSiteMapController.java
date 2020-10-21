@@ -26,7 +26,7 @@ import uk.ac.ebi.uniprot.ds.rest.service.UniProtSiteMapService;
  */
 @Api(tags = {"ortholog-mappings"})
 @RestController
-@RequestMapping("/v1/ds")
+@RequestMapping("diseaseservice/api")
 @Validated
 public class UniProtSiteMapController {
     private final UniProtSiteMapService siteMapService;

@@ -80,7 +80,7 @@ public class VariantControllerTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/protein/" + accession + "/variants").
+                                get("/diseaseservice/api/protein/" + accession + "/variants").
                                 param("accession", accession)
                 );
 
@@ -125,7 +125,7 @@ public class VariantControllerTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/disease/" + diseaseId + "/variants").
+                                get("/diseaseservice/api/disease/" + diseaseId + "/variants").
                                 param("diseaseId", diseaseId)
                 );
 

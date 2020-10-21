@@ -9,10 +9,22 @@ package uk.ac.ebi.uniprot.ds.rest.controller;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.Size;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,21 +32,18 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
-import uk.ac.ebi.uniprot.ds.rest.dto.*;
+import uk.ac.ebi.uniprot.ds.rest.dto.DrugDTO;
+import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDTO;
+import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDiseasesDTO;
 import uk.ac.ebi.uniprot.ds.rest.filter.RequestCorrelation;
 import uk.ac.ebi.uniprot.ds.rest.response.MultipleEntityResponse;
 import uk.ac.ebi.uniprot.ds.rest.response.SingleEntityResponse;
 import uk.ac.ebi.uniprot.ds.rest.service.DrugService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.Size;
-import java.io.IOException;
-import java.util.*;
-
 @Api(tags = {"proteins"})
 @RestController
-@RequestMapping("/v1/ds")
+@RequestMapping("diseaseservice/api")
 @Validated
 public class ProteinController {
 
@@ -88,7 +97,7 @@ public class ProteinController {
     }
 
     @ApiResponse(code = 200, message = "The proteins retrieved", response = DrugDTO.class, responseContainer = "List")
-    @ApiOperation(value = "Get the drugs for a given protein accession.")
+    @ApiOperation(tags = {"drugs"}, value = "Get the drugs for a given protein accession.")
     @GetMapping(value={"/protein/{accession}/drugs"}, name = "Get the drugs for a given protein accession",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public MultipleEntityResponse<DrugDTO> getDrugsByProteinAccession(@ApiParam(value = "Protein accession", required = true)

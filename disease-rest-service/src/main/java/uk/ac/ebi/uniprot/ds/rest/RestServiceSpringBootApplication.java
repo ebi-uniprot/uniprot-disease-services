@@ -66,7 +66,7 @@ public class RestServiceSpringBootApplication {
     public FilterRegistrationBean correlationHeaderFilter() {
         FilterRegistrationBean filterRegBean = new FilterRegistrationBean();
         filterRegBean.setFilter(new CorrelationHeaderFilter());
-        filterRegBean.setUrlPatterns(Arrays.asList("/v1/ds/*"));
+        filterRegBean.setUrlPatterns(Arrays.asList("/diseaseservice/api/*"));
 
         return filterRegBean;
     }
