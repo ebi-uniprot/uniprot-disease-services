@@ -37,6 +37,7 @@
         <jacoco.maven.version>0.8.1</jacoco.maven.version>
         <skipITs>false</skipITs>
         <skipUTs>false</skipUTs>
+        <openapi-maven-plugin.version>0.3</openapi-maven-plugin.version>
     </properties>
 
     <dependencies>

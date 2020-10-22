@@ -93,7 +93,7 @@ public class ProteinDrugControllerTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/protein/" + accession + "/drugs").
+                                get("/protein/" + accession + "/drugs").
                                 param("accession", accession)
                 );
 

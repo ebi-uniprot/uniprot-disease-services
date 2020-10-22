@@ -106,7 +106,7 @@ public class DiseaseDrugControllerTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/disease/" + diseaseId + "/drugs").
+                                get("/disease/" + diseaseId + "/drugs").
                                 param("diseaseId", diseaseId)
                 );
 
