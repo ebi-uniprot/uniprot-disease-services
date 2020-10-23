@@ -74,7 +74,7 @@
                             </packageLocations>
                             <openApiDirectory>generated/swagger</openApiDirectory>
                             <openApiFileName>diseaseservice-openapi3.yaml</openApiFileName>
-                            <serverBaseUrl>http://wwwdev.ebi.ac.uk/uniprot/api/ds</serverBaseUrl>
+                            <serverBaseUrl>https://wwwdev.ebi.ac.uk/uniprot/api/diseaseservice</serverBaseUrl>
                         </configuration>
                         <executions>
                             <execution>

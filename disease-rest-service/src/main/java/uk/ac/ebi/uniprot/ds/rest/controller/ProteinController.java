@@ -48,7 +48,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping
 @Validated
-@Tag(name = "Protein", description = "Protein related operations")
+@Tag(name = "Protein", description = "All the proteins are human disease related. They are swissprot proteins.")
 public class ProteinController {
 
     private final ProteinService proteinService;
