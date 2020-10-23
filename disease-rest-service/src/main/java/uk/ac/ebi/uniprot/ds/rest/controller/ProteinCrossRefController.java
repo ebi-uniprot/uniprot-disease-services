@@ -7,15 +7,20 @@
 
 package uk.ac.ebi.uniprot.ds.rest.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+import javax.validation.constraints.Size;
+
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
 import uk.ac.ebi.uniprot.ds.rest.dto.ProteinCrossRefDTO;
@@ -24,21 +29,22 @@ import uk.ac.ebi.uniprot.ds.rest.filter.RequestCorrelation;
 import uk.ac.ebi.uniprot.ds.rest.response.MultipleEntityResponse;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 
-import javax.validation.constraints.Size;
-import java.util.List;
-
 @RestController
-@RequestMapping("/v1/ds")
+@RequestMapping
 @Validated
 @Slf4j
 public class ProteinCrossRefController {
 
-    @Autowired
-    private ProteinService proteinService;
+    private final ProteinService proteinService;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
+    public ProteinCrossRefController(ProteinService proteinService, ModelMapper modelMapper) {
+        this.proteinService = proteinService;
+        this.modelMapper = modelMapper;
+    }
+
+    @Operation(hidden = true)
     @GetMapping(value={"/proteins/{accessions}/xrefs"}, name = "Get the cross refs for the given list of accession")
     public MultipleEntityResponse<ProteinWithCrossRefsDTO> getProteinsXRefs(
             @Size(min = 1, max = 200, message = "The total count of accessions passed must be between 1 and 200 both inclusive.")
@@ -52,6 +58,7 @@ public class ProteinCrossRefController {
         return resp;
     }
 
+    @Operation(hidden = true)
     @GetMapping(value={"/protein/{accession}/xrefs"}, name = "Get the protein cross refs for a given accession")
     public MultipleEntityResponse<ProteinCrossRefDTO> getProteinXRefs(@PathVariable(name = "accession") String accession) {
         String requestId = RequestCorrelation.getCorrelationId();

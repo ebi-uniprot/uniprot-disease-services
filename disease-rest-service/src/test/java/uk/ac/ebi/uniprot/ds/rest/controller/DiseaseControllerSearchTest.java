@@ -78,7 +78,7 @@ public class DiseaseControllerSearchTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/diseases/search/" + keyword).
+                                get("/diseases/search/" + keyword).
                                 param("keyword", keyword).
                                 param("offset", "0").
                                 param("size", "10")
@@ -105,7 +105,7 @@ public class DiseaseControllerSearchTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/diseases/search/" + keyword).
+                                get("/diseases/search/" + keyword).
                                 param("keyword", keyword).
                                 param("offset", "-1").
                                 param("size", "10")
@@ -125,7 +125,7 @@ public class DiseaseControllerSearchTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/diseases/search/" + keyword).
+                                get("/diseases/search/" + keyword).
                                 param("keyword", keyword).
                                 param("offset", "0").
                                 param("size", "210")

@@ -73,7 +73,7 @@ public class ProteinControllerGetProteinXRefsTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/proteins/" + accessions +"/xrefs").
+                                get("/proteins/" + accessions +"/xrefs").
                                 param("accessions", accessions)
                 );
 
@@ -113,7 +113,7 @@ public class ProteinControllerGetProteinXRefsTest {
         String accessions = a1 + "," + a2 + "," + a3;
 
         ResultActions res = this.mockMvc.
-                perform(MockMvcRequestBuilders.get("/v1/ds/proteins/" + accessions + "/xrefs").param("accessions", accessions));
+                perform(MockMvcRequestBuilders.get("/proteins/" + accessions + "/xrefs").param("accessions", accessions));
 
         res.andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.requestId", notNullValue()))
@@ -152,7 +152,7 @@ public class ProteinControllerGetProteinXRefsTest {
         ResultActions res = this.mockMvc.perform
                 (
                         MockMvcRequestBuilders.
-                                get("/v1/ds/proteins/" + accessions +"/xrefs").
+                                get("/proteins/" + accessions +"/xrefs").
                                 param("accessions", accessions)
                 );
 
@@ -179,7 +179,7 @@ public class ProteinControllerGetProteinXRefsTest {
         Mockito.when(this.proteinService.getProteinCrossRefsByAccession(a1)).thenReturn(xrefs);
 
         ResultActions res = this.mockMvc.
-                perform(MockMvcRequestBuilders.get("/v1/ds/protein/" + a1 + "/xrefs").param("accession", a1));
+                perform(MockMvcRequestBuilders.get("/protein/" + a1 + "/xrefs").param("accession", a1));
 
         res.andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.requestId", notNullValue()))

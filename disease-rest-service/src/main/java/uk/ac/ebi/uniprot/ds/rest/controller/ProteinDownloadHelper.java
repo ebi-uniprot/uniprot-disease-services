@@ -1,10 +1,18 @@
 package uk.ac.ebi.uniprot.ds.rest.controller;
 
-import uk.ac.ebi.uniprot.ds.common.model.*;
-import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDTO;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
+import uk.ac.ebi.uniprot.ds.common.model.Drug;
+import uk.ac.ebi.uniprot.ds.common.model.Interaction;
+import uk.ac.ebi.uniprot.ds.common.model.Protein;
+import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
+import uk.ac.ebi.uniprot.ds.common.model.Variant;
+import uk.ac.ebi.uniprot.ds.rest.dto.ProteinDTO;
 
 public class ProteinDownloadHelper {
     public static final String DEFAULT_FIELDS = "Protein Accession,Protein Name,Function,Gene Info,Interactions,Pathways,Variants,Diseases,Drugs";
