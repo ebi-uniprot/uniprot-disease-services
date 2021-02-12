@@ -2,7 +2,7 @@ ID   FGFR3_HUMAN             Reviewed;         806 AA.
 AC   P22607; D3DVP9; D3DVQ0; Q14308; Q16294; Q16608; Q59FL9;
 DT   01-AUG-1991, integrated into UniProtKB/Swiss-Prot.
 DT   01-AUG-1991, sequence version 1.
-DT   07-OCT-2020, entry version 246.
+DT   10-FEB-2021, entry version 248.
 DE   RecName: Full=Fibroblast growth factor receptor 3;
 DE            Short=FGFR-3;
 DE            EC=2.7.10.1;
@@ -642,9 +642,315 @@ CC       ECO:0000269|PubMed:16410555, ECO:0000269|PubMed:16597617,
 CC       ECO:0000269|PubMed:17561467, ECO:0000269|PubMed:17623664,
 CC       ECO:0000269|PubMed:19286672, ECO:0000269|PubMed:8663044}.
 CC   -!- INTERACTION:
+CC       P22607; Q6H8Q1-8: ABLIM2; NbExp=3; IntAct=EBI-348399, EBI-16436655;
+CC       P22607; Q8NC06-3: ACBD4; NbExp=3; IntAct=EBI-348399, EBI-12811089;
+CC       P22607; Q6UY14-3: ADAMTSL4; NbExp=3; IntAct=EBI-348399, EBI-10173507;
+CC       P22607; Q8N302-2: AGGF1; NbExp=3; IntAct=EBI-348399, EBI-25838028;
+CC       P22607; Q9UKV8: AGO2; NbExp=3; IntAct=EBI-348399, EBI-528269;
+CC       P22607; P55008: AIF1; NbExp=3; IntAct=EBI-348399, EBI-9031341;
+CC       P22607; Q99996-3: AKAP9; NbExp=3; IntAct=EBI-348399, EBI-11022349;
+CC       P22607; Q9NQ31: AKIP1; NbExp=3; IntAct=EBI-348399, EBI-517035;
+CC       P22607; P53677-2: AP3M2; NbExp=3; IntAct=EBI-348399, EBI-12177015;
+CC       P22607; D3DTF8: APLN; NbExp=3; IntAct=EBI-348399, EBI-22002556;
+CC       P22607; Q9NXL2-1: ARHGEF38; NbExp=3; IntAct=EBI-348399, EBI-18172597;
+CC       P22607; Q9Y2Y0: ARL2BP; NbExp=3; IntAct=EBI-348399, EBI-3449344;
+CC       P22607; Q66PJ3-4: ARL6IP4; NbExp=3; IntAct=EBI-348399, EBI-5280499;
+CC       P22607; Q6XD76: ASCL4; NbExp=3; IntAct=EBI-348399, EBI-10254793;
+CC       P22607; Q96FT7-4: ASIC4; NbExp=3; IntAct=EBI-348399, EBI-9089489;
+CC       P22607; Q9UII2: ATP5IF1; NbExp=3; IntAct=EBI-348399, EBI-718459;
+CC       P22607; Q9ULK2-2: ATXN7L1; NbExp=3; IntAct=EBI-348399, EBI-21568482;
+CC       P22607; Q9H7T9: AUNIP; NbExp=3; IntAct=EBI-348399, EBI-10693257;
+CC       P22607; Q8TBE0: BAHD1; NbExp=3; IntAct=EBI-348399, EBI-742750;
+CC       P22607; Q9UQB8-6: BAIAP2; NbExp=3; IntAct=EBI-348399, EBI-9092016;
+CC       P22607; Q16520: BATF; NbExp=3; IntAct=EBI-348399, EBI-749503;
+CC       P22607; P54687-4: BCAT1; NbExp=3; IntAct=EBI-348399, EBI-25834445;
+CC       P22607; Q00994: BEX3; NbExp=3; IntAct=EBI-348399, EBI-741753;
+CC       P22607; Q5H9J7: BEX5; NbExp=3; IntAct=EBI-348399, EBI-10243741;
+CC       P22607; Q9H2G9: BLZF1; NbExp=3; IntAct=EBI-348399, EBI-2548012;
+CC       P22607; Q5PSV4: BRMS1L; NbExp=3; IntAct=EBI-348399, EBI-5666615;
+CC       P22607; Q9ULD4-2: BRPF3; NbExp=3; IntAct=EBI-348399, EBI-23662416;
+CC       P22607; Q9NSI6-4: BRWD1; NbExp=3; IntAct=EBI-348399, EBI-10693038;
+CC       P22607; Q32Q52: C12orf74; NbExp=3; IntAct=EBI-348399, EBI-12891828;
+CC       P22607; Q6P5X5: C22orf39; NbExp=3; IntAct=EBI-348399, EBI-7317823;
+CC       P22607; Q3SXR2: C3orf36; NbExp=3; IntAct=EBI-348399, EBI-18036948;
+CC       P22607; Q96LL4: C8orf48; NbExp=3; IntAct=EBI-348399, EBI-751596;
+CC       P22607; P20807-4: CAPN3; NbExp=3; IntAct=EBI-348399, EBI-11532021;
+CC       P22607; O00257-3: CBX4; NbExp=3; IntAct=EBI-348399, EBI-4392727;
+CC       P22607; Q96HB5: CCDC120; NbExp=3; IntAct=EBI-348399, EBI-744556;
+CC       P22607; Q6ZP82: CCDC141; NbExp=3; IntAct=EBI-348399, EBI-928795;
+CC       P22607; A5D8V7: CCDC151; NbExp=3; IntAct=EBI-348399, EBI-8466445;
+CC       P22607; Q5M9N0-2: CCDC158; NbExp=3; IntAct=EBI-348399, EBI-21796846;
+CC       P22607; Q96GN5-2: CDCA7L; NbExp=3; IntAct=EBI-348399, EBI-9091443;
+CC       P22607; P24941: CDK2; NbExp=3; IntAct=EBI-348399, EBI-375096;
+CC       P22607; O14519: CDK2AP1; NbExp=3; IntAct=EBI-348399, EBI-1052532;
+CC       P22607; P38936: CDKN1A; NbExp=3; IntAct=EBI-348399, EBI-375077;
+CC       P22607; O95674: CDS2; NbExp=3; IntAct=EBI-348399, EBI-3913685;
+CC       P22607; Q9H3R5: CENPH; NbExp=3; IntAct=EBI-348399, EBI-1003700;
+CC       P22607; Q9Y4F5-3: CEP170B; NbExp=3; IntAct=EBI-348399, EBI-12950757;
+CC       P22607; Q86XR8: CEP57; NbExp=3; IntAct=EBI-348399, EBI-308614;
+CC       P22607; Q494V2-2: CFAP100; NbExp=3; IntAct=EBI-348399, EBI-11953200;
+CC       P22607; Q8WUX9: CHMP7; NbExp=3; IntAct=EBI-348399, EBI-749253;
+CC       P22607; Q9H2A9: CHST8; NbExp=3; IntAct=EBI-348399, EBI-21642354;
+CC       P22607; Q9Y3D0: CIAO2B; NbExp=3; IntAct=EBI-348399, EBI-744045;
+CC       P22607; Q96BR5: COA7; NbExp=3; IntAct=EBI-348399, EBI-6269632;
+CC       P22607; P02458-1: COL2A1; NbExp=3; IntAct=EBI-348399, EBI-12375799;
+CC       P22607; P21964-2: COMT; NbExp=3; IntAct=EBI-348399, EBI-10200977;
+CC       P22607; Q86WV2: COX4I1; NbExp=3; IntAct=EBI-348399, EBI-10260134;
+CC       P22607; Q03060-25: CREM; NbExp=3; IntAct=EBI-348399, EBI-12884642;
+CC       P22607; Q8TB03: CXorf38; NbExp=3; IntAct=EBI-348399, EBI-12024320;
+CC       P22607; O60759: CYTIP; NbExp=3; IntAct=EBI-348399, EBI-997814;
+CC       P22607; Q9UJU6: DBNL; NbExp=3; IntAct=EBI-348399, EBI-751783;
+CC       P22607; Q6ZN54-2: DEF8; NbExp=3; IntAct=EBI-348399, EBI-12346463;
+CC       P22607; Q8NDP9: DKFZp547K2416; NbExp=3; IntAct=EBI-348399, EBI-25842538;
+CC       P22607; O60479: DLX3; NbExp=3; IntAct=EBI-348399, EBI-3908248;
+CC       P22607; Q96EY1-3: DNAJA3; NbExp=3; IntAct=EBI-348399, EBI-11526226;
+CC       P22607; Q9H147: DNTTIP1; NbExp=3; IntAct=EBI-348399, EBI-2795449;
+CC       P22607; Q92782-2: DPF1; NbExp=3; IntAct=EBI-348399, EBI-23669343;
+CC       P22607; Q7Z7J5: DPPA2; NbExp=3; IntAct=EBI-348399, EBI-741400;
+CC       P22607; Q14117: DPYS; NbExp=3; IntAct=EBI-348399, EBI-12275416;
+CC       P22607; Q9BPU6: DPYSL5; NbExp=3; IntAct=EBI-348399, EBI-724653;
+CC       P22607; Q9BVC3: DSCC1; NbExp=3; IntAct=EBI-348399, EBI-11143782;
+CC       P22607; Q9Y6W6: DUSP10; NbExp=3; IntAct=EBI-348399, EBI-3443946;
+CC       P22607; O14641: DVL2; NbExp=3; IntAct=EBI-348399, EBI-740850;
+CC       P22607; A0AVK6: E2F8; NbExp=3; IntAct=EBI-348399, EBI-7779316;
+CC       P22607; Q658K8: EEF1DP3; NbExp=3; IntAct=EBI-348399, EBI-10248874;
+CC       P22607; Q6UXG2-3: ELAPOR1; NbExp=3; IntAct=EBI-348399, EBI-12920100;
+CC       P22607; O00472: ELL2; NbExp=3; IntAct=EBI-348399, EBI-395274;
+CC       P22607; O43768-8: ENSA; NbExp=3; IntAct=EBI-348399, EBI-25853109;
+CC       P22607; Q6NXG1: ESRP1; NbExp=3; IntAct=EBI-348399, EBI-10213520;
+CC       P22607; Q15910-2: EZH2; NbExp=3; IntAct=EBI-348399, EBI-10699473;
+CC       P22607; Q96GL9: FAM163A; NbExp=3; IntAct=EBI-348399, EBI-11793142;
+CC       P22607; A1KXE4-2: FAM168B; NbExp=3; IntAct=EBI-348399, EBI-12193763;
+CC       P22607; Q8NB25: FAM184A; NbExp=3; IntAct=EBI-348399, EBI-9917523;
+CC       P22607; Q86UY5: FAM83A; NbExp=3; IntAct=EBI-348399, EBI-1384254;
+CC       P22607; Q8IZU1: FAM9A; NbExp=3; IntAct=EBI-348399, EBI-8468186;
+CC       P22607; Q8TC84: FANK1; NbExp=3; IntAct=EBI-348399, EBI-21975404;
+CC       P22607; Q9UBX5: FBLN5; NbExp=3; IntAct=EBI-348399, EBI-947897;
+CC       P22607; Q9Y3I1: FBXO7; NbExp=3; IntAct=EBI-348399, EBI-1161222;
+CC       P22607; O94868-3: FCHSD2; NbExp=3; IntAct=EBI-348399, EBI-11958845;
 CC       P22607; P05230: FGF1; NbExp=3; IntAct=EBI-348399, EBI-698068;
 CC       P22607; P22607: FGFR3; NbExp=4; IntAct=EBI-348399, EBI-348399;
+CC       P22607; P15407: FOSL1; NbExp=3; IntAct=EBI-348399, EBI-744510;
+CC       P22607; P15408: FOSL2; NbExp=3; IntAct=EBI-348399, EBI-3893419;
+CC       P22607; P55318: FOXA3; NbExp=3; IntAct=EBI-348399, EBI-3910364;
+CC       P22607; Q06547-2: GABPB1; NbExp=3; IntAct=EBI-348399, EBI-618189;
+CC       P22607; Q06547-3: GABPB1; NbExp=3; IntAct=EBI-348399, EBI-9088619;
+CC       P22607; P15976-2: GATA1; NbExp=3; IntAct=EBI-348399, EBI-9090198;
+CC       P22607; P23769-2: GATA2; NbExp=3; IntAct=EBI-348399, EBI-21856389;
+CC       P22607; P23771: GATA3; NbExp=3; IntAct=EBI-348399, EBI-6664760;
+CC       P22607; Q49A26-4: GLYR1; NbExp=3; IntAct=EBI-348399, EBI-12143817;
+CC       P22607; Q7Z5G4: GOLGA7; NbExp=3; IntAct=EBI-348399, EBI-4403685;
+CC       P22607; Q9NWQ4-1: GPATCH2L; NbExp=3; IntAct=EBI-348399, EBI-11959863;
+CC       P22607; P52655: GTF2A1; NbExp=3; IntAct=EBI-348399, EBI-389518;
+CC       P22607; Q15486: GUSBP1; NbExp=4; IntAct=EBI-348399, EBI-712457;
+CC       P22607; Q96CS2: HAUS1; NbExp=3; IntAct=EBI-348399, EBI-2514791;
+CC       P22607; Q9BT25: HAUS8; NbExp=3; IntAct=EBI-348399, EBI-2558143;
+CC       P22607; Q99075: HBEGF; NbExp=3; IntAct=EBI-348399, EBI-7211558;
+CC       P22607; A8K0U2: hCG_2001421; NbExp=3; IntAct=EBI-348399, EBI-25843825;
+CC       P22607; Q5T447-2: HECTD3; NbExp=3; IntAct=EBI-348399, EBI-25854793;
+CC       P22607; Q8IV36: HID1; NbExp=3; IntAct=EBI-348399, EBI-743438;
+CC       P22607; Q4VB01: HOXB1; NbExp=3; IntAct=EBI-348399, EBI-17494170;
+CC       P22607; P09629: HOXB7; NbExp=3; IntAct=EBI-348399, EBI-1248457;
+CC       P22607; O43248: HOXC11; NbExp=3; IntAct=EBI-348399, EBI-2652631;
+CC       P22607; Q53T59: HS1BP3; NbExp=3; IntAct=EBI-348399, EBI-11335623;
+CC       P22607; Q53GQ0: HSD17B12; NbExp=3; IntAct=EBI-348399, EBI-2963255;
+CC       P22607; P14060: HSD3B1; NbExp=3; IntAct=EBI-348399, EBI-17426018;
 CC       P22607; P08238: HSP90AB1; NbExp=2; IntAct=EBI-348399, EBI-352572;
+CC       P22607; Q96EW2-2: HSPBAP1; NbExp=3; IntAct=EBI-348399, EBI-25835621;
+CC       P22607; P10809: HSPD1; NbExp=3; IntAct=EBI-348399, EBI-352528;
+CC       P22607; Q8NDH6-2: ICA1L; NbExp=3; IntAct=EBI-348399, EBI-12141931;
+CC       P22607; P41134: ID1; NbExp=3; IntAct=EBI-348399, EBI-1215527;
+CC       P22607; Q8IY31-2: IFT20; NbExp=3; IntAct=EBI-348399, EBI-11742277;
+CC       P22607; P22692: IGFBP4; NbExp=3; IntAct=EBI-348399, EBI-2831948;
+CC       P22607; Q9NZH6: IL37; NbExp=3; IntAct=EBI-348399, EBI-3862125;
+CC       P22607; Q9NXX0: ILF3; NbExp=3; IntAct=EBI-348399, EBI-743980;
+CC       P22607; Q86VI3: IQGAP3; NbExp=3; IntAct=EBI-348399, EBI-1237354;
+CC       P22607; Q8NA54: IQUB; NbExp=3; IntAct=EBI-348399, EBI-10220600;
+CC       P22607; Q86U28: ISCA2; NbExp=3; IntAct=EBI-348399, EBI-10258659;
+CC       P22607; Q13352: ITGB3BP; NbExp=3; IntAct=EBI-348399, EBI-712105;
+CC       P22607; P05412: JUN; NbExp=3; IntAct=EBI-348399, EBI-852823;
+CC       P22607; P17275: JUNB; NbExp=3; IntAct=EBI-348399, EBI-748062;
+CC       P22607; Q8N5Z5: KCTD17; NbExp=3; IntAct=EBI-348399, EBI-743960;
+CC       P22607; Q7Z7F0-4: KHDC4; NbExp=3; IntAct=EBI-348399, EBI-9089060;
+CC       P22607; Q9BVG8-5: KIFC3; NbExp=3; IntAct=EBI-348399, EBI-14069005;
+CC       P22607; Q2M2Z5: KIZ; NbExp=3; IntAct=EBI-348399, EBI-2554344;
+CC       P22607; Q6P597: KLC3; NbExp=3; IntAct=EBI-348399, EBI-1643885;
+CC       P22607; P57682: KLF3; NbExp=3; IntAct=EBI-348399, EBI-8472267;
+CC       P22607; Q9Y2M5: KLHL20; NbExp=3; IntAct=EBI-348399, EBI-714379;
+CC       P22607; Q9UH77: KLHL3; NbExp=3; IntAct=EBI-348399, EBI-8524663;
+CC       P22607; P08727: KRT19; NbExp=3; IntAct=EBI-348399, EBI-742756;
+CC       P22607; Q14525: KRT33B; NbExp=3; IntAct=EBI-348399, EBI-1049638;
+CC       P22607; Q3LI72: KRTAP19-5; NbExp=3; IntAct=EBI-348399, EBI-1048945;
+CC       P22607; Q3SYF9: KRTAP19-7; NbExp=3; IntAct=EBI-348399, EBI-10241353;
+CC       P22607; Q8IUC2: KRTAP8-1; NbExp=3; IntAct=EBI-348399, EBI-10261141;
+CC       P22607; Q6IAA8: LAMTOR1; NbExp=3; IntAct=EBI-348399, EBI-715385;
+CC       P22607; A0A0C4DGV4: LAMTOR5; NbExp=3; IntAct=EBI-348399, EBI-10173304;
+CC       P22607; Q14847-2: LASP1; NbExp=3; IntAct=EBI-348399, EBI-9088686;
+CC       P22607; Q9H2C1: LHX5; NbExp=3; IntAct=EBI-348399, EBI-25835523;
+CC       P22607; Q68G74: LHX8; NbExp=3; IntAct=EBI-348399, EBI-8474075;
+CC       P22607; Q8N0U6: LINC00518; NbExp=3; IntAct=EBI-348399, EBI-10264791;
+CC       P22607; Q1L5Z9: LONRF2; NbExp=3; IntAct=EBI-348399, EBI-2510853;
+CC       P22607; Q96JB6: LOXL4; NbExp=3; IntAct=EBI-348399, EBI-749562;
+CC       P22607; Q96LR2: LURAP1; NbExp=3; IntAct=EBI-348399, EBI-741355;
+CC       P22607; P0DP58-2: LYNX1; NbExp=3; IntAct=EBI-348399, EBI-21916939;
+CC       P22607; P27338: MAOB; NbExp=3; IntAct=EBI-348399, EBI-3911344;
+CC       P22607; Q9GZQ8: MAP1LC3B; NbExp=3; IntAct=EBI-348399, EBI-373144;
+CC       P22607; Q15759: MAPK11; NbExp=3; IntAct=EBI-348399, EBI-298304;
+CC       P22607; Q9NS73-5: MBIP; NbExp=3; IntAct=EBI-348399, EBI-10182361;
+CC       P22607; P33993-2: MCM7; NbExp=3; IntAct=EBI-348399, EBI-11741465;
+CC       P22607; Q96EZ8: MCRS1; NbExp=3; IntAct=EBI-348399, EBI-348259;
+CC       P22607; Q9HAF1: MEAF6; NbExp=3; IntAct=EBI-348399, EBI-399266;
+CC       P22607; Q9H8H3: METTL7A; NbExp=3; IntAct=EBI-348399, EBI-1390168;
+CC       P22607; D3DX41: MGC16703; NbExp=3; IntAct=EBI-348399, EBI-25850974;
+CC       P22607; Q8TAC0: MGC27345; NbExp=3; IntAct=EBI-348399, EBI-25851300;
+CC       P22607; Q53S70: MGC4677; NbExp=3; IntAct=EBI-348399, EBI-10242717;
+CC       P22607; Q5JXC2: MIIP; NbExp=3; IntAct=EBI-348399, EBI-2801965;
+CC       P22607; A0A0A0MR05: MLST8; NbExp=3; IntAct=EBI-348399, EBI-25835557;
+CC       P22607; Q00013: MPP1; NbExp=3; IntAct=EBI-348399, EBI-711788;
+CC       P22607; Q8N3R9: MPP5; NbExp=3; IntAct=EBI-348399, EBI-2513978;
+CC       P22607; Q8TCY5: MRAP; NbExp=3; IntAct=EBI-348399, EBI-9538727;
+CC       P22607; Q6IN84-2: MRM1; NbExp=3; IntAct=EBI-348399, EBI-25835707;
+CC       P22607; O60783: MRPS14; NbExp=3; IntAct=EBI-348399, EBI-1045956;
+CC       P22607; Q96H12: MSANTD3; NbExp=3; IntAct=EBI-348399, EBI-8466227;
+CC       P22607; P01106: MYC; NbExp=3; IntAct=EBI-348399, EBI-447544;
+CC       P22607; Q9NPC6: MYOZ2; NbExp=3; IntAct=EBI-348399, EBI-746712;
+CC       P22607; P41271-2: NBL1; NbExp=3; IntAct=EBI-348399, EBI-12135485;
+CC       P22607; P14598: NCF1; NbExp=3; IntAct=EBI-348399, EBI-395044;
+CC       P22607; Q9GZM8: NDEL1; NbExp=3; IntAct=EBI-348399, EBI-928842;
+CC       P22607; Q8NC67-2: NETO2; NbExp=3; IntAct=EBI-348399, EBI-25852289;
+CC       P22607; Q16621: NFE2; NbExp=3; IntAct=EBI-348399, EBI-726369;
+CC       P22607; Q8N5V2: NGEF; NbExp=3; IntAct=EBI-348399, EBI-718372;
+CC       P22607; Q99743: NPAS2; NbExp=3; IntAct=EBI-348399, EBI-3932727;
+CC       P22607; Q14995: NR1D2; NbExp=3; IntAct=EBI-348399, EBI-6144053;
+CC       P22607; F1D8P7: NR1H2; NbExp=3; IntAct=EBI-348399, EBI-10177172;
+CC       P22607; Q6PHZ7: NR2C2; NbExp=3; IntAct=EBI-348399, EBI-2802743;
+CC       P22607; Q9BZ95-3: NSD3; NbExp=3; IntAct=EBI-348399, EBI-22002759;
+CC       P22607; Q96MF7: NSMCE2; NbExp=3; IntAct=EBI-348399, EBI-2557388;
+CC       P22607; Q4KMX9: OBSCN; NbExp=3; IntAct=EBI-348399, EBI-10490715;
+CC       P22607; Q5BJF6-2: ODF2; NbExp=3; IntAct=EBI-348399, EBI-9090919;
+CC       P22607; Q3SX64: ODF3L2; NbExp=3; IntAct=EBI-348399, EBI-6660184;
+CC       P22607; O43482: OIP5; NbExp=3; IntAct=EBI-348399, EBI-536879;
+CC       P22607; Q6GQQ9-2: OTUD7B; NbExp=3; IntAct=EBI-348399, EBI-25830200;
+CC       P22607; Q8IVL6-2: P3H3; NbExp=3; IntAct=EBI-348399, EBI-12149899;
+CC       P22607; Q9H8K7: PAAT; NbExp=3; IntAct=EBI-348399, EBI-714785;
+CC       P22607; Q495U3: PANX2; NbExp=3; IntAct=EBI-348399, EBI-17242559;
+CC       P22607; Q9NR21-5: PARP11; NbExp=3; IntAct=EBI-348399, EBI-17159452;
+CC       P22607; Q9BR81: PCDHGC3; NbExp=3; IntAct=EBI-348399, EBI-22012354;
+CC       P22607; Q5VU43-8: PDE4DIP; NbExp=3; IntAct=EBI-348399, EBI-25837868;
+CC       P22607; Q13956: PDE6H; NbExp=3; IntAct=EBI-348399, EBI-10231995;
+CC       P22607; O15534: PER1; NbExp=3; IntAct=EBI-348399, EBI-2557276;
+CC       P22607; O15212: PFDN6; NbExp=3; IntAct=EBI-348399, EBI-356973;
+CC       P22607; Q9BUL5: PHF23; NbExp=3; IntAct=EBI-348399, EBI-722852;
+CC       P22607; P14618: PKM; NbExp=3; IntAct=EBI-348399, EBI-353408;
+CC       P22607; Q9UPR0: PLCL2; NbExp=3; IntAct=EBI-348399, EBI-311059;
+CC       P22607; Q5SXH7-1: PLEKHS1; NbExp=3; IntAct=EBI-348399, EBI-26412802;
+CC       P22607; Q96T60: PNKP; NbExp=3; IntAct=EBI-348399, EBI-1045072;
+CC       P22607; P19388: POLR2E; NbExp=3; IntAct=EBI-348399, EBI-395189;
+CC       P22607; Q07869: PPARA; NbExp=3; IntAct=EBI-348399, EBI-78615;
+CC       P22607; Q9UNP9: PPIE; NbExp=3; IntAct=EBI-348399, EBI-591818;
+CC       P22607; O60927: PPP1R11; NbExp=3; IntAct=EBI-348399, EBI-1048104;
+CC       P22607; O60237-2: PPP1R12B; NbExp=3; IntAct=EBI-348399, EBI-10700351;
+CC       P22607; Q96I34: PPP1R16A; NbExp=3; IntAct=EBI-348399, EBI-710402;
+CC       P22607; Q6ZMI0-5: PPP1R21; NbExp=3; IntAct=EBI-348399, EBI-25835994;
+CC       P22607; O43741: PRKAB2; NbExp=3; IntAct=EBI-348399, EBI-1053424;
+CC       P22607; O60260-5: PRKN; NbExp=3; IntAct=EBI-348399, EBI-21251460;
+CC       P22607; Q86UA1: PRPF39; NbExp=3; IntAct=EBI-348399, EBI-2803203;
+CC       P22607; P62333: PSMC6; NbExp=3; IntAct=EBI-348399, EBI-357669;
+CC       P22607; Q06323: PSME1; NbExp=3; IntAct=EBI-348399, EBI-712149;
+CC       P22607; P06454-2: PTMA; NbExp=3; IntAct=EBI-348399, EBI-10194874;
+CC       P22607; Q8WUD1-2: RAB2B; NbExp=3; IntAct=EBI-348399, EBI-25835884;
+CC       P22607; Q9UNT1-2: RABL2B; NbExp=3; IntAct=EBI-348399, EBI-12256104;
+CC       P22607; Q15311: RALBP1; NbExp=3; IntAct=EBI-348399, EBI-749285;
+CC       P22607; Q9HD47-3: RANGRF; NbExp=3; IntAct=EBI-348399, EBI-9089733;
+CC       P22607; Q9NS23-4: RASSF1; NbExp=3; IntAct=EBI-348399, EBI-438710;
+CC       P22607; Q9NWB1-5: RBFOX1; NbExp=3; IntAct=EBI-348399, EBI-12123390;
+CC       P22607; Q9BWF3: RBM4; NbExp=3; IntAct=EBI-348399, EBI-2856454;
+CC       P22607; Q8TBY0: RBM46; NbExp=3; IntAct=EBI-348399, EBI-12068216;
+CC       P22607; Q9P2K3-2: RCOR3; NbExp=3; IntAct=EBI-348399, EBI-1504830;
+CC       P22607; Q04206: RELA; NbExp=3; IntAct=EBI-348399, EBI-73886;
+CC       P22607; P47804-3: RGR; NbExp=3; IntAct=EBI-348399, EBI-25834767;
+CC       P22607; Q15382: RHEB; NbExp=3; IntAct=EBI-348399, EBI-1055287;
+CC       P22607; Q8IXN7: RIMKLA; NbExp=3; IntAct=EBI-348399, EBI-21890191;
+CC       P22607; Q8WVD3: RNF138; NbExp=3; IntAct=EBI-348399, EBI-749039;
+CC       P22607; Q9H0X6: RNF208; NbExp=3; IntAct=EBI-348399, EBI-751555;
+CC       P22607; P62899: RPL31; NbExp=3; IntAct=EBI-348399, EBI-1053664;
+CC       P22607; P62244: RPS15A; NbExp=3; IntAct=EBI-348399, EBI-347895;
+CC       P22607; P62701: RPS4X; NbExp=3; IntAct=EBI-348399, EBI-354303;
+CC       P22607; Q66K80: RUSC1-AS1; NbExp=3; IntAct=EBI-348399, EBI-10248967;
+CC       P22607; Q9BY12-3: SCAPER; NbExp=3; IntAct=EBI-348399, EBI-25837959;
+CC       P22607; Q86SQ7-2: SDCCAG8; NbExp=3; IntAct=EBI-348399, EBI-10696955;
+CC       P22607; Q9NTN9-3: SEMA4G; NbExp=3; IntAct=EBI-348399, EBI-9089805;
+CC       P22607; Q13435: SF3B2; NbExp=3; IntAct=EBI-348399, EBI-749111;
+CC       P22607; O60902-3: SHOX2; NbExp=3; IntAct=EBI-348399, EBI-9092164;
+CC       P22607; Q9NSD5-3: SLC6A13; NbExp=3; IntAct=EBI-348399, EBI-25831241;
+CC       P22607; Q9UHI5: SLC7A8; NbExp=3; IntAct=EBI-348399, EBI-13292283;
+CC       P22607; Q12824: SMARCB1; NbExp=3; IntAct=EBI-348399, EBI-358419;
+CC       P22607; Q13573: SNW1; NbExp=3; IntAct=EBI-348399, EBI-632715;
+CC       P22607; O14544: SOCS6; NbExp=3; IntAct=EBI-348399, EBI-3929549;
+CC       P22607; Q02086-2: SP2; NbExp=3; IntAct=EBI-348399, EBI-9088579;
+CC       P22607; Q7Z6I5: SPATA12; NbExp=3; IntAct=EBI-348399, EBI-10696971;
+CC       P22607; Q86W54-2: SPATA24; NbExp=3; IntAct=EBI-348399, EBI-12041693;
+CC       P22607; Q496A3: SPATS1; NbExp=3; IntAct=EBI-348399, EBI-3923692;
+CC       P22607; Q7Z698: SPRED2; NbExp=3; IntAct=EBI-348399, EBI-7082156;
+CC       P22607; Q9C004: SPRY4; NbExp=3; IntAct=EBI-348399, EBI-354861;
+CC       P22607; Q5W111-2: SPRYD7; NbExp=3; IntAct=EBI-348399, EBI-12408727;
+CC       P22607; Q99469: STAC; NbExp=3; IntAct=EBI-348399, EBI-2652799;
+CC       P22607; Q92783-2: STAM; NbExp=3; IntAct=EBI-348399, EBI-12025738;
+CC       P22607; O75886: STAM2; NbExp=3; IntAct=EBI-348399, EBI-373258;
+CC       P22607; Q13586: STIM1; NbExp=3; IntAct=EBI-348399, EBI-448878;
+CC       P22607; Q8N4C7: STX19; NbExp=3; IntAct=EBI-348399, EBI-8484990;
+CC       P22607; Q15814: TBCC; NbExp=3; IntAct=EBI-348399, EBI-15695297;
+CC       P22607; O15273: TCAP; NbExp=3; IntAct=EBI-348399, EBI-954089;
+CC       P22607; Q86WV5: TEN1; NbExp=3; IntAct=EBI-348399, EBI-2562799;
+CC       P22607; Q96A09: TENT5B; NbExp=3; IntAct=EBI-348399, EBI-752030;
+CC       P22607; P54274-2: TERF1; NbExp=3; IntAct=EBI-348399, EBI-711018;
+CC       P22607; Q6N021: TET2; NbExp=3; IntAct=EBI-348399, EBI-310727;
+CC       P22607; Q9BXU0: TEX12; NbExp=3; IntAct=EBI-348399, EBI-12090309;
+CC       P22607; Q5T0J7-2: TEX35; NbExp=3; IntAct=EBI-348399, EBI-12833746;
+CC       P22607; Q8WTV1: THAP3; NbExp=3; IntAct=EBI-348399, EBI-17438286;
+CC       P22607; Q5T1C6: THEM4; NbExp=3; IntAct=EBI-348399, EBI-7684443;
+CC       P22607; O60830: TIMM17B; NbExp=3; IntAct=EBI-348399, EBI-2372529;
+CC       P22607; Q9BZW5-2: TM6SF1; NbExp=3; IntAct=EBI-348399, EBI-25852210;
+CC       P22607; Q96B77: TMEM186; NbExp=3; IntAct=EBI-348399, EBI-9089409;
+CC       P22607; Q8N0U2: TMEM61; NbExp=3; IntAct=EBI-348399, EBI-25830583;
+CC       P22607; Q53NU3: tmp_locus_54; NbExp=3; IntAct=EBI-348399, EBI-10242677;
+CC       P22607; Q8IUR5-4: TMTC1; NbExp=3; IntAct=EBI-348399, EBI-9089156;
+CC       P22607; Q71RG4-4: TMUB2; NbExp=3; IntAct=EBI-348399, EBI-25831574;
+CC       P22607; P50616: TOB1; NbExp=3; IntAct=EBI-348399, EBI-723281;
+CC       P22607; Q9H496: TOR1AIP2; NbExp=3; IntAct=EBI-348399, EBI-2510146;
+CC       P22607; P36406: TRIM23; NbExp=3; IntAct=EBI-348399, EBI-740098;
+CC       P22607; Q9UPQ4-2: TRIM35; NbExp=3; IntAct=EBI-348399, EBI-17716262;
+CC       P22607; Q86WT6-2: TRIM69; NbExp=3; IntAct=EBI-348399, EBI-11525489;
+CC       P22607; Q9Y3Q8: TSC22D4; NbExp=3; IntAct=EBI-348399, EBI-739485;
+CC       P22607; Q99598: TSNAX; NbExp=3; IntAct=EBI-348399, EBI-742638;
+CC       P22607; O60636: TSPAN2; NbExp=3; IntAct=EBI-348399, EBI-3914288;
+CC       P22607; Q6PF05: TTC23L; NbExp=3; IntAct=EBI-348399, EBI-8656864;
+CC       P22607; Q9UGJ1-2: TUBGCP4; NbExp=3; IntAct=EBI-348399, EBI-10964469;
+CC       P22607; P49459: UBE2A; NbExp=3; IntAct=EBI-348399, EBI-2339348;
+CC       P22607; Q13404: UBE2V1; NbExp=3; IntAct=EBI-348399, EBI-1050671;
+CC       P22607; P11441: UBL4A; NbExp=3; IntAct=EBI-348399, EBI-356983;
+CC       P22607; Q9HA47-2: UCK1; NbExp=3; IntAct=EBI-348399, EBI-16434682;
+CC       P22607; P22415: USF1; NbExp=3; IntAct=EBI-348399, EBI-1054489;
+CC       P22607; Q495M9: USH1G; NbExp=3; IntAct=EBI-348399, EBI-8601749;
+CC       P22607; Q9H270: VPS11; NbExp=3; IntAct=EBI-348399, EBI-373380;
+CC       P22607; Q8NEZ2: VPS37A; NbExp=3; IntAct=EBI-348399, EBI-2850578;
+CC       P22607; Q9P1Q0-4: VPS54; NbExp=3; IntAct=EBI-348399, EBI-25835297;
+CC       P22607; Q9NX94: WBP1L; NbExp=3; IntAct=EBI-348399, EBI-10316321;
+CC       P22607; Q8TBZ3-3: WDR20; NbExp=3; IntAct=EBI-348399, EBI-9089370;
+CC       P22607; O00755: WNT7A; NbExp=3; IntAct=EBI-348399, EBI-727198;
+CC       P22607; P19544-6: WT1; NbExp=3; IntAct=EBI-348399, EBI-11745701;
+CC       P22607; O43829: ZBTB14; NbExp=3; IntAct=EBI-348399, EBI-10176632;
+CC       P22607; Q53FD0-2: ZC2HC1C; NbExp=3; IntAct=EBI-348399, EBI-14104088;
+CC       P22607; Q9NP64: ZCCHC17; NbExp=3; IntAct=EBI-348399, EBI-746345;
+CC       P22607; Q8WUU4: ZNF296; NbExp=3; IntAct=EBI-348399, EBI-8834821;
+CC       P22607; Q96JL9-2: ZNF333; NbExp=3; IntAct=EBI-348399, EBI-25835852;
+CC       P22607; Q9C0F3: ZNF436; NbExp=3; IntAct=EBI-348399, EBI-8489702;
+CC       P22607; Q9P0T4: ZNF581; NbExp=3; IntAct=EBI-348399, EBI-745520;
+CC       P22607; Q3KNS6-3: ZNF829; NbExp=3; IntAct=EBI-348399, EBI-18036029;
+CC       P22607; B7Z3E8; NbExp=3; IntAct=EBI-348399, EBI-25831617;
+CC       P22607; Q7L8T7; NbExp=3; IntAct=EBI-348399, EBI-25831943;
+CC       P22607; Q7Z637; NbExp=3; IntAct=EBI-348399, EBI-25831475;
+CC       P22607; Q86V28; NbExp=3; IntAct=EBI-348399, EBI-10259496;
 CC   -!- SUBCELLULAR LOCATION: [Isoform 1]: Cell membrane; Single-pass type I
 CC       membrane protein. Cytoplasmic vesicle. Endoplasmic reticulum. Note=The
 CC       activated receptor is rapidly internalized and degraded. Detected in
@@ -699,7 +1005,7 @@ CC       trident configuration of the hands. ACH is an autosomal dominant
 CC       disease. {ECO:0000269|PubMed:10611230, ECO:0000269|PubMed:12297284,
 CC       ECO:0000269|PubMed:7758520, ECO:0000269|PubMed:7847369,
 CC       ECO:0000269|PubMed:8078586, ECO:0000269|PubMed:8599935}. Note=The
-CC       disease is caused by mutations affecting the gene represented in this
+CC       disease is caused by variants affecting the gene represented in this
 CC       entry.
 CC   -!- DISEASE: Crouzon syndrome with acanthosis nigricans (CAN) [MIM:612247]:
 CC       Classic Crouzon disease which is caused by mutations in the FGFR2 gene
@@ -713,7 +1019,7 @@ CC       or stenosis of the choanas, and is caused by a specific mutation (Ala-
 CC       391 to Glu) in the transmembrane domain of FGFR3. It is proposed to
 CC       have an autosomal dominant mode of inheritance.
 CC       {ECO:0000269|PubMed:17935505, ECO:0000269|PubMed:7493034}. Note=The
-CC       disease is caused by mutations affecting the gene represented in this
+CC       disease is caused by variants affecting the gene represented in this
 CC       entry.
 CC   -!- DISEASE: Thanatophoric dysplasia 1 (TD1) [MIM:187600]: A neonatal
 CC       lethal skeletal dysplasia. Affected individuals manifest severe
@@ -721,14 +1027,14 @@ CC       shortening of the limbs with macrocephaly, narrow thorax, short ribs,
 CC       and curved femurs. {ECO:0000269|PubMed:10360402,
 CC       ECO:0000269|PubMed:10671061, ECO:0000269|PubMed:7773297,
 CC       ECO:0000269|PubMed:8589699, ECO:0000269|PubMed:8845844,
-CC       ECO:0000269|PubMed:9790257}. Note=The disease is caused by mutations
+CC       ECO:0000269|PubMed:9790257}. Note=The disease is caused by variants
 CC       affecting the gene represented in this entry.
 CC   -!- DISEASE: Thanatophoric dysplasia 2 (TD2) [MIM:187601]: A neonatal
 CC       lethal skeletal dysplasia causing severe shortening of the limbs,
 CC       narrow thorax and short ribs. Patients with thanatophoric dysplasia
 CC       type 2 have straight femurs and cloverleaf skull.
 CC       {ECO:0000269|PubMed:12297284, ECO:0000269|PubMed:7773297,
-CC       ECO:0000269|PubMed:8754806}. Note=The disease is caused by mutations
+CC       ECO:0000269|PubMed:8754806}. Note=The disease is caused by variants
 CC       affecting the gene represented in this entry.
 CC   -!- DISEASE: Hypochondroplasia (HCH) [MIM:146000]: Autosomal dominant
 CC       disease and is characterized by disproportionate short stature. It
@@ -736,7 +1042,7 @@ CC       resembles achondroplasia, but with a less severe phenotype.
 CC       {ECO:0000269|PubMed:10215410, ECO:0000269|PubMed:10777366,
 CC       ECO:0000269|PubMed:11055896, ECO:0000269|PubMed:12707965,
 CC       ECO:0000269|PubMed:7670477, ECO:0000269|PubMed:9452043}. Note=The
-CC       disease is caused by mutations affecting the gene represented in this
+CC       disease is caused by variants affecting the gene represented in this
 CC       entry.
 CC   -!- DISEASE: Bladder cancer (BLC) [MIM:109800]: A malignancy originating in
 CC       tissues of the urinary bladder. It often presents with multiple tumors
@@ -748,7 +1054,7 @@ CC       begins in thin, flat cells) and adenocarcinoma (cancer that begins in
 CC       cells that make and release mucus and other fluids). Bladder cancer is
 CC       a complex disorder with both genetic and environmental influences.
 CC       {ECO:0000269|PubMed:10471491, ECO:0000269|PubMed:11314002}.
-CC       Note=Disease susceptibility is associated with variations affecting the
+CC       Note=Disease susceptibility is associated with variants affecting the
 CC       gene represented in this entry. Somatic mutations can constitutively
 CC       activate FGFR3.
 CC   -!- DISEASE: Cervical cancer (CERCA) [MIM:603956]: A malignant neoplasm of
@@ -775,7 +1081,7 @@ CC       congenital or developed in early infancy, progressed variably in early
 CC       childhood, and range from mild to severe. Computed tomography and
 CC       magnetic resonance imaging reveal that the brain, middle ear, and inner
 CC       ear are structurally normal. {ECO:0000269|PubMed:17033969}. Note=The
-CC       disease is caused by mutations affecting the gene represented in this
+CC       disease is caused by variants affecting the gene represented in this
 CC       entry.
 CC   -!- DISEASE: Multiple myeloma (MM) [MIM:254500]: A malignant tumor of
 CC       plasma cells usually arising in the bone marrow and characterized by
@@ -801,14 +1107,14 @@ CC       segments anomalies. In addition to these cardinal features, facial
 CC       dysmorphism, malformations of the kidney and respiratory system and
 CC       abnormal genitalia have been reported. Craniosynostosis and severe
 CC       syndactyly are not observed. {ECO:0000269|PubMed:16501574}. Note=The
-CC       disease is caused by mutations affecting the gene represented in this
+CC       disease is caused by variants affecting the gene represented in this
 CC       entry.
 CC   -!- DISEASE: Keratinocytic non-epidermolytic nevus (KNEN) [MIM:162900]:
 CC       Epidermal nevi of the common, non-organoid and non-epidermolytic type
 CC       are benign skin lesions and may vary in their extent from a single
 CC       (usually linear) lesion to widespread and systematized involvement.
 CC       They may be present at birth or develop early during childhood.
-CC       {ECO:0000269|PubMed:16841094}. Note=The disease is caused by mutations
+CC       {ECO:0000269|PubMed:16841094}. Note=The disease is caused by variants
 CC       affecting the gene represented in this entry.
 CC   -!- DISEASE: Muenke syndrome (MNKS) [MIM:602849]: A condition characterized
 CC       by premature closure of coronal suture of skull during development
@@ -823,7 +1129,7 @@ CC       individuals show skeletal abnormalities of hands and feet,
 CC       sensorineural hearing loss, mental retardation and respiratory
 CC       insufficiency. {ECO:0000269|PubMed:11746040,
 CC       ECO:0000269|PubMed:9042914, ECO:0000269|PubMed:9950359}. Note=The
-CC       disease is caused by mutations affecting the gene represented in this
+CC       disease is caused by variants affecting the gene represented in this
 CC       entry.
 CC   -!- DISEASE: Keratosis, seborrheic (KERSEB) [MIM:182000]: A common benign
 CC       skin tumor. Seborrheic keratoses usually begin with the appearance of
@@ -831,7 +1137,7 @@ CC       one or more sharply defined, light brown, flat macules. The lesions may
 CC       be sparse or numerous. As they initially grow, they develop a velvety
 CC       to finely verrucous surface, followed by an uneven warty surface with
 CC       multiple plugged follicles and a dull or lackluster appearance.
-CC       {ECO:0000269|PubMed:15772091}. Note=The disease is caused by mutations
+CC       {ECO:0000269|PubMed:15772091}. Note=The disease is caused by variants
 CC       affecting the gene represented in this entry.
 CC   -!- DISEASE: Testicular germ cell tumor (TGCT) [MIM:273300]: A common
 CC       malignancy in males representing 95% of all testicular neoplasms. TGCTs
@@ -850,7 +1156,7 @@ CC       segments, a large head with frontal bossing, hypoplasia of the midface
 CC       and a trident configuration of the hands. Acanthosis nigricans is a
 CC       skin condition characterized by brown-pigmented, velvety verrucosities
 CC       in body folds and creases. {ECO:0000269|PubMed:10053006}. Note=The
-CC       disease is caused by mutations affecting the gene represented in this
+CC       disease is caused by variants affecting the gene represented in this
 CC       entry.
 CC   -!- SIMILARITY: Belongs to the protein kinase superfamily. Tyr protein
 CC       kinase family. Fibroblast growth factor receptor subfamily.
@@ -900,9 +1206,9 @@ DR   PDBsum; 6PNX; -.
 DR   BMRB; P22607; -.
 DR   SASBDB; P22607; -.
 DR   SMR; P22607; -.
-DR   BioGRID; 108552; 67.
+DR   BioGRID; 108552; 69.
 DR   DIP; DIP-4016N; -.
-DR   IntAct; P22607; 54.
+DR   IntAct; P22607; 357.
 DR   MINT; P22607; -.
 DR   STRING; 9606.ENSP00000339824; -.
 DR   BindingDB; P22607; -.
@@ -913,7 +1219,9 @@ DR   DrugBank; DB09078; Lenvatinib.
 DR   DrugBank; DB09079; Nintedanib.
 DR   DrugBank; DB00039; Palifermin.
 DR   DrugBank; DB06589; Pazopanib.
+DR   DrugBank; DB15102; Pemigatinib.
 DR   DrugBank; DB08901; Ponatinib.
+DR   DrugBank; DB15685; Selpercatinib.
 DR   DrugBank; DB05014; XL999.
 DR   DrugCentral; P22607; -.
 DR   GuidetoPHARMACOLOGY; 1810; -.
@@ -932,18 +1240,16 @@ DR   ProteomicsDB; 54006; -. [P22607-2]
 DR   ProteomicsDB; 54007; -. [P22607-3]
 DR   ProteomicsDB; 54008; -. [P22607-4]
 DR   ABCD; P22607; 3 sequenced antibodies.
-DR   Antibodypedia; 3787; 690 antibodies.
+DR   Antibodypedia; 3787; 693 antibodies.
 DR   DNASU; 2261; -.
 DR   Ensembl; ENST00000340107; ENSP00000339824; ENSG00000068078. [P22607-2]
 DR   Ensembl; ENST00000352904; ENSP00000231803; ENSG00000068078. [P22607-3]
-DR   Ensembl; ENST00000412135; ENSP00000412903; ENSG00000068078. [P22607-3]
 DR   Ensembl; ENST00000440486; ENSP00000414914; ENSG00000068078. [P22607-1]
 DR   GeneID; 2261; -.
 DR   KEGG; hsa:2261; -.
 DR   UCSC; uc003gdr.3; human. [P22607-1]
 DR   CTD; 2261; -.
 DR   DisGeNET; 2261; -.
-DR   EuPathDB; HostDB:ENSG00000068078.17; -.
 DR   GeneCards; FGFR3; -.
 DR   GeneReviews; FGFR3; -.
 DR   HGNC; HGNC:3690; FGFR3.
@@ -982,11 +1288,11 @@ DR   Orphanet; 85165; Severe achondroplasia-developmental delay-acanthosis nigri
 DR   Orphanet; 1860; Thanatophoric dysplasia type 1.
 DR   Orphanet; 93274; Thanatophoric dysplasia type 2.
 DR   PharmGKB; PA28129; -.
+DR   VEuPathDB; HostDB:ENSG00000068078.17; -.
 DR   eggNOG; KOG0200; Eukaryota.
 DR   GeneTree; ENSGT00940000159880; -.
 DR   HOGENOM; CLU_000288_74_3_1; -.
 DR   InParanoid; P22607; -.
-DR   KO; K05094; -.
 DR   OMA; YSPACQD; -.
 DR   OrthoDB; 220433at2759; -.
 DR   PhylomeDB; P22607; -.
@@ -1012,7 +1318,7 @@ DR   Reactome; R-HSA-8853334; Signaling by FGFR3 fusions in cancer.
 DR   Reactome; R-HSA-8853338; Signaling by FGFR3 point mutants in cancer.
 DR   SignaLink; P22607; -.
 DR   SIGNOR; P22607; -.
-DR   BioGRID-ORCS; 2261; 10 hits in 903 CRISPR screens.
+DR   BioGRID-ORCS; 2261; 10 hits in 906 CRISPR screens.
 DR   ChiTaRS; FGFR3; human.
 DR   EvolutionaryTrace; P22607; -.
 DR   GeneWiki; Fibroblast_growth_factor_receptor_3; -.
@@ -1096,12 +1402,12 @@ DR   PROSITE; PS00109; PROTEIN_KINASE_TYR; 1.
 PE   1: Evidence at protein level;
 KW   3D-structure; Alternative splicing; Apoptosis; ATP-binding; Cell membrane;
 KW   Chromosomal rearrangement; Craniosynostosis; Cytoplasmic vesicle; Deafness;
-KW   Disease mutation; Disulfide bond; Dwarfism; Ectodermal dysplasia;
+KW   Disease variant; Disulfide bond; Dwarfism; Ectodermal dysplasia;
 KW   Endoplasmic reticulum; Glycoprotein; Immunoglobulin domain; Kinase;
 KW   Lacrimo-auriculo-dento-digital syndrome; Membrane; Nucleotide-binding;
-KW   Phosphoprotein; Polymorphism; Receptor; Reference proteome; Repeat;
-KW   Secreted; Signal; Transferase; Transmembrane; Transmembrane helix;
-KW   Tyrosine-protein kinase; Ubl conjugation.
+KW   Phosphoprotein; Receptor; Reference proteome; Repeat; Secreted; Signal;
+KW   Transferase; Transmembrane; Transmembrane helix; Tyrosine-protein kinase;
+KW   Ubl conjugation.
 FT   SIGNAL          1..22
 FT   CHAIN           23..806
 FT                   /note="Fibroblast growth factor receptor 3"
