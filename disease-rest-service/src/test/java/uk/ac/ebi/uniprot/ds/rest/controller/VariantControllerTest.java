@@ -107,7 +107,7 @@ public class VariantControllerTest {
 
     @Test
     public void testGetVariantsByDiseaseId() throws Exception {
-        String diseaseId = "diseaseId";
+        String diseaseId = "DI-00001";
         Variant v1 = ModelCreationUtils.createVariantObject(this.uuid+1);
         FeatureLocation fl = ModelCreationUtils.createFeatureLocationObject(this.uuid+1);
         v1.setFeatureLocation(fl);

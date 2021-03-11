@@ -71,7 +71,6 @@ public class DiseaseController {
     public SingleEntityResponse<DiseaseDTO> getDisease(@PathVariable("diseaseId")
                                                        @Pattern(
                                                                regexp = ACCESSION_REGEX,
-                                                               flags = {Pattern.Flag.CASE_INSENSITIVE},
                                                                message = "Invalid diseaseId format. Valid format 'DI-[A-Z]?(\\d+)'")
                                                                String diseaseId) {
         String requestId = RequestCorrelation.getCorrelationId();
@@ -144,7 +143,9 @@ public class DiseaseController {
                             })
             })
     @GetMapping(value = {"/disease/{diseaseId}/drugs"}, name = "Get the drugs for a given diseaseId")
-    public MultipleEntityResponse<DrugDTO> getDrugsByDiseaseId(@PathVariable(name = "diseaseId") String diseaseId) {
+    public MultipleEntityResponse<DrugDTO> getDrugsByDiseaseId(@PathVariable(name = "diseaseId") @Pattern(
+            regexp = ACCESSION_REGEX,
+            message = "Invalid diseaseId format. Valid format 'DI-[A-Z]?(\\d+)'") String diseaseId) {
         String requestId = RequestCorrelation.getCorrelationId();
         List<DrugDTO> dtoList = this.drugService.getDrugDTOsByDiseaseId(diseaseId);
         return new MultipleEntityResponse<>(requestId, dtoList);

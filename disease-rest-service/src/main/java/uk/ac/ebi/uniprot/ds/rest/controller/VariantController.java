@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import javax.validation.constraints.Pattern;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -32,6 +34,7 @@ import uk.ac.ebi.uniprot.ds.rest.response.MultipleEntityResponse;
 import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.ac.ebi.uniprot.ds.rest.controller.DiseaseController.ACCESSION_REGEX;
 
 @RestController
 @RequestMapping
@@ -96,7 +99,9 @@ public class VariantController {
             })
     @GetMapping(value = {"/disease/{diseaseId}/variants"}, name = "Get the variants for the given diseaseId",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public MultipleEntityResponse<VariantDTO> getVariantsByDiseaseId(@PathVariable("diseaseId") String diseaseId){
+    public MultipleEntityResponse<VariantDTO> getVariantsByDiseaseId(@PathVariable("diseaseId") @Pattern(
+            regexp = ACCESSION_REGEX,
+            message = "Invalid diseaseId format. Valid format 'DI-[A-Z]?(\\d+)'") String diseaseId){
 
         String requestId = RequestCorrelation.getCorrelationId();
 
