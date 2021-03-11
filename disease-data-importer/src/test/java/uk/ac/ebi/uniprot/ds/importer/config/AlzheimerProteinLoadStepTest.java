@@ -59,7 +59,7 @@ class AlzheimerProteinLoadStepTest{
     void testAlzheimerDiseaseProteinsLoadStep() throws Exception {
         Assertions.assertTrue(this.diseaseProteinDAO.findAll().isEmpty());
         // create test data
-        Disease alzheimerDisease = this.diseaseDAO.save(DiseaseWriterTest.createDiseaseByDiseaseId("Alzheimer disease"));
+        Disease alzheimerDisease = this.diseaseDAO.save(DiseaseWriterTest.createDiseaseByDiseaseName("Alzheimer disease"));
         Protein p1 = ChemblOpenTargetToDrugsTest.createProtein();
         p1.setAccession(sampleProteinAccessions.get(0));
         Protein p2 = ChemblOpenTargetToDrugsTest.createProtein();

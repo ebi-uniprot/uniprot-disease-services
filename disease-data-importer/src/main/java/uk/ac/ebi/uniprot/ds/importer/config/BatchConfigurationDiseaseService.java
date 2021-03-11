@@ -38,7 +38,7 @@ public class BatchConfigurationDiseaseService {
                 .next(geneCoordsLoad)// load gene co-ordinates
                 .next(mondoDiseaseStep)// load synonyms and/or disease group from Mondo data
                 .next(parentChildLoadStep)// create parents children relationship with mondo data
-                .next(descendentsLoadStep)// add all the descendents of each disease in falttened manner
+                .next(descendentsLoadStep)// add all the descendents of each disease in flattened manner
                 .next(chDrugLoad)// load drugs
                 .next(alzheimerProteinLoad)// Alzheimer disease protein load step
                 .next(siteMappingStep)// Site mapping load step

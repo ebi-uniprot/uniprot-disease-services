@@ -134,13 +134,14 @@ class MondoTermToDiseaseConverterTest {
         OBOTerm.OBOTermBuilder termBuilder = OBOTerm.builder();
         termBuilder.name(name);
         String mondoId = "MONDO:123456";
+        String diseaseId = "DI-M123456";
         termBuilder.id(mondoId);
         termBuilder.definition("Sample description");
         termBuilder.xrefs(Arrays.asList("OMIM:616033", "UMLS:C4014997"));
         // then
         Disease convertedDisease = converter.process(termBuilder.build());
         Assertions.assertNotNull(convertedDisease);
-        Assertions.assertEquals(mondoId, convertedDisease.getDiseaseId());
+        Assertions.assertEquals(diseaseId, convertedDisease.getDiseaseId());
         Assertions.assertEquals(name, convertedDisease.getName());
         Assertions.assertEquals("Sample description", convertedDisease.getDesc());
         Assertions.assertEquals(SourceType.MONDO.name(), convertedDisease.getSource());

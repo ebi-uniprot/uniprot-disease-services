@@ -66,7 +66,7 @@ public class DiseaseControllerTest {
 
     @Test
     public void testGetDisease() throws Exception {
-        String diseaseId = "DISEASE_ID";
+        String diseaseId = "DI-12345";
         Disease disease = ModelCreationUtils.createDiseaseObject(uuid);
         disease.setDiseaseId(diseaseId);
 
@@ -99,7 +99,7 @@ public class DiseaseControllerTest {
     @Test
     public void testGetDiseaseWithOtherDetails() throws Exception {
 
-        String diseaseId = "FULL_DISEASE";
+        String diseaseId = "DI-M12345";
         Disease disease = ModelCreationUtils.createDiseaseObject(uuid);
         disease.setDiseaseId(diseaseId);
         // synonyms
@@ -173,7 +173,7 @@ public class DiseaseControllerTest {
     @Test
     public void testNonExistentDisease() throws Exception {
 
-        String diseaseId = "randomDisease";
+        String diseaseId = "DI-00000";
         Mockito.when(this.diseaseService.findByDiseaseId(diseaseId)).thenThrow(new AssetNotFoundException("Unable to find the diseaseId '" + diseaseId + "'."));
         ResultActions res = this.mockMvc.
                 perform(MockMvcRequestBuilders.get("/diseases/" + diseaseId).param("diseaseId", diseaseId));
@@ -214,5 +214,19 @@ public class DiseaseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].publications").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].children").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].isGroup").exists());
+    }
+
+    @Test
+    public void testGetDiseaseInvalidIdFormat() throws Exception {
+
+        String diseaseId = "randomName";
+        Mockito.when(this.diseaseService.findByDiseaseId(diseaseId)).thenThrow(new AssetNotFoundException("Unable to find the diseaseId '" + diseaseId + "'."));
+        ResultActions res = this.mockMvc.
+                perform(MockMvcRequestBuilders.get("/diseases/" + diseaseId).param("diseaseId", diseaseId));
+        res.andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.requestId", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.hasError", Matchers.equalTo(true)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage", Matchers.startsWith("Invalid diseaseId format. Valid format 'DI-[A-Z]?(\\d+)'")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errorCode", Matchers.equalTo(400)));
     }
 }

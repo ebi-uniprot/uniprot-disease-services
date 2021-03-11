@@ -111,7 +111,7 @@ public class MondoTermToDiseaseChildConverter implements ItemProcessor<OBOTerm, 
         return false;
     }
 
-    // DONOT use this constructor.. to be called from tests only
+    // DO NOT use this constructor.. to be called from tests only
     MondoTermToDiseaseChildConverter(Map<String, Disease> nameDiseaseMap, List<OBOTerm> oboTerms) {
         this.relations = new HashSet<>();
         this.diseaseNameToDiseaseMap = nameDiseaseMap;

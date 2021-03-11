@@ -65,7 +65,7 @@ class MondoDiseaseLoadStepTest extends AbstractBaseStepTest {
         List<Disease> diseases = this.diseaseDAO.findAll();
         Assertions.assertEquals(10, diseases.size());
         diseases.stream().map(Disease::getSource).forEach(src -> assertEquals(SourceType.MONDO.name(), src));
-        diseases.stream().map(Disease::getDiseaseId).forEach(diseaseId -> assertTrue(diseaseId.startsWith("MONDO:")));
+        diseases.stream().map(Disease::getDiseaseId).forEach(diseaseId -> assertTrue(diseaseId.startsWith("DI-M")));
         verifyCommonFields(diseases);
     }
 }

@@ -72,13 +72,13 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
 
         // Hard Coded - FIXME when Mondo and Hum disease have strong mapping
         if("MONDO:0007088".equalsIgnoreCase(oboTerm.getId())){
-            cachedDisease = this.diseaseDAO.findByDiseaseId("Alzheimer disease 1").get();
+            cachedDisease = this.diseaseDAO.findDiseaseByNameIgnoreCase("Alzheimer disease 1").get();
         } else if("MONDO:0012153".equalsIgnoreCase(oboTerm.getId())){
-            cachedDisease = this.diseaseDAO.findByDiseaseId("Alzheimer disease 9").get();
+            cachedDisease = this.diseaseDAO.findDiseaseByNameIgnoreCase("Alzheimer disease 9").get();
         } // Hard code ends
 
         // if cache doesn't have disease name, try to find by omim id or synonym
-        String mondoOmim = getXREFByType(oboTerm, Constants.OMIM_COLON_STR);
+        String mondoOmim = getCrossRefByType(oboTerm, Constants.OMIM_COLON_STR);
         if (Objects.isNull(cachedDisease)) {
            cachedDisease = getByOmimOrSynonym(mondoName, mondoOmim);
         }
@@ -97,12 +97,10 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
             }
             //update cache for look-up during drug to disease mapping
             this.diseaseNameToDiseaseMap.put(oboTerm.getId().trim(), disease);// mondo id
-            String mondoEFO = getXREFByType(oboTerm, Constants.EFO_COLON_STR);
+            String mondoEFO = getCrossRefByType(oboTerm, Constants.EFO_COLON_STR);
             if (Objects.nonNull(mondoEFO)) {// [key --> value] = [EFO:1001434 --> disease]
                 this.diseaseNameToDiseaseMap.put(mondoEFO, disease);// efo id if there
             }
-
-
         }
         return disease;
     }
@@ -180,7 +178,8 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
     private Disease createDiseaseObject(OBOTerm mondoDisease) { // not updating the synonym and xref intentionally.
         // This is being created just to create disease hierarchy
         Disease.DiseaseBuilder builder = Disease.builder();
-        builder.diseaseId(mondoDisease.getId());
+        String diseaseId = computeDiseaseId(mondoDisease.getId());
+        builder.diseaseId(diseaseId);
         builder.name(mondoDisease.getName());
         builder.desc(mondoDisease.getDefinition());
         builder.source(SourceType.MONDO.name());
@@ -238,17 +237,17 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
     private void updateDiseaseNameToDiseaseMap(OBOTerm oboTerm, Disease disease) {
         this.diseaseNameToDiseaseMap.put(oboTerm.getName().trim().toLowerCase(), disease);// mondo name
         this.diseaseNameToDiseaseMap.put(oboTerm.getId().trim(), disease);// mondo id
-        String mondoOmim = getXREFByType(oboTerm, Constants.OMIM_COLON_STR);
+        String mondoOmim = getCrossRefByType(oboTerm, Constants.OMIM_COLON_STR);
         if(Objects.nonNull(mondoOmim)) {
             this.diseaseNameToDiseaseMap.put(mondoOmim, disease);// omim id if there
         }
-        String mondoEFO = getXREFByType(oboTerm, Constants.EFO_COLON_STR);
+        String mondoEFO = getCrossRefByType(oboTerm, Constants.EFO_COLON_STR);
         if(Objects.nonNull(mondoEFO)) {
             this.diseaseNameToDiseaseMap.put(mondoEFO, disease);// efo id if there
         }
     }
 
-    private String getXREFByType(OBOTerm mondoTerm, String xrefType) {
+    private String getCrossRefByType(OBOTerm mondoTerm, String xrefType) {
         List<String> xrefs = mondoTerm.getXrefs();
         for (String xref : xrefs) {
             if (xref.startsWith(xrefType)) {
@@ -256,5 +255,16 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
             }
         }
         return null;
+    }
+
+    /**
+     * Construct disease id from mondo id
+     * MONDO:0000949 ==> DI-M0000949
+     */
+    private String computeDiseaseId(String mondoId) {
+        String[] idParts = mondoId.split(":");
+        StringBuilder builder = new StringBuilder("DI-M");
+        builder.append(idParts[1]);
+        return builder.toString();
     }
 }
