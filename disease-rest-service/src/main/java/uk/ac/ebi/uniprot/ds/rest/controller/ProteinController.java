@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,6 +45,7 @@ import uk.ac.ebi.uniprot.ds.rest.service.DrugService;
 import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.ac.ebi.uniprot.ds.rest.controller.DiseaseController.ACCESSION_REGEX;
 
 @RestController
 @RequestMapping
@@ -111,7 +113,9 @@ public class ProteinController {
                             })
             })
     @GetMapping(value = {"/disease/{diseaseId}/proteins"}, produces = MediaType.APPLICATION_JSON_VALUE, name = "Get proteins by the diseaseId")
-    public MultipleEntityResponse<ProteinDTO> getProteinsByDiseaseId(@PathVariable("diseaseId") String diseaseId){
+    public MultipleEntityResponse<ProteinDTO> getProteinsByDiseaseId(@PathVariable("diseaseId") @Pattern(
+            regexp = ACCESSION_REGEX,
+            message = "Invalid diseaseId format. Valid format 'DI-[A-Z]?(\\d+)'") String diseaseId){
         String requestId = RequestCorrelation.getCorrelationId();
         List<Protein> proteins = this.proteinService.getProteinsByDiseaseId(diseaseId);
         List<ProteinDTO> dtoList = toProteinDTOList(proteins);

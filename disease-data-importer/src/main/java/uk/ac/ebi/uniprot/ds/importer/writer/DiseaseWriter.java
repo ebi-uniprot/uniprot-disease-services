@@ -56,7 +56,7 @@ public class DiseaseWriter implements ItemWriter<UniProtEntry> {
             if(optDisease.isPresent()){
                 pDisease = optDisease.get();
                 pDisease.setNote(disease.getNote());
-                pDisease.setDiseaseId(disease.getDiseaseId());
+                pDisease.setDiseaseId(pDisease.getDiseaseId());
                 DiseaseProtein dp = new DiseaseProtein(pDisease, protein, false);
                 pDisease.getDiseaseProteins().add(dp);
                 pDisease.setPublications(disease.getPublications());

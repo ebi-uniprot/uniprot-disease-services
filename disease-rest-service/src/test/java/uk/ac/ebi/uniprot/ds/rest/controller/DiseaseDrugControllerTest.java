@@ -67,7 +67,7 @@ public class DiseaseDrugControllerTest {
 
     @Test
     public void testGetDrugsByDiseaseId() throws Exception {
-        String diseaseId = "DISEASE_ID";
+        String diseaseId = "DI-12345";
 
         Drug drug1 = ModelCreationUtils.createDrugObject(this.uuid + 1);
         Drug drug2 = ModelCreationUtils.createDrugObject(this.uuid + 2);

@@ -26,7 +26,7 @@ public class AlzheimerProteinLoadStep {
 
     // Query to get all the proteins which are manually mapped to AD
     private static final String QUERY_TO_GET_AD_PROTEIN = "select  p.id as protein_id, " +
-            "(select d.id from ds_disease d where d.disease_id = 'Alzheimer disease') as disease_id, " +
+            "(select d.id from ds_disease d where d.disease_name = 'Alzheimer disease') as disease_id, " +
             "true as is_mapped " +
             "from     ds_protein p where     p.accession in ('O75899', " +
             "'P05023',     'Q14934',     'Q562E7',     'Q6UXX9',     'Q14739', " +

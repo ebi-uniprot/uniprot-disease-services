@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.constraints.Pattern;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -43,7 +45,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Validated
 @Tag(name = "Disease", description = "Disease related operations")
 public class DiseaseController {
-
+    public static final String ACCESSION_REGEX = "DI-[A-Z]?(\\d+)";
     private final DiseaseService diseaseService;
     private final DrugService drugService;
 
@@ -66,26 +68,30 @@ public class DiseaseController {
                             })
             })
     @GetMapping(value = {"/diseases/{diseaseId}"}, name = "Get disease by diseaseId")
-    public SingleEntityResponse<DiseaseDTO> getDisease(@PathVariable("diseaseId") String diseaseId){
+    public SingleEntityResponse<DiseaseDTO> getDisease(@PathVariable("diseaseId")
+                                                       @Pattern(
+                                                               regexp = ACCESSION_REGEX,
+                                                               message = "Invalid diseaseId format. Valid format 'DI-[A-Z]?(\\d+)'")
+                                                               String diseaseId) {
         String requestId = RequestCorrelation.getCorrelationId();
         Optional<Disease> optDisease = this.diseaseService.findByDiseaseId(diseaseId);
         Disease disease = optDisease.orElse(new Disease());
         DiseaseDTO diseaseDTO = convertToDTO(disease);
-        return new SingleEntityResponse<>(requestId, false, null, diseaseDTO) ;
+        return new SingleEntityResponse<>(requestId, false, null, diseaseDTO);
     }
 
     @Operation(hidden = true)
     @GetMapping(value = {"/diseases/search/{keyword}"}, name = "Fetches a list of diseases which have the given keyword in name")
     public MultipleEntityResponse<DiseaseDTO> searchDiseases(
-             @PathVariable("keyword") String keyword,
+            @PathVariable("keyword") String keyword,
 
-             @Range(min = 0, message = "The offset cannot be negative.")
-             @RequestParam(value = "offset", required = false, defaultValue = "0")
-             Integer offset,
+            @Range(min = 0, message = "The offset cannot be negative.")
+            @RequestParam(value = "offset", required = false, defaultValue = "0")
+                    Integer offset,
 
-             @Range(min = 1, max = 200, message = "The size must be between 1 and 200 both inclusive.")
-             @RequestParam(value = "size", required = false, defaultValue = "200")
-             Integer size){
+            @Range(min = 1, max = 200, message = "The size must be between 1 and 200 both inclusive.")
+            @RequestParam(value = "size", required = false, defaultValue = "200")
+                    Integer size) {
 
         String requestId = RequestCorrelation.getCorrelationId();
 
@@ -111,7 +117,7 @@ public class DiseaseController {
                                                                     DiseaseDTO.class)))
                             })
             })
-    @GetMapping(value={"/protein/{accession}/diseases"}, name = "Get the diseases for a given protein accession")
+    @GetMapping(value = {"/protein/{accession}/diseases"}, name = "Get the diseases for a given protein accession")
     public MultipleEntityResponse<DiseaseDTO> getProteinDiseases(@PathVariable(name = "accession") String accession) {
         String requestId = RequestCorrelation.getCorrelationId();
 
@@ -136,10 +142,12 @@ public class DiseaseController {
                                                                     DrugDTO.class)))
                             })
             })
-    @GetMapping(value={"/disease/{diseaseId}/drugs"}, name = "Get the drugs for a given diseaseId")
-    public MultipleEntityResponse<DrugDTO> getDrugsByDiseaseId(@PathVariable(name = "diseaseId") String diseaseId) {
+    @GetMapping(value = {"/disease/{diseaseId}/drugs"}, name = "Get the drugs for a given diseaseId")
+    public MultipleEntityResponse<DrugDTO> getDrugsByDiseaseId(@PathVariable(name = "diseaseId") @Pattern(
+            regexp = ACCESSION_REGEX,
+            message = "Invalid diseaseId format. Valid format 'DI-[A-Z]?(\\d+)'") String diseaseId) {
         String requestId = RequestCorrelation.getCorrelationId();
-        List<DrugDTO>  dtoList = this.drugService.getDrugDTOsByDiseaseId(diseaseId);
+        List<DrugDTO> dtoList = this.drugService.getDrugDTOsByDiseaseId(diseaseId);
         return new MultipleEntityResponse<>(requestId, dtoList);
     }
 
@@ -148,11 +156,13 @@ public class DiseaseController {
         return diseaseDTO;
     }
 
-    private List<DiseaseDTO> toDiseaseDTOList(List<Disease> from){
-        return this.modelMapper.map(from, new TypeToken<List<DiseaseDTO>>(){}.getType());
+    private List<DiseaseDTO> toDiseaseDTOList(List<Disease> from) {
+        return this.modelMapper.map(from, new TypeToken<List<DiseaseDTO>>() {
+        }.getType());
     }
 
-    private List<DrugDTO> toDrugDTOList(List<Drug> from){
-        return this.modelMapper.map(from, new TypeToken<List<DrugDTO>>(){}.getType());
+    private List<DrugDTO> toDrugDTOList(List<Drug> from) {
+        return this.modelMapper.map(from, new TypeToken<List<DrugDTO>>() {
+        }.getType());
     }
 }

@@ -89,22 +89,23 @@ class HumDiseaseDataLoadStepTest extends AbstractBaseStepTest{
 
     private void verifyDiseases() {
         // populate a map to keep disease id and its description to verify
-        Map<String, String> disDesc = new HashMap<>();
-        populateMap(disDesc);
+        Map<String, String> diseaseIdDesc = new HashMap<>();
+        populateMap(diseaseIdDesc);
         List<Disease> diseases = this.diseaseDAO.findAll();
         Assertions.assertFalse(diseases.isEmpty());
         Assertions.assertEquals(5, diseases.size());
-        Matcher<Iterable<? extends String>> matcherDiseaseIds = containsInAnyOrder("3-hydroxy-3-methylglutaryl-CoA lyase deficiency", "ZTTK syndrome",
+        Matcher<Iterable<? extends String>> matcherDiseaseNamess = containsInAnyOrder("3-hydroxy-3-methylglutaryl-CoA lyase deficiency", "ZTTK syndrome",
                 "2,4-dienoyl-CoA reductase deficiency", "3-alpha-hydroxyacyl-CoA dehydrogenase deficiency",
                 "2-aminoadipic 2-oxoadipic aciduria");
+        Matcher<Iterable<? extends String>> matcherDiseaseIds = containsInAnyOrder("DI-00002", "DI-04860", "DI-00003", "DI-04240", "DI-03673");
         // verify disease ids
         List<String> diseaseIds = diseases.stream().map(Disease::getDiseaseId).collect(Collectors.toList());
         assertThat(diseaseIds, matcherDiseaseIds);
         // verify disease names
         List<String> diseaseNames = diseases.stream().map(Disease::getName).collect(Collectors.toList());
-        assertThat(diseaseNames, matcherDiseaseIds);
+        assertThat(diseaseNames, matcherDiseaseNamess);
         // verify each description
-        diseases.stream().forEach(disease -> Assertions.assertEquals(disDesc.get(disease.getDiseaseId()), disease.getDesc()));
+        diseases.stream().forEach(disease -> Assertions.assertEquals(diseaseIdDesc.get(disease.getDiseaseId()), disease.getDesc()));
         // verify acronyms
         Matcher<Iterable<? extends String>> matcherAcronums = containsInAnyOrder("DECRD", "AMOXAD", "HADH deficiency", "HMGCLD", "ZTTKS");
         List<String> actualAcronyms = diseases.stream().map(Disease::getAcronym).collect(Collectors.toList());
@@ -116,23 +117,23 @@ class HumDiseaseDataLoadStepTest extends AbstractBaseStepTest{
     }
 
     private void populateMap(Map<String, String> disDesc) {
-        disDesc.put("3-hydroxy-3-methylglutaryl-CoA lyase deficiency", "An autosomal recessive disease affecting ketogenesis and L-leucine catabolism. The disease usually appears in the first year of life after a fasting period and its clinical acute symptoms include vomiting, seizures, metabolic acidosis, hypoketotic hypoglycemia and lethargy. These symptoms sometimes progress to coma, with fatal outcome in some cases.");
-        disDesc.put("ZTTK syndrome", "An autosomal dominant syndrome characterized by intellectual disability, developmental delay, malformations of the cerebral cortex, epilepsy, vision problems, musculo-skeletal abnormalities, and congenital malformations.");
-        disDesc.put("2,4-dienoyl-CoA reductase deficiency", "A rare, autosomal recessive, inborn error of polyunsaturated fatty acids and lysine metabolism, resulting in mitochondrial dysfunction. Affected individuals have a severe encephalopathy with neurologic and metabolic abnormalities beginning in early infancy. Laboratory studies show increased C10:2 carnitine levels and hyperlysinemia.");
-        disDesc.put("3-alpha-hydroxyacyl-CoA dehydrogenase deficiency", "An autosomal recessive, metabolic disorder with various clinical presentations including hypoglycemia, hepatoencephalopathy, myopathy or cardiomyopathy, and in some cases sudden death.");
-        disDesc.put("2-aminoadipic 2-oxoadipic aciduria", "A metabolic disorder characterized by increased levels of 2-oxoadipate and 2-hydroxyadipate in the urine, and elevated 2-aminoadipate in the plasma. Patients can have mild to severe intellectual disability, muscular hypotonia, developmental delay, ataxia, and epilepsy. Most cases are asymptomatic.");
+        disDesc.put("DI-00003", "An autosomal recessive disease affecting ketogenesis and L-leucine catabolism. The disease usually appears in the first year of life after a fasting period and its clinical acute symptoms include vomiting, seizures, metabolic acidosis, hypoketotic hypoglycemia and lethargy. These symptoms sometimes progress to coma, with fatal outcome in some cases.");
+        disDesc.put("DI-04860", "An autosomal dominant syndrome characterized by intellectual disability, developmental delay, malformations of the cerebral cortex, epilepsy, vision problems, musculo-skeletal abnormalities, and congenital malformations.");
+        disDesc.put("DI-04240", "A rare, autosomal recessive, inborn error of polyunsaturated fatty acids and lysine metabolism, resulting in mitochondrial dysfunction. Affected individuals have a severe encephalopathy with neurologic and metabolic abnormalities beginning in early infancy. Laboratory studies show increased C10:2 carnitine levels and hyperlysinemia.");
+        disDesc.put("DI-00002", "An autosomal recessive, metabolic disorder with various clinical presentations including hypoglycemia, hepatoencephalopathy, myopathy or cardiomyopathy, and in some cases sudden death.");
+        disDesc.put("DI-03673", "A metabolic disorder characterized by increased levels of 2-oxoadipate and 2-hydroxyadipate in the urine, and elevated 2-aminoadipate in the plasma. Patients can have mild to severe intellectual disability, muscular hypotonia, developmental delay, ataxia, and epilepsy. Most cases are asymptomatic.");
     }
 
     private void verifyDiseaseCrossReferences() {
         List<CrossRef> xrefs = this.crossRefDAO.findAll();
         Assertions.assertFalse(xrefs.isEmpty());
-        Assertions.assertEquals(22, xrefs.size());
+        Assertions.assertEquals(17, xrefs.size());
         Set<String> refTypes = xrefs.stream().map(CrossRef::getRefType).collect(Collectors.toSet());
-        assertThat(refTypes, containsInAnyOrder("MIM", "MeSH", "MedGen", "UniProt"));
+        assertThat(refTypes, containsInAnyOrder("MIM", "MeSH", "MedGen"));
         List<String> refIds = xrefs.stream().map(CrossRef::getRefId).collect(Collectors.toList());
-        assertThat(refIds, containsInAnyOrder("DI-04860", "C1291230", "204750", "C0268601", "D020167", "617140",
-                "C1859817", "DI-00002", "D000592", "616034", "231530", "D028361", "CN238690", "D000015", "D008607",
-                "CN037048", "DI-03673", "DI-00003", "246450", "DI-04240", "D008659", "D000592"));
+        assertThat(refIds, containsInAnyOrder("C1291230", "204750", "C0268601", "D020167", "617140",
+                "C1859817", "D000592", "616034", "231530", "D028361", "CN238690", "D000015", "D008607",
+                "CN037048", "246450", "D008659", "D000592"));
         xrefs.stream().map(CrossRef::getDisease).forEach(disease -> assertThat(disease, notNullValue()));
         xrefs.stream().map(CrossRef::getSource).forEach(src -> assertThat(src, is(SourceType.UniProt_HUM.name())));
         verifyCommonFields(xrefs);

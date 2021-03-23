@@ -18,7 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ModelCreationUtils {
     public static Disease createDiseaseObject(String random) {
         Disease disease = new Disease();
-        String dId = "DID-" + random;
+        String dId = "DI-" + random;
         String dn = "DN-" + random;
         String desc = "DESC-" + random;
         String acr = "ACRONYM-" + random;

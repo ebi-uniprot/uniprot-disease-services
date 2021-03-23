@@ -224,7 +224,7 @@ public class ProteinControllerTest {
     @Test
     public void testGetProteinsByDiseaseId() throws Exception {
 
-        String diseaseId = "diseaseId";
+        String diseaseId = "DI-M12345";
         Protein p1 = ModelCreationUtils.createProteinObject(uuid+1);
 
         Disease d1 = ModelCreationUtils.createDiseaseObject(uuid + 1);

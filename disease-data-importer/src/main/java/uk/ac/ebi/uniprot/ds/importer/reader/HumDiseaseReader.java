@@ -85,14 +85,9 @@ public class HumDiseaseReader implements ItemReader<Disease> {
                 switch (keyVal[0]) {
                     case ID_STR:
                         builder.name(keyVal[1].replace(FULL_STOP, EMPTY_STR));
-                        builder.diseaseId(keyVal[1].replace(FULL_STOP, EMPTY_STR));
                         break;
                     case AC_STR:
-                        CrossRef.CrossRefBuilder blr = CrossRef.builder();
-                        blr.refType(SourceType.UniProt.name());
-                        blr.refId(keyVal[1]);
-                        blr.source(SourceType.UniProt_HUM.name());
-                        crossRefs.add(blr.build());
+                        builder.diseaseId(keyVal[1]);
                         break;
                     case AR_STR:
                         String acronym = keyVal[1].replace(FULL_STOP, EMPTY_STR);
