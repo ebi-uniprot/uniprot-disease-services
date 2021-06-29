@@ -23,6 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import uk.ac.ebi.uniprot.ds.common.dao.CrossRefDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
+import uk.ac.ebi.uniprot.ds.common.dao.DrugDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.EvidenceDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.FeatureLocationDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.GeneCoordinateDAO;
@@ -48,6 +49,7 @@ class BatchConfigurationDiseaseServiceTest {
 
     @AfterEach
     void cleanUp(){
+            this.drugDAO.deleteAll();
             this.synonymDAO.deleteAll();
             this.variantDAO.deleteAll();
             this.proteinCrossRefDAO.deleteAll();
@@ -168,4 +170,8 @@ class BatchConfigurationDiseaseServiceTest {
 
     @Autowired
     private SiteMappingDAO siteMappingDAO;
+
+    @Autowired
+    private DrugDAO drugDAO;
+
 }
