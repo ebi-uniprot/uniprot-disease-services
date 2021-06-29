@@ -8,8 +8,11 @@
 package uk.ac.ebi.uniprot.ds.importer;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"uk.ac.ebi.uniprot.ds.common", "uk.ac.ebi.uniprot.ds.importer"})
@@ -18,4 +21,8 @@ public class DataImporterSpringBootApplication {
         SpringApplication.run(DataImporterSpringBootApplication.class, args);
     }
 
+//    @Bean
+//    public RestTemplate restTemplate(){
+//        return new RestTemplate();
+//    }
 }
