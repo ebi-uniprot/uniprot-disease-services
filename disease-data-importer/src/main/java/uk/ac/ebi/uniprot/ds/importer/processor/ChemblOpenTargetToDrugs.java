@@ -230,18 +230,18 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblEntry, List<
         Disease disease = this.diseaseNameToDiseaseMap.get(diseaseId);
         if (Objects.isNull(disease)) {
             // get the omims from efo 2 omim cache
-            Set<String> omims = this.efo2OmimsMap.get(diseaseUrl);
+            Set<String> omims = this.efo2OmimsMap.get(diseaseId);
             if (Objects.nonNull(omims)) { // exact one match to avoid mismatch
                 if (omims.size() == 1) {
                     disease = this.diseaseNameToDiseaseMap.get(new ArrayList<>(omims).get(0));
                     if (disease != null) {
-                        this.diseaseNameToDiseaseMap.put(diseaseUrl, disease);
-                        log.info("Found disease in cache for efoId {}", diseaseUrl);
+                        this.diseaseNameToDiseaseMap.put(diseaseId, disease);
+                        log.info("Found disease in cache for efoId {}", diseaseId);
                     } else {
-                        log.info("No disease found in cache for efoId {}", diseaseUrl);
+                        log.info("No disease found in cache for efoId {}", diseaseId);
                     }
                 } else {
-                    log.info("EFO {} has more than one OMIM mapping. Ignoring it..", diseaseUrl);
+                    log.info("EFO {} has more than one OMIM mapping. Ignoring it..", diseaseId);
                 }
             }
         }
