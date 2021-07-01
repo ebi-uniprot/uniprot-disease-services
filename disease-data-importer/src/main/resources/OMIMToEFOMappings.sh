@@ -2,6 +2,7 @@
 # This script is used to generated data for file mondo-omim2efo.txt
 # we can re-run this if we want to update the omim to EFO mapping.
 # Ideally we should update every release
+#e.g. ./OMIMToEFOMappings.sh 50 omim2efo
 ## ---------------------------- UTILITY FUNCTIONS ----------------------------
 function showHelp {
     cat<<EOF

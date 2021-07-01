@@ -483,7 +483,7 @@ CREATE TABLE disease_service.ds_drug (
                                          updated_at timestamp without time zone NOT NULL,
                                          clinical_trial_phase smallint,
                                          mechanism_of_action character varying(255),
-                                         clinical_trial_link character varying(255),
+                                         clinical_trial_link character varying,
                                          chembl_disease_id character varying(255),
                                          ds_disease_id bigint
 );

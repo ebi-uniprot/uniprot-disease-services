@@ -44,6 +44,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-json</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-batch</artifactId>
         </dependency>
         <dependency>
@@ -89,7 +93,12 @@
             <groupId>org.springframework.batch</groupId>
             <artifactId>spring-batch-test</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -138,7 +147,7 @@
         <ojdbc.version>11.2.0.4</ojdbc.version>
         <ojdbc.artifactid>ojdbc6</ojdbc.artifactid>
         <http-uniprot-private-url>http://wwwdev.ebi.ac.uk/uniprot/artifactory</http-uniprot-private-url>
-        <uniprot.version>2021.1</uniprot.version>
+        <uniprot.version>2021.3</uniprot.version>
     </properties>
     <repositories>
     <repository>
@@ -160,7 +169,5 @@
 			</releases>
 			<url>${http-uniprot-private-url}/private-thirdparty</url>
 		</repository>
-    
-    
     </repositories>
 </project>

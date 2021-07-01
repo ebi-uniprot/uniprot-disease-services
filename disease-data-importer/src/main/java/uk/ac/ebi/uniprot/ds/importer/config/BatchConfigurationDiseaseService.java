@@ -13,6 +13,8 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
 import uk.ac.ebi.uniprot.ds.importer.listener.LogChunkListener;
 import uk.ac.ebi.uniprot.ds.importer.listener.LogJobListener;
 import uk.ac.ebi.uniprot.ds.importer.listener.LogStepListener;

@@ -2,12 +2,13 @@ package uk.ac.ebi.uniprot.ds.importer.reader;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import uk.ac.ebi.uniprot.ds.importer.model.ChemblOpenTarget;
-import uk.ac.ebi.uniprot.ds.importer.reader.ChemblOpenTargetReader;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import uk.ac.ebi.uniprot.ds.importer.model.ChemblEntry;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ChemblOpenTargetReaderTest {
     private static final String SAMPLE_CHEMBL_FILE = "src/test/resources/sample_chembl_opentarget.json";
@@ -19,36 +20,18 @@ class ChemblOpenTargetReaderTest {
     }
     @Test
     void testReadFile() throws Exception {
-        ChemblOpenTarget openTargetObj;
+        ChemblEntry chemblEntry;
         int count = 0;
-        while((openTargetObj = READER.read()) != null){
-            verifyOpenTargetObj(openTargetObj);
+        while((chemblEntry = READER.read()) != null){
+            verifyChemblEntry(chemblEntry);
             count++;
         }
         assertEquals(10, count);
     }
 
-    private void verifyOpenTargetObj(ChemblOpenTarget openTarget) {
-
-        assertNotNull(openTarget.getChemblSourceUrl(), "Chembl source id is null");
-        assertNotNull(openTarget.getChemblTargetUrl(), "Chembl Target id is null");
-        assertNotNull(openTarget.getMoleculeName(), "molecule Name is null");
-        assertNotNull(openTarget.getMoleculeType(), "molecule type is null");
-
-        if(!"INDOMETHACIN".equalsIgnoreCase(openTarget.getMoleculeName())
-                && !"METOPROLOL".equalsIgnoreCase(openTarget.getMoleculeName())
-                && !"ACETAZOLAMIDE".equalsIgnoreCase(openTarget.getMoleculeName())) {
-            assertNotNull(openTarget.getClinicalTrialLink(), "clinical trial link is null");
-        }
-
-        assertNotNull(openTarget.getClinicalTrialPhase(), "clinical trial phase is null");
-        assertNotNull(openTarget.getMechOfAction(), "mech of action is null");
-
-        if(!"INDOMETHACIN".equalsIgnoreCase(openTarget.getMoleculeName())
-                && !"BICALUTAMIDE".equalsIgnoreCase(openTarget.getMoleculeName())
-                && !"METOPROLOL".equalsIgnoreCase(openTarget.getMoleculeName())
-                && !"SIROLIMUS".equalsIgnoreCase(openTarget.getMoleculeName())) {
-            assertNotNull(openTarget.getDrugEvidences(), "Drug evidences is null");
-        }
+    private void verifyChemblEntry(ChemblEntry chemblEntry) {
+        assertNotNull(chemblEntry.getChemblId(), "Chembl source id is null");
+        assertNotNull(chemblEntry.getPhase(), "Phase is null");
+        assertNotNull(chemblEntry.getTargetChemblId(), "Target chemblId is null");
     }
 }

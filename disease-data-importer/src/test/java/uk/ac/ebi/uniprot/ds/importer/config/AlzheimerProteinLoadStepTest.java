@@ -27,6 +27,7 @@ import uk.ac.ebi.uniprot.ds.common.model.Disease;
 import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
 import uk.ac.ebi.uniprot.ds.importer.DataImporterSpringBootApplication;
+//import uk.ac.ebi.uniprot.ds.importer.processor.ChemblOpenTargetToDrugsTest;
 import uk.ac.ebi.uniprot.ds.importer.processor.ChemblOpenTargetToDrugsTest;
 import uk.ac.ebi.uniprot.ds.importer.util.Constants;
 import uk.ac.ebi.uniprot.ds.importer.writer.DiseaseWriterTest;
