@@ -14,26 +14,25 @@ import uk.ac.ebi.uniprot.ds.common.model.Drug;
 public class DrugDAOCustomImpl implements DrugDAOCustom {
     /* do not change the order of the field. See method getDrugDTOsByDiseaseId in DrugService*/
     private static final String QUERY_DRUGS_BY_DISEASE_ID = "\n" +
-            "select " +
-            "drug1.name as name, drug1.source_type as sourceType, drug1.source_id as sourceId, " +
-            "drug1.molecule_type as moleculeType, drug1.clinical_trial_phase as clinicalTrialPhase, " +
-            "drug1.mechanism_of_action as mechanismOfAction, drug1.clinical_trial_link as clinicalTrialLink, " +
+            "select drug.name as name, drug.source_type as sourceType, drug.source_id as sourceId, " +
+            "drug.molecule_type as moleculeType, drug.clinical_trial_phase as clinicalTrialPhase, " +
+            "drug.mechanism_of_action as mechanismOfAction, drug.clinical_trial_link as clinicalTrialLink, " +
             "dre.ref_url as evidences, dp.accession as proteins, " +
-            "coalesce(dis.disease_name, drug1.chembl_disease_id) as diseaseName, " +
-            "coalesce(dis.disease_id , drug1.chembl_disease_id) as diseaseId, " +
-            "drug1.ds_disease_id as did, drug1.id as drugId " +
-            "from ds_drug drug1 join " +
-            "(select distinct drug.\"name\" from ds_disease dd " +
-            "join ds_disease_descendent ddd on " +
-            "dd.id = ddd.ds_disease_id " +
-            "join ds_drug drug on drug.ds_disease_id = ddd.ds_descendent_id " +
-            "where dd.disease_id=?) disease_drugs " +
-            "on drug1.\"name\"=disease_drugs.\"name\" " +
-            "left join ds_disease dis on dis.id=drug1.ds_disease_id " +
-            "left join ds_protein_cross_ref dpc on dpc.id = drug1.ds_protein_cross_ref_id " +
+            "coalesce(dis.disease_name, drug.chembl_disease_id) as diseaseName, " +
+            "coalesce(dis.disease_id , drug.chembl_disease_id) as diseaseId " +
+            "from ds_disease dis " +
+            "join " +
+            "(" +
+            "   select ddd.ds_descendent_id as desc_id from ds_disease dd " +
+            "   join ds_disease_descendent ddd on dd.id = ddd.ds_disease_id " +
+            "   where dd.disease_id = ? " +
+            ") as dis_chil " +
+            "on dis.id = dis_chil.desc_id " +
+            "join ds_drug drug on drug.ds_disease_id = dis.id " +
+            "left join ds_protein_cross_ref dpc on dpc.id = drug.ds_protein_cross_ref_id " +
             "left join ds_protein dp on dp.id = dpc.ds_protein_id " +
-            "left join ds_drug_evidence dre on dre.ds_drug_id = drug1.id " +
-            "order by drugId";
+            "left join ds_drug_evidence dre on dre.ds_drug_id = drug.id " +
+            "order by name ";
 
     private static final String QUERY_DRUGS_BY_PROTEIN_ACCESSION = "" +
             "select dd2.* from ds_drug dd2 join ( " +

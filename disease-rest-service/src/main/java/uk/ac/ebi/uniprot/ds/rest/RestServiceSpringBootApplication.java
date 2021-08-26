@@ -50,7 +50,6 @@ public class RestServiceSpringBootApplication {
         modelMapper.addMappings(new ProteinToProteinWithCrossRefsDTOMap());
         modelMapper.addMappings(new ProteinToProteinDiseasesDTOMap());
         modelMapper.addMappings(new VariantToVariantDTOMap());
-        modelMapper.addMappings(new DrugToDrugDTOMap());
         modelMapper.addMappings(new SiteMapToUniProtSiteMapDTOMap());
         return modelMapper;
     }

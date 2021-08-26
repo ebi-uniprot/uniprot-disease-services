@@ -23,8 +23,16 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import uk.ac.ebi.uniprot.ds.common.dao.DrugDAO;
-import uk.ac.ebi.uniprot.ds.common.model.*;
+import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.rest.DataSourceTestConfig;
 import uk.ac.ebi.uniprot.ds.rest.dto.DrugDTO;
 import uk.ac.ebi.uniprot.ds.rest.service.DiseaseService;
@@ -33,9 +41,6 @@ import uk.ac.ebi.uniprot.ds.rest.service.ProteinService;
 import uk.ac.ebi.uniprot.ds.rest.service.UniProtSiteMapService;
 import uk.ac.ebi.uniprot.ds.rest.service.VariantService;
 import uk.ac.ebi.uniprot.ds.rest.utils.ModelCreationUtils;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(DiseaseController.class)
@@ -91,12 +96,13 @@ public class DiseaseDrugControllerTest {
         for(Drug drug : drugs){
             DrugDTO.DrugDTOBuilder bldr = DrugDTO.builder();
             bldr.name(drug.getName()).sourceType(drug.getSourceType());
-            bldr.sourceId(drug.getSourceId()).moleculeType(drug.getMoleculeType());
+            bldr.sourceIds(Set.of(drug.getSourceId())).moleculeType(drug.getMoleculeType());
             bldr.clinicalTrialLink(drug.getClinicalTrialLink());
+            bldr.proteinAccession(new ArrayList<>(drug.getProteins()).get(0));
             bldr.evidences(drug.getDrugEvidences().stream().map(e -> e.getRefUrl()).collect(Collectors.toSet()));
-            bldr.proteins(drug.getProteins());
-            Set<DrugDTO.BasicDiseaseDTO> bDiseases = drug.getDiseaseProteinCount().stream().map(d -> DrugDTO.BasicDiseaseDTO.builder().diseaseName(d.getLeft()).diseaseId(d.getLeft()).proteinCount(d.getRight()).build()).collect(Collectors.toSet());
-            bldr.diseases(bDiseases);
+            DrugDTO.BasicDiseaseDTO bDisease =  new DrugDTO.BasicDiseaseDTO(new ArrayList<>(drug.getDiseaseProteinCount())
+                    .get(0).getLeft(), new ArrayList<>(drug.getDiseaseProteinCount()).get(0).getLeft());
+            bldr.disease(bDisease);
             drugDTOs.add(bldr.build());
         }
 
@@ -117,19 +123,16 @@ public class DiseaseDrugControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results.length()", Matchers.equalTo(drugs.size())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].name", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].sourceType", Matchers.notNullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].sourceId", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].moleculeType", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].clinicalTrialPhase", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].mechanismOfAction", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].clinicalTrialLink", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].evidences", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].evidences.length()", Matchers.equalTo(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].diseases", Matchers.notNullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].proteins", Matchers.notNullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].diseases.length()", Matchers.equalTo(3)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].diseases[*].diseaseId", Matchers.notNullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].diseases[*].diseaseName", Matchers.notNullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].diseases[*].proteinCount", Matchers.notNullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].proteins.length()", Matchers.equalTo(3)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].disease", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].disease.diseaseId", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].disease.diseaseName", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[*].proteinAccession", Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.results[0].sourceIds.length()", Matchers.equalTo(1)));
     }
 }
