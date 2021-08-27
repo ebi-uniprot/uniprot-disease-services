@@ -1,5 +1,7 @@
 package uk.ac.ebi.uniprot.ds.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.*;
 
 import java.util.HashSet;
@@ -13,14 +15,18 @@ import java.util.Set;
 @Builder
 public class DrugDTO {
     private String name;// part of unique key - use this in equal and hash code
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String proteinAccession;// part of unique key
     private BasicDiseaseDTO disease;// part of unique key
     private String moleculeType;//part of unique key
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String mechanismOfAction;// part of unique key
     private Integer maxTrialPhase;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String clinicalTrialLink;
     private String sourceType;
     private Set<String> sourceIds = new HashSet<>();
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Set<String> evidences = new HashSet<>();
 
     @Getter

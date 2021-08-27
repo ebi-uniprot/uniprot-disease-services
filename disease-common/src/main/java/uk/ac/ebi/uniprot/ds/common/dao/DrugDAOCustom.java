@@ -14,5 +14,5 @@ import uk.ac.ebi.uniprot.ds.common.model.Drug;
 public interface DrugDAOCustom {
     List<Object[]> getDrugsByDiseaseId(String diseaseId);
 
-    List<Drug> getDrugsByProtein(String accession);
+    List<Object[]> getDrugsByProtein(String accession);
 }

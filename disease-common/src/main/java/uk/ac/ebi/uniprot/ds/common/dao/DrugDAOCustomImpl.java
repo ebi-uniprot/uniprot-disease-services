@@ -8,8 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import uk.ac.ebi.uniprot.ds.common.model.Drug;
-
 @Repository
 public class DrugDAOCustomImpl implements DrugDAOCustom {
     /* do not change the order of the field. See method getDrugDTOsByDiseaseId in DrugService*/
@@ -17,7 +15,7 @@ public class DrugDAOCustomImpl implements DrugDAOCustom {
             "select drug.name as name, drug.source_type as sourceType, drug.source_id as sourceId, " +
             "drug.molecule_type as moleculeType, drug.clinical_trial_phase as clinicalTrialPhase, " +
             "drug.mechanism_of_action as mechanismOfAction, drug.clinical_trial_link as clinicalTrialLink, " +
-            "dre.ref_url as evidences, dp.accession as proteins, " +
+            "dre.ref_url as evidences, dp.accession as protein, " +
             "coalesce(dis.disease_name, drug.chembl_disease_id) as diseaseName, " +
             "coalesce(dis.disease_id , drug.chembl_disease_id) as diseaseId " +
             "from ds_disease dis " +
@@ -35,14 +33,20 @@ public class DrugDAOCustomImpl implements DrugDAOCustom {
             "order by name ";
 
     private static final String QUERY_DRUGS_BY_PROTEIN_ACCESSION = "" +
-            "select dd2.* from ds_drug dd2 join ( " +
-            "select distinct dd1.\"name\" from ds_protein dp  " +
+           "select dd.name as name, dd.source_type as sourceType, dd.source_id as sourceId, " +
+            "dd.molecule_type as moleculeType, dd.clinical_trial_phase as clinicalTrialPhase, " +
+            "dd.mechanism_of_action as mechanismOfAction, dd.clinical_trial_link as clinicalTrialLink, " +
+            "dre.ref_url as evidences, dp.accession as protein, " +
+            "coalesce(dis.disease_name, dd.chembl_disease_id) as diseaseName, " +
+            "coalesce(dis.disease_id , dd.chembl_disease_id) as diseaseId " +
+            "from ds_protein dp " +
             "join ds_protein_cross_ref dpc " +
             "on dp.id = dpc.ds_protein_id " +
-            "join ds_drug dd1 " +
-            "on dd1.ds_protein_cross_ref_id = dpc.id " +
-            "where dp.accession = ? ) protein_drugs " +
-            "on dd2.\"name\" = protein_drugs.name order by  1";
+            "join ds_drug dd " +
+            "on dd.ds_protein_cross_ref_id = dpc.id " +
+            "left join ds_disease dis on dis.id = dd.ds_disease_id " +
+            "left join ds_drug_evidence dre on dre.ds_drug_id = dd.id " +
+            "where dp.accession = ? order by name";
 
 
     @PersistenceContext
@@ -56,8 +60,8 @@ public class DrugDAOCustomImpl implements DrugDAOCustom {
     }
 
     @Override
-    public List<Drug> getDrugsByProtein(String accession) {
-        Query query = this.entityManager.createNativeQuery(QUERY_DRUGS_BY_PROTEIN_ACCESSION, Drug.class);
+    public List<Object[]> getDrugsByProtein(String accession) {
+        Query query = this.entityManager.createNativeQuery(QUERY_DRUGS_BY_PROTEIN_ACCESSION);
         query.setParameter(1, accession);
         return query.getResultList();
     }
