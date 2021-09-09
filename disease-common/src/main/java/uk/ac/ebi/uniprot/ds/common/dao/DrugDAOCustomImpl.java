@@ -46,7 +46,7 @@ public class DrugDAOCustomImpl implements DrugDAOCustom {
             "on dd.ds_protein_cross_ref_id = dpc.id " +
             "left join ds_disease dis on dis.id = dd.ds_disease_id " +
             "left join ds_drug_evidence dre on dre.ds_drug_id = dd.id " +
-            "where dp.accession = ? order by name";
+            "where dp.accession = ? and coalesce(dis.disease_name, dd.chembl_disease_id) is not null order by name";
 
 
     @PersistenceContext
