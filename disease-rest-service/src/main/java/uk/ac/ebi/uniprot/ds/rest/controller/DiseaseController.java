@@ -29,7 +29,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.rest.dto.DiseaseDTO;
 import uk.ac.ebi.uniprot.ds.rest.dto.DrugDTO;
 import uk.ac.ebi.uniprot.ds.rest.filter.RequestCorrelation;
@@ -158,11 +157,6 @@ public class DiseaseController {
 
     private List<DiseaseDTO> toDiseaseDTOList(List<Disease> from) {
         return this.modelMapper.map(from, new TypeToken<List<DiseaseDTO>>() {
-        }.getType());
-    }
-
-    private List<DrugDTO> toDrugDTOList(List<Drug> from) {
-        return this.modelMapper.map(from, new TypeToken<List<DrugDTO>>() {
         }.getType());
     }
 }

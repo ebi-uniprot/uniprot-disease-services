@@ -141,8 +141,7 @@ public class ProteinController {
     public MultipleEntityResponse<DrugDTO> getDrugsByProteinAccession(@PathVariable(name = "accession") String accession) {
         String requestId = RequestCorrelation.getCorrelationId();
 
-        List<Drug> drugs = this.drugService.getDrugsByAccession(accession);
-        List<DrugDTO> dtoList = toDrugDTOList(drugs);
+        List<DrugDTO> dtoList = this.drugService.getDrugsByAccession(accession);
 
         return new MultipleEntityResponse<>(requestId, dtoList);
     }

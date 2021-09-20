@@ -1,25 +1,27 @@
 package uk.ac.ebi.uniprot.ds.rest.service;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import lombok.extern.slf4j.Slf4j;
 import uk.ac.ebi.uniprot.ds.common.dao.DrugDAO;
 import uk.ac.ebi.uniprot.ds.common.dao.ProteinDAO;
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
 import uk.ac.ebi.uniprot.ds.common.model.Drug;
 import uk.ac.ebi.uniprot.ds.common.model.Protein;
-import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
 import uk.ac.ebi.uniprot.ds.rest.dto.DrugDTO;
+import uk.ac.ebi.uniprot.ds.rest.dto.RowToDrugDTO;
 import uk.ac.ebi.uniprot.ds.rest.exception.AssetNotFoundException;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toSet;
 
 @Service
@@ -63,129 +65,50 @@ public class DrugService {
         return drugList;
     }
 
-    public List<Drug> getDrugsByAccession(String accession) {
+    public List<DrugDTO> getDrugsByAccession(String accession) {
 
         Optional<Protein> optProtein = this.proteinDAO.findProteinByAccession(accession);
         if (!optProtein.isPresent()) {
             throw new AssetNotFoundException("Unable to find the accession '" + accession + "'.");
         }
 
-        Set<Long> proteinCrossRefs = optProtein.get().getProteinCrossRefs()
-                .stream()
-                .map(ProteinCrossRef::getId)
-                .collect(toSet());
-
-        List<Drug> drugs = this.drugDAO.getDrugsByProtein(accession);
-        // [disease1, disease2]
-        Set<Disease> diseases = drugs.stream().filter(drug -> Objects.nonNull(drug.getDisease())).map(Drug::getDisease)
-                .collect(Collectors.toSet());
-        Map<String, Disease> nameToDisease = diseases.stream().collect(Collectors.toMap(Disease::getName, Function.identity()));
-
-        // [drugName --> [diseaseName1, diseaseName2]]
-        Map<String, Set<String>> drugToDiseases = drugs.stream()
-                .collect(Collectors.groupingBy(drug -> drug.getName(), mapping(drug -> extractDiseaseName(drug), toSet())));
-
-        // [drugName --> [proteinAccession1, proteinAccession2]]
-        Map<String, Set<String>> drugToProteins = drugs.stream()
-                .filter(drug -> Objects.nonNull(drug.getProteinCrossRef()))
-                .collect(Collectors.groupingBy(drug -> drug.getName(),
-                        mapping(drug -> drug.getProteinCrossRef().getProtein().getAccession(), toSet())));
-
-        Map<String, Drug> nameDrugMap = new HashMap<>();
-        for(Drug drug : drugs){
-            Long crossRefId = Objects.isNull(drug.getProteinCrossRef()) ? 0L : drug.getProteinCrossRef().getId();
-            if(proteinCrossRefs.contains(crossRefId)){
-                Drug oldDrug = nameDrugMap.getOrDefault(drug.getName(), new Drug());
-                Integer oldTrialPhase = oldDrug.getClinicalTrialPhase();
-                String oldLink = oldDrug.getClinicalTrialLink();
-                Integer newTrialPhase = drug.getClinicalTrialPhase();
-                String newLink = drug.getClinicalTrialLink();
-                if(updateClinicalTrialPhase(oldTrialPhase, newTrialPhase, oldLink, newLink)){
-                    // drug without disease id and cross ref id
-                    Drug slimDrug = createDrugWithoutCrossRefAndDisease(drug);
-                    Set<Pair<String, Integer>> diseaseProteinCount = getDiseaseProteinCount(drug.getName(), drugToDiseases, nameToDisease);
-                    // fill the disease names with protein counts
-                    slimDrug.setDiseaseProteinCount(diseaseProteinCount);
-                    // fill the protein accessions
-                    slimDrug.setProteins(drugToProteins.get(slimDrug.getName()));
-                    nameDrugMap.put(drug.getName(), slimDrug);
-                }
-            }
-        }
-
-        return new ArrayList<>(nameDrugMap.values());
+        List<Object[]> drugRows = this.drugDAO.getDrugsByProtein(accession);
+        return convertRowsToDTOs(drugRows);
     }
 
     public List<DrugDTO> getDrugDTOsByDiseaseId(String diseaseId) {
-        List<Object[]> drugs = this.drugDAO.getDrugsByDiseaseId(diseaseId);
-        Map<Long, Integer> diseaseIdProteinCount = new HashMap<>();
-        Map<Long, Set<String>> drugIdEvidences = new HashMap<>();
-        // drug name is unique so using as key
-        Map<String, DrugDTO.DrugDTOBuilder> drugNameBuilder = new HashMap<>();
-        for(Object[] drug : drugs){
-            Long drugId = (Long) drug[12];
-            DrugDTO.DrugDTOBuilder builder = drugNameBuilder.getOrDefault((String)drug[0], DrugDTO.builder());
-            builder.name((String) drug[0]);
-            builder.sourceType((String) drug[1]);
-            builder.sourceId((String) drug[2]);
-            builder.moleculeType((String) drug[3]);
-            DrugDTO temp = builder.build();
-            Integer oldTrialPhase = temp.getClinicalTrialPhase();
-            Integer newTrialPhase = (Integer) drug[4];
-            String oldLink = temp.getClinicalTrialLink();
-            String newLink = (String) drug[6];
+        List<Object[]> drugRows = this.drugDAO.getDrugsByDiseaseId(diseaseId);
+        return convertRowsToDTOs(drugRows);
+    }
 
-            if(updateClinicalTrialPhase(oldTrialPhase, newTrialPhase, oldLink, newLink)) {
-                builder.drugId(drugId);
-                builder.clinicalTrialPhase(newTrialPhase);
-                builder.mechanismOfAction((String) drug[5]);
-                builder.clinicalTrialLink(newLink);
+    private List<DrugDTO> convertRowsToDTOs(List<Object[]> drugRows) {
+        List<DrugDTO> drugDTOs = new ArrayList<>();
+        RowToDrugDTO rowToDrugConverter = new RowToDrugDTO();
+        for(Object[] dr : drugRows){
+            DrugDTO currDrugDTO = rowToDrugConverter.apply(dr);
+            if(drugDTOs.contains(currDrugDTO)){
+                DrugDTO prevDrugDTO = drugDTOs.stream().filter(dto -> Objects.equals(dto, currDrugDTO)).findFirst().orElse(null);
+                //1. append source id
+                prevDrugDTO.getSourceIds().addAll(currDrugDTO.getSourceIds());
+                // 2. update phase and clinical trial link if greater value
+                if(updateClinicalTrialPhase(prevDrugDTO.getMaxTrialPhase(), currDrugDTO.getMaxTrialPhase(),
+                        prevDrugDTO.getClinicalTrialLink(), currDrugDTO.getClinicalTrialLink())){
+                    prevDrugDTO.setMaxTrialPhase(currDrugDTO.getMaxTrialPhase());
+                    prevDrugDTO.setClinicalTrialLink(currDrugDTO.getClinicalTrialLink());
+                }
+                // 3. append evidence
+                prevDrugDTO.getEvidences().addAll(currDrugDTO.getEvidences());
+            } else {
+                drugDTOs.add(currDrugDTO);
             }
-
-            // evidences map to set later for the maximum phase
-            if(drug[7] != null) {
-                Set<String> evidences = drugIdEvidences.getOrDefault(drugId, new HashSet<>());
-                evidences.add((String) drug[7]);
-                drugIdEvidences.put(drugId, evidences);
-            }
-
-            // proteins
-            Set<String> proteins = builder.build().getProteins() != null ? builder.build().getProteins() : new HashSet<>();
-            if(drug[8] != null) {
-                proteins.add((String) drug[8]);
-            }
-            builder.proteins(proteins);
-
-            // diseases
-            Set<DrugDTO.BasicDiseaseDTO> diseases = builder.build().getDiseases() != null ? builder.build().getDiseases() : new HashSet<>();
-            if(drug[9] != null && drug[10] != null) {
-                Long did = (Long) drug[11];
-                Integer proteinCount = did == null ? 0 : getProteinCount((Long) drug[11], diseaseIdProteinCount);
-                DrugDTO.BasicDiseaseDTO disease = DrugDTO.BasicDiseaseDTO.builder().diseaseName((String) drug[9])
-                        .diseaseId((String) drug[10]).proteinCount(proteinCount).build();
-                diseases.add(disease);
-            }
-            builder.diseases(diseases);
-            // put in the map
-            drugNameBuilder.put((String) drug[0], builder);
         }
-
-        populateProteins(drugNameBuilder);
-
-        List<DrugDTO> drugDTOs = drugNameBuilder
-                .values()
-                .stream()
-                .map(DrugDTO.DrugDTOBuilder::build)
-                .map(dto -> {dto.setEvidences(drugIdEvidences.get(dto.getDrugId())); return dto;})
-                .collect(Collectors.toList());
-
         return drugDTOs;
     }
 
     private boolean updateClinicalTrialPhase(Integer oldTrialPhase, Integer newTrialPhase, String oldLink, String newLink){
        return  Objects.isNull(oldTrialPhase) || // case 1. set the phase if it is first time
                newTrialPhase > oldTrialPhase ||// case 2. update phase if it is greater than previous one
-               (oldTrialPhase.equals(newTrialPhase) && // case 3. update link for the same phase if oldllink is null and new link is not null
+               (oldTrialPhase.equals(newTrialPhase) && // case 3. update link for the same phase if oldlink is null and new link is not null
                        Objects.isNull(oldLink) && Objects.nonNull(newLink));
     }
 
@@ -200,16 +123,7 @@ public class DrugService {
         return builder.build();
     }
 
-    private void populateProteins(Map<String, DrugDTO.DrugDTOBuilder> drugNameBuilder) {
-        for(Map.Entry<String, DrugDTO.DrugDTOBuilder> entry : drugNameBuilder.entrySet()){
-            // get all proteins for a given drug
-            List<Protein> proteins = this.proteinDAO.findAllByDrugName(entry.getKey());
-            Set<String> accessions = proteins.stream().map(protein -> protein.getAccession()).collect(toSet());
-            Set<String> allAccessions = entry.getValue().build().getProteins() != null ? entry.getValue().build().getProteins() : new HashSet<>();
-            allAccessions.addAll(accessions);
-            entry.getValue().proteins(allAccessions);
-        }
-    }
+
 
     private void populateProteins(List<Drug> drugList) {
         if (!drugList.isEmpty()) {
@@ -231,38 +145,5 @@ public class DrugService {
                 drug.setDiseaseProteinCount(diseaseNames);
             }
         }
-    }
-
-    private String extractDiseaseName(Drug drug) {
-        if(Objects.nonNull(drug.getDisease())) {
-            return  drug.getDisease().getName();
-        } else {
-            return drug.getChemblDiseaseId();
-        }
-    }
-
-    private Set<Pair<String, Integer>> getDiseaseProteinCount(String drugName, Map<String, Set<String>> drugToDiseases,
-                                                              Map<String, Disease> nameToDisease) {
-        Set<Pair<String, Integer>> dpPair = new HashSet<>();
-        for(String diseaseName : drugToDiseases.get(drugName)){
-            if(nameToDisease.containsKey(diseaseName)){
-                Disease disease = nameToDisease.get(diseaseName);
-                dpPair.add(Pair.of(diseaseName, disease.getDiseaseProteins().size()));
-            } else {
-                dpPair.add(Pair.of(diseaseName, 0));
-            }
-        }
-        return dpPair;
-    }
-
-    private Integer getProteinCount(Long diseaseId, Map<Long, Integer> map){
-        if(!map.containsKey(diseaseId)) {
-            Optional<Disease> optDisease = this.diseaseService.findById(diseaseId);
-            if(!optDisease.isPresent()){
-                throw new AssetNotFoundException("Disease id " + diseaseId + " not found");
-            }
-            map.put(diseaseId, optDisease.get().getDiseaseProteins().size());
-        }
-        return map.get(diseaseId);
     }
 }

@@ -92,7 +92,7 @@ class DrugDAOGetByDiseaseIdTest {
 
         // then get the drugs
         List<Object[]> drugs = this.drugDAO.getDrugsByDiseaseId("disease1");
-        Assertions.assertEquals(6, drugs.size());
+        Assertions.assertEquals(5, drugs.size());
         List<String> drugNames = drugs.stream().map(arr -> (String) arr[0]).collect(Collectors.toList());
         Assertions.assertFalse(drugNames.contains("Name-4"));
         Assertions.assertTrue(drugNames.containsAll(Arrays.asList("Name-0", "Name-1", "Name-2", "Name-3")));
@@ -100,7 +100,6 @@ class DrugDAOGetByDiseaseIdTest {
         Assertions.assertTrue(diseaseNames.contains("disease1"));
         Assertions.assertTrue(diseaseNames.contains("disease3"));
         Assertions.assertTrue(diseaseNames.contains("disease4"));
-        Assertions.assertFalse(diseaseNames.contains("disease2"));
     }
 
     @Test

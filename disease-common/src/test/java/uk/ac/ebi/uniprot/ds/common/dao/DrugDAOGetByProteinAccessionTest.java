@@ -12,9 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import uk.ac.ebi.uniprot.ds.common.model.Disease;
@@ -115,27 +113,14 @@ class DrugDAOGetByProteinAccessionTest {
         this.drugDAO.save(drug9);
         // data set up complete
         // then verify
-        List<Drug> drugs = this.drugDAO.getDrugsByProtein(proteins.get(0).getAccession());
+        List<Object[]> drugs = this.drugDAO.getDrugsByProtein(proteins.get(0).getAccession());
         Assertions.assertNotNull(drugs);
-        Assertions.assertEquals(5, drugs.size());
-        // get the cross refs from drugs and verify they match with protein with accession
-        List<ProteinCrossRef> drugXrefs = drugs.stream().filter(drug -> Objects.nonNull(drug.getProteinCrossRef()))
-                .map(Drug::getProteinCrossRef).collect(Collectors.toList());
-        List<ProteinCrossRef> proteinXrefs = proteins.get(0).getProteinCrossRefs();
-        Assertions.assertTrue(drugXrefs.containsAll(proteinXrefs));
-        List<String> drugNamesForProtein = drugs.stream().filter(drug -> Objects.nonNull(drug.getProteinCrossRef()))
-                .map(drug -> drug.getName()).collect(Collectors.toList());
-        // all drugs should have name from one of the above list
-        drugs.stream().forEach(drug -> Assertions.assertTrue(drugNamesForProtein.contains(drug.getName())));
-        // we should have few disease from drugs also
-        List<Disease> drugDiseases = drugs.stream().filter(drug -> Objects.nonNull(drug.getDisease())).map(drug -> drug.getDisease())
-                .collect(Collectors.toList());
-        Assertions.assertFalse(drugDiseases.isEmpty());
+        Assertions.assertEquals(4, drugs.size());
     }
 
     @Test
     void testGetDrugsByNonExistentProtein() {
-        List<Drug> drugs = this.drugDAO.getDrugsByProtein("random accession");
+        List<Object[]> drugs = this.drugDAO.getDrugsByProtein("random accession");
         Assertions.assertTrue(drugs.isEmpty());
     }
 

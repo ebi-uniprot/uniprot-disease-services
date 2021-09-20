@@ -16,8 +16,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import uk.ac.ebi.uniprot.ds.importer.model.ChemblEntry;
 
+@Slf4j
 public class ChemblOpenTargetReader implements ItemReader<ChemblEntry> {
     private ObjectMapper objectMapper;
     private JsonParser jsonParser;

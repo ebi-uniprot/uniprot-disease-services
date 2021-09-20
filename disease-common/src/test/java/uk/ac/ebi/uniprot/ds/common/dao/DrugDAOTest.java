@@ -15,12 +15,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.ac.ebi.uniprot.ds.common.model.*;
 
-import java.util.*;
-import java.util.stream.IntStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import uk.ac.ebi.uniprot.ds.common.model.Disease;
+import uk.ac.ebi.uniprot.ds.common.model.DiseaseTest;
+import uk.ac.ebi.uniprot.ds.common.model.Drug;
+import uk.ac.ebi.uniprot.ds.common.model.DrugEvidence;
+import uk.ac.ebi.uniprot.ds.common.model.Protein;
+import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
+import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRefTest;
+import uk.ac.ebi.uniprot.ds.common.model.ProteinTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -145,10 +157,10 @@ public class DrugDAOTest {
         this.drug.setDisease(this.disease);
         this.drugDAO.save(this.drug);
 
-        List<Drug> drugs = this.drugDAO.getDrugsByProtein(this.protein.getAccession());
+        List<Object[]> drugs = this.drugDAO.getDrugsByProtein(this.protein.getAccession());
         assertFalse(drugs.isEmpty());
         assertEquals(1, drugs.size());
-        assertEquals(this.protein.getAccession(), drugs.get(0).getProteinCrossRef().getProtein().getAccession());
+        assertEquals(this.protein.getAccession(), (String) drugs.get(0)[8]);
     }
 
     private void verifyDrug(Drug actual, Drug expected) {
