@@ -30,6 +30,12 @@
             <groupId>uk.ac.ebi.uniprot</groupId>
             <artifactId>data-service</artifactId>
             <version>${uniprot.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>voldemort</groupId>
+                    <artifactId>voldemort</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>uk.ac.ebi.uniprot</groupId>
@@ -147,7 +153,7 @@
         <ojdbc.version>11.2.0.4</ojdbc.version>
         <ojdbc.artifactid>ojdbc6</ojdbc.artifactid>
         <http-uniprot-private-url>http://wwwdev.ebi.ac.uk/uniprot/artifactory</http-uniprot-private-url>
-        <uniprot.version>2021.3</uniprot.version>
+        <uniprot.version>2022.5</uniprot.version>
     </properties>
     <repositories>
     <repository>
