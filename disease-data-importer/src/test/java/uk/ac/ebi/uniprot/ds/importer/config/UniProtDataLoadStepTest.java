@@ -6,58 +6,30 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.*;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseType;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.InteractionType;
 import uk.ac.ebi.kraken.interfaces.uniprot.evidences.EvidenceType;
 import uk.ac.ebi.kraken.interfaces.uniprot.features.FeatureStatus;
 import uk.ac.ebi.uniprot.ds.common.common.PublicationType;
 import uk.ac.ebi.uniprot.ds.common.common.SourceType;
-import uk.ac.ebi.uniprot.ds.common.dao.DiseaseDAO;
-import uk.ac.ebi.uniprot.ds.common.dao.DiseaseProteinDAO;
-import uk.ac.ebi.uniprot.ds.common.dao.EvidenceDAO;
-import uk.ac.ebi.uniprot.ds.common.dao.FeatureLocationDAO;
-import uk.ac.ebi.uniprot.ds.common.dao.InteractionDAO;
-import uk.ac.ebi.uniprot.ds.common.dao.ProteinCrossRefDAO;
-import uk.ac.ebi.uniprot.ds.common.dao.ProteinDAO;
-import uk.ac.ebi.uniprot.ds.common.dao.PublicationDAO;
-import uk.ac.ebi.uniprot.ds.common.dao.VariantDAO;
-import uk.ac.ebi.uniprot.ds.common.model.Disease;
-import uk.ac.ebi.uniprot.ds.common.model.DiseaseProtein;
-import uk.ac.ebi.uniprot.ds.common.model.Evidence;
-import uk.ac.ebi.uniprot.ds.common.model.FeatureLocation;
-import uk.ac.ebi.uniprot.ds.common.model.Interaction;
-import uk.ac.ebi.uniprot.ds.common.model.Protein;
-import uk.ac.ebi.uniprot.ds.common.model.ProteinCrossRef;
-import uk.ac.ebi.uniprot.ds.common.model.Publication;
-import uk.ac.ebi.uniprot.ds.common.model.Variant;
+import uk.ac.ebi.uniprot.ds.common.dao.*;
+import uk.ac.ebi.uniprot.ds.common.model.*;
 import uk.ac.ebi.uniprot.ds.importer.DataImporterSpringBootApplication;
 import uk.ac.ebi.uniprot.ds.importer.util.Constants;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -157,26 +129,25 @@ class UniProtDataLoadStepTest extends AbstractBaseStepTest {
     private void verifyProteinCrossRef() {
         List<ProteinCrossRef> xrefs = this.proteinCrossRefDAO.findAll();
         Assertions.assertFalse(xrefs.isEmpty());
-        Assertions.assertEquals(20, xrefs.size());
+        Assertions.assertEquals(19, xrefs.size());
         Set<String> allowedDBTypes = new HashSet<>(Arrays.asList(DatabaseType.REACTOME.getName(), DatabaseType.CHEMBL.getName(),
                 DatabaseType.OPENTARGETS.getName(), DatabaseType.DISGENET.getName()));
         xrefs.stream().map(ProteinCrossRef::getDbType).forEach(dbType -> assertTrue(allowedDBTypes.contains(dbType)));
         xrefs.stream().map(ProteinCrossRef::getProtein).forEach(protein -> assertNotNull(protein));
         Matcher<Iterable<? extends String>> expectedPrimaryIds = containsInAnyOrder("2261", "CHEMBL2742", "ENSG00000068078",
-                "R-HSA-109704", "R-HSA-1257604", "R-HSA-1839130", "R-HSA-190371", "R-HSA-190372", "R-HSA-2033514",
+                "R-HSA-109704", "R-HSA-1257604", "R-HSA-1839130", "R-HSA-190371", "R-HSA-190372", "R-HSA-5655332",
                 "R-HSA-2033515", "R-HSA-2219530", "R-HSA-5654227", "R-HSA-5654704", "R-HSA-5654706", "R-HSA-5654710",
-                "R-HSA-5654732", "R-HSA-5673001", "R-HSA-6811558", "R-HSA-8853334", "R-HSA-8853338");
+                "R-HSA-5654732", "R-HSA-5673001", "R-HSA-6811558", "R-HSA-8853334");
         List<String> actualPrimaryIds = xrefs.stream().map(ProteinCrossRef::getPrimaryId).collect(Collectors.toList());
         assertThat(actualPrimaryIds, expectedPrimaryIds);
         Matcher<Iterable<? extends String>> expectedDescription = containsInAnyOrder("-", "-", "-", "PI3K Cascade",
                 "PIP3 activates AKT signaling", "Signaling by activated point mutants of FGFR3",
                 "FGFR3b ligand binding and activation", "FGFR3c ligand binding and activation",
-                "FGFR3 mutant receptor activation", "t(4;14) translocations of FGFR3",
+                "t(4;14) translocations of FGFR3",
                 "Constitutive Signaling by Aberrant PI3K in Cancer", "Phospholipase C-mediated cascade, FGFR3",
-                "SHC-mediated cascade:FGFR3", "FRS-mediated FGFR3 signaling", "PI-3K cascade:FGFR3",
+                "SHC-mediated cascade:FGFR3", "FRS-mediated FGFR3 signaling", "PI-3K cascade:FGFR3", "Signaling by FGFR3 in disease",
                 "Negative regulation of FGFR3 signaling", "RAF/MAP kinase cascade",
-                "PI5P, PP2A and IER3 Regulate PI3K/AKT Signaling", "Signaling by FGFR3 fusions in cancer",
-                "Signaling by FGFR3 point mutants in cancer");
+                "PI5P, PP2A and IER3 Regulate PI3K/AKT Signaling", "Signaling by FGFR3 fusions in cancer");
         List<String> actualDesc = xrefs.stream().map(ProteinCrossRef::getDescription).collect(Collectors.toList());
         assertThat(actualDesc, expectedDescription);
         List<String> isoformIds = xrefs.stream().map(ProteinCrossRef::getIsoformId)
@@ -272,7 +243,7 @@ class UniProtDataLoadStepTest extends AbstractBaseStepTest {
 
     private void verifyInteractions() {
         List<Interaction> interactions = this.interactionDAO.findAll();
-        Assertions.assertEquals(309, interactions.size());
+        Assertions.assertEquals(310, interactions.size());
         interactions.stream().map(Interaction::getType).forEach(it -> assertEquals(InteractionType.BINARY.name(), it));
 //        Matcher<Iterable<? extends String>> expectedAccessions = containsInAnyOrder("P22607", "P08238", "P05230");
 //        List<String> actualAccessions = interactions.stream().map(Interaction::getAccession).collect(Collectors.toList());
@@ -383,7 +354,7 @@ class UniProtDataLoadStepTest extends AbstractBaseStepTest {
                 "The disease is caused by variants affecting the gene represented in this entry.");
         List<String> actualNotes = diseases.stream().map(Disease::getNote).collect(Collectors.toList());
         assertThat(actualNotes, expectedNotes);
-        Matcher<Iterable<? extends String>> expectedDescriptions = containsInAnyOrder("A frequent form of short-limb dwarfism. It is characterized by a long, narrow trunk, short extremities, particularly in the proximal (rhizomelic) segments, a large head with frontal bossing, hypoplasia of the midface and a trident configuration of the hands. ACH is an autosomal dominant disease.", "Classic Crouzon disease which is caused by mutations in the FGFR2 gene is characterized by craniosynostosis (premature fusion of the skull sutures), and facial hypoplasia. Crouzon syndrome with acanthosis nigricans (a skin disorder characterized by pigmentation anomalies), CAN, is considered to be an independent disorder from classic Crouzon syndrome. CAN is characterized by additional more severe physical manifestation, such as Chiari malformation, hydrocephalus, and atresia or stenosis of the choanas, and is caused by a specific mutation (Ala-391 to Glu) in the transmembrane domain of FGFR3. It is proposed to have an autosomal dominant mode of inheritance.", "A neonatal lethal skeletal dysplasia. Affected individuals manifest severe shortening of the limbs with macrocephaly, narrow thorax, short ribs, and curved femurs.", "A neonatal lethal skeletal dysplasia causing severe shortening of the limbs, narrow thorax and short ribs. Patients with thanatophoric dysplasia type 2 have straight femurs and cloverleaf skull.", "Autosomal dominant disease and is characterized by disproportionate short stature. It resembles achondroplasia, but with a less severe phenotype.", "A malignancy originating in tissues of the urinary bladder. It often presents with multiple tumors appearing at different times and at different sites in the bladder. Most bladder cancers are transitional cell carcinomas that begin in cells that normally make up the inner lining of the bladder. Other types of bladder cancer include squamous cell carcinoma (cancer that begins in thin, flat cells) and adenocarcinoma (cancer that begins in cells that make and release mucus and other fluids). Bladder cancer is a complex disorder with both genetic and environmental influences.", "A malignant neoplasm of the cervix, typically originating from a dysplastic or premalignant lesion previously present at the active squamocolumnar junction. The transformation from mild dysplastic to invasive carcinoma generally occurs slowly within several years, although the rate of this process varies widely. Carcinoma in situ is particularly known to precede invasive cervical cancer in most cases. Cervical cancer is strongly associated with infection by oncogenic types of human papillomavirus.", "An autosomal dominant syndrome characterized by permanent and irreducible flexion of one or more fingers of the hand and/or feet, tall stature, scoliosis and/or a pectus excavatum, and hearing loss. Affected individuals have developmental delay and/or mental retardation, and several of these have microcephaly. Radiographic findings included tall vertebral bodies with irregular borders and broad femoral metaphyses with long tubular shafts. On audiological exam, each tested member have bilateral sensorineural hearing loss and absent otoacoustic emissions. The hearing loss was congenital or developed in early infancy, progressed variably in early childhood, and range from mild to severe. Computed tomography and magnetic resonance imaging reveal that the brain, middle ear, and inner ear are structurally normal.", "A malignant tumor of plasma cells usually arising in the bone marrow and characterized by diffuse involvement of the skeletal system, hyperglobulinemia, Bence-Jones proteinuria and anemia. Complications of multiple myeloma are bone pain, hypercalcemia, renal failure and spinal cord compression. The aberrant antibodies that are produced lead to impaired humoral immunity and patients have a high prevalence of infection. Amyloidosis may develop in some patients. Multiple myeloma is part of a spectrum of diseases ranging from monoclonal gammopathy of unknown significance (MGUS) to plasma cell leukemia.", "An autosomal dominant ectodermal dysplasia, a heterogeneous group of disorders due to abnormal development of two or more ectodermal structures. Lacrimo-auriculo-dento-digital syndrome is characterized by aplastic/hypoplastic lacrimal and salivary glands and ducts, cup-shaped ears, hearing loss, hypodontia and enamel hypoplasia, and distal limb segments anomalies. In addition to these cardinal features, facial dysmorphism, malformations of the kidney and respiratory system and abnormal genitalia have been reported. Craniosynostosis and severe syndactyly are not observed.", "Epidermal nevi of the common, non-organoid and non-epidermolytic type are benign skin lesions and may vary in their extent from a single (usually linear) lesion to widespread and systematized involvement. They may be present at birth or develop early during childhood.", "A condition characterized by premature closure of coronal suture of skull during development (coronal craniosynostosis), which affects the shape of the head and face. It may be uni- or bilateral. When bilateral, it is characterized by a skull with a small antero-posterior diameter (brachycephaly), often with a decrease in the depth of the orbits and hypoplasia of the maxillae. Unilateral closure of the coronal sutures leads to flattening of the orbit on the involved side (plagiocephaly). The intellect is normal. In addition to coronal craniosynostosis some affected individuals show skeletal abnormalities of hands and feet, sensorineural hearing loss, mental retardation and respiratory insufficiency.", "A common benign skin tumor. Seborrheic keratoses usually begin with the appearance of one or more sharply defined, light brown, flat macules. The lesions may be sparse or numerous. As they initially grow, they develop a velvety to finely verrucous surface, followed by an uneven warty surface with multiple plugged follicles and a dull or lackluster appearance.", "A common malignancy in males representing 95% of all testicular neoplasms. TGCTs have various pathologic subtypes including: unclassified intratubular germ cell neoplasia, seminoma (including cases with syncytiotrophoblastic cells), spermatocytic seminoma, embryonal carcinoma, yolk sac tumor, choriocarcinoma, and teratoma.", "A severe form of achondroplasia associated with developmental delay and acanthosis nigricans. Patients manifest short-limb dwarfism, with a long, narrow trunk, short extremities, particularly in the proximal (rhizomelic) segments, a large head with frontal bossing, hypoplasia of the midface and a trident configuration of the hands. Acanthosis nigricans is a skin condition characterized by brown-pigmented, velvety verrucosities in body folds and creases.");
+        Matcher<Iterable<? extends String>> expectedDescriptions = containsInAnyOrder("A frequent form of short-limb dwarfism. It is characterized by a long, narrow trunk, short extremities, particularly in the proximal (rhizomelic) segments, a large head with frontal bossing, hypoplasia of the midface and a trident configuration of the hands. ACH is an autosomal dominant disease.", "Classic Crouzon disease which is caused by mutations in the FGFR2 gene is characterized by craniosynostosis (premature fusion of the skull sutures), and facial hypoplasia. Crouzon syndrome with acanthosis nigricans (a skin disorder characterized by pigmentation anomalies), CAN, is considered to be an independent disorder from classic Crouzon syndrome. CAN is characterized by additional more severe physical manifestation, such as Chiari malformation, hydrocephalus, and atresia or stenosis of the choanas, and is caused by a specific mutation (Ala-391 to Glu) in the transmembrane domain of FGFR3. It is proposed to have an autosomal dominant mode of inheritance.", "A neonatal lethal skeletal dysplasia. Affected individuals manifest severe shortening of the limbs with macrocephaly, narrow thorax, short ribs, and curved femurs.", "A neonatal lethal skeletal dysplasia causing severe shortening of the limbs, narrow thorax and short ribs. Patients with thanatophoric dysplasia type 2 have straight femurs and cloverleaf skull.", "Autosomal dominant disease and is characterized by disproportionate short stature. It resembles achondroplasia, but with a less severe phenotype.", "A malignancy originating in tissues of the urinary bladder. It often presents with multiple tumors appearing at different times and at different sites in the bladder. Most bladder cancers are transitional cell carcinomas that begin in cells that normally make up the inner lining of the bladder. Other types of bladder cancer include squamous cell carcinoma (cancer that begins in thin, flat cells) and adenocarcinoma (cancer that begins in cells that make and release mucus and other fluids). Bladder cancer is a complex disorder with both genetic and environmental influences.", "A malignant neoplasm of the cervix, typically originating from a dysplastic or premalignant lesion previously present at the active squamocolumnar junction. The transformation from mild dysplastic to invasive carcinoma generally occurs slowly within several years, although the rate of this process varies widely. Carcinoma in situ is particularly known to precede invasive cervical cancer in most cases. Cervical cancer is strongly associated with infection by oncogenic types of human papillomavirus.", "An autosomal dominant syndrome characterized by permanent and irreducible flexion of one or more fingers of the hand and/or feet, tall stature, scoliosis and/or a pectus excavatum, and hearing loss. Affected individuals have developmental delay and/or intellectual disability, and several of these have microcephaly. Radiographic findings included tall vertebral bodies with irregular borders and broad femoral metaphyses with long tubular shafts. On audiological exam, each tested member have bilateral sensorineural hearing loss and absent otoacoustic emissions. The hearing loss was congenital or developed in early infancy, progressed variably in early childhood, and range from mild to severe. Computed tomography and magnetic resonance imaging reveal that the brain, middle ear, and inner ear are structurally normal.", "A malignant tumor of plasma cells usually arising in the bone marrow and characterized by diffuse involvement of the skeletal system, hyperglobulinemia, Bence-Jones proteinuria and anemia. Complications of multiple myeloma are bone pain, hypercalcemia, renal failure and spinal cord compression. The aberrant antibodies that are produced lead to impaired humoral immunity and patients have a high prevalence of infection. Amyloidosis may develop in some patients. Multiple myeloma is part of a spectrum of diseases ranging from monoclonal gammopathy of unknown significance (MGUS) to plasma cell leukemia.", "An autosomal dominant ectodermal dysplasia, a heterogeneous group of disorders due to abnormal development of two or more ectodermal structures. Lacrimo-auriculo-dento-digital syndrome is characterized by aplastic/hypoplastic lacrimal and salivary glands and ducts, cup-shaped ears, hearing loss, hypodontia and enamel hypoplasia, and distal limb segments anomalies. In addition to these cardinal features, facial dysmorphism, malformations of the kidney and respiratory system and abnormal genitalia have been reported. Craniosynostosis and severe syndactyly are not observed.", "Epidermal nevi of the common, non-organoid and non-epidermolytic type are benign skin lesions and may vary in their extent from a single (usually linear) lesion to widespread and systematized involvement. They may be present at birth or develop early during childhood.", "A condition characterized by premature closure of coronal suture of skull during development (coronal craniosynostosis), which affects the shape of the head and face. It may be uni- or bilateral. When bilateral, it is characterized by a skull with a small antero-posterior diameter (brachycephaly), often with a decrease in the depth of the orbits and hypoplasia of the maxillae. Unilateral closure of the coronal sutures leads to flattening of the orbit on the involved side (plagiocephaly). The intellect is normal. In addition to coronal craniosynostosis some affected individuals show skeletal abnormalities of hands and feet, sensorineural hearing loss, intellectual disability and respiratory insufficiency.", "A common benign skin tumor. Seborrheic keratoses usually begin with the appearance of one or more sharply defined, light brown, flat macules. The lesions may be sparse or numerous. As they initially grow, they develop a velvety to finely verrucous surface, followed by an uneven warty surface with multiple plugged follicles and a dull or lackluster appearance.", "A common malignancy in males representing 95% of all testicular neoplasms. TGCTs have various pathologic subtypes including: unclassified intratubular germ cell neoplasia, seminoma (including cases with syncytiotrophoblastic cells), spermatocytic seminoma, embryonal carcinoma, yolk sac tumor, choriocarcinoma, and teratoma.", "A severe form of achondroplasia associated with developmental delay and acanthosis nigricans. Patients manifest short-limb dwarfism, with a long, narrow trunk, short extremities, particularly in the proximal (rhizomelic) segments, a large head with frontal bossing, hypoplasia of the midface and a trident configuration of the hands. Acanthosis nigricans is a skin condition characterized by brown-pigmented, velvety verrucosities in body folds and creases.");
         List<String> actualDescriptions = diseases.stream().map(Disease::getDesc).collect(Collectors.toList());
         assertThat(actualDescriptions, expectedDescriptions);
         verifyCommonFields(diseases);
