@@ -261,12 +261,9 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblEntry, List<
 
     private void loadEfo2OmimsMap(String omim2EfoFile) {
         if (this.efo2OmimsMap.isEmpty()) {
-            Scanner scanner = null;
-            BufferedReader objReader = null;
-            try {
-                String line;
-                objReader = new BufferedReader(new FileReader(omim2EfoFile));
-                while ((line = objReader.readLine()) != null) {
+            String line;
+            try (BufferedReader br = new BufferedReader(new FileReader(omim2EfoFile))) {
+                while ((line = br.readLine()) != null) {
                     String[] row = line.split("\t");
                     assert row.length == 2;
                     String efoId = extractDiseaseId(row[1]);
@@ -279,15 +276,11 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblEntry, List<
                     }
                 }
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
                 throw new IllegalArgumentException("Cannot read file " + omim2EfoFile);
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
                 throw new IllegalArgumentException("Cannot read file " + omim2EfoFile);
-            } finally {
-                if (scanner != null) {
-                    scanner.close();
-                }
             }
         }
     }
