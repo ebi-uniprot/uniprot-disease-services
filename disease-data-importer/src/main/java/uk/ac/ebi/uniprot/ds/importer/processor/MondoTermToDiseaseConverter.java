@@ -40,6 +40,7 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
     // either because the omim or synonym belongs to more than one disease
     private Set<String> ambiguousOboTerms;
     private StepExecution stepExecution;
+    private final static String DISEASE_CAUSING_CYCLE = "alopecia areata 1";
 
     public MondoTermToDiseaseConverter(DiseaseDAO diseaseDAO, SynonymDAO synonymDAO, CrossRefDAO crossRefDAO){
         this.diseaseDAO = diseaseDAO;
@@ -111,7 +112,7 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
         this.synonymToDiseasesMap = new HashMap<>();
         this.omimToDiseasesMap = new HashMap<>();
         this.ambiguousOboTerms = new HashSet<>();
-        this.ambiguousOboTerms.add("alopecia areata 1");
+        this.ambiguousOboTerms.add(DISEASE_CAUSING_CYCLE);
     }
 
     private void loadCache() {
