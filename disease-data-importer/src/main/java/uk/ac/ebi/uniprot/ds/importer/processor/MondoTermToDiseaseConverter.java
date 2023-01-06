@@ -111,6 +111,7 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
         this.synonymToDiseasesMap = new HashMap<>();
         this.omimToDiseasesMap = new HashMap<>();
         this.ambiguousOboTerms = new HashSet<>();
+        this.ambiguousOboTerms.add("alopecia areata 1");
     }
 
     private void loadCache() {
