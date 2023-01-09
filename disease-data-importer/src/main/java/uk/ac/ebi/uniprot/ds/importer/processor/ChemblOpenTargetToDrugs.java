@@ -277,10 +277,10 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblEntry, List<
                 }
             } catch (FileNotFoundException e) {
                 log.error(e.getMessage());
-                throw new IllegalArgumentException("Cannot read file " + omim2EfoFile);
+                throw new IllegalArgumentException("File not found: " + omim2EfoFile);
             } catch (IOException e) {
                 log.error(e.getMessage());
-                throw new IllegalArgumentException("Cannot read file " + omim2EfoFile);
+                throw new IllegalArgumentException("Failed or interrupted I/O operation for file: " + omim2EfoFile);
             }
         }
     }
