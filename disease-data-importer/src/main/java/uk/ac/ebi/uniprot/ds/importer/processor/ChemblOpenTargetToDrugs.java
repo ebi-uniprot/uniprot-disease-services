@@ -6,7 +6,7 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -261,15 +261,10 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblEntry, List<
 
     private void loadEfo2OmimsMap(String omim2EfoFile) {
         if (this.efo2OmimsMap.isEmpty()) {
-            Scanner scanner = null;
-            try {
-                scanner = new Scanner(this.getClass().getClassLoader().getResourceAsStream(omim2EfoFile));
-                if (Objects.isNull(scanner)) {
-                    throw new IllegalArgumentException("Cannot read file " + omim2EfoFile);
-                }
-
-                while (scanner.hasNextLine()) {
-                    String[] row = scanner.nextLine().split("\t");
+            String line;
+            try (BufferedReader br = new BufferedReader(new FileReader(omim2EfoFile))) {
+                while ((line = br.readLine()) != null) {
+                    String[] row = line.split("\t");
                     assert row.length == 2;
                     String efoId = extractDiseaseId(row[1]);
                     if (this.efo2OmimsMap.containsKey(efoId)) {
@@ -280,10 +275,12 @@ public class ChemblOpenTargetToDrugs implements ItemProcessor<ChemblEntry, List<
                         this.efo2OmimsMap.put(efoId, omims);
                     }
                 }
-            } finally {
-                if (scanner != null) {
-                    scanner.close();
-                }
+            } catch (FileNotFoundException e) {
+                log.error(e.getMessage());
+                throw new IllegalArgumentException("File not found: " + omim2EfoFile);
+            } catch (IOException e) {
+                log.error(e.getMessage());
+                throw new IllegalArgumentException("Failed or interrupted I/O operation for file: " + omim2EfoFile);
             }
         }
     }

@@ -34,7 +34,7 @@ import uk.ac.ebi.uniprot.ds.importer.writer.DiseaseWriterTest;
 @ExtendWith(SpringExtension.class)
 public class ChemblOpenTargetToDrugsTest {
 
-    private static final String OMIM_TO_EFO = "uniprot/omim2efo.txt";
+    private static final String OMIM_TO_EFO = "src/main/resources/uniprot/omim2efo.txt";
     private ChemblOpenTargetToDrugs processor;
     private RestTemplate restTemplate;
     @MockBean
