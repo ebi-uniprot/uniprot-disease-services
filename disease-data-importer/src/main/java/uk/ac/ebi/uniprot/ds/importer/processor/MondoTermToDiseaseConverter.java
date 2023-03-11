@@ -40,7 +40,6 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
     // either because the omim or synonym belongs to more than one disease
     private Set<String> ambiguousOboTerms;
     private StepExecution stepExecution;
-    private final static String DISEASE_CAUSING_CYCLE = "alopecia areata 1";
 
     public MondoTermToDiseaseConverter(DiseaseDAO diseaseDAO, SynonymDAO synonymDAO, CrossRefDAO crossRefDAO){
         this.diseaseDAO = diseaseDAO;
@@ -78,6 +77,16 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
             cachedDisease = this.diseaseDAO.findDiseaseByNameIgnoreCase("Alzheimer disease 9").get();
         } // Hard code ends
 
+        if(oboTerm.getId().equalsIgnoreCase("MONDO:0100295")){
+            System.out.println("Alzheimer disease, susceptibility to, mitochondrial");
+        } else if(oboTerm.getId().equalsIgnoreCase("MONDO:0020573")){
+            System.out.println("inherited disease susceptibility");
+        } else if(oboTerm.getId().equalsIgnoreCase("MONDO:0042489")){
+            System.out.println("disease susceptibility");
+        } else if(oboTerm.getId().equalsIgnoreCase("MONDO:0008856")){
+            System.out.println("immunodeficiency 27a");
+        }
+
         // if cache doesn't have disease name, try to find by omim id or synonym
         String mondoOmim = getCrossRefByType(oboTerm, Constants.OMIM_COLON_STR);
         if (Objects.isNull(cachedDisease)) {
@@ -112,7 +121,8 @@ public class MondoTermToDiseaseConverter implements ItemProcessor<OBOTerm, Disea
         this.synonymToDiseasesMap = new HashMap<>();
         this.omimToDiseasesMap = new HashMap<>();
         this.ambiguousOboTerms = new HashSet<>();
-        this.ambiguousOboTerms.add(DISEASE_CAUSING_CYCLE);
+        this.ambiguousOboTerms.add("alopecia areata 1");
+        this.ambiguousOboTerms.add("hirschsprung disease, susceptibility to, 5");
     }
 
     private void loadCache() {

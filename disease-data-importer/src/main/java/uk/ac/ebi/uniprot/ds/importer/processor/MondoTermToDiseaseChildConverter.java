@@ -50,6 +50,16 @@ public class MondoTermToDiseaseChildConverter implements ItemProcessor<OBOTerm, 
         // e.g. with cycle
         // 1 --> 2 --> 3 --> 4 --> 5 --> 3, we are ignoring this whole tree.
         // ideally we should skip from 3 --> 4 --> 5 --> 3 TODO
+        if(oboTerm.getId().equalsIgnoreCase("MONDO:0100295")){
+            System.out.println("Alzheimer disease, susceptibility to, mitochondrial");
+        } else if(oboTerm.getId().equalsIgnoreCase("MONDO:0020573")){
+            System.out.println("inherited disease susceptibility");
+        } else if(oboTerm.getId().equalsIgnoreCase("MONDO:0042489")){
+            System.out.println("disease susceptibility");
+        } else if(oboTerm.getId().equalsIgnoreCase("MONDO:0008856")){
+            System.out.println("immunodeficiency 27a");
+        }
+
         if (Objects.nonNull(disease)) {
             if (!isCycleDetected(diseaseNode, path)) {
                 // get children nodes of term aka parent node
