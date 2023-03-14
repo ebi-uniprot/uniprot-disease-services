@@ -2,7 +2,7 @@ ID   FGFR3_HUMAN             Reviewed;         806 AA.
 AC   P22607; D3DVP9; D3DVQ0; Q14308; Q16294; Q16608; Q59FL9;
 DT   01-AUG-1991, integrated into UniProtKB/Swiss-Prot.
 DT   01-AUG-1991, sequence version 1.
-DT   14-DEC-2022, entry version 256.
+DT   22-FEB-2023, entry version 257.
 DE   RecName: Full=Fibroblast growth factor receptor 3;
 DE            Short=FGFR-3;
 DE            EC=2.7.10.1;
@@ -414,7 +414,6 @@ RL   Endocr. J. 45:S171-S174(1998).
 RN   [46]
 RP   VARIANT HYPOCHONDROPLASIA VAL-538.
 RX   PubMed=10215410;
-RX   DOI=10.1002/(sici)1098-1004(1998)11:4<333::aid-humu18>3.0.co;2-g;
 RA   Grigelioniene G., Hagenaes L., Ekloef O., Neumeyer L., Haereid P.E.,
 RA   Anvret M.;
 RT   "A novel missense mutation Ile538Val in the fibroblast growth factor
@@ -1166,7 +1165,7 @@ CC   -!- SEQUENCE CAUTION:
 CC       Sequence=BAD92678.1; Type=Erroneous initiation; Note=Extended N-terminus.; Evidence={ECO:0000305};
 CC   -!- WEB RESOURCE: Name=Atlas of Genetics and Cytogenetics in Oncology and
 CC       Haematology;
-CC       URL="http://atlasgeneticsoncology.org/Genes/FGFRID99.html";
+CC       URL="https://atlasgeneticsoncology.org/gene/99/FGFR";
 CC   -!- WEB RESOURCE: Name=NIEHS-SNPs;
 CC       URL="http://egp.gs.washington.edu/data/fgfr3/";
 CC   ---------------------------------------------------------------------------
@@ -1229,6 +1228,7 @@ DR   DrugBank; DB15685; Selpercatinib.
 DR   DrugBank; DB05014; XL999.
 DR   DrugCentral; P22607; -.
 DR   GuidetoPHARMACOLOGY; 1810; -.
+DR   GlyCosmos; P22607; 6 sites, No reported glycans.
 DR   GlyGen; P22607; 7 sites, 1 O-linked glycan (1 site).
 DR   iPTMnet; P22607; -.
 DR   PhosphoSitePlus; P22607; -.
@@ -1244,7 +1244,7 @@ DR   ProteomicsDB; 54006; -. [P22607-2]
 DR   ProteomicsDB; 54007; -. [P22607-3]
 DR   ProteomicsDB; 54008; -. [P22607-4]
 DR   ABCD; P22607; 3 sequenced antibodies.
-DR   Antibodypedia; 3787; 763 antibodies from 44 providers.
+DR   Antibodypedia; 3787; 767 antibodies from 45 providers.
 DR   DNASU; 2261; -.
 DR   Ensembl; ENST00000340107.8; ENSP00000339824.4; ENSG00000068078.20. [P22607-2]
 DR   Ensembl; ENST00000352904.6; ENSP00000231803.1; ENSG00000068078.20. [P22607-3]
@@ -1253,6 +1253,7 @@ DR   GeneID; 2261; -.
 DR   KEGG; hsa:2261; -.
 DR   MANE-Select; ENST00000440486.8; ENSP00000414914.2; NM_000142.5; NP_000133.1.
 DR   UCSC; uc003gdr.3; human. [P22607-1]
+DR   AGR; HGNC:3690; -.
 DR   CTD; 2261; -.
 DR   DisGeNET; 2261; -.
 DR   GeneCards; FGFR3; -.
@@ -1298,7 +1299,7 @@ DR   GeneTree; ENSGT00940000159880; -.
 DR   HOGENOM; CLU_000288_74_3_1; -.
 DR   InParanoid; P22607; -.
 DR   OMA; PTIYWLK; -.
-DR   OrthoDB; 220433at2759; -.
+DR   OrthoDB; 1614410at2759; -.
 DR   PhylomeDB; P22607; -.
 DR   TreeFam; TF316307; -.
 DR   BRENDA; 2.7.10.1; 2681.
@@ -1321,7 +1322,7 @@ DR   Reactome; R-HSA-6811558; PI5P, PP2A and IER3 Regulate PI3K/AKT Signaling.
 DR   Reactome; R-HSA-8853334; Signaling by FGFR3 fusions in cancer.
 DR   SignaLink; P22607; -.
 DR   SIGNOR; P22607; -.
-DR   BioGRID-ORCS; 2261; 15 hits in 1115 CRISPR screens.
+DR   BioGRID-ORCS; 2261; 15 hits in 1201 CRISPR screens.
 DR   ChiTaRS; FGFR3; human.
 DR   EvolutionaryTrace; P22607; -.
 DR   GeneWiki; Fibroblast_growth_factor_receptor_3; -.
@@ -1370,7 +1371,11 @@ DR   GO; GO:0042531; P:positive regulation of tyrosine phosphorylation of STAT p
 DR   GO; GO:0046777; P:protein autophosphorylation; IDA:UniProtKB.
 DR   GO; GO:0001501; P:skeletal system development; TAS:ProtInc.
 DR   GO; GO:0007169; P:transmembrane receptor protein tyrosine kinase signaling pathway; IBA:GO_Central.
-DR   Gene3D; 2.60.40.10; -; 3.
+DR   CDD; cd05857; Ig2_FGFR; 1.
+DR   CDD; cd05858; Ig3_FGFR-2; 1.
+DR   Gene3D; 6.10.250.1740; -; 1.
+DR   Gene3D; 2.60.40.10; Immunoglobulins; 3.
+DR   Gene3D; 1.10.510.10; Transferase(Phosphotransferase) domain 1; 1.
 DR   InterPro; IPR016248; FGF_rcpt_fam.
 DR   InterPro; IPR007110; Ig-like_dom.
 DR   InterPro; IPR036179; Ig-like_dom_sf.
@@ -1384,7 +1389,10 @@ DR   InterPro; IPR017441; Protein_kinase_ATP_BS.
 DR   InterPro; IPR001245; Ser-Thr/Tyr_kinase_cat_dom.
 DR   InterPro; IPR008266; Tyr_kinase_AS.
 DR   InterPro; IPR020635; Tyr_kinase_cat_dom.
+DR   PANTHER; PTHR24416:SF505; FIBROBLAST GROWTH FACTOR RECEPTOR 3; 1.
+DR   PANTHER; PTHR24416; TYROSINE-PROTEIN KINASE RECEPTOR; 1.
 DR   Pfam; PF07679; I-set; 1.
+DR   Pfam; PF13927; Ig_3; 1.
 DR   Pfam; PF07714; PK_Tyr_Ser-Thr; 1.
 DR   PIRSF; PIRSF000628; FGFR; 1.
 DR   PRINTS; PR00109; TYRKINASE.
@@ -1397,7 +1405,6 @@ DR   PROSITE; PS50835; IG_LIKE; 3.
 DR   PROSITE; PS00107; PROTEIN_KINASE_ATP; 1.
 DR   PROSITE; PS50011; PROTEIN_KINASE_DOM; 1.
 DR   PROSITE; PS00109; PROTEIN_KINASE_TYR; 1.
-DR   AGR; HGNC:3690; -.
 PE   1: Evidence at protein level;
 KW   3D-structure; Alternative splicing; Apoptosis; ATP-binding; Cell membrane;
 KW   Chromosomal rearrangement; Craniosynostosis; Cytoplasmic vesicle; Deafness;
