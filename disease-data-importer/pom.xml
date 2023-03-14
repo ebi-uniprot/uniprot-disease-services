@@ -152,8 +152,8 @@
         <spring.profiles.active>dev</spring.profiles.active>
         <ojdbc.version>11.2.0.4</ojdbc.version>
         <ojdbc.artifactid>ojdbc6</ojdbc.artifactid>
-        <http-uniprot-private-url>http://wwwdev.ebi.ac.uk/uniprot/artifactory</http-uniprot-private-url>
-        <uniprot.version>2022.5</uniprot.version>
+        <http-uniprot-private-url>https://wwwdev.ebi.ac.uk/uniprot/artifactory</http-uniprot-private-url>
+        <uniprot.version>2023.1</uniprot.version>
     </properties>
     <repositories>
     <repository>
