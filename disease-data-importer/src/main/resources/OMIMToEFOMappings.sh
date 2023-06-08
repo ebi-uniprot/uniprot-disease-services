@@ -5,7 +5,7 @@
 #e.g. ./OMIMToEFOMappings.sh 50 omim2efo
 ## ---------------------------- UTILITY FUNCTIONS ----------------------------
 function showHelp {
-    cat<<EOF
+  cat <<EOF
 Usage: $0 pageSize [omim2efo|longEfo2Omim]
 
 Fetches omim/efo mappings from the OLS REST API (http://www.ebi.ac.uk/ols/docs/api).
@@ -21,43 +21,48 @@ Argument description:
 EOF
 }
 
-
 ## ---------------------------- CHECK ARGUMENTS ----------------------------
 if [ "$#" -ne "1" -a "$#" -ne "2" ]; then
-   showHelp;
-   exit 1;
+  showHelp
+  exit 1
 else
-   if [ "$#" -eq "2" -a "$2" == "omim2efo" ]; then
-      export omim2efo="omim2efo"
-      echo "# OMIM | EFO"
-   elif [ "$#" -eq "2" -a "$2" == "longEfo2Omim" ]; then
-      export omim2efo="longEfo2Omim"
-      echo "# EFO & OMIM mappings"
-   else
-      export omim2efo="efo2omim"
-      echo "# EFO | OMIM"
-   fi
+  if [ "$#" -eq "2" -a "$2" == "omim2efo" ]; then
+    export omim2efo="omim2efo"
+    echo "# OMIM | EFO"
+  elif [ "$#" -eq "2" -a "$2" == "longEfo2Omim" ]; then
+    export omim2efo="longEfo2Omim"
+    echo "# EFO & OMIM mappings"
+  else
+    export omim2efo="efo2omim"
+    echo "# EFO | OMIM"
+  fi
 fi
-
 
 size="$1"
 headers="Accept: application/json"
 
-
 ## ---------------------------- FETCH TOTAL NUMBER OF PAGES OF RESULTS ----------------------------
-url="https://www.ebi.ac.uk/ols/api/ontologies/efo/terms?size=$size"
-totalPages="$(curl --silent "$url" -H "$headers" | python -c '
+url="https://www.ebi.ac.uk/ols4/api/ontologies/efo/terms?size=$size"
+totalPages=""
+response=$(curl --silent "$url" -H "$headers")
+if [ $? -eq 0 ]; then
+  totalPages=$(echo "$response" | python -c '
 import sys, json
 print ("{}".format(json.load(sys.stdin)["page"]["totalPages"]))
-'
-)"
-
+  ')
+fi
 
 ## ---------------------------- FETCH EACH PAGE OF RESULTS AND FIND THE OMIM/EFO MAPPINGS ----------------------------
 for pageNum in $(seq 1 $totalPages); do
-   url="https://www.ebi.ac.uk/ols/api/ontologies/efo/terms?page=$pageNum&size=$size"
+  url="https://www.ebi.ac.uk/ols4/api/ontologies/efo/terms?page=$pageNum&size=$size"
 
-   curl --silent "$url" -H "$headers" | python -c '
+  response=$(curl --silent "$url" -H "$headers")
+  if [ $? -ne 0 ]; then
+    echo "Error occurred while fetching data from the API. URL: $url"
+    exit 1
+  fi
+
+  echo "$response" | python -c '
 import sys, json, os
 from importlib import reload
 
